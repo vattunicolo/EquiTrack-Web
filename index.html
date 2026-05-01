@@ -34,7 +34,7 @@
             this browser, with export and import tools for backups.
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="#stable-app">Open stable app</a>
+            <a class="button primary" href="#stable-app">Open EquiTrack Web</a>
             <a id="desktopDownloadButton" class="button secondary disabled" href="#" aria-disabled="true">
               Checking desktop release...
             </a>
@@ -69,9 +69,9 @@
             <h2>Run EquiTrack directly in the browser.</h2>
           </div>
           <div class="backup-actions">
-            <button id="exportButton" class="button secondary" type="button">Export backup</button>
+            <button id="exportButton" class="button secondary" type="button">Download backup</button>
             <label class="button secondary file-button">
-              Import backup
+              Restore backup
               <input id="importInput" type="file" accept="application/json,.json">
             </label>
           </div>
@@ -109,7 +109,7 @@
                   Care notes
                   <textarea name="notes" rows="3" placeholder="Feed, training, vet, or shoeing notes"></textarea>
                 </label>
-                <button class="button primary" type="submit">Save horse</button>
+                <button class="button primary" type="submit">Save horse record</button>
               </form>
               <div id="horsesList" class="item-list"></div>
             </section>
@@ -139,7 +139,7 @@
                   Notes
                   <textarea name="notes" rows="3" placeholder="Details, worker, location"></textarea>
                 </label>
-                <button class="button primary" type="submit">Save task</button>
+                <button class="button primary" type="submit">Save daily task</button>
               </form>
               <div id="tasksList" class="item-list"></div>
             </section>
@@ -169,7 +169,7 @@
                   Notes
                   <textarea name="notes" rows="3" placeholder="Morning shift, stalls cleaned, feeding done"></textarea>
                 </label>
-                <button class="button primary" type="submit">Save hours</button>
+                <button class="button primary" type="submit">Save work log</button>
               </form>
               <div id="hoursList" class="item-list"></div>
             </section>
@@ -199,7 +199,7 @@
                   Reorder below
                   <input name="minimum" type="number" min="0" step="0.1" required placeholder="12">
                 </label>
-                <button class="button primary" type="submit">Save feed item</button>
+                <button class="button primary" type="submit">Save inventory item</button>
               </form>
               <div id="inventoryList" class="item-list"></div>
             </section>

@@ -297,6 +297,9 @@ h3 {
 .app-message {
   min-height: 26px;
   margin: 8px 0 18px;
+  border-radius: 8px;
+  padding: 0 2px;
+  font-weight: 750;
 }
 
 .app-layout {
@@ -529,6 +532,10 @@ textarea {
     gap: 10px;
   }
 
+  .hero {
+    padding-top: 36px;
+  }
+
   .button,
   .file-button {
     width: 100%;
@@ -551,6 +558,12 @@ textarea {
   }
 
   .item-actions {
+    display: grid;
+    grid-template-columns: 1fr;
     justify-content: stretch;
+  }
+
+  .ghost {
+    min-height: 42px;
   }
 }

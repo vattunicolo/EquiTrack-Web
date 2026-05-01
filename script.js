@@ -100,6 +100,10 @@ function showMessage(message) {
   }, 3200);
 }
 
+function confirmDelete(label) {
+  return window.confirm(`Delete ${label}? This cannot be undone.`);
+}
+
 // Build the horse selector used by the task form.
 function renderHorseOptions() {
   const options = ['<option value="">No horse assigned</option>']
@@ -126,7 +130,7 @@ function renderSummary() {
 
 function renderHorses() {
   if (state.horses.length === 0) {
-    els.horsesList.innerHTML = '<p class="empty-state">No horses yet. Add the first horse above.</p>';
+    els.horsesList.innerHTML = '<p class="empty-state">No horses saved yet. Add a horse record above to start building your stable list.</p>';
     return;
   }
 
@@ -149,7 +153,7 @@ function renderHorses() {
 
 function renderTasks() {
   if (state.tasks.length === 0) {
-    els.tasksList.innerHTML = '<p class="empty-state">No daily tasks yet. Add one above.</p>';
+    els.tasksList.innerHTML = '<p class="empty-state">No daily tasks saved yet. Add a feeding, cleaning, training, or care task above.</p>';
     return;
   }
 
@@ -179,7 +183,7 @@ function renderTasks() {
 
 function renderHours() {
   if (state.hours.length === 0) {
-    els.hoursList.innerHTML = '<p class="empty-state">No work hours logged yet.</p>';
+    els.hoursList.innerHTML = '<p class="empty-state">No work hours logged yet. Add a worker shift above to start tracking time.</p>';
     return;
   }
 
@@ -203,7 +207,7 @@ function renderHours() {
 
 function renderInventory() {
   if (state.inventory.length === 0) {
-    els.inventoryList.innerHTML = '<p class="empty-state">No feed inventory yet. Add hay, oats, pellets, or other supplies.</p>';
+    els.inventoryList.innerHTML = '<p class="empty-state">No feed inventory saved yet. Add hay, oats, pellets, or other supplies above.</p>';
     return;
   }
 
@@ -310,14 +314,14 @@ function handleListClick(event) {
   const { action, id } = button.dataset;
 
   if (action === 'edit-horse') fillHorseForm(id);
-  if (action === 'delete-horse') deleteItem('horses', id, 'Horse deleted.');
+  if (action === 'delete-horse') deleteItem('horses', id, 'this horse record', 'Horse record deleted.');
   if (action === 'toggle-task') toggleTask(id);
   if (action === 'edit-task') fillTaskForm(id);
-  if (action === 'delete-task') deleteItem('tasks', id, 'Task deleted.');
+  if (action === 'delete-task') deleteItem('tasks', id, 'this daily task', 'Daily task deleted.');
   if (action === 'edit-hours') fillHoursForm(id);
-  if (action === 'delete-hours') deleteItem('hours', id, 'Work log deleted.');
+  if (action === 'delete-hours') deleteItem('hours', id, 'this work log', 'Work log deleted.');
   if (action === 'edit-inventory') fillInventoryForm(id);
-  if (action === 'delete-inventory') deleteItem('inventory', id, 'Feed item deleted.');
+  if (action === 'delete-inventory') deleteItem('inventory', id, 'this feed inventory item', 'Feed inventory item deleted.');
 }
 
 function fillHorseForm(id) {
@@ -363,7 +367,11 @@ function fillInventoryForm(id) {
   els.inventoryForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-function deleteItem(collection, id, message) {
+function deleteItem(collection, id, label, message) {
+  if (!confirmDelete(label)) {
+    showMessage('Delete cancelled. No data was changed.');
+    return;
+  }
   state[collection] = state[collection].filter((item) => item.id !== id);
   saveData();
   render();
@@ -376,6 +384,7 @@ function toggleTask(id) {
   task.done = !task.done;
   saveData();
   render();
+  showMessage(task.done ? 'Task marked as done.' : 'Task reopened.');
 }
 
 // Export all local browser data as a JSON backup file.
@@ -392,7 +401,8 @@ function exportBackup() {
   link.download = `equitrack-backup-${today()}.json`;
   link.click();
   URL.revokeObjectURL(url);
-  showMessage('Backup exported.');
+  const itemCount = state.horses.length + state.tasks.length + state.hours.length + state.inventory.length;
+  showMessage(`Backup exported with ${itemCount} saved records.`);
 }
 
 // Import a JSON backup and replace the current browser data.
@@ -412,7 +422,8 @@ async function importBackup(file) {
     };
     saveData();
     render();
-    showMessage('Backup imported.');
+    const itemCount = state.horses.length + state.tasks.length + state.hours.length + state.inventory.length;
+    showMessage(`Backup restored with ${itemCount} saved records.`);
   } catch (error) {
     showMessage(`Import failed: ${error.message}`);
   } finally {
