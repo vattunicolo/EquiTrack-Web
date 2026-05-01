@@ -1,6 +1,6 @@
 # EquiTrack Web
 
-EquiTrack Web is a browser-based version of the EquiTrack horse stable management app. It runs as a static website and needs no backend, database server, build step, or framework.
+EquiTrack-Web is the browser-based version of the EquiTrack horse stable management app. It runs as a static website and needs no backend, database server, build step, or framework.
 
 ## Web Version
 
@@ -17,7 +17,7 @@ Open `index.html` directly or publish the repository with GitHub Pages.
 
 ## Desktop Version
 
-EquiTrack also has an installable Electron desktop version for users who prefer a traditional desktop app.
+EquiTrack also has an installable Electron desktop version for users who prefer a traditional desktop app. The desktop installer is currently distributed from this repository's GitHub Releases.
 
 The web app checks GitHub Releases here:
 
@@ -25,13 +25,13 @@ The web app checks GitHub Releases here:
 https://api.github.com/repos/vattunicolo/EquiTrack-Web/releases/latest
 ```
 
-If a release exists and has an uploaded asset, the desktop download button uses:
+The desktop download button automatically fetches the latest release and uses the first uploaded release asset:
 
 - `tag_name` for the version label
 - `body` for the changelog
 - `assets[0].browser_download_url` for the download link
 
-If no release exists yet, the page shows a clean `No desktop release yet` message and keeps working.
+The current installer asset is expected to be named like `EquiTrack.Setup.1.0.0.1.exe`. If no release or no asset exists yet, the page shows `Desktop download is not available yet.` and keeps working.
 
 ## Local Browser Storage
 

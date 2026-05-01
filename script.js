@@ -441,9 +441,10 @@ function formatChangelog(markdownText) {
   );
 }
 
-// Keep the desktop download area useful when no GitHub release exists yet.
-function showNoRelease(message = 'No desktop release available yet') {
-  els.downloadButton.textContent = 'No desktop release yet';
+// Keep the desktop download area useful when no GitHub release or asset exists yet.
+function showNoRelease() {
+  const message = 'Desktop download is not available yet.';
+  els.downloadButton.textContent = message;
   els.downloadButton.classList.add('disabled');
   els.downloadButton.setAttribute('aria-disabled', 'true');
   els.downloadButton.removeAttribute('href');
@@ -478,7 +479,7 @@ async function loadLatestRelease() {
     if (release.html_url) els.releasePageLink.href = release.html_url;
 
     if (!downloadUrl) {
-      showNoRelease('The latest release exists, but no installer asset has been uploaded yet.');
+      showNoRelease();
       els.latestVersion.textContent = version;
       els.changelog.innerHTML = formatChangelog(release.body);
       return;
@@ -490,7 +491,7 @@ async function loadLatestRelease() {
     els.downloadButton.removeAttribute('aria-disabled');
     els.releaseStatus.textContent = `Desktop installer: ${firstAsset.name || 'download available'}`;
   } catch (error) {
-    showNoRelease(`No desktop release available yet. ${error.message}`);
+    showNoRelease();
   }
 }
 
