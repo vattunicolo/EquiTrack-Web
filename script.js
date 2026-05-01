@@ -556,15 +556,20 @@ function escapeHtml(value) {
     .replaceAll("'", '&#039;');
 }
 
+function toSafeNumber(value, fallback = 0) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : fallback;
+}
+
 function normalizeFeedItem(item) {
   return {
     id: item.id || createId(),
     name: item.name || 'Unnamed feed',
     category: item.category || item.type || 'General',
-    quantity: Number(item.quantity ?? item.currentAmount ?? 0),
+    quantity: toSafeNumber(item.quantity ?? item.currentAmount),
     unit: item.unit || 'units',
-    dailyUsage: Number(item.dailyUsage ?? item.daily_use ?? 0),
-    minimum: Number(item.minimum ?? item.threshold ?? 0)
+    dailyUsage: toSafeNumber(item.dailyUsage ?? item.daily_use),
+    minimum: toSafeNumber(item.minimum ?? item.threshold)
   };
 }
 
@@ -1020,8 +1025,10 @@ function exportBackup() {
   const link = document.createElement('a');
   link.href = url;
   link.download = `equitrack-backup-${today()}.json`;
+  document.body.appendChild(link);
   link.click();
-  URL.revokeObjectURL(url);
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
   const itemCount = state.horses.length + state.tasks.length + state.hours.length + state.inventory.length + state.calendarEvents.length;
   showMessage(t('message.backupExported', { count: itemCount }));
 }
