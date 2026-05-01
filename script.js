@@ -159,6 +159,8 @@ const translations = {
     'release.loadingButton': 'Checking desktop release...',
     'release.loadingChangelog': 'Fetching changelog from GitHub Releases.',
     'release.unavailable': 'Desktop download is not available yet.',
+    'release.noInstaller': 'Desktop installer is not available yet.',
+    'release.fetchError': 'Could not load desktop installer information. Please try again later.',
     'release.noRelease': 'No release available yet',
     'release.latest': 'Latest release',
     'release.downloadDesktop': 'Download desktop {version}',
@@ -313,6 +315,8 @@ const translations = {
     'release.loadingButton': 'Tarkistetaan työpöytäjulkaisua...',
     'release.loadingChangelog': 'Haetaan muutoslokia GitHub Releases -julkaisuista.',
     'release.unavailable': 'Työpöytälataus ei ole vielä saatavilla.',
+    'release.noInstaller': 'Työpöytäasennusohjelma ei ole vielä saatavilla.',
+    'release.fetchError': 'Työpöytäasennusohjelman tietoja ei voitu ladata. Yritä myöhemmin uudelleen.',
     'release.noRelease': 'Julkaisua ei ole vielä saatavilla',
     'release.latest': 'Uusin julkaisu',
     'release.downloadDesktop': 'Lataa työpöytäversio {version}',
@@ -467,6 +471,8 @@ const translations = {
     'release.loadingButton': 'Controllo release desktop...',
     'release.loadingChangelog': 'Recupero note di rilascio da GitHub Releases.',
     'release.unavailable': 'Il download desktop non e ancora disponibile.',
+    'release.noInstaller': 'L installer desktop non e ancora disponibile.',
+    'release.fetchError': 'Impossibile caricare le informazioni dell installer desktop. Riprova piu tardi.',
     'release.noRelease': 'Nessuna release disponibile',
     'release.latest': 'Ultima release',
     'release.downloadDesktop': 'Scarica desktop {version}',
@@ -1099,15 +1105,25 @@ function formatChangelog(markdownText) {
   return escapeHtml(text).replace(/(https?:\/\/[^\s)]+)/g, '<a href="$1" target="_blank" rel="noreferrer">$1</a>');
 }
 
+function isInstallerAsset(asset) {
+  return /\.(exe|msi|zip)$/i.test(asset?.name || '');
+}
+
+function getInstallerAsset(assets = []) {
+  return assets.find(isInstallerAsset);
+}
+
 function setDownloadButtonUnavailable(button, message) {
   button.textContent = message;
   button.classList.add('disabled');
   button.setAttribute('aria-disabled', 'true');
   button.removeAttribute('href');
+  button.removeAttribute('download');
+  button.removeAttribute('target');
+  button.removeAttribute('rel');
 }
 
-function showNoRelease() {
-  const message = t('release.unavailable');
+function showNoRelease(message = t('release.unavailable')) {
   setDownloadButtonUnavailable(els.downloadButton, message);
   setDownloadButtonUnavailable(els.settingsDownloadButton, message);
   els.releaseStatus.textContent = message;
@@ -1126,14 +1142,14 @@ async function loadLatestRelease() {
 
     const release = await response.json();
     const version = release.tag_name || t('release.latest');
-    const firstAsset = release.assets?.[0];
-    const downloadUrl = firstAsset?.browser_download_url;
+    const installerAsset = getInstallerAsset(release.assets || []);
+    const downloadUrl = installerAsset?.browser_download_url;
     els.latestVersion.textContent = version;
     els.changelog.innerHTML = formatChangelog(release.body);
     if (release.html_url) els.releasePageLink.href = release.html_url;
 
     if (!downloadUrl) {
-      showNoRelease();
+      showNoRelease(t('release.noInstaller'));
       els.latestVersion.textContent = version;
       els.changelog.innerHTML = formatChangelog(release.body);
       return;
@@ -1142,12 +1158,15 @@ async function loadLatestRelease() {
     [els.downloadButton, els.settingsDownloadButton].forEach((button) => {
       button.href = downloadUrl;
       button.textContent = t('release.downloadDesktop', { version });
+      button.setAttribute('download', installerAsset.name || '');
+      button.setAttribute('rel', 'noopener');
+      button.removeAttribute('target');
       button.classList.remove('disabled');
       button.removeAttribute('aria-disabled');
     });
-    els.releaseStatus.textContent = t('release.installer', { name: firstAsset.name || t('release.downloadAvailable') });
+    els.releaseStatus.textContent = t('release.installer', { name: installerAsset.name || t('release.downloadAvailable') });
   } catch (_error) {
-    showNoRelease();
+    showNoRelease(t('release.fetchError'));
   }
 }
 
