@@ -112,5 +112,8 @@ GitHub Pages will serve:
 - `index.html`
 - `style.css`
 - `script.js`
+- `EquiTrack lolo.png`
+
+The logo file is referenced exactly as `EquiTrack lolo.png`, including the space in the filename. It is used as the favicon, header logo, Home page hero logo, and Settings/About logo.
 
 No npm install, Vite build, React build, backend, or database setup is required.
