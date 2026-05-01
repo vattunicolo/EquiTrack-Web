@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="EquiTrack Web is a browser-based horse stable management app with local storage and backup tools.">
+    <title>EquiTrack Web</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <a class="brand" href="#dashboard" aria-label="EquiTrack dashboard">
+        <span class="brand-mark">E</span>
+        <span>
+          <strong>EquiTrack</strong>
+          <small>Web stable manager</small>
+        </span>
+      </a>
+
+      <nav class="top-nav" aria-label="Primary">
+        <a href="#dashboard">Dashboard</a>
+        <a href="#stable-app">App</a>
+        <a href="#desktop">Desktop</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="dashboard" class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Local-first browser app</p>
+          <h1>Manage your stable from any modern browser.</h1>
+          <p class="hero-text">
+            Track horses, daily work, staff hours, and feed inventory. Everything is stored locally in
+            this browser, with export and import tools for backups.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#stable-app">Open stable app</a>
+            <a id="desktopDownloadButton" class="button secondary disabled" href="#" aria-disabled="true">
+              Checking desktop release...
+            </a>
+          </div>
+          <p id="releaseStatus" class="status-text">Loading desktop release information from GitHub.</p>
+        </div>
+
+        <section class="summary-grid" aria-label="Stable summary">
+          <article class="summary-card">
+            <span>Horses</span>
+            <strong id="horseCount">0</strong>
+          </article>
+          <article class="summary-card">
+            <span>Open tasks</span>
+            <strong id="openTaskCount">0</strong>
+          </article>
+          <article class="summary-card">
+            <span>Hours logged</span>
+            <strong id="hoursTotal">0</strong>
+          </article>
+          <article class="summary-card">
+            <span>Low feed items</span>
+            <strong id="lowFeedCount">0</strong>
+          </article>
+        </section>
+      </section>
+
+      <section id="stable-app" class="app-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Stable workspace</p>
+            <h2>Run EquiTrack directly in the browser.</h2>
+          </div>
+          <div class="backup-actions">
+            <button id="exportButton" class="button secondary" type="button">Export backup</button>
+            <label class="button secondary file-button">
+              Import backup
+              <input id="importInput" type="file" accept="application/json,.json">
+            </label>
+          </div>
+        </div>
+
+        <p id="appMessage" class="app-message" role="status"></p>
+
+        <div class="app-layout">
+          <aside class="side-tabs" aria-label="App modules">
+            <button class="tab-button active" type="button" data-tab="horses">Horses</button>
+            <button class="tab-button" type="button" data-tab="tasks">Tasks</button>
+            <button class="tab-button" type="button" data-tab="hours">Work hours</button>
+            <button class="tab-button" type="button" data-tab="inventory">Feed inventory</button>
+          </aside>
+
+          <div class="module-shell">
+            <section class="module-panel active" id="horsesPanel">
+              <div class="module-header">
+                <div>
+                  <h3>Horse management</h3>
+                  <p>Add horses and keep care notes close at hand.</p>
+                </div>
+              </div>
+              <form id="horseForm" class="entry-form">
+                <input type="hidden" name="id">
+                <label>
+                  Horse name
+                  <input name="name" required placeholder="Aurora">
+                </label>
+                <label>
+                  Age
+                  <input name="age" type="number" min="0" placeholder="7">
+                </label>
+                <label class="full">
+                  Care notes
+                  <textarea name="notes" rows="3" placeholder="Feed, training, vet, or shoeing notes"></textarea>
+                </label>
+                <button class="button primary" type="submit">Save horse</button>
+              </form>
+              <div id="horsesList" class="item-list"></div>
+            </section>
+
+            <section class="module-panel" id="tasksPanel">
+              <div class="module-header">
+                <div>
+                  <h3>Daily tasks</h3>
+                  <p>Plan and complete stable jobs for each day.</p>
+                </div>
+              </div>
+              <form id="taskForm" class="entry-form">
+                <input type="hidden" name="id">
+                <label>
+                  Task
+                  <input name="title" required placeholder="Morning feed round">
+                </label>
+                <label>
+                  Date
+                  <input name="date" type="date" required>
+                </label>
+                <label>
+                  Assigned horse
+                  <select name="horseId"></select>
+                </label>
+                <label class="full">
+                  Notes
+                  <textarea name="notes" rows="3" placeholder="Details, worker, location"></textarea>
+                </label>
+                <button class="button primary" type="submit">Save task</button>
+              </form>
+              <div id="tasksList" class="item-list"></div>
+            </section>
+
+            <section class="module-panel" id="hoursPanel">
+              <div class="module-header">
+                <div>
+                  <h3>Work hour tracking</h3>
+                  <p>Log staff work and notes for each stable shift.</p>
+                </div>
+              </div>
+              <form id="hoursForm" class="entry-form">
+                <input type="hidden" name="id">
+                <label>
+                  Worker
+                  <input name="worker" required placeholder="Sara">
+                </label>
+                <label>
+                  Date
+                  <input name="date" type="date" required>
+                </label>
+                <label>
+                  Hours
+                  <input name="hours" type="number" min="0" step="0.25" required placeholder="6.5">
+                </label>
+                <label class="full">
+                  Notes
+                  <textarea name="notes" rows="3" placeholder="Morning shift, stalls cleaned, feeding done"></textarea>
+                </label>
+                <button class="button primary" type="submit">Save hours</button>
+              </form>
+              <div id="hoursList" class="item-list"></div>
+            </section>
+
+            <section class="module-panel" id="inventoryPanel">
+              <div class="module-header">
+                <div>
+                  <h3>Feed inventory</h3>
+                  <p>Track hay, oats, pellets, and reorder levels.</p>
+                </div>
+              </div>
+              <form id="inventoryForm" class="entry-form">
+                <input type="hidden" name="id">
+                <label>
+                  Feed item
+                  <input name="name" required placeholder="Hay">
+                </label>
+                <label>
+                  Quantity
+                  <input name="quantity" type="number" min="0" step="0.1" required placeholder="42">
+                </label>
+                <label>
+                  Unit
+                  <input name="unit" required placeholder="bales">
+                </label>
+                <label>
+                  Reorder below
+                  <input name="minimum" type="number" min="0" step="0.1" required placeholder="12">
+                </label>
+                <button class="button primary" type="submit">Save feed item</button>
+              </form>
+              <div id="inventoryList" class="item-list"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="desktop" class="desktop-section">
+        <div>
+          <p class="eyebrow">Desktop version</p>
+          <h2>Prefer an installable app?</h2>
+          <p>
+            The browser app works without a backend and stores data in this browser. The Electron desktop
+            version is available from GitHub Releases when an installer has been published.
+          </p>
+        </div>
+        <article class="release-card">
+          <span>Latest desktop release</span>
+          <strong id="latestVersion">Loading...</strong>
+          <div id="changelog" class="changelog">Fetching changelog from GitHub Releases.</div>
+          <a id="releasePageLink" href="https://github.com/vattunicolo/EquiTrack-Web/releases/latest" target="_blank" rel="noreferrer">
+            Open releases
+          </a>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>EquiTrack Web</span>
+      <span>Data is stored locally in your browser.</span>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
