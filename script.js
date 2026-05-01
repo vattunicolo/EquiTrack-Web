@@ -919,6 +919,8 @@ function handleEventSubmit(event) {
 function handleListClick(event) {
   const button = event.target.closest('button[data-action]');
   if (!button) return;
+  event.preventDefault();
+  event.stopPropagation();
   const { action, id } = button.dataset;
   if (action === 'edit-horse') fillHorseForm(id);
   if (action === 'delete-horse') deleteItem('horses', id, t('delete.horse'), t('message.horseDeleted'));
