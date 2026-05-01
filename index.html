@@ -20,12 +20,22 @@
         </span>
       </a>
 
-      <nav class="top-nav" aria-label="Primary">
+      <nav class="top-nav desktop-nav" aria-label="Primary">
         <button class="nav-button active" type="button" data-view-link="home" data-i18n="nav.home">Home</button>
         <button class="nav-button" type="button" data-view-link="stable" data-i18n="nav.stable">My Stable</button>
         <button class="nav-button" type="button" data-view-link="calendar" data-i18n="nav.calendar">Calendar</button>
         <button class="nav-button" type="button" data-view-link="settings" data-i18n="nav.settings">Settings / Backup</button>
       </nav>
+
+      <details class="mobile-nav">
+        <summary data-i18n="nav.menu">Menu</summary>
+        <div class="mobile-nav-panel" aria-label="Primary mobile navigation">
+          <button class="nav-button active" type="button" data-view-link="home" data-i18n="nav.home">Home</button>
+          <button class="nav-button" type="button" data-view-link="stable" data-i18n="nav.stable">My Stable</button>
+          <button class="nav-button" type="button" data-view-link="calendar" data-i18n="nav.calendar">Calendar</button>
+          <button class="nav-button" type="button" data-view-link="settings" data-i18n="nav.settings">Settings / Backup</button>
+        </div>
+      </details>
     </header>
 
     <main>

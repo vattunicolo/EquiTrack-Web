@@ -18,6 +18,7 @@ const translations = {
     'nav.stable': 'My Stable',
     'nav.calendar': 'Calendar',
     'nav.settings': 'Settings / Backup',
+    'nav.menu': 'Menu',
     'home.eyebrow': 'Stable management in your browser',
     'home.title': 'EquiTrack keeps daily stable work organized.',
     'home.pitch': 'Manage horses, tasks, working hours, feed inventory, and race days in one local-first web app.',
@@ -170,6 +171,7 @@ const translations = {
     'nav.stable': 'Oma talli',
     'nav.calendar': 'Kalenteri',
     'nav.settings': 'Asetukset / varmuuskopio',
+    'nav.menu': 'Valikko',
     'home.eyebrow': 'Tallinhallinta selaimessa',
     'home.title': 'EquiTrack pitää tallin arjen järjestyksessä.',
     'home.pitch': 'Hallitse hevosia, tehtäviä, työtunteja, rehuvarastoa ja kilpailupäiviä yhdessä paikallisessa verkkosovelluksessa.',
@@ -322,6 +324,7 @@ const translations = {
     'nav.stable': 'La mia scuderia',
     'nav.calendar': 'Calendario',
     'nav.settings': 'Impostazioni / backup',
+    'nav.menu': 'Menu',
     'home.eyebrow': 'Gestione scuderia nel browser',
     'home.title': 'EquiTrack organizza il lavoro quotidiano in scuderia.',
     'home.pitch': 'Gestisci cavalli, attivita, ore di lavoro, inventario mangimi e giornate di gara in un’app web locale.',
@@ -624,6 +627,7 @@ function setupViewNav() {
     button.addEventListener('click', (event) => {
       event.preventDefault();
       showView(button.dataset.viewLink);
+      button.closest('.mobile-nav')?.removeAttribute('open');
     });
   });
 }
