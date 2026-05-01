@@ -257,6 +257,11 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
   color: var(--muted);
   line-height: 1.65;
 }
+.panel p.update-note {
+  margin-bottom: 14px;
+  color: var(--accent-strong);
+  font-weight: 850;
+}
 .hero-text { max-width: 680px; font-size: clamp(18px, 2.1vw, 24px); }
 .hero-actions, .backup-actions { flex-wrap: wrap; gap: 12px; margin-top: 26px; }
 .status-text { margin: 14px 0 0; font-size: 14px; }
