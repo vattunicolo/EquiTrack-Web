@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="EquiTrack Web is a browser-based horse stable management app with local storage and backup tools.">
+    <meta name="description" content="EquiTrack Web is a browser-based horse stable management app with local storage, calendar events, and backup tools.">
     <title>EquiTrack Web</title>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <header class="app-header">
-      <a class="brand" href="#dashboard" aria-label="EquiTrack dashboard">
+      <a class="brand" href="#home" data-view-link="home" aria-label="EquiTrack home">
         <span class="brand-mark">E</span>
         <span>
           <strong>EquiTrack</strong>
@@ -17,77 +17,92 @@
         </span>
       </a>
 
-      <div class="header-actions">
-        <nav class="top-nav" aria-label="Primary">
-          <a href="#dashboard" data-i18n="nav.dashboard">Dashboard</a>
-          <a href="#stable-app" data-i18n="nav.app">App</a>
-          <a href="#desktop" data-i18n="nav.desktop">Desktop</a>
-        </nav>
-        <label class="language-picker">
-          <span data-i18n="language.label">Language</span>
-          <select id="languageSelect" aria-label="Language">
-            <option value="en">English</option>
-            <option value="fi">Suomi</option>
-            <option value="it">Italiano</option>
-          </select>
-        </label>
-      </div>
+      <nav class="top-nav" aria-label="Primary">
+        <button class="nav-button active" type="button" data-view-link="home" data-i18n="nav.home">Home</button>
+        <button class="nav-button" type="button" data-view-link="stable" data-i18n="nav.stable">My Stable</button>
+        <button class="nav-button" type="button" data-view-link="calendar" data-i18n="nav.calendar">Calendar</button>
+        <button class="nav-button" type="button" data-view-link="settings" data-i18n="nav.settings">Settings / Backup</button>
+      </nav>
     </header>
 
     <main>
-      <section id="dashboard" class="hero">
-        <div class="hero-copy">
-          <p class="eyebrow" data-i18n="hero.eyebrow">Local-first browser app</p>
-          <h1 data-i18n="hero.title">Manage your stable from any modern browser.</h1>
-          <p class="hero-text" data-i18n="hero.text">
-            Track horses, daily work, staff hours, and feed inventory. Everything is stored locally in
-            this browser, with export and import tools for backups.
-          </p>
-          <div class="hero-actions">
-            <a class="button primary" href="#stable-app" data-i18n="hero.openApp">Open EquiTrack Web</a>
-            <a id="desktopDownloadButton" class="button secondary disabled" href="#" aria-disabled="true" data-i18n="release.loadingButton">
-              Checking desktop release...
-            </a>
+      <p id="appMessage" class="app-message" role="status"></p>
+
+      <section id="homeView" class="view active">
+        <div class="home-hero">
+          <div class="hero-copy">
+            <p class="eyebrow" data-i18n="home.eyebrow">Stable management in your browser</p>
+            <h1 data-i18n="home.title">EquiTrack keeps daily stable work organized.</h1>
+            <p class="hero-text" data-i18n="home.pitch">
+              Manage horses, tasks, working hours, feed inventory, and race days in one local-first web app.
+            </p>
+            <div class="hero-actions">
+              <button class="button primary" type="button" data-view-link="stable" data-i18n="home.cta">Open My Stable</button>
+              <a id="desktopDownloadButton" class="button secondary disabled" href="#" aria-disabled="true" data-i18n="release.loadingButton">Checking desktop release...</a>
+            </div>
+            <p id="releaseStatus" class="status-text" data-i18n="release.loadingStatus">Loading desktop release information from GitHub.</p>
           </div>
-          <p id="releaseStatus" class="status-text" data-i18n="release.loadingStatus">Loading desktop release information from GitHub.</p>
+
+          <section class="feature-grid" aria-label="Feature highlights">
+            <article class="feature-card">
+              <span>01</span>
+              <h3 data-i18n="home.featureHorsesTitle">Horse records</h3>
+              <p data-i18n="home.featureHorsesText">Keep horse notes and care details easy to find.</p>
+            </article>
+            <article class="feature-card">
+              <span>02</span>
+              <h3 data-i18n="home.featureTasksTitle">Daily work</h3>
+              <p data-i18n="home.featureTasksText">Track stable jobs, work logs, and completion status.</p>
+            </article>
+            <article class="feature-card">
+              <span>03</span>
+              <h3 data-i18n="home.featureFeedTitle">Feed Inventory PRO</h3>
+              <p data-i18n="home.featureFeedText">Estimate days remaining and catch low stock early.</p>
+            </article>
+            <article class="feature-card">
+              <span>04</span>
+              <h3 data-i18n="home.featureCalendarTitle">Race calendar</h3>
+              <p data-i18n="home.featureCalendarText">Plan event days and see which horses are running.</p>
+            </article>
+          </section>
         </div>
 
-        <section class="summary-grid" aria-label="Stable summary">
-          <article class="summary-card">
-            <span data-i18n="summary.horses">Horses</span>
-            <strong id="horseCount">0</strong>
+        <section class="home-lower">
+          <article class="panel">
+            <p class="eyebrow" data-i18n="desktop.eyebrow">Desktop version</p>
+            <h2 data-i18n="desktop.title">Prefer an installable app?</h2>
+            <p data-i18n="desktop.text">The browser app stores data in this browser. The Electron desktop version is available from GitHub Releases when an installer has been published.</p>
+            <strong id="latestVersion">Loading...</strong>
+            <div id="changelog" class="changelog" data-i18n="release.loadingChangelog">Fetching changelog from GitHub Releases.</div>
+            <a id="releasePageLink" href="https://github.com/vattunicolo/EquiTrack-Web/releases/latest" target="_blank" rel="noreferrer" data-i18n="desktop.openReleases">Open releases</a>
           </article>
-          <article class="summary-card">
-            <span data-i18n="summary.openTasks">Open tasks</span>
-            <strong id="openTaskCount">0</strong>
-          </article>
-          <article class="summary-card">
-            <span data-i18n="summary.hoursLogged">Hours logged</span>
-            <strong id="hoursTotal">0</strong>
-          </article>
-          <article class="summary-card">
-            <span data-i18n="summary.lowFeed">Low feed items</span>
-            <strong id="lowFeedCount">0</strong>
+
+          <article class="panel">
+            <p class="eyebrow" data-i18n="home.socialTitle">Connect</p>
+            <h2 data-i18n="home.socialHeading">Follow EquiTrack</h2>
+            <div class="social-links">
+              <a href="#" aria-label="Instagram">Instagram</a>
+              <a href="#" aria-label="LinkedIn">LinkedIn</a>
+              <a href="mailto:hello@example.com" data-i18n="home.email">Email or contact</a>
+            </div>
           </article>
         </section>
       </section>
 
-      <section id="stable-app" class="app-section">
+      <section id="stableView" class="view">
         <div class="section-heading">
           <div>
-            <p class="eyebrow" data-i18n="workspace.eyebrow">Stable workspace</p>
-            <h2 data-i18n="workspace.title">Run EquiTrack directly in the browser.</h2>
-          </div>
-          <div class="backup-actions">
-            <button id="exportButton" class="button secondary" type="button" data-i18n="backup.export">Download backup</button>
-            <label class="button secondary file-button">
-              <span data-i18n="backup.import">Restore backup</span>
-              <input id="importInput" type="file" accept="application/json,.json">
-            </label>
+            <p class="eyebrow" data-i18n="stable.eyebrow">My Stable</p>
+            <h2 data-i18n="stable.title">Your daily stable workspace.</h2>
           </div>
         </div>
 
-        <p id="appMessage" class="app-message" role="status"></p>
+        <section class="summary-grid" aria-label="Stable summary">
+          <article class="summary-card"><span data-i18n="summary.horses">Horses</span><strong id="horseCount">0</strong></article>
+          <article class="summary-card"><span data-i18n="summary.openTasks">Open tasks</span><strong id="openTaskCount">0</strong></article>
+          <article class="summary-card"><span data-i18n="summary.hoursLogged">Hours logged</span><strong id="hoursTotal">0</strong></article>
+          <article class="summary-card"><span data-i18n="summary.lowFeed">Low feed items</span><strong id="lowFeedCount">0</strong></article>
+        </section>
 
         <div class="app-layout">
           <aside class="side-tabs" aria-label="App modules">
@@ -99,124 +114,53 @@
 
           <div class="module-shell">
             <section class="module-panel active" id="horsesPanel">
-              <div class="module-header">
-                <div>
-                  <h3 data-i18n="horses.title">Horse management</h3>
-                  <p data-i18n="horses.subtitle">Add horses and keep care notes close at hand.</p>
-                </div>
-              </div>
+              <div class="module-header"><div><h3 data-i18n="horses.title">Horse management</h3><p data-i18n="horses.subtitle">Add horses and keep care notes close at hand.</p></div></div>
               <form id="horseForm" class="entry-form">
                 <input type="hidden" name="id">
-                <label>
-                  <span data-i18n="horses.name">Horse name</span>
-                  <input name="name" required placeholder="Aurora">
-                </label>
-                <label>
-                  <span data-i18n="horses.age">Age</span>
-                  <input name="age" type="number" min="0" placeholder="7">
-                </label>
-                <label class="full">
-                  <span data-i18n="common.notes">Care notes</span>
-                  <textarea name="notes" rows="3" placeholder="Feed, training, vet, or shoeing notes" data-i18n-placeholder="horses.notesPlaceholder"></textarea>
-                </label>
+                <label><span data-i18n="horses.name">Horse name</span><input name="name" required placeholder="Aurora"></label>
+                <label><span data-i18n="horses.age">Age</span><input name="age" type="number" min="0" placeholder="7"></label>
+                <label class="full"><span data-i18n="common.notes">Care notes</span><textarea name="notes" rows="3" data-i18n-placeholder="horses.notesPlaceholder" placeholder="Feed, training, vet, or shoeing notes"></textarea></label>
                 <button class="button primary" type="submit" data-i18n="horses.save">Save horse record</button>
               </form>
               <div id="horsesList" class="item-list"></div>
             </section>
 
             <section class="module-panel" id="tasksPanel">
-              <div class="module-header">
-                <div>
-                  <h3 data-i18n="tasks.title">Daily tasks</h3>
-                  <p data-i18n="tasks.subtitle">Plan and complete stable jobs for each day.</p>
-                </div>
-              </div>
+              <div class="module-header"><div><h3 data-i18n="tasks.title">Daily tasks</h3><p data-i18n="tasks.subtitle">Plan and complete stable jobs for each day.</p></div></div>
               <form id="taskForm" class="entry-form">
                 <input type="hidden" name="id">
-                <label>
-                  <span data-i18n="tasks.task">Task</span>
-                  <input name="title" required placeholder="Morning feed round" data-i18n-placeholder="tasks.placeholder">
-                </label>
-                <label>
-                  <span data-i18n="common.date">Date</span>
-                  <input name="date" type="date" required>
-                </label>
-                <label>
-                  <span data-i18n="tasks.assignedHorse">Assigned horse</span>
-                  <select name="horseId"></select>
-                </label>
-                <label class="full">
-                  <span data-i18n="common.notesSimple">Notes</span>
-                  <textarea name="notes" rows="3" placeholder="Details, worker, location" data-i18n-placeholder="tasks.notesPlaceholder"></textarea>
-                </label>
+                <label><span data-i18n="tasks.task">Task</span><input name="title" required data-i18n-placeholder="tasks.placeholder" placeholder="Morning feed round"></label>
+                <label><span data-i18n="common.date">Date</span><input name="date" type="date" required></label>
+                <label><span data-i18n="tasks.assignedHorse">Assigned horse</span><select name="horseId"></select></label>
+                <label class="full"><span data-i18n="common.notesSimple">Notes</span><textarea name="notes" rows="3" data-i18n-placeholder="tasks.notesPlaceholder" placeholder="Details, worker, location"></textarea></label>
                 <button class="button primary" type="submit" data-i18n="tasks.save">Save daily task</button>
               </form>
               <div id="tasksList" class="item-list"></div>
             </section>
 
             <section class="module-panel" id="hoursPanel">
-              <div class="module-header">
-                <div>
-                  <h3 data-i18n="hours.title">Work hour tracking</h3>
-                  <p data-i18n="hours.subtitle">Log staff work and notes for each stable shift.</p>
-                </div>
-              </div>
+              <div class="module-header"><div><h3 data-i18n="hours.title">Work hour tracking</h3><p data-i18n="hours.subtitle">Log staff work and notes for each stable shift.</p></div></div>
               <form id="hoursForm" class="entry-form">
                 <input type="hidden" name="id">
-                <label>
-                  <span data-i18n="hours.worker">Worker</span>
-                  <input name="worker" required placeholder="Sara">
-                </label>
-                <label>
-                  <span data-i18n="common.date">Date</span>
-                  <input name="date" type="date" required>
-                </label>
-                <label>
-                  <span data-i18n="hours.hours">Hours</span>
-                  <input name="hours" type="number" min="0" step="0.25" required placeholder="6.5">
-                </label>
-                <label class="full">
-                  <span data-i18n="common.notesSimple">Notes</span>
-                  <textarea name="notes" rows="3" placeholder="Morning shift, stalls cleaned, feeding done" data-i18n-placeholder="hours.notesPlaceholder"></textarea>
-                </label>
+                <label><span data-i18n="hours.worker">Worker</span><input name="worker" required placeholder="Sara"></label>
+                <label><span data-i18n="common.date">Date</span><input name="date" type="date" required></label>
+                <label><span data-i18n="hours.hours">Hours</span><input name="hours" type="number" min="0" step="0.25" required placeholder="6.5"></label>
+                <label class="full"><span data-i18n="common.notesSimple">Notes</span><textarea name="notes" rows="3" data-i18n-placeholder="hours.notesPlaceholder" placeholder="Morning shift, stalls cleaned, feeding done"></textarea></label>
                 <button class="button primary" type="submit" data-i18n="hours.save">Save work log</button>
               </form>
               <div id="hoursList" class="item-list"></div>
             </section>
 
             <section class="module-panel" id="inventoryPanel">
-              <div class="module-header">
-                <div>
-                  <h3 data-i18n="inventory.title">Feed Inventory PRO</h3>
-                  <p data-i18n="inventory.subtitle">Track feed categories, daily usage, estimated days remaining, and stock warnings.</p>
-                </div>
-              </div>
+              <div class="module-header"><div><h3 data-i18n="inventory.title">Feed Inventory PRO</h3><p data-i18n="inventory.subtitle">Track feed categories, daily usage, estimated days remaining, and stock warnings.</p></div></div>
               <form id="inventoryForm" class="entry-form">
                 <input type="hidden" name="id">
-                <label>
-                  <span data-i18n="inventory.name">Feed item name</span>
-                  <input name="name" required placeholder="Hay">
-                </label>
-                <label>
-                  <span data-i18n="inventory.category">Type / category</span>
-                  <input name="category" required placeholder="Forage">
-                </label>
-                <label>
-                  <span data-i18n="inventory.quantity">Current amount</span>
-                  <input name="quantity" type="number" min="0" step="0.1" required placeholder="42">
-                </label>
-                <label>
-                  <span data-i18n="inventory.unit">Unit</span>
-                  <input name="unit" required placeholder="bales">
-                </label>
-                <label>
-                  <span data-i18n="inventory.dailyUsage">Daily usage</span>
-                  <input name="dailyUsage" type="number" min="0" step="0.1" required placeholder="3.5">
-                </label>
-                <label>
-                  <span data-i18n="inventory.minimum">Low stock threshold</span>
-                  <input name="minimum" type="number" min="0" step="0.1" required placeholder="12">
-                </label>
+                <label><span data-i18n="inventory.name">Feed item name</span><input name="name" required placeholder="Hay"></label>
+                <label><span data-i18n="inventory.category">Type / category</span><input name="category" required placeholder="Forage"></label>
+                <label><span data-i18n="inventory.quantity">Current amount</span><input name="quantity" type="number" min="0" step="0.1" required placeholder="42"></label>
+                <label><span data-i18n="inventory.unit">Unit</span><input name="unit" required placeholder="bales"></label>
+                <label><span data-i18n="inventory.dailyUsage">Daily usage</span><input name="dailyUsage" type="number" min="0" step="0.1" required placeholder="3.5"></label>
+                <label><span data-i18n="inventory.minimum">Low stock threshold</span><input name="minimum" type="number" min="0" step="0.1" required placeholder="12"></label>
                 <button class="button primary" type="submit" data-i18n="inventory.save">Save inventory item</button>
               </form>
               <div id="inventoryList" class="item-list"></div>
@@ -225,23 +169,61 @@
         </div>
       </section>
 
-      <section id="desktop" class="desktop-section">
-        <div>
-          <p class="eyebrow" data-i18n="desktop.eyebrow">Desktop version</p>
-          <h2 data-i18n="desktop.title">Prefer an installable app?</h2>
-          <p data-i18n="desktop.text">
-            The browser app works without a backend and stores data in this browser. The Electron desktop
-            version is available from GitHub Releases when an installer has been published.
-          </p>
+      <section id="calendarView" class="view">
+        <div class="section-heading">
+          <div><p class="eyebrow" data-i18n="calendar.eyebrow">Calendar</p><h2 data-i18n="calendar.title">Plan race days and stable events.</h2></div>
         </div>
-        <article class="release-card">
-          <span data-i18n="desktop.latest">Latest desktop release</span>
-          <strong id="latestVersion">Loading...</strong>
-          <div id="changelog" class="changelog" data-i18n="release.loadingChangelog">Fetching changelog from GitHub Releases.</div>
-          <a id="releasePageLink" href="https://github.com/vattunicolo/EquiTrack-Web/releases/latest" target="_blank" rel="noreferrer">
-            <span data-i18n="desktop.openReleases">Open releases</span>
-          </a>
-        </article>
+        <form id="eventForm" class="entry-form">
+          <input type="hidden" name="id">
+          <label><span data-i18n="common.date">Date</span><input name="date" type="date" required></label>
+          <label><span data-i18n="calendar.eventName">Event name</span><input name="name" required data-i18n-placeholder="calendar.eventPlaceholder" placeholder="Spring race day"></label>
+          <label><span data-i18n="calendar.location">Location</span><input name="location" data-i18n-placeholder="calendar.locationPlaceholder" placeholder="Helsinki"></label>
+          <label><span data-i18n="calendar.horsesRunning">Horse(s) running</span><select name="horseIds" multiple></select></label>
+          <label class="full"><span data-i18n="common.notesSimple">Notes</span><textarea name="notes" rows="3" data-i18n-placeholder="calendar.notesPlaceholder" placeholder="Transport, start time, owner notes"></textarea></label>
+          <button class="button primary" type="submit" data-i18n="calendar.save">Save event</button>
+        </form>
+        <div id="eventsList" class="item-list"></div>
+      </section>
+
+      <section id="settingsView" class="view">
+        <div class="section-heading">
+          <div><p class="eyebrow" data-i18n="settings.eyebrow">Settings / Backup</p><h2 data-i18n="settings.title">Manage language, backups, and local data.</h2></div>
+        </div>
+
+        <div class="settings-grid">
+          <article class="panel">
+            <h3 data-i18n="language.label">Language</h3>
+            <label class="language-picker wide">
+              <span data-i18n="settings.languageHelp">Choose interface language</span>
+              <select id="languageSelect" aria-label="Language">
+                <option value="en">English</option>
+                <option value="fi">Suomi</option>
+                <option value="it">Italiano</option>
+              </select>
+            </label>
+          </article>
+
+          <article class="panel">
+            <h3 data-i18n="settings.backupTitle">Backup</h3>
+            <p data-i18n="settings.backupText">Export a JSON backup or restore one you saved earlier.</p>
+            <div class="backup-actions">
+              <button id="exportButton" class="button secondary" type="button" data-i18n="backup.export">Download backup</button>
+              <label class="button secondary file-button"><span data-i18n="backup.import">Restore backup</span><input id="importInput" type="file" accept="application/json,.json"></label>
+            </div>
+          </article>
+
+          <article class="panel">
+            <h3 data-i18n="desktop.latest">Latest desktop release</h3>
+            <p data-i18n="settings.desktopText">Desktop downloads use the latest GitHub Release asset.</p>
+            <a id="settingsDesktopDownloadButton" class="button secondary disabled" href="#" aria-disabled="true" data-i18n="release.loadingButton">Checking desktop release...</a>
+          </article>
+
+          <article class="panel danger-panel">
+            <h3 data-i18n="settings.resetTitle">Reset local data</h3>
+            <p data-i18n="settings.resetText">This removes horses, tasks, work logs, feed inventory, and calendar events from this browser.</p>
+            <button id="resetDataButton" class="button secondary danger" type="button" data-i18n="settings.resetButton">Reset local data</button>
+          </article>
+        </div>
       </section>
     </main>
 

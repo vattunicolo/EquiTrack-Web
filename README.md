@@ -1,6 +1,15 @@
 # EquiTrack Web
 
-EquiTrack-Web is the browser-based version of the EquiTrack horse stable management app. It runs as a static website and needs no backend, database server, build step, or framework.
+EquiTrack-Web is the browser-based version of the EquiTrack horse stable management app. It runs as a static website and needs no backend, database server, build step, routing library, or framework.
+
+## App Structure
+
+The app is organized into four main views inside the same static page:
+
+- `Home` - product-style overview, feature highlights, desktop download, and social/contact placeholders.
+- `My Stable` - dashboard cards, horse management, daily tasks, work hour tracking, and Feed Inventory PRO.
+- `Calendar` - race day and event planning with date, event name, location, running horses, and notes.
+- `Settings / Backup` - language selector, export/import backup, desktop download info, and reset local data.
 
 ## Web Version
 
@@ -9,7 +18,8 @@ The web app includes:
 - Horse management
 - Daily task tracking
 - Work hour tracking
-- Feed Inventory PRO for items such as hay, oats, and pellets
+- Feed Inventory PRO
+- Calendar events and race days
 - Dashboard summary cards
 - Export and import backup tools
 - Language selector for English, Suomi, and Italiano
@@ -27,7 +37,17 @@ The app automatically calculates:
 
 Feed status labels are shown as `OK`, `Low soon`, `Critical`, or `Empty`.
 
-Open `index.html` directly or publish the repository with GitHub Pages.
+## Calendar
+
+The Calendar view stores local event and race day records with:
+
+- Date
+- Event name
+- Location
+- Horse or horses running
+- Notes
+
+Calendar data is saved with the rest of the app data in browser `localStorage`.
 
 ## Language Selector
 
@@ -37,7 +57,7 @@ EquiTrack-Web includes a simple interface language selector with:
 - Suomi
 - Italiano
 
-The selected language is stored in `localStorage` separately from the main app data. Only the app interface is translated; horse names, task notes, work logs, feed items, and other user-created data are not translated or changed.
+The selected language is stored in `localStorage` separately from the main app data. Only the app interface is translated; horse names, task notes, work logs, feed items, event records, and other user-created data are not translated or changed.
 
 ## Desktop Version
 
@@ -55,7 +75,7 @@ The desktop download button automatically fetches the latest release and uses th
 - `body` for the changelog
 - `assets[0].browser_download_url` for the download link
 
-The current installer asset is expected to be named like `EquiTrack.Setup.1.0.0.1.exe`. If no release or no asset exists yet, the page shows `Desktop download is not available yet.` and keeps working.
+If no release or no asset exists yet, the page shows `Desktop download is not available yet.` and keeps working.
 
 ## Local Browser Storage
 
@@ -65,13 +85,17 @@ All web app data is stored in `localStorage` in the user's browser under this ke
 equitrack-web-data-v1
 ```
 
+Do not rename this key unless you intentionally migrate existing users. Language preference is stored separately under `equitrack-web-language`.
+
 There is no backend and no cloud sync. Data stays on the device and browser where it was entered.
 
-## Backup, Export, And Import
+## Backup, Export, Import, And Reset
 
-Use `Export backup` to download a JSON backup of all local EquiTrack Web data.
+Use `Download backup` to download a JSON backup of all local EquiTrack Web data.
 
-Use `Import backup` to restore a previously exported JSON file. Importing replaces the current browser data with the contents of the backup file.
+Use `Restore backup` to restore a previously exported JSON file. Importing replaces the current browser data with the contents of the backup file.
+
+Use `Reset local data` only when you want to remove all local records from the current browser. The app asks for a strong confirmation before deleting local data.
 
 ## GitHub Pages Deployment
 
