@@ -72,6 +72,7 @@ main,
 
 .brand,
 .top-nav,
+.header-actions,
 .hero-actions,
 .backup-actions,
 .item-actions {
@@ -110,6 +111,25 @@ main,
   color: var(--muted);
   font-size: 14px;
   font-weight: 800;
+}
+
+.header-actions {
+  gap: 18px;
+}
+
+.language-picker {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.language-picker select {
+  width: auto;
+  min-width: 124px;
+  padding: 9px 32px 9px 10px;
 }
 
 .top-nav a:hover,
@@ -556,6 +576,7 @@ textarea {
   }
 
   .app-header,
+  .header-actions,
   .section-heading,
   .module-header,
   .site-footer {
@@ -563,9 +584,18 @@ textarea {
   }
 
   .top-nav,
+  .language-picker,
   .hero-actions,
   .backup-actions {
     width: 100%;
+  }
+
+  .language-picker {
+    justify-content: space-between;
+  }
+
+  .language-picker select {
+    width: 58%;
   }
 
   .top-nav {

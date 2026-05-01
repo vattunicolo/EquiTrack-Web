@@ -12,6 +12,7 @@ The web app includes:
 - Feed Inventory PRO for items such as hay, oats, and pellets
 - Dashboard summary cards
 - Export and import backup tools
+- Language selector for English, Suomi, and Italiano
 
 ## Feed Inventory PRO
 
@@ -27,6 +28,16 @@ The app automatically calculates:
 Feed status labels are shown as `OK`, `Low soon`, `Critical`, or `Empty`.
 
 Open `index.html` directly or publish the repository with GitHub Pages.
+
+## Language Selector
+
+EquiTrack-Web includes a simple interface language selector with:
+
+- English
+- Suomi
+- Italiano
+
+The selected language is stored in `localStorage` separately from the main app data. Only the app interface is translated; horse names, task notes, work logs, feed items, and other user-created data are not translated or changed.
 
 ## Desktop Version
 
