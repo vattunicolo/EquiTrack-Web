@@ -9,9 +9,22 @@ The web app includes:
 - Horse management
 - Daily task tracking
 - Work hour tracking
-- Feed inventory for items such as hay, oats, and pellets
+- Feed Inventory PRO for items such as hay, oats, and pellets
 - Dashboard summary cards
 - Export and import backup tools
+
+## Feed Inventory PRO
+
+Feed Inventory PRO tracks each feed item's name, category, current amount, unit, daily usage, and low stock threshold.
+
+The app automatically calculates:
+
+- Estimated days remaining
+- Low stock warnings
+- Out of stock status
+- Dashboard low feed count
+
+Feed status labels are shown as `OK`, `Low soon`, `Critical`, or `Empty`.
 
 Open `index.html` directly or publish the repository with GitHub Pages.
 

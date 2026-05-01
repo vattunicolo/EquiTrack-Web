@@ -443,6 +443,47 @@ textarea {
   color: #ffe19a;
 }
 
+.pill.critical {
+  border-color: rgba(239, 123, 115, 0.58);
+  color: #ffc5c0;
+}
+
+.pill.empty {
+  border-color: rgba(255, 255, 255, 0.24);
+  color: #ffffff;
+  background: rgba(239, 123, 115, 0.16);
+}
+
+.feed-card {
+  grid-template-columns: 1fr;
+}
+
+.feed-main {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.feed-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.feed-stats div {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.035);
+  padding: 12px;
+}
+
+.feed-stats strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 16px;
+}
+
 .item-actions {
   gap: 8px;
 }
@@ -544,8 +585,13 @@ textarea {
   .summary-grid,
   .side-tabs,
   .entry-form,
-  .item-card {
+  .item-card,
+  .feed-stats {
     grid-template-columns: 1fr;
+  }
+
+  .feed-main {
+    flex-direction: column;
   }
 
   .app-section,

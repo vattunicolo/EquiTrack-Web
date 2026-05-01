@@ -23,9 +23,9 @@ const defaultData = {
     { id: createId(), worker: 'Sara', date: today(), hours: 6.5, notes: 'Morning shift and feed inventory.' }
   ],
   inventory: [
-    { id: createId(), name: 'Hay', quantity: 42, unit: 'bales', minimum: 12 },
-    { id: createId(), name: 'Oats', quantity: 180, unit: 'kg', minimum: 45 },
-    { id: createId(), name: 'Pellets', quantity: 28, unit: 'bags', minimum: 10 }
+    { id: createId(), name: 'Hay', category: 'Forage', quantity: 42, unit: 'bales', dailyUsage: 3.5, minimum: 12 },
+    { id: createId(), name: 'Oats', category: 'Grain', quantity: 180, unit: 'kg', dailyUsage: 12, minimum: 45 },
+    { id: createId(), name: 'Pellets', category: 'Concentrate', quantity: 28, unit: 'bags', dailyUsage: 2, minimum: 10 }
   ]
 };
 
@@ -79,7 +79,7 @@ function loadData() {
       horses: Array.isArray(parsed.horses) ? parsed.horses : [],
       tasks: Array.isArray(parsed.tasks) ? parsed.tasks : [],
       hours: Array.isArray(parsed.hours) ? parsed.hours : [],
-      inventory: Array.isArray(parsed.inventory) ? parsed.inventory : []
+      inventory: Array.isArray(parsed.inventory) ? parsed.inventory.map(normalizeFeedItem) : []
     };
   } catch (_error) {
     return JSON.parse(JSON.stringify(defaultData));
@@ -125,7 +125,10 @@ function renderSummary() {
   els.horseCount.textContent = state.horses.length;
   els.openTaskCount.textContent = state.tasks.filter((task) => !task.done).length;
   els.hoursTotal.textContent = state.hours.reduce((total, entry) => total + Number(entry.hours || 0), 0).toFixed(1);
-  els.lowFeedCount.textContent = state.inventory.filter((item) => Number(item.quantity) <= Number(item.minimum)).length;
+  els.lowFeedCount.textContent = state.inventory.filter((item) => {
+    const status = getFeedStatus(item).key;
+    return status === 'low' || status === 'critical' || status === 'empty';
+  }).length;
 }
 
 function renderHorses() {
@@ -207,28 +210,81 @@ function renderHours() {
 
 function renderInventory() {
   if (state.inventory.length === 0) {
-    els.inventoryList.innerHTML = '<p class="empty-state">No feed inventory saved yet. Add hay, oats, pellets, or other supplies above.</p>';
+    els.inventoryList.innerHTML = '<p class="empty-state">No feed inventory saved yet. Add hay, oats, pellets, supplements, or other supplies to see days remaining and stock warnings.</p>';
     return;
   }
 
   els.inventoryList.innerHTML = state.inventory.map((item) => {
-    const isLow = Number(item.quantity) <= Number(item.minimum);
+    const normalized = normalizeFeedItem(item);
+    const status = getFeedStatus(normalized);
+    const daysRemaining = getDaysRemaining(normalized);
     return `
-      <article class="item-card">
-        <div>
-          <h4>${escapeHtml(item.name)}</h4>
-          <p>${Number(item.quantity || 0)} ${escapeHtml(item.unit)} available. Reorder below ${Number(item.minimum || 0)}.</p>
-          <div class="item-meta">
-            <span class="pill ${isLow ? 'warn' : 'good'}">${isLow ? 'Low stock' : 'Stock ok'}</span>
+      <article class="item-card feed-card">
+        <div class="feed-main">
+          <div>
+            <h4>${escapeHtml(normalized.name)}</h4>
+            <p>${escapeHtml(normalized.category)} feed inventory</p>
+          </div>
+          <span class="pill ${status.className}">${status.label}</span>
+        </div>
+        <div class="feed-stats">
+          <div>
+            <span class="meta-label">Current</span>
+            <strong>${formatNumber(normalized.quantity)} ${escapeHtml(normalized.unit)}</strong>
+          </div>
+          <div>
+            <span class="meta-label">Daily usage</span>
+            <strong>${formatNumber(normalized.dailyUsage)} ${escapeHtml(normalized.unit)}</strong>
+          </div>
+          <div>
+            <span class="meta-label">Days left</span>
+            <strong>${daysRemaining}</strong>
+          </div>
+          <div>
+            <span class="meta-label">Low threshold</span>
+            <strong>${formatNumber(normalized.minimum)} ${escapeHtml(normalized.unit)}</strong>
           </div>
         </div>
         <div class="item-actions">
-          <button class="button ghost" type="button" data-action="edit-inventory" data-id="${item.id}">Edit</button>
-          <button class="button ghost danger" type="button" data-action="delete-inventory" data-id="${item.id}">Delete</button>
+          <button class="button ghost" type="button" data-action="edit-inventory" data-id="${normalized.id}">Edit</button>
+          <button class="button ghost danger" type="button" data-action="delete-inventory" data-id="${normalized.id}">Delete</button>
         </div>
       </article>
     `;
   }).join('');
+}
+
+function normalizeFeedItem(item) {
+  return {
+    id: item.id || createId(),
+    name: item.name || 'Unnamed feed',
+    category: item.category || item.type || 'General',
+    quantity: Number(item.quantity ?? item.currentAmount ?? 0),
+    unit: item.unit || 'units',
+    dailyUsage: Number(item.dailyUsage ?? item.daily_use ?? 0),
+    minimum: Number(item.minimum ?? item.threshold ?? 0)
+  };
+}
+
+function getDaysRemaining(item) {
+  if (Number(item.quantity) <= 0) return '0';
+  if (Number(item.dailyUsage) <= 0) return 'Not set';
+  return Math.floor(Number(item.quantity) / Number(item.dailyUsage)).toString();
+}
+
+function getFeedStatus(item) {
+  const quantity = Number(item.quantity);
+  const minimum = Number(item.minimum);
+  const days = Number(item.dailyUsage) > 0 ? quantity / Number(item.dailyUsage) : Infinity;
+
+  if (quantity <= 0) return { key: 'empty', label: 'Empty', className: 'empty' };
+  if (quantity <= minimum || days <= 3) return { key: 'critical', label: 'Critical', className: 'critical' };
+  if (quantity <= minimum * 1.5 || days <= 7) return { key: 'low', label: 'Low soon', className: 'warn' };
+  return { key: 'ok', label: 'OK', className: 'good' };
+}
+
+function formatNumber(value) {
+  return Number(value || 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
 }
 
 // Create or update an item from a form.
@@ -298,12 +354,14 @@ function handleInventorySubmit(event) {
   upsert('inventory', {
     id: form.elements.id.value,
     name: form.elements.name.value.trim(),
+    category: form.elements.category.value.trim(),
     quantity: Number(form.elements.quantity.value),
     unit: form.elements.unit.value.trim(),
+    dailyUsage: Number(form.elements.dailyUsage.value),
     minimum: Number(form.elements.minimum.value)
   });
   resetForm(form);
-  showMessage('Feed item saved.');
+  showMessage('Feed inventory item saved with days remaining updated.');
 }
 
 // Delegate edit/delete/toggle actions from all rendered item lists.
@@ -361,8 +419,10 @@ function fillInventoryForm(id) {
   if (!item) return;
   els.inventoryForm.elements.id.value = item.id;
   els.inventoryForm.elements.name.value = item.name;
+  els.inventoryForm.elements.category.value = item.category || item.type || 'General';
   els.inventoryForm.elements.quantity.value = item.quantity;
   els.inventoryForm.elements.unit.value = item.unit;
+  els.inventoryForm.elements.dailyUsage.value = item.dailyUsage ?? 0;
   els.inventoryForm.elements.minimum.value = item.minimum;
   els.inventoryForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
@@ -418,7 +478,7 @@ async function importBackup(file) {
       horses: imported.horses,
       tasks: imported.tasks,
       hours: imported.hours,
-      inventory: imported.inventory
+      inventory: imported.inventory.map(normalizeFeedItem)
     };
     saveData();
     render();
