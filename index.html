@@ -43,6 +43,38 @@
     <main>
       <p id="appMessage" class="app-message" role="status"></p>
 
+      <section id="onboardingPanel" class="onboarding-panel" aria-labelledby="onboardingTitle" hidden>
+        <div class="onboarding-card">
+          <div class="onboarding-copy">
+            <p class="eyebrow" data-i18n="onboarding.eyebrow">First steps</p>
+            <h2 id="onboardingTitle" data-i18n="onboarding.title">Set up EquiTrack in a few minutes.</h2>
+            <p data-i18n="onboarding.text">Start with the essentials: your horses, feed stock, calendar, and a backup.</p>
+          </div>
+          <div class="onboarding-steps">
+            <button class="onboarding-step" type="button" data-onboarding-go="stable" data-onboarding-tab="horses">
+              <span>1</span>
+              <strong data-i18n="onboarding.stepHorse">Add your first horse</strong>
+            </button>
+            <button class="onboarding-step" type="button" data-onboarding-go="stable" data-onboarding-tab="inventory">
+              <span>2</span>
+              <strong data-i18n="onboarding.stepFeed">Add feed inventory</strong>
+            </button>
+            <button class="onboarding-step" type="button" data-onboarding-go="calendar">
+              <span>3</span>
+              <strong data-i18n="onboarding.stepEvent">Add a calendar event</strong>
+            </button>
+            <button class="onboarding-step" type="button" data-onboarding-go="settings">
+              <span>4</span>
+              <strong data-i18n="onboarding.stepBackup">Export your first backup</strong>
+            </button>
+          </div>
+          <div class="onboarding-actions">
+            <button class="button primary" type="button" data-onboarding-go="stable" data-onboarding-tab="horses" data-i18n="onboarding.start">Open My Stable</button>
+            <button id="skipOnboardingButton" class="button secondary" type="button" data-i18n="onboarding.skip">Skip for now</button>
+          </div>
+        </div>
+      </section>
+
       <section id="homeView" class="view active">
         <div class="home-hero">
           <div class="hero-copy">
@@ -264,6 +296,12 @@
             <p data-i18n="settings.backupPreviewText">When you choose a backup file, EquiTrack shows counts before replacing local data.</p>
             <div id="importPreview" class="backup-preview" data-i18n="backup.noPreview">No backup selected.</div>
             <p class="update-note"><span data-i18n="backup.lastExport">Last export</span>: <strong id="lastBackupAt">-</strong></p>
+          </article>
+
+          <article class="panel">
+            <h3 data-i18n="onboarding.restartTitle">Onboarding</h3>
+            <p data-i18n="onboarding.restartText">Show the first-use setup guide again.</p>
+            <button id="restartOnboardingButton" class="button secondary" type="button" data-i18n="onboarding.restart">Restart onboarding</button>
           </article>
 
           <article class="panel danger-panel">

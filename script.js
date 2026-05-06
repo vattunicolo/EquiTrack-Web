@@ -1,6 +1,7 @@
 const STORAGE_KEY = 'equitrack-web-data-v1';
 const LANGUAGE_KEY = 'equitrack-web-language';
 const LAST_BACKUP_KEY = 'equitrack-web-last-backup';
+const ONBOARDING_KEY = 'equitrack-web-onboarding-complete';
 const DEFAULT_LANGUAGE = 'en';
 const EVENT_TYPES = ['race', 'training', 'shoeing', 'vaccination', 'vet', 'feeding', 'other'];
 
@@ -39,6 +40,20 @@ const translations = {
     'home.localHeading': 'Your stable data stays on this device.',
     'home.localText': 'EquiTrack runs directly in the browser and stores horses, tasks, work hours, feed inventory, and events locally.',
     'home.backupReminder': 'Use Settings / Backup to export a JSON backup whenever you want a safe copy.',
+    'onboarding.eyebrow': 'First steps',
+    'onboarding.title': 'Set up EquiTrack in a few minutes.',
+    'onboarding.text': 'Start with the essentials: your horses, feed stock, calendar, and a backup.',
+    'onboarding.stepHorse': 'Add your first horse',
+    'onboarding.stepFeed': 'Add feed inventory',
+    'onboarding.stepEvent': 'Add a calendar event',
+    'onboarding.stepBackup': 'Export your first backup',
+    'onboarding.start': 'Open My Stable',
+    'onboarding.skip': 'Skip for now',
+    'onboarding.restartTitle': 'Onboarding',
+    'onboarding.restartText': 'Show the first-use setup guide again.',
+    'onboarding.restart': 'Restart onboarding',
+    'message.onboardingDone': 'Onboarding hidden. You can restart it from Settings / Backup.',
+    'message.onboardingRestarted': 'Onboarding restarted.',
     'stable.eyebrow': 'My Stable',
     'stable.title': 'Your daily stable workspace.',
     'summary.horses': 'Horses',
@@ -221,6 +236,20 @@ const translations = {
     'home.localHeading': 'Tallin tiedot pysyvat talla laitteella.',
     'home.localText': 'EquiTrack toimii suoraan selaimessa ja tallentaa hevoset, tehtavat, tyotunnit, rehuvaraston ja tapahtumat paikallisesti.',
     'home.backupReminder': 'Vie JSON-varmuuskopio Asetukset / varmuuskopio -nakymassa, kun haluat turvallisen kopion.',
+    'onboarding.eyebrow': 'Ensiaskeleet',
+    'onboarding.title': 'Ota EquiTrack kayttoon muutamassa minuutissa.',
+    'onboarding.text': 'Aloita olennaisista: hevoset, rehuvarasto, kalenteri ja varmuuskopio.',
+    'onboarding.stepHorse': 'Lisaa ensimmainen hevonen',
+    'onboarding.stepFeed': 'Lisaa rehuvarasto',
+    'onboarding.stepEvent': 'Lisaa kalenteritapahtuma',
+    'onboarding.stepBackup': 'Vie ensimmainen varmuuskopio',
+    'onboarding.start': 'Avaa oma talli',
+    'onboarding.skip': 'Ohita nyt',
+    'onboarding.restartTitle': 'Opastus',
+    'onboarding.restartText': 'Nayta kayttoonoton opastus uudelleen.',
+    'onboarding.restart': 'Aloita opastus uudelleen',
+    'message.onboardingDone': 'Opastus piilotettu. Voit aloittaa sen uudelleen Asetukset / varmuuskopio -nakymassa.',
+    'message.onboardingRestarted': 'Opastus aloitettu uudelleen.',
     'stable.eyebrow': 'Oma talli',
     'stable.title': 'Tallin päivittäinen työtila.',
     'summary.horses': 'Hevoset',
@@ -403,6 +432,20 @@ const translations = {
     'home.localHeading': 'I dati della scuderia restano su questo dispositivo.',
     'home.localText': 'EquiTrack funziona direttamente nel browser e salva localmente cavalli, attivita, ore, mangimi ed eventi.',
     'home.backupReminder': 'Usa Impostazioni / backup per esportare un backup JSON quando vuoi una copia sicura.',
+    'onboarding.eyebrow': 'Primi passi',
+    'onboarding.title': 'Configura EquiTrack in pochi minuti.',
+    'onboarding.text': 'Inizia dalle basi: cavalli, scorte mangimi, calendario e backup.',
+    'onboarding.stepHorse': 'Aggiungi il primo cavallo',
+    'onboarding.stepFeed': 'Aggiungi inventario mangimi',
+    'onboarding.stepEvent': 'Aggiungi un evento calendario',
+    'onboarding.stepBackup': 'Esporta il primo backup',
+    'onboarding.start': 'Apri La mia scuderia',
+    'onboarding.skip': 'Salta per ora',
+    'onboarding.restartTitle': 'Onboarding',
+    'onboarding.restartText': 'Mostra di nuovo la guida iniziale.',
+    'onboarding.restart': 'Riavvia onboarding',
+    'message.onboardingDone': 'Onboarding nascosto. Puoi riavviarlo da Impostazioni / backup.',
+    'message.onboardingRestarted': 'Onboarding riavviato.',
     'stable.eyebrow': 'La mia scuderia',
     'stable.title': 'Il tuo spazio di lavoro quotidiano.',
     'summary.horses': 'Cavalli',
@@ -605,6 +648,9 @@ const els = {
   hoursForm: document.querySelector('#hoursForm'),
   inventoryForm: document.querySelector('#inventoryForm'),
   eventForm: document.querySelector('#eventForm'),
+  onboardingPanel: document.querySelector('#onboardingPanel'),
+  skipOnboardingButton: document.querySelector('#skipOnboardingButton'),
+  restartOnboardingButton: document.querySelector('#restartOnboardingButton'),
   exportButton: document.querySelector('#exportButton'),
   importInput: document.querySelector('#importInput'),
   importPreview: document.querySelector('#importPreview'),
@@ -767,6 +813,42 @@ function setupViewNav() {
       button.closest('.mobile-nav')?.removeAttribute('open');
     });
   });
+}
+
+function showOnboarding() {
+  if (!els.onboardingPanel) return;
+  els.onboardingPanel.hidden = false;
+}
+
+function hideOnboarding(showFeedback = true) {
+  if (!els.onboardingPanel) return;
+  els.onboardingPanel.hidden = true;
+  localStorage.setItem(ONBOARDING_KEY, 'true');
+  if (showFeedback) showMessage(t('message.onboardingDone'));
+}
+
+function restartOnboarding() {
+  localStorage.removeItem(ONBOARDING_KEY);
+  showOnboarding();
+  showView('home');
+  showMessage(t('message.onboardingRestarted'));
+  els.onboardingPanel?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function setupOnboarding() {
+  if (!els.onboardingPanel) return;
+  if (localStorage.getItem(ONBOARDING_KEY) !== 'true') showOnboarding();
+
+  document.querySelectorAll('[data-onboarding-go]').forEach((button) => {
+    button.addEventListener('click', () => {
+      hideOnboarding(false);
+      showView(button.dataset.onboardingGo);
+      if (button.dataset.onboardingTab) activateTab(button.dataset.onboardingTab);
+    });
+  });
+
+  els.skipOnboardingButton?.addEventListener('click', () => hideOnboarding(true));
+  els.restartOnboardingButton?.addEventListener('click', restartOnboarding);
 }
 
 function renderHorseOptions() {
@@ -1321,13 +1403,18 @@ function resetLocalData() {
 
 function setupTabs() {
   document.querySelectorAll('.tab-button').forEach((button) => {
-    button.addEventListener('click', () => {
-      document.querySelectorAll('.tab-button').forEach((tab) => tab.classList.remove('active'));
-      document.querySelectorAll('.module-panel').forEach((panel) => panel.classList.remove('active'));
-      button.classList.add('active');
-      document.querySelector(`#${button.dataset.tab}Panel`).classList.add('active');
-    });
+    button.addEventListener('click', () => activateTab(button.dataset.tab));
   });
+}
+
+function activateTab(tabName) {
+  const button = document.querySelector(`.tab-button[data-tab="${tabName}"]`);
+  const panel = document.querySelector(`#${tabName}Panel`);
+  if (!button || !panel) return;
+  document.querySelectorAll('.tab-button').forEach((tab) => tab.classList.remove('active'));
+  document.querySelectorAll('.module-panel').forEach((item) => item.classList.remove('active'));
+  button.classList.add('active');
+  panel.classList.add('active');
 }
 
 function handleLanguageChange(event) {
@@ -1363,6 +1450,7 @@ els.eventForm.elements.date.value = today();
 
 applyTranslations();
 setupViewNav();
+setupOnboarding();
 setupTabs();
 render();
 registerServiceWorker();

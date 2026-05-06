@@ -184,6 +184,89 @@ h1, h2, h3, h4, p, span, strong, button, a, label {
 .view { display: none; padding: 42px 0 42px; }
 .view.active { display: block; }
 
+.onboarding-panel[hidden] { display: none; }
+.onboarding-panel {
+  margin: 0 0 24px;
+}
+.onboarding-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  border: 1px solid rgba(78, 205, 196, 0.36);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #ffffff, #f3fbfa);
+  box-shadow: var(--shadow);
+  padding: 22px;
+}
+.onboarding-copy h2 {
+  margin-bottom: 10px;
+  font-size: clamp(26px, 3vw, 38px);
+}
+.onboarding-copy,
+.onboarding-steps,
+.onboarding-step,
+.onboarding-actions {
+  min-width: 0;
+}
+.onboarding-copy p:last-child { margin-bottom: 0; }
+.onboarding-copy p {
+  max-width: 34ch;
+}
+.onboarding-steps {
+  display: grid;
+  gap: 10px;
+}
+.onboarding-step {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  min-height: 54px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: #14335a;
+  text-align: left;
+  padding: 10px 12px;
+  transition: border-color 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+.onboarding-step:hover {
+  border-color: rgba(78, 205, 196, 0.55);
+  background: #eefbf9;
+  transform: translateY(-1px);
+}
+.onboarding-step span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: #e5f8f6;
+  color: var(--accent-strong);
+  font-weight: 950;
+}
+.onboarding-step strong {
+  font-size: 14px;
+}
+.onboarding-actions {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+}
+
+@media (min-width: 769px) {
+  .onboarding-card {
+    grid-template-columns: minmax(0, 0.78fr) minmax(280px, 1fr);
+  }
+  .onboarding-actions {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
 .home-hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(300px, 0.72fr);
@@ -589,6 +672,8 @@ textarea { resize: vertical; }
   .hero-text { max-width: 32ch; font-size: 17px; line-height: 1.58; }
   .nav-button { min-height: 46px; font-size: 13px; line-height: 1.2; }
   .view { padding-top: 28px; padding-bottom: 38px; }
+  .onboarding-card { padding: 18px; }
+  .onboarding-copy p { max-width: 30ch; }
   .button, .file-button { width: 100%; }
   .button { min-height: 50px; padding: 0 14px; }
   .summary-grid, .feature-grid, .side-tabs, .entry-form, .item-card, .feed-stats { grid-template-columns: minmax(0, 1fr); }
