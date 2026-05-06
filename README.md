@@ -1,119 +1,122 @@
 # EquiTrack Web
 
-EquiTrack-Web is the browser-based version of the EquiTrack horse stable management app. It runs as a static website and needs no backend, database server, build step, routing library, or framework.
+EquiTrack-Web is the browser-based EquiTrack app for horse stable management. It runs as a static website, works without a backend, and stores data locally in the browser.
 
-## App Structure
+## Main Views
 
-The app is organized into four main views inside the same static page:
+- `Home` - product overview for the browser app and a clear `Open My Stable` call to action.
+- `My Stable` - dashboard cards, horse records, daily tasks, work hour logs, and Feed Inventory PRO.
+- `Calendar` - stable events, race days, training, shoeing, vaccination, vet, feeding, and other event planning.
+- `Settings / Backup` - language selector, JSON export/import, import preview, last export timestamp, and local data reset.
 
-- `Home` - product-style overview, feature highlights, desktop download, and social/contact placeholders.
-- `My Stable` - dashboard cards, horse management, daily tasks, work hour tracking, and Feed Inventory PRO.
-- `Calendar` - race day and event planning with date, event name, location, running horses, and notes.
-- `Settings / Backup` - language selector, export/import backup, desktop download info, and reset local data.
+## Local Storage
 
-## Web Version
-
-The web app includes:
-
-- Horse management
-- Daily task tracking
-- Work hour tracking
-- Feed Inventory PRO
-- Calendar events and race days
-- Dashboard summary cards
-- Export and import backup tools
-- Language selector for English, Suomi, and Italiano
-
-## Feed Inventory PRO
-
-Feed Inventory PRO tracks each feed item's name, category, current amount, unit, daily usage, and low stock threshold.
-
-The app automatically calculates:
-
-- Estimated days remaining
-- Low stock warnings
-- Out of stock status
-- Dashboard low feed count
-
-Feed status labels are shown as `OK`, `Low soon`, `Critical`, or `Empty`.
-
-## Calendar
-
-The Calendar view stores local event and race day records with:
-
-- Date
-- Event name
-- Location
-- Horse or horses running
-- Notes
-
-Calendar data is saved with the rest of the app data in browser `localStorage`.
-
-## Language Selector
-
-EquiTrack-Web includes a simple interface language selector with:
-
-- English
-- Suomi
-- Italiano
-
-The selected language is stored in `localStorage` separately from the main app data. Only the app interface is translated; horse names, task notes, work logs, feed items, event records, and other user-created data are not translated or changed.
-
-## Desktop Version
-
-EquiTrack also has an installable Electron desktop version for users who prefer a traditional desktop app. The desktop installer is currently distributed from this repository's GitHub Releases.
-
-The web app checks GitHub Releases here:
-
-```text
-https://api.github.com/repos/vattunicolo/EquiTrack-Web/releases/latest
-```
-
-The desktop download button automatically fetches the latest release and uses the first uploaded release asset:
-
-- `tag_name` for the version label
-- `body` for the changelog
-- `assets[0].browser_download_url` for the download link
-
-If no release or no asset exists yet, the page shows `Desktop download is not available yet.` and keeps working.
-
-## Local Browser Storage
-
-All web app data is stored in `localStorage` in the user's browser under this key:
+Main app data is stored in browser `localStorage` under:
 
 ```text
 equitrack-web-data-v1
 ```
 
-Do not rename this key unless you intentionally migrate existing users. Language preference is stored separately under `equitrack-web-language`.
+Do not rename this key without a migration, because existing users keep their saved horses, tasks, work logs, feed inventory, and calendar events there.
 
-There is no backend and no cloud sync. Data stays on the device and browser where it was entered.
+Language preference is stored separately under:
 
-## Backup, Export, Import, And Reset
+```text
+equitrack-web-language
+```
 
-Use `Download backup` to download a JSON backup of all local EquiTrack Web data.
+The last backup/export timestamp is stored under:
 
-Use `Restore backup` to restore a previously exported JSON file. Importing replaces the current browser data with the contents of the backup file.
+```text
+equitrack-web-last-backup
+```
 
-Use `Reset local data` only when you want to remove all local records from the current browser. The app asks for a strong confirmation before deleting local data.
+## Feed Inventory PRO
 
-## GitHub Pages Deployment
+Feed Inventory PRO tracks:
 
-1. Push this repository to GitHub.
-2. Open the repository settings.
-3. Go to `Pages`.
-4. Choose `Deploy from a branch`.
-5. Select the branch that contains these files, usually `main`.
-6. Select the root folder `/`.
-7. Save.
+- name
+- type/category
+- current amount
+- unit
+- daily usage
+- low stock threshold
 
-GitHub Pages will serve:
+The app calculates estimated days remaining and status labels: `OK`, `Low soon`, `Critical`, and `Empty`. The dashboard low feed count uses the same status logic.
 
-- `index.html`
-- `style.css`
-- `script.js`
-- `EquiTrack lolo.png`
+## Horse Profiles
 
-The logo file is referenced exactly as `EquiTrack lolo.png`, including the space in the filename. It is used as the browser favicon. The in-app brand mark is CSS-based so it stays crisp and integrated with the dark interface.
+Horse records support older simple records with only a name, and newer optional profile fields such as owner, breed, birth year/date, gender, color, registration number, feeding notes, care notes, shoeing notes, vaccination notes, deworming notes, vet/contact notes, and general notes.
 
-No npm install, Vite build, React build, backend, or database setup is required.
+## Calendar
+
+Calendar events support:
+
+- date and time
+- event name and event type
+- location
+- selected horse or horses
+- driver/rider/handler
+- notes
+- optional race details such as race number, start number, driver, placement, race time/result, prize, and post-race notes
+
+Upcoming events are sorted by date/time, and the Calendar view shows today and next 7 days summary counts.
+
+## Backup PRO
+
+Exported backups include metadata:
+
+- app name
+- format version
+- created timestamp
+- data counts
+- full local data payload
+
+Imports validate JSON and show a preview with horse, task, work log, feed item, and calendar event counts before replacing local data. Older backups that contain the raw data object or a `data` wrapper still import safely.
+
+## Languages
+
+The interface supports:
+
+- English
+- Suomi
+- Italiano
+
+Only interface text is translated. User-created horse names, task notes, feed items, calendar events, and backup data are not translated or modified.
+
+## PWA
+
+The site includes basic Progressive Web App support:
+
+- `manifest.webmanifest`
+- `service-worker.js`
+- safe service worker registration from `script.js`
+- app name `EquiTrack`
+- standalone display mode
+- dark theme color
+
+Normal browser use continues even if service worker registration is unavailable.
+
+## GitHub Pages And Domain
+
+This repository is intended to be served from GitHub Pages at:
+
+```text
+aequitrack.com
+```
+
+The root `CNAME` file should contain:
+
+```text
+aequitrack.com
+```
+
+To deploy:
+
+1. Open the repository settings on GitHub.
+2. Go to `Pages`.
+3. Choose `Deploy from a branch`.
+4. Select `main` and the root folder `/`.
+5. Save.
+
+No npm install, React, Vite, backend, database, build step, or external service is required.

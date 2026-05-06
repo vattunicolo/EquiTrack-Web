@@ -4,15 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="EquiTrack Web is a browser-based horse stable management app with local storage, calendar events, and backup tools.">
+    <meta name="theme-color" content="#071018">
     <title>EquiTrack Web</title>
     <link rel="icon" href="EquiTrack lolo.png" type="image/png">
+    <link rel="manifest" href="manifest.webmanifest">
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <header class="app-header">
       <a class="brand" href="#home" data-view-link="home" aria-label="EquiTrack home">
         <span class="brand-emblem" aria-hidden="true">
-          ET
+          <img src="EquiTrack lolo.png" alt="">
         </span>
         <span>
           <strong>EquiTrack</strong>
@@ -20,7 +22,7 @@
         </span>
       </a>
 
-      <nav class="top-nav desktop-nav" aria-label="Primary">
+      <nav class="top-nav wide-nav" aria-label="Primary">
         <button class="nav-button active" type="button" data-view-link="home" data-i18n="nav.home">Home</button>
         <button class="nav-button" type="button" data-view-link="stable" data-i18n="nav.stable">My Stable</button>
         <button class="nav-button" type="button" data-view-link="calendar" data-i18n="nav.calendar">Calendar</button>
@@ -46,7 +48,7 @@
           <div class="hero-copy">
             <div class="hero-brand-badge" aria-label="EquiTrack">
               <span class="hero-emblem" aria-hidden="true">
-                ET
+                <img src="EquiTrack lolo.png" alt="">
               </span>
               <span>
                 <strong>EquiTrack</strong>
@@ -60,9 +62,7 @@
             </p>
             <div class="hero-actions">
               <button class="button primary" type="button" data-view-link="stable" data-i18n="home.cta">Open My Stable</button>
-              <a id="desktopDownloadButton" class="button secondary disabled" href="#" aria-disabled="true" data-i18n="release.loadingButton">Checking desktop release...</a>
             </div>
-            <p id="releaseStatus" class="status-text" data-i18n="release.loadingStatus">Loading desktop release information from GitHub.</p>
           </div>
 
           <section class="feature-grid" aria-label="Feature highlights">
@@ -91,13 +91,10 @@
 
         <section class="home-lower">
           <article class="panel">
-            <p class="eyebrow" data-i18n="desktop.eyebrow">Desktop version</p>
-            <h2 data-i18n="desktop.title">Prefer an installable app?</h2>
-            <p data-i18n="desktop.text">The browser app stores data in this browser. The Electron desktop version is available from GitHub Releases when an installer has been published.</p>
-            <p class="update-note" data-i18n="desktop.updateNote">Latest desktop version and installer are loaded from GitHub Releases.</p>
-            <strong id="latestVersion">Loading...</strong>
-            <div id="changelog" class="changelog" data-i18n="release.loadingChangelog">Fetching changelog from GitHub Releases.</div>
-            <a id="releasePageLink" href="https://github.com/vattunicolo/EquiTrack-Web/releases/latest" target="_blank" rel="noreferrer" data-i18n="desktop.openReleases">Open releases</a>
+            <p class="eyebrow" data-i18n="home.localTitle">Browser-first</p>
+            <h2 data-i18n="home.localHeading">Your stable data stays on this device.</h2>
+            <p data-i18n="home.localText">EquiTrack runs directly in the browser and stores horses, tasks, work hours, feed inventory, and events locally.</p>
+            <p class="update-note" data-i18n="home.backupReminder">Use Settings / Backup to export a JSON backup whenever you want a safe copy.</p>
           </article>
 
           <article class="panel">
@@ -141,8 +138,20 @@
               <form id="horseForm" class="entry-form">
                 <input type="hidden" name="id">
                 <label><span data-i18n="horses.name">Horse name</span><input name="name" required placeholder="Aurora"></label>
-                <label><span data-i18n="horses.age">Age</span><input name="age" type="number" min="0" placeholder="7"></label>
-                <label class="full"><span data-i18n="common.notes">Care notes</span><textarea name="notes" rows="3" data-i18n-placeholder="horses.notesPlaceholder" placeholder="Feed, training, vet, or shoeing notes"></textarea></label>
+                <label><span data-i18n="horses.nickname">Stable name / nickname</span><input name="nickname" placeholder="Auri"></label>
+                <label><span data-i18n="horses.owner">Owner</span><input name="owner" placeholder="Stable owner"></label>
+                <label><span data-i18n="horses.breed">Breed</span><input name="breed" placeholder="Finnhorse"></label>
+                <label><span data-i18n="horses.birth">Birth year or date</span><input name="birth" placeholder="2018 or 2018-05-12"></label>
+                <label><span data-i18n="horses.gender">Gender</span><input name="gender" placeholder="Mare"></label>
+                <label><span data-i18n="horses.color">Color</span><input name="color" placeholder="Bay"></label>
+                <label><span data-i18n="horses.registration">Registration number</span><input name="registration" placeholder="FI-12345"></label>
+                <label class="full"><span data-i18n="horses.feedingNotes">Feeding notes</span><textarea name="feedingNotes" rows="2" data-i18n-placeholder="horses.feedingPlaceholder" placeholder="Feed plan and supplements"></textarea></label>
+                <label class="full"><span data-i18n="horses.careNotes">Care notes</span><textarea name="careNotes" rows="2" data-i18n-placeholder="horses.carePlaceholder" placeholder="Daily care, handling, routines"></textarea></label>
+                <label class="full"><span data-i18n="horses.shoeingNotes">Shoeing notes</span><textarea name="shoeingNotes" rows="2"></textarea></label>
+                <label class="full"><span data-i18n="horses.vaccinationNotes">Vaccination notes</span><textarea name="vaccinationNotes" rows="2"></textarea></label>
+                <label class="full"><span data-i18n="horses.dewormingNotes">Deworming notes</span><textarea name="dewormingNotes" rows="2"></textarea></label>
+                <label class="full"><span data-i18n="horses.vetNotes">Vet / contact notes</span><textarea name="vetNotes" rows="2"></textarea></label>
+                <label class="full"><span data-i18n="horses.generalNotes">General notes</span><textarea name="notes" rows="3" data-i18n-placeholder="horses.notesPlaceholder" placeholder="Training, temperament, or other notes"></textarea></label>
                 <button class="button primary" type="submit" data-i18n="horses.save">Save horse record</button>
               </form>
               <div id="horsesList" class="item-list"></div>
@@ -199,12 +208,26 @@
         <form id="eventForm" class="entry-form">
           <input type="hidden" name="id">
           <label><span data-i18n="common.date">Date</span><input name="date" type="date" required></label>
+          <label><span data-i18n="common.time">Time</span><input name="time" type="time"></label>
           <label><span data-i18n="calendar.eventName">Event name</span><input name="name" required data-i18n-placeholder="calendar.eventPlaceholder" placeholder="Spring race day"></label>
+          <label><span data-i18n="calendar.type">Event type</span><select name="type"></select></label>
           <label><span data-i18n="calendar.location">Location</span><input name="location" data-i18n-placeholder="calendar.locationPlaceholder" placeholder="Helsinki"></label>
           <label><span data-i18n="calendar.horsesRunning">Horse(s) running</span><select name="horseIds" multiple></select></label>
+          <label><span data-i18n="calendar.handler">Driver / rider / handler</span><input name="handler" placeholder="Name"></label>
+          <label><span data-i18n="calendar.raceNumber">Race number</span><input name="raceNumber" placeholder="4"></label>
+          <label><span data-i18n="calendar.startNumber">Start number</span><input name="startNumber" placeholder="7"></label>
+          <label><span data-i18n="calendar.driver">Driver</span><input name="driver" placeholder="Driver name"></label>
+          <label><span data-i18n="calendar.placement">Placement</span><input name="placement" placeholder="2nd"></label>
+          <label><span data-i18n="calendar.result">Race time / result</span><input name="result" placeholder="1:15.2"></label>
+          <label><span data-i18n="calendar.prize">Prize</span><input name="prize" placeholder="500"></label>
+          <label class="full"><span data-i18n="calendar.postRaceNotes">Post-race notes</span><textarea name="postRaceNotes" rows="2"></textarea></label>
           <label class="full"><span data-i18n="common.notesSimple">Notes</span><textarea name="notes" rows="3" data-i18n-placeholder="calendar.notesPlaceholder" placeholder="Transport, start time, owner notes"></textarea></label>
           <button class="button primary" type="submit" data-i18n="calendar.save">Save event</button>
         </form>
+        <div class="summary-grid calendar-summary" aria-label="Calendar summary">
+          <article class="summary-card"><span data-i18n="calendar.today">Today</span><strong id="eventsTodayCount">0</strong></article>
+          <article class="summary-card"><span data-i18n="calendar.nextSeven">Next 7 days</span><strong id="eventsWeekCount">0</strong></article>
+        </div>
         <div id="eventsList" class="item-list"></div>
       </section>
 
@@ -246,10 +269,10 @@
           </article>
 
           <article class="panel">
-            <h3 data-i18n="desktop.latest">Latest desktop release</h3>
-            <p data-i18n="settings.desktopText">Desktop downloads use the latest GitHub Release asset.</p>
-            <p class="update-note" data-i18n="desktop.updateNote">Latest desktop version and installer are loaded from GitHub Releases.</p>
-            <a id="settingsDesktopDownloadButton" class="button secondary disabled" href="#" aria-disabled="true" data-i18n="release.loadingButton">Checking desktop release...</a>
+            <h3 data-i18n="settings.backupPreviewTitle">Import preview</h3>
+            <p data-i18n="settings.backupPreviewText">When you choose a backup file, EquiTrack shows counts before replacing local data.</p>
+            <div id="importPreview" class="backup-preview" data-i18n="backup.noPreview">No backup selected.</div>
+            <p class="update-note"><span data-i18n="backup.lastExport">Last export</span>: <strong id="lastBackupAt">-</strong></p>
           </article>
 
           <article class="panel danger-panel">

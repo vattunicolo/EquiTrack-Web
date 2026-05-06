@@ -1,7 +1,8 @@
-const LATEST_RELEASE_URL = 'https://api.github.com/repos/vattunicolo/EquiTrack-Web/releases/latest';
 const STORAGE_KEY = 'equitrack-web-data-v1';
 const LANGUAGE_KEY = 'equitrack-web-language';
+const LAST_BACKUP_KEY = 'equitrack-web-last-backup';
 const DEFAULT_LANGUAGE = 'en';
+const EVENT_TYPES = ['race', 'training', 'shoeing', 'vaccination', 'vet', 'feeding', 'other'];
 
 function createId() {
   return `eq-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
@@ -34,6 +35,10 @@ const translations = {
     'home.socialTitle': 'Connect',
     'home.socialHeading': 'Follow EquiTrack',
     'home.email': 'Email or contact',
+    'home.localTitle': 'Browser-first',
+    'home.localHeading': 'Your stable data stays on this device.',
+    'home.localText': 'EquiTrack runs directly in the browser and stores horses, tasks, work hours, feed inventory, and events locally.',
+    'home.backupReminder': 'Use Settings / Backup to export a JSON backup whenever you want a safe copy.',
     'stable.eyebrow': 'My Stable',
     'stable.title': 'Your daily stable workspace.',
     'summary.horses': 'Horses',
@@ -47,9 +52,24 @@ const translations = {
     'horses.title': 'Horse management',
     'horses.subtitle': 'Add horses and keep care notes close at hand.',
     'horses.name': 'Horse name',
-    'horses.age': 'Age',
+    'horses.nickname': 'Stable name / nickname',
+    'horses.owner': 'Owner',
+    'horses.breed': 'Breed',
+    'horses.birth': 'Birth year or date',
+    'horses.gender': 'Gender',
+    'horses.color': 'Color',
+    'horses.registration': 'Registration number',
+    'horses.feedingNotes': 'Feeding notes',
+    'horses.careNotes': 'Care notes',
+    'horses.shoeingNotes': 'Shoeing notes',
+    'horses.vaccinationNotes': 'Vaccination notes',
+    'horses.dewormingNotes': 'Deworming notes',
+    'horses.vetNotes': 'Vet / contact notes',
+    'horses.generalNotes': 'General notes',
+    'horses.feedingPlaceholder': 'Feed plan and supplements',
+    'horses.carePlaceholder': 'Daily care, handling, routines',
     'horses.save': 'Save horse record',
-    'horses.notesPlaceholder': 'Feed, training, vet, or shoeing notes',
+    'horses.notesPlaceholder': 'Training, temperament, or other notes',
     'tasks.title': 'Daily tasks',
     'tasks.subtitle': 'Plan and complete stable jobs for each day.',
     'tasks.task': 'Task',
@@ -76,9 +96,21 @@ const translations = {
     'calendar.title': 'Plan race days and stable events.',
     'calendar.eventName': 'Event name',
     'calendar.eventPlaceholder': 'Spring race day',
+    'calendar.type': 'Event type',
     'calendar.location': 'Location',
     'calendar.locationPlaceholder': 'Helsinki',
     'calendar.horsesRunning': 'Horse(s) running',
+    'calendar.handler': 'Driver / rider / handler',
+    'calendar.raceNumber': 'Race number',
+    'calendar.startNumber': 'Start number',
+    'calendar.driver': 'Driver',
+    'calendar.placement': 'Placement',
+    'calendar.result': 'Race time / result',
+    'calendar.prize': 'Prize',
+    'calendar.postRaceNotes': 'Post-race notes',
+    'calendar.today': 'Today',
+    'calendar.nextSeven': 'Next 7 days',
+    'calendar.raceDetails': 'Race details',
     'calendar.notesPlaceholder': 'Transport, start time, owner notes',
     'calendar.save': 'Save event',
     'calendar.empty': 'No calendar events yet. Add a race day or stable event above.',
@@ -88,21 +120,21 @@ const translations = {
     'settings.languageHelp': 'Choose interface language',
     'settings.backupTitle': 'Backup',
     'settings.backupText': 'Export a JSON backup or restore one you saved earlier.',
-    'settings.desktopText': 'Desktop downloads use the latest GitHub Release asset.',
+    'settings.backupPreviewTitle': 'Import preview',
+    'settings.backupPreviewText': 'When you choose a backup file, EquiTrack shows counts before replacing local data.',
     'settings.resetTitle': 'Reset local data',
     'settings.resetText': 'This removes horses, tasks, work logs, feed inventory, and calendar events from this browser.',
     'settings.resetButton': 'Reset local data',
     'language.label': 'Language',
     'backup.export': 'Download backup',
     'backup.import': 'Restore backup',
-    'desktop.eyebrow': 'Desktop version',
-    'desktop.title': 'Prefer an installable app?',
-    'desktop.text': 'The browser app stores data in this browser. The Electron desktop version is available from GitHub Releases.',
-    'desktop.latest': 'Latest desktop release',
-    'desktop.updateNote': 'Latest desktop version and installer are loaded from GitHub Releases.',
-    'desktop.openReleases': 'Open releases',
+    'backup.noPreview': 'No backup selected.',
+    'backup.preview': 'Backup preview: {horses} horses, {tasks} tasks, {hours} work logs, {inventory} feed items, {events} calendar events.',
+    'backup.confirmImport': 'Import this backup and replace current local data?',
+    'backup.lastExport': 'Last export',
     'footer.local': 'Data is stored locally in your browser.',
     'common.date': 'Date',
+    'common.time': 'Time',
     'common.notes': 'Care notes',
     'common.notesSimple': 'Notes',
     'common.edit': 'Edit',
@@ -129,6 +161,13 @@ const translations = {
     'feed.low': 'Low soon',
     'feed.critical': 'Critical',
     'feed.empty': 'Empty',
+    'eventType.race': 'Race',
+    'eventType.training': 'Training',
+    'eventType.shoeing': 'Shoeing',
+    'eventType.vaccination': 'Vaccination',
+    'eventType.vet': 'Vet',
+    'eventType.feeding': 'Feeding',
+    'eventType.other': 'Other',
     'message.horseSaved': 'Horse saved.',
     'message.taskSaved': 'Task saved.',
     'message.hoursSaved': 'Work hours saved.',
@@ -154,19 +193,7 @@ const translations = {
     'delete.task': 'this daily task',
     'delete.hours': 'this work log',
     'delete.inventory': 'this feed inventory item',
-    'delete.event': 'this calendar event',
-    'release.loadingStatus': 'Loading desktop release information from GitHub.',
-    'release.loadingButton': 'Checking desktop release...',
-    'release.loadingChangelog': 'Fetching changelog from GitHub Releases.',
-    'release.unavailable': 'Desktop download is not available yet.',
-    'release.noInstaller': 'Desktop installer is not available yet.',
-    'release.fetchError': 'Could not load desktop installer information. Please try again later.',
-    'release.noRelease': 'No release available yet',
-    'release.latest': 'Latest release',
-    'release.downloadDesktop': 'Download desktop {version}',
-    'release.installer': 'Desktop installer: {name}',
-    'release.downloadAvailable': 'download available',
-    'release.noChangelog': 'No changelog was provided for this release.'
+    'delete.event': 'this calendar event'
   },
   fi: {
     'brand.subtitle': 'Verkkotallin hallinta',
@@ -190,6 +217,10 @@ const translations = {
     'home.socialTitle': 'Yhteydet',
     'home.socialHeading': 'Seuraa EquiTrackia',
     'home.email': 'Sähköposti tai yhteys',
+    'home.localTitle': 'Selain ensin',
+    'home.localHeading': 'Tallin tiedot pysyvat talla laitteella.',
+    'home.localText': 'EquiTrack toimii suoraan selaimessa ja tallentaa hevoset, tehtavat, tyotunnit, rehuvaraston ja tapahtumat paikallisesti.',
+    'home.backupReminder': 'Vie JSON-varmuuskopio Asetukset / varmuuskopio -nakymassa, kun haluat turvallisen kopion.',
     'stable.eyebrow': 'Oma talli',
     'stable.title': 'Tallin päivittäinen työtila.',
     'summary.horses': 'Hevoset',
@@ -203,9 +234,24 @@ const translations = {
     'horses.title': 'Hevosten hallinta',
     'horses.subtitle': 'Lisää hevoset ja pidä hoitomuistiinpanot lähellä.',
     'horses.name': 'Hevosen nimi',
-    'horses.age': 'Ikä',
+    'horses.nickname': 'Tallinimi / lempinimi',
+    'horses.owner': 'Omistaja',
+    'horses.breed': 'Rotu',
+    'horses.birth': 'Syntymavuosi tai -paiva',
+    'horses.gender': 'Sukupuoli',
+    'horses.color': 'Vari',
+    'horses.registration': 'Rekisterinumero',
+    'horses.feedingNotes': 'Ruokintamuistiinpanot',
+    'horses.careNotes': 'Hoitomuistiinpanot',
+    'horses.shoeingNotes': 'Kengitysmuistiinpanot',
+    'horses.vaccinationNotes': 'Rokotusmuistiinpanot',
+    'horses.dewormingNotes': 'Madotusmuistiinpanot',
+    'horses.vetNotes': 'Elainlaakari / yhteystiedot',
+    'horses.generalNotes': 'Yleiset muistiinpanot',
+    'horses.feedingPlaceholder': 'Ruokintasuunnitelma ja lisaravinteet',
+    'horses.carePlaceholder': 'Paivittainen hoito, kasittely ja rutiinit',
     'horses.save': 'Tallenna hevonen',
-    'horses.notesPlaceholder': 'Ruokinta, harjoittelu, eläinlääkäri tai kengitys',
+    'horses.notesPlaceholder': 'Harjoittelu, luonne tai muut muistiinpanot',
     'tasks.title': 'Päivittäiset tehtävät',
     'tasks.subtitle': 'Suunnittele ja kuittaa tallin päivittäiset työt.',
     'tasks.task': 'Tehtävä',
@@ -232,9 +278,21 @@ const translations = {
     'calendar.title': 'Suunnittele kilpailupäivät ja tallitapahtumat.',
     'calendar.eventName': 'Tapahtuman nimi',
     'calendar.eventPlaceholder': 'Kevään kilpailupäivä',
+    'calendar.type': 'Tapahtumatyyppi',
     'calendar.location': 'Sijainti',
     'calendar.locationPlaceholder': 'Helsinki',
     'calendar.horsesRunning': 'Juoksevat hevoset',
+    'calendar.handler': 'Ohjastaja / ratsastaja / hoitaja',
+    'calendar.raceNumber': 'Lahto numero',
+    'calendar.startNumber': 'Lahtorata / numero',
+    'calendar.driver': 'Ohjastaja',
+    'calendar.placement': 'Sijoitus',
+    'calendar.result': 'Aika / tulos',
+    'calendar.prize': 'Palkinto',
+    'calendar.postRaceNotes': 'Kilpailun jalkeiset muistiinpanot',
+    'calendar.today': 'Tanaan',
+    'calendar.nextSeven': 'Seuraavat 7 paivaa',
+    'calendar.raceDetails': 'Kilpailutiedot',
     'calendar.notesPlaceholder': 'Kuljetus, lähtöaika, omistajan muistiinpanot',
     'calendar.save': 'Tallenna tapahtuma',
     'calendar.empty': 'Kalenteritapahtumia ei ole vielä. Lisää kilpailupäivä tai tallitapahtuma.',
@@ -244,21 +302,21 @@ const translations = {
     'settings.languageHelp': 'Valitse käyttöliittymän kieli',
     'settings.backupTitle': 'Varmuuskopio',
     'settings.backupText': 'Vie JSON-varmuuskopio tai palauta aiemmin tallennettu tiedosto.',
-    'settings.desktopText': 'Työpöytälataukset käyttävät uusinta GitHub Release -tiedostoa.',
+    'settings.backupPreviewTitle': 'Tuonnin esikatselu',
+    'settings.backupPreviewText': 'Kun valitset varmuuskopion, EquiTrack nayttaa maarat ennen paikallisten tietojen korvaamista.',
     'settings.resetTitle': 'Nollaa paikalliset tiedot',
     'settings.resetText': 'Tämä poistaa hevoset, tehtävät, työkirjaukset, rehuvaraston ja kalenteritapahtumat tästä selaimesta.',
     'settings.resetButton': 'Nollaa paikalliset tiedot',
     'language.label': 'Kieli',
     'backup.export': 'Lataa varmuuskopio',
     'backup.import': 'Palauta varmuuskopio',
-    'desktop.eyebrow': 'Työpöytäversio',
-    'desktop.title': 'Haluatko asennettavan sovelluksen?',
-    'desktop.text': 'Selainversio tallentaa tiedot tähän selaimeen. Electron-työpöytäversio on saatavilla GitHub Releases -julkaisuista.',
-    'desktop.latest': 'Uusin työpöytäjulkaisu',
-    'desktop.updateNote': 'Uusin työpöytäversio ja asennusohjelma ladataan GitHub Releases -julkaisuista.',
-    'desktop.openReleases': 'Avaa julkaisut',
+    'backup.noPreview': 'Varmuuskopiota ei ole valittu.',
+    'backup.preview': 'Esikatselu: {horses} hevosta, {tasks} tehtavaa, {hours} tyokirjausta, {inventory} rehua, {events} kalenteritapahtumaa.',
+    'backup.confirmImport': 'Tuodaanko tama varmuuskopio ja korvataanko nykyiset paikalliset tiedot?',
+    'backup.lastExport': 'Viimeisin vienti',
     'footer.local': 'Tiedot tallennetaan paikallisesti selaimeesi.',
     'common.date': 'Päivä',
+    'common.time': 'Aika',
     'common.notes': 'Hoitomuistiinpanot',
     'common.notesSimple': 'Muistiinpanot',
     'common.edit': 'Muokkaa',
@@ -285,6 +343,13 @@ const translations = {
     'feed.low': 'Vähissä pian',
     'feed.critical': 'Kriittinen',
     'feed.empty': 'Tyhjä',
+    'eventType.race': 'Kilpailu',
+    'eventType.training': 'Harjoitus',
+    'eventType.shoeing': 'Kengitys',
+    'eventType.vaccination': 'Rokotus',
+    'eventType.vet': 'Elainlaakari',
+    'eventType.feeding': 'Ruokinta',
+    'eventType.other': 'Muu',
     'message.horseSaved': 'Hevonen tallennettu.',
     'message.taskSaved': 'Tehtävä tallennettu.',
     'message.hoursSaved': 'Työtunnit tallennettu.',
@@ -310,19 +375,7 @@ const translations = {
     'delete.task': 'tämä tehtävä',
     'delete.hours': 'tämä työkirjaus',
     'delete.inventory': 'tämä rehuvaraston tuote',
-    'delete.event': 'tämä kalenteritapahtuma',
-    'release.loadingStatus': 'Ladataan työpöytäjulkaisun tietoja GitHubista.',
-    'release.loadingButton': 'Tarkistetaan työpöytäjulkaisua...',
-    'release.loadingChangelog': 'Haetaan muutoslokia GitHub Releases -julkaisuista.',
-    'release.unavailable': 'Työpöytälataus ei ole vielä saatavilla.',
-    'release.noInstaller': 'Työpöytäasennusohjelma ei ole vielä saatavilla.',
-    'release.fetchError': 'Työpöytäasennusohjelman tietoja ei voitu ladata. Yritä myöhemmin uudelleen.',
-    'release.noRelease': 'Julkaisua ei ole vielä saatavilla',
-    'release.latest': 'Uusin julkaisu',
-    'release.downloadDesktop': 'Lataa työpöytäversio {version}',
-    'release.installer': 'Työpöytäasennusohjelma: {name}',
-    'release.downloadAvailable': 'lataus saatavilla',
-    'release.noChangelog': 'Tälle julkaisulle ei ole muutoslokia.'
+    'delete.event': 'tämä kalenteritapahtuma'
   },
   it: {
     'brand.subtitle': 'Gestione scuderia web',
@@ -346,6 +399,10 @@ const translations = {
     'home.socialTitle': 'Contatti',
     'home.socialHeading': 'Segui EquiTrack',
     'home.email': 'Email o contatto',
+    'home.localTitle': 'Prima il browser',
+    'home.localHeading': 'I dati della scuderia restano su questo dispositivo.',
+    'home.localText': 'EquiTrack funziona direttamente nel browser e salva localmente cavalli, attivita, ore, mangimi ed eventi.',
+    'home.backupReminder': 'Usa Impostazioni / backup per esportare un backup JSON quando vuoi una copia sicura.',
     'stable.eyebrow': 'La mia scuderia',
     'stable.title': 'Il tuo spazio di lavoro quotidiano.',
     'summary.horses': 'Cavalli',
@@ -359,9 +416,24 @@ const translations = {
     'horses.title': 'Gestione cavalli',
     'horses.subtitle': 'Aggiungi cavalli e tieni le note di cura a portata di mano.',
     'horses.name': 'Nome cavallo',
-    'horses.age': 'Eta',
+    'horses.nickname': 'Nome in scuderia / soprannome',
+    'horses.owner': 'Proprietario',
+    'horses.breed': 'Razza',
+    'horses.birth': 'Anno o data di nascita',
+    'horses.gender': 'Sesso',
+    'horses.color': 'Colore',
+    'horses.registration': 'Numero registrazione',
+    'horses.feedingNotes': 'Note alimentazione',
+    'horses.careNotes': 'Note cura',
+    'horses.shoeingNotes': 'Note ferratura',
+    'horses.vaccinationNotes': 'Note vaccinazioni',
+    'horses.dewormingNotes': 'Note vermifugo',
+    'horses.vetNotes': 'Note veterinario / contatti',
+    'horses.generalNotes': 'Note generali',
+    'horses.feedingPlaceholder': 'Piano alimentare e integratori',
+    'horses.carePlaceholder': 'Cura quotidiana, gestione e routine',
     'horses.save': 'Salva cavallo',
-    'horses.notesPlaceholder': 'Mangime, allenamento, veterinario o ferratura',
+    'horses.notesPlaceholder': 'Allenamento, carattere o altre note',
     'tasks.title': 'Attivita giornaliere',
     'tasks.subtitle': 'Pianifica e completa i lavori quotidiani della scuderia.',
     'tasks.task': 'Attivita',
@@ -388,9 +460,21 @@ const translations = {
     'calendar.title': 'Pianifica giornate di gara ed eventi.',
     'calendar.eventName': 'Nome evento',
     'calendar.eventPlaceholder': 'Giornata gare primavera',
+    'calendar.type': 'Tipo evento',
     'calendar.location': 'Luogo',
     'calendar.locationPlaceholder': 'Helsinki',
     'calendar.horsesRunning': 'Cavalli in gara',
+    'calendar.handler': 'Driver / cavaliere / handler',
+    'calendar.raceNumber': 'Numero gara',
+    'calendar.startNumber': 'Numero partenza',
+    'calendar.driver': 'Driver',
+    'calendar.placement': 'Piazzamento',
+    'calendar.result': 'Tempo / risultato',
+    'calendar.prize': 'Premio',
+    'calendar.postRaceNotes': 'Note dopo gara',
+    'calendar.today': 'Oggi',
+    'calendar.nextSeven': 'Prossimi 7 giorni',
+    'calendar.raceDetails': 'Dettagli gara',
     'calendar.notesPlaceholder': 'Trasporto, orario, note proprietario',
     'calendar.save': 'Salva evento',
     'calendar.empty': 'Nessun evento in calendario. Aggiungi una gara o un evento.',
@@ -400,21 +484,21 @@ const translations = {
     'settings.languageHelp': 'Scegli lingua interfaccia',
     'settings.backupTitle': 'Backup',
     'settings.backupText': 'Esporta un backup JSON o ripristina un file salvato.',
-    'settings.desktopText': 'I download desktop usano l’ultimo asset GitHub Release.',
+    'settings.backupPreviewTitle': 'Anteprima importazione',
+    'settings.backupPreviewText': 'Quando scegli un backup, EquiTrack mostra i conteggi prima di sostituire i dati locali.',
     'settings.resetTitle': 'Reimposta dati locali',
     'settings.resetText': 'Rimuove cavalli, attivita, registri ore, inventario mangimi ed eventi da questo browser.',
     'settings.resetButton': 'Reimposta dati locali',
     'language.label': 'Lingua',
     'backup.export': 'Scarica backup',
     'backup.import': 'Ripristina backup',
-    'desktop.eyebrow': 'Versione desktop',
-    'desktop.title': 'Preferisci un’app installabile?',
-    'desktop.text': 'La versione browser salva i dati in questo browser. La versione desktop Electron e disponibile da GitHub Releases.',
-    'desktop.latest': 'Ultima release desktop',
-    'desktop.updateNote': 'La versione desktop e l installer piu recenti vengono caricati da GitHub Releases.',
-    'desktop.openReleases': 'Apri release',
+    'backup.noPreview': 'Nessun backup selezionato.',
+    'backup.preview': 'Anteprima: {horses} cavalli, {tasks} attivita, {hours} registri ore, {inventory} mangimi, {events} eventi calendario.',
+    'backup.confirmImport': 'Importare questo backup e sostituire i dati locali attuali?',
+    'backup.lastExport': 'Ultima esportazione',
     'footer.local': 'I dati sono salvati localmente nel browser.',
     'common.date': 'Data',
+    'common.time': 'Ora',
     'common.notes': 'Note di cura',
     'common.notesSimple': 'Note',
     'common.edit': 'Modifica',
@@ -441,6 +525,13 @@ const translations = {
     'feed.low': 'Basso presto',
     'feed.critical': 'Critico',
     'feed.empty': 'Vuoto',
+    'eventType.race': 'Gara',
+    'eventType.training': 'Allenamento',
+    'eventType.shoeing': 'Ferratura',
+    'eventType.vaccination': 'Vaccinazione',
+    'eventType.vet': 'Veterinario',
+    'eventType.feeding': 'Alimentazione',
+    'eventType.other': 'Altro',
     'message.horseSaved': 'Cavallo salvato.',
     'message.taskSaved': 'Attivita salvata.',
     'message.hoursSaved': 'Ore di lavoro salvate.',
@@ -466,19 +557,7 @@ const translations = {
     'delete.task': 'questa attivita',
     'delete.hours': 'questo registro ore',
     'delete.inventory': 'questa voce inventario mangimi',
-    'delete.event': 'questo evento calendario',
-    'release.loadingStatus': 'Caricamento informazioni release desktop da GitHub.',
-    'release.loadingButton': 'Controllo release desktop...',
-    'release.loadingChangelog': 'Recupero note di rilascio da GitHub Releases.',
-    'release.unavailable': 'Il download desktop non e ancora disponibile.',
-    'release.noInstaller': 'L installer desktop non e ancora disponibile.',
-    'release.fetchError': 'Impossibile caricare le informazioni dell installer desktop. Riprova piu tardi.',
-    'release.noRelease': 'Nessuna release disponibile',
-    'release.latest': 'Ultima release',
-    'release.downloadDesktop': 'Scarica desktop {version}',
-    'release.installer': 'Installer desktop: {name}',
-    'release.downloadAvailable': 'download disponibile',
-    'release.noChangelog': 'Nessuna nota di rilascio disponibile.'
+    'delete.event': 'questo evento calendario'
   }
 };
 
@@ -519,6 +598,8 @@ const els = {
   hoursList: document.querySelector('#hoursList'),
   inventoryList: document.querySelector('#inventoryList'),
   eventsList: document.querySelector('#eventsList'),
+  eventsTodayCount: document.querySelector('#eventsTodayCount'),
+  eventsWeekCount: document.querySelector('#eventsWeekCount'),
   horseForm: document.querySelector('#horseForm'),
   taskForm: document.querySelector('#taskForm'),
   hoursForm: document.querySelector('#hoursForm'),
@@ -526,13 +607,9 @@ const els = {
   eventForm: document.querySelector('#eventForm'),
   exportButton: document.querySelector('#exportButton'),
   importInput: document.querySelector('#importInput'),
+  importPreview: document.querySelector('#importPreview'),
+  lastBackupAt: document.querySelector('#lastBackupAt'),
   resetDataButton: document.querySelector('#resetDataButton'),
-  downloadButton: document.querySelector('#desktopDownloadButton'),
-  settingsDownloadButton: document.querySelector('#settingsDesktopDownloadButton'),
-  releaseStatus: document.querySelector('#releaseStatus'),
-  latestVersion: document.querySelector('#latestVersion'),
-  changelog: document.querySelector('#changelog'),
-  releasePageLink: document.querySelector('#releasePageLink'),
   languageSelect: document.querySelector('#languageSelect')
 };
 
@@ -582,13 +659,44 @@ function normalizeFeedItem(item) {
   };
 }
 
+function normalizeHorse(item) {
+  return {
+    id: item.id || createId(),
+    name: item.name || 'Unnamed horse',
+    nickname: item.nickname || item.stableName || '',
+    owner: item.owner || '',
+    breed: item.breed || '',
+    birth: item.birth || item.birthDate || item.birthYear || item.age || '',
+    gender: item.gender || '',
+    color: item.color || '',
+    registration: item.registration || item.registrationNumber || '',
+    feedingNotes: item.feedingNotes || '',
+    careNotes: item.careNotes || '',
+    shoeingNotes: item.shoeingNotes || '',
+    vaccinationNotes: item.vaccinationNotes || '',
+    dewormingNotes: item.dewormingNotes || '',
+    vetNotes: item.vetNotes || '',
+    notes: item.notes || item.generalNotes || ''
+  };
+}
+
 function normalizeCalendarEvent(item) {
   return {
     id: item.id || createId(),
     date: item.date || today(),
+    time: item.time || '',
     name: item.name || item.title || '',
+    type: EVENT_TYPES.includes(item.type) ? item.type : 'other',
     location: item.location || '',
     horseIds: Array.isArray(item.horseIds) ? item.horseIds : [],
+    handler: item.handler || item.driverRiderHandler || '',
+    raceNumber: item.raceNumber || '',
+    startNumber: item.startNumber || '',
+    driver: item.driver || '',
+    placement: item.placement || '',
+    result: item.result || item.raceTimeResult || '',
+    prize: item.prize || '',
+    postRaceNotes: item.postRaceNotes || '',
     notes: item.notes || ''
   };
 }
@@ -599,7 +707,7 @@ function loadData() {
     if (!stored) return JSON.parse(JSON.stringify(defaultData));
     const parsed = JSON.parse(stored);
     return {
-      horses: Array.isArray(parsed.horses) ? parsed.horses : [],
+      horses: Array.isArray(parsed.horses) ? parsed.horses.map(normalizeHorse) : [],
       tasks: Array.isArray(parsed.tasks) ? parsed.tasks : [],
       hours: Array.isArray(parsed.hours) ? parsed.hours : [],
       inventory: Array.isArray(parsed.inventory) ? parsed.inventory.map(normalizeFeedItem) : [],
@@ -612,6 +720,21 @@ function loadData() {
 
 function saveData() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function getCounts(data = state) {
+  return {
+    horses: data.horses?.length || 0,
+    tasks: data.tasks?.length || 0,
+    hours: data.hours?.length || 0,
+    inventory: data.inventory?.length || 0,
+    events: data.calendarEvents?.length || 0
+  };
+}
+
+function getTotalCount(data = state) {
+  const counts = getCounts(data);
+  return counts.horses + counts.tasks + counts.hours + counts.inventory + counts.events;
 }
 
 function showMessage(message) {
@@ -654,6 +777,10 @@ function renderHorseOptions() {
   els.eventForm.elements.horseIds.innerHTML = state.horses
     .map((horse) => `<option value="${horse.id}">${escapeHtml(horse.name)}</option>`)
     .join('');
+
+  els.eventForm.elements.type.innerHTML = EVENT_TYPES
+    .map((type) => `<option value="${type}">${t(`eventType.${type}`)}</option>`)
+    .join('');
 }
 
 function render() {
@@ -664,6 +791,7 @@ function render() {
   renderHours();
   renderInventory();
   renderEvents();
+  renderBackupStatus();
 }
 
 function renderSummary() {
@@ -674,6 +802,17 @@ function renderSummary() {
     const status = getFeedStatus(item).key;
     return status === 'low' || status === 'critical' || status === 'empty';
   }).length;
+  if (els.eventsTodayCount && els.eventsWeekCount) {
+    const todayValue = today();
+    const now = new Date(`${todayValue}T00:00:00`);
+    const weekEnd = new Date(now);
+    weekEnd.setDate(weekEnd.getDate() + 7);
+    els.eventsTodayCount.textContent = state.calendarEvents.filter((event) => event.date === todayValue).length;
+    els.eventsWeekCount.textContent = state.calendarEvents.filter((event) => {
+      const eventDate = new Date(`${event.date}T00:00:00`);
+      return eventDate >= now && eventDate <= weekEnd;
+    }).length;
+  }
 }
 
 function renderHorses() {
@@ -681,19 +820,30 @@ function renderHorses() {
     els.horsesList.innerHTML = `<p class="empty-state">${t('empty.horses')}</p>`;
     return;
   }
-  els.horsesList.innerHTML = state.horses.map((horse) => `
-    <article class="item-card">
-      <div>
-        <h4>${escapeHtml(horse.name)}</h4>
-        <p>${escapeHtml(horse.notes || t('common.noNotes'))}</p>
-        <div class="item-meta"><span class="pill">${t('horses.age')}: ${escapeHtml(horse.age || t('common.notSet'))}</span></div>
-      </div>
-      <div class="item-actions">
-        <button class="button ghost" type="button" data-action="edit-horse" data-id="${horse.id}">${t('common.edit')}</button>
-        <button class="button ghost danger" type="button" data-action="delete-horse" data-id="${horse.id}">${t('common.delete')}</button>
-      </div>
-    </article>
-  `).join('');
+  els.horsesList.innerHTML = state.horses.map((rawHorse) => {
+    const horse = normalizeHorse(rawHorse);
+    const notes = [horse.feedingNotes, horse.careNotes, horse.shoeingNotes, horse.vaccinationNotes, horse.vetNotes, horse.notes]
+      .filter(Boolean)
+      .join(' | ');
+    return `
+      <article class="item-card horse-card">
+        <div>
+          <h4>${escapeHtml(horse.name)}${horse.nickname ? ` <span class="subtle-name">(${escapeHtml(horse.nickname)})</span>` : ''}</h4>
+          <p>${escapeHtml(notes || t('common.noNotes'))}</p>
+          <div class="item-meta">
+            <span class="pill">${t('horses.owner')}: ${escapeHtml(horse.owner || t('common.notSet'))}</span>
+            <span class="pill">${t('horses.birth')}: ${escapeHtml(horse.birth || t('common.notSet'))}</span>
+            <span class="pill">${t('horses.breed')}: ${escapeHtml(horse.breed || t('common.notSet'))}</span>
+            <span class="pill">${t('horses.registration')}: ${escapeHtml(horse.registration || t('common.notSet'))}</span>
+          </div>
+        </div>
+        <div class="item-actions">
+          <button class="button ghost" type="button" data-action="edit-horse" data-id="${horse.id}">${t('common.edit')}</button>
+          <button class="button ghost danger" type="button" data-action="delete-horse" data-id="${horse.id}">${t('common.delete')}</button>
+        </div>
+      </article>
+    `;
+  }).join('');
 }
 
 function renderTasks() {
@@ -786,11 +936,20 @@ function renderEvents() {
     els.eventsList.innerHTML = `<p class="empty-state">${t('calendar.empty')}</p>`;
     return;
   }
-  const sortedEvents = [...state.calendarEvents].sort((a, b) => a.date.localeCompare(b.date));
-  els.eventsList.innerHTML = sortedEvents.map((event) => {
+  const sortedEvents = [...state.calendarEvents].sort((a, b) => `${a.date}T${a.time || '00:00'}`.localeCompare(`${b.date}T${b.time || '00:00'}`));
+  els.eventsList.innerHTML = sortedEvents.map((rawEvent) => {
+    const event = normalizeCalendarEvent(rawEvent);
     const horses = event.horseIds
       .map((id) => state.horses.find((horse) => horse.id === id)?.name)
       .filter(Boolean);
+    const raceDetails = [
+      event.raceNumber && `${t('calendar.raceNumber')}: ${event.raceNumber}`,
+      event.startNumber && `${t('calendar.startNumber')}: ${event.startNumber}`,
+      event.driver && `${t('calendar.driver')}: ${event.driver}`,
+      event.placement && `${t('calendar.placement')}: ${event.placement}`,
+      event.result && `${t('calendar.result')}: ${event.result}`,
+      event.prize && `${t('calendar.prize')}: ${event.prize}`
+    ].filter(Boolean);
     return `
       <article class="item-card">
         <div>
@@ -798,9 +957,19 @@ function renderEvents() {
           <p>${escapeHtml(event.notes || t('common.noNotes'))}</p>
           <div class="item-meta">
             <span class="pill">${escapeHtml(event.date)}</span>
+            <span class="pill">${escapeHtml(event.time || t('common.notSet'))}</span>
+            <span class="pill good">${t(`eventType.${event.type}`)}</span>
             <span class="pill">${escapeHtml(event.location || t('common.notSet'))}</span>
             <span class="pill">${horses.length ? escapeHtml(horses.join(', ')) : t('tasks.noHorse')}</span>
+            <span class="pill">${t('calendar.handler')}: ${escapeHtml(event.handler || t('common.notSet'))}</span>
           </div>
+          ${raceDetails.length || event.postRaceNotes ? `
+            <div class="detail-box">
+              <strong>${t('calendar.raceDetails')}</strong>
+              ${raceDetails.length ? `<p>${escapeHtml(raceDetails.join(' | '))}</p>` : ''}
+              ${event.postRaceNotes ? `<p>${escapeHtml(event.postRaceNotes)}</p>` : ''}
+            </div>
+          ` : ''}
         </div>
         <div class="item-actions">
           <button class="button ghost" type="button" data-action="edit-event" data-id="${event.id}">${t('common.edit')}</button>
@@ -860,7 +1029,19 @@ function handleHorseSubmit(event) {
   upsert('horses', {
     id: form.elements.id.value,
     name: form.elements.name.value.trim(),
-    age: form.elements.age.value,
+    nickname: form.elements.nickname.value.trim(),
+    owner: form.elements.owner.value.trim(),
+    breed: form.elements.breed.value.trim(),
+    birth: form.elements.birth.value.trim(),
+    gender: form.elements.gender.value.trim(),
+    color: form.elements.color.value.trim(),
+    registration: form.elements.registration.value.trim(),
+    feedingNotes: form.elements.feedingNotes.value.trim(),
+    careNotes: form.elements.careNotes.value.trim(),
+    shoeingNotes: form.elements.shoeingNotes.value.trim(),
+    vaccinationNotes: form.elements.vaccinationNotes.value.trim(),
+    dewormingNotes: form.elements.dewormingNotes.value.trim(),
+    vetNotes: form.elements.vetNotes.value.trim(),
     notes: form.elements.notes.value.trim()
   });
   resetForm(form);
@@ -920,9 +1101,19 @@ function handleEventSubmit(event) {
   upsert('calendarEvents', {
     id: form.elements.id.value,
     date: form.elements.date.value,
+    time: form.elements.time.value,
     name: form.elements.name.value.trim(),
+    type: form.elements.type.value,
     location: form.elements.location.value.trim(),
     horseIds: getSelectedOptions(form.elements.horseIds),
+    handler: form.elements.handler.value.trim(),
+    raceNumber: form.elements.raceNumber.value.trim(),
+    startNumber: form.elements.startNumber.value.trim(),
+    driver: form.elements.driver.value.trim(),
+    placement: form.elements.placement.value.trim(),
+    result: form.elements.result.value.trim(),
+    prize: form.elements.prize.value.trim(),
+    postRaceNotes: form.elements.postRaceNotes.value.trim(),
     notes: form.elements.notes.value.trim()
   });
   resetForm(form);
@@ -950,11 +1141,24 @@ function handleListClick(event) {
 }
 
 function fillHorseForm(id) {
-  const horse = state.horses.find((item) => item.id === id);
-  if (!horse) return;
+  const found = state.horses.find((item) => item.id === id);
+  if (!found) return;
+  const horse = normalizeHorse(found);
   els.horseForm.elements.id.value = horse.id;
   els.horseForm.elements.name.value = horse.name;
-  els.horseForm.elements.age.value = horse.age;
+  els.horseForm.elements.nickname.value = horse.nickname;
+  els.horseForm.elements.owner.value = horse.owner;
+  els.horseForm.elements.breed.value = horse.breed;
+  els.horseForm.elements.birth.value = horse.birth;
+  els.horseForm.elements.gender.value = horse.gender;
+  els.horseForm.elements.color.value = horse.color;
+  els.horseForm.elements.registration.value = horse.registration;
+  els.horseForm.elements.feedingNotes.value = horse.feedingNotes;
+  els.horseForm.elements.careNotes.value = horse.careNotes;
+  els.horseForm.elements.shoeingNotes.value = horse.shoeingNotes;
+  els.horseForm.elements.vaccinationNotes.value = horse.vaccinationNotes;
+  els.horseForm.elements.dewormingNotes.value = horse.dewormingNotes;
+  els.horseForm.elements.vetNotes.value = horse.vetNotes;
   els.horseForm.elements.notes.value = horse.notes;
   showView('stable');
   els.horseForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -996,12 +1200,23 @@ function fillInventoryForm(id) {
 }
 
 function fillEventForm(id) {
-  const item = state.calendarEvents.find((entry) => entry.id === id);
-  if (!item) return;
+  const found = state.calendarEvents.find((entry) => entry.id === id);
+  if (!found) return;
+  const item = normalizeCalendarEvent(found);
   els.eventForm.elements.id.value = item.id;
   els.eventForm.elements.date.value = item.date;
+  els.eventForm.elements.time.value = item.time;
   els.eventForm.elements.name.value = item.name;
+  els.eventForm.elements.type.value = item.type;
   els.eventForm.elements.location.value = item.location;
+  els.eventForm.elements.handler.value = item.handler;
+  els.eventForm.elements.raceNumber.value = item.raceNumber;
+  els.eventForm.elements.startNumber.value = item.startNumber;
+  els.eventForm.elements.driver.value = item.driver;
+  els.eventForm.elements.placement.value = item.placement;
+  els.eventForm.elements.result.value = item.result;
+  els.eventForm.elements.prize.value = item.prize;
+  els.eventForm.elements.postRaceNotes.value = item.postRaceNotes;
   els.eventForm.elements.notes.value = item.notes;
   setSelectedOptions(els.eventForm.elements.horseIds, item.horseIds);
   els.eventForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1027,40 +1242,64 @@ function toggleTask(id) {
   showMessage(task.done ? t('message.taskDone') : t('message.taskReopened'));
 }
 
+function normalizeImportedData(imported) {
+  if (!imported || typeof imported !== 'object') throw new Error('Backup file is not valid EquiTrack JSON.');
+  if (!Array.isArray(imported.horses) || !Array.isArray(imported.tasks) || !Array.isArray(imported.hours) || !Array.isArray(imported.inventory)) {
+    throw new Error('Backup file is missing EquiTrack data.');
+  }
+  return {
+    horses: imported.horses.map(normalizeHorse),
+    tasks: imported.tasks,
+    hours: imported.hours,
+    inventory: imported.inventory.map(normalizeFeedItem),
+    calendarEvents: Array.isArray(imported.calendarEvents) ? imported.calendarEvents.map(normalizeCalendarEvent) : []
+  };
+}
+
+function renderBackupStatus() {
+  if (!els.lastBackupAt) return;
+  els.lastBackupAt.textContent = localStorage.getItem(LAST_BACKUP_KEY) || '-';
+  if (els.importPreview && !els.importPreview.textContent.trim()) {
+    els.importPreview.textContent = t('backup.noPreview');
+  }
+}
+
 function exportBackup() {
-  const backup = { app: 'EquiTrack Web', exportedAt: new Date().toISOString(), data: state };
+  const createdAt = new Date().toISOString();
+  const counts = getCounts();
+  const backup = {
+    app: 'EquiTrack',
+    formatVersion: 2,
+    createdAt,
+    counts,
+    data: state
+  };
   const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = `equitrack-backup-${today()}.json`;
+  link.download = `equitrack-backup-${createdAt.replace(/[:.]/g, '-').slice(0, 19)}.json`;
   document.body.appendChild(link);
   link.click();
   link.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
-  const itemCount = state.horses.length + state.tasks.length + state.hours.length + state.inventory.length + state.calendarEvents.length;
-  showMessage(t('message.backupExported', { count: itemCount }));
+  localStorage.setItem(LAST_BACKUP_KEY, createdAt);
+  renderBackupStatus();
+  showMessage(t('message.backupExported', { count: getTotalCount() }));
 }
 
 async function importBackup(file) {
   if (!file) return;
   try {
     const parsed = JSON.parse(await file.text());
-    const imported = parsed.data || parsed;
-    if (!Array.isArray(imported.horses) || !Array.isArray(imported.tasks) || !Array.isArray(imported.hours) || !Array.isArray(imported.inventory)) {
-      throw new Error('Backup file is missing EquiTrack data.');
-    }
-    state = {
-      horses: imported.horses,
-      tasks: imported.tasks,
-      hours: imported.hours,
-      inventory: imported.inventory.map(normalizeFeedItem),
-      calendarEvents: Array.isArray(imported.calendarEvents) ? imported.calendarEvents.map(normalizeCalendarEvent) : []
-    };
+    const nextState = normalizeImportedData(parsed.data || parsed);
+    const counts = getCounts(nextState);
+    els.importPreview.textContent = t('backup.preview', counts);
+    if (!window.confirm(t('backup.confirmImport'))) return;
+    state = nextState;
     saveData();
     render();
-    const itemCount = state.horses.length + state.tasks.length + state.hours.length + state.inventory.length + state.calendarEvents.length;
-    showMessage(t('message.backupImported', { count: itemCount }));
+    showMessage(t('message.backupImported', { count: getTotalCount() }));
   } catch (error) {
     showMessage(t('message.importFailed', { error: error.message }));
   } finally {
@@ -1097,77 +1336,15 @@ function handleLanguageChange(event) {
   applyTranslations();
   render();
   showMessage(t('message.languageChanged'));
-  loadLatestRelease();
 }
 
-function formatChangelog(markdownText) {
-  const text = markdownText?.trim() || t('release.noChangelog');
-  return escapeHtml(text).replace(/(https?:\/\/[^\s)]+)/g, '<a href="$1" target="_blank" rel="noreferrer">$1</a>');
-}
-
-function isInstallerAsset(asset) {
-  return /\.(exe|msi|zip)$/i.test(asset?.name || '');
-}
-
-function getInstallerAsset(assets = []) {
-  return assets.find(isInstallerAsset);
-}
-
-function setDownloadButtonUnavailable(button, message) {
-  button.textContent = message;
-  button.classList.add('disabled');
-  button.setAttribute('aria-disabled', 'true');
-  button.removeAttribute('href');
-  button.removeAttribute('download');
-  button.removeAttribute('target');
-  button.removeAttribute('rel');
-}
-
-function showNoRelease(message = t('release.unavailable')) {
-  setDownloadButtonUnavailable(els.downloadButton, message);
-  setDownloadButtonUnavailable(els.settingsDownloadButton, message);
-  els.releaseStatus.textContent = message;
-  els.latestVersion.textContent = t('release.noRelease');
-  els.changelog.textContent = message;
-}
-
-async function loadLatestRelease() {
-  try {
-    const response = await fetch(LATEST_RELEASE_URL, { headers: { Accept: 'application/vnd.github+json' } });
-    if (response.status === 404) {
-      showNoRelease();
-      return;
-    }
-    if (!response.ok) throw new Error(`GitHub returned HTTP ${response.status}`);
-
-    const release = await response.json();
-    const version = release.tag_name || t('release.latest');
-    const installerAsset = getInstallerAsset(release.assets || []);
-    const downloadUrl = installerAsset?.browser_download_url;
-    els.latestVersion.textContent = version;
-    els.changelog.innerHTML = formatChangelog(release.body);
-    if (release.html_url) els.releasePageLink.href = release.html_url;
-
-    if (!downloadUrl) {
-      showNoRelease(t('release.noInstaller'));
-      els.latestVersion.textContent = version;
-      els.changelog.innerHTML = formatChangelog(release.body);
-      return;
-    }
-
-    [els.downloadButton, els.settingsDownloadButton].forEach((button) => {
-      button.href = downloadUrl;
-      button.textContent = t('release.downloadDesktop', { version });
-      button.setAttribute('download', installerAsset.name || '');
-      button.setAttribute('rel', 'noopener');
-      button.removeAttribute('target');
-      button.classList.remove('disabled');
-      button.removeAttribute('aria-disabled');
+function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {
+      // PWA support is optional; normal browser use should continue quietly.
     });
-    els.releaseStatus.textContent = t('release.installer', { name: installerAsset.name || t('release.downloadAvailable') });
-  } catch (_error) {
-    showNoRelease(t('release.fetchError'));
-  }
+  });
 }
 
 document.querySelectorAll('.item-list').forEach((list) => list.addEventListener('click', handleListClick));
@@ -1188,4 +1365,4 @@ applyTranslations();
 setupViewNav();
 setupTabs();
 render();
-loadLatestRelease();
+registerServiceWorker();

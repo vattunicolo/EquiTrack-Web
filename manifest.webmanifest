@@ -1,0 +1,24 @@
+{
+  "name": "EquiTrack",
+  "short_name": "EquiTrack",
+  "description": "Browser-based horse stable management with local storage and backup tools.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#071018",
+  "theme_color": "#071018",
+  "icons": [
+    {
+      "src": "EquiTrack lolo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "EquiTrack lolo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
