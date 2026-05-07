@@ -143,8 +143,28 @@
         <section class="summary-grid" aria-label="Stable summary">
           <article class="summary-card"><span data-i18n="summary.horses">Horses</span><strong id="horseCount">0</strong></article>
           <article class="summary-card"><span data-i18n="summary.openTasks">Open tasks</span><strong id="openTaskCount">0</strong></article>
+          <article class="summary-card"><span data-i18n="summary.todayTasks">Today's tasks</span><strong id="todayTaskCount">0</strong></article>
           <article class="summary-card"><span data-i18n="summary.hoursLogged">Hours logged</span><strong id="hoursTotal">0</strong></article>
           <article class="summary-card"><span data-i18n="summary.lowFeed">Low feed items</span><strong id="lowFeedCount">0</strong></article>
+          <article class="summary-card"><span data-i18n="summary.upcomingEvents">Upcoming events</span><strong id="upcomingEventCount">0</strong></article>
+        </section>
+
+        <section class="stable-today" aria-labelledby="todayTitle">
+          <div class="module-header">
+            <div>
+              <h3 id="todayTitle" data-i18n="today.title">Today at the stable</h3>
+              <p data-i18n="today.subtitle">Tasks, events, and feed warnings that need attention now.</p>
+            </div>
+          </div>
+          <div id="todayList" class="today-list"></div>
+        </section>
+
+        <section class="quick-actions" aria-label="Quick actions">
+          <button class="button secondary" type="button" data-quick-action="horse" data-i18n="quick.addHorse">Add horse</button>
+          <button class="button secondary" type="button" data-quick-action="task" data-i18n="quick.addTask">Add task</button>
+          <button class="button secondary" type="button" data-quick-action="hours" data-i18n="quick.addHours">Add work hours</button>
+          <button class="button secondary" type="button" data-quick-action="feed" data-i18n="quick.addFeed">Add feed item</button>
+          <button class="button secondary" type="button" data-quick-action="event" data-i18n="quick.addEvent">Add calendar event</button>
         </section>
 
         <div class="app-layout">

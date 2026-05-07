@@ -58,8 +58,25 @@ const translations = {
     'stable.title': 'Your daily stable workspace.',
     'summary.horses': 'Horses',
     'summary.openTasks': 'Open tasks',
+    'summary.todayTasks': "Today's tasks",
     'summary.hoursLogged': 'Hours logged',
     'summary.lowFeed': 'Low feed items',
+    'summary.upcomingEvents': 'Upcoming events',
+    'today.title': 'Today at the stable',
+    'today.subtitle': 'Tasks, events, and feed warnings that need attention now.',
+    'today.empty': 'Nothing urgent today. Your stable day looks calm.',
+    'today.tasksDue': 'Tasks due today',
+    'today.eventsToday': 'Calendar events today',
+    'today.feedWarnings': 'Feed warnings',
+    'quick.addHorse': 'Add horse',
+    'quick.addTask': 'Add task',
+    'quick.addHours': 'Add work hours',
+    'quick.addFeed': 'Add feed item',
+    'quick.addEvent': 'Add calendar event',
+    'empty.actionHorse': 'Add your first horse',
+    'empty.actionTask': 'Add a task',
+    'empty.actionHours': 'Add work hours',
+    'empty.actionFeed': 'Add feed item',
     'tabs.horses': 'Horses',
     'tabs.tasks': 'Tasks',
     'tabs.hours': 'Work hours',
@@ -254,8 +271,25 @@ const translations = {
     'stable.title': 'Tallin päivittäinen työtila.',
     'summary.horses': 'Hevoset',
     'summary.openTasks': 'Avoimet tehtävät',
+    'summary.todayTasks': 'Taman paivan tehtavat',
     'summary.hoursLogged': 'Kirjatut tunnit',
     'summary.lowFeed': 'Vähissä olevat rehut',
+    'summary.upcomingEvents': 'Tulevat tapahtumat',
+    'today.title': 'Tanaan tallilla',
+    'today.subtitle': 'Tehtavat, tapahtumat ja rehuvaroitukset, jotka vaativat huomiota.',
+    'today.empty': 'Ei kiireellista tanaan. Tallipaiva nayttaa rauhalliselta.',
+    'today.tasksDue': 'Taman paivan tehtavat',
+    'today.eventsToday': 'Taman paivan tapahtumat',
+    'today.feedWarnings': 'Rehuvaroitukset',
+    'quick.addHorse': 'Lisaa hevonen',
+    'quick.addTask': 'Lisaa tehtava',
+    'quick.addHours': 'Lisaa tyotunnit',
+    'quick.addFeed': 'Lisaa rehu',
+    'quick.addEvent': 'Lisaa kalenteritapahtuma',
+    'empty.actionHorse': 'Lisaa ensimmainen hevonen',
+    'empty.actionTask': 'Lisaa tehtava',
+    'empty.actionHours': 'Lisaa tyotunnit',
+    'empty.actionFeed': 'Lisaa rehu',
     'tabs.horses': 'Hevoset',
     'tabs.tasks': 'Tehtävät',
     'tabs.hours': 'Työtunnit',
@@ -450,8 +484,25 @@ const translations = {
     'stable.title': 'Il tuo spazio di lavoro quotidiano.',
     'summary.horses': 'Cavalli',
     'summary.openTasks': 'Attivita aperte',
+    'summary.todayTasks': 'Attivita di oggi',
     'summary.hoursLogged': 'Ore registrate',
     'summary.lowFeed': 'Mangimi bassi',
+    'summary.upcomingEvents': 'Eventi in arrivo',
+    'today.title': 'Oggi in scuderia',
+    'today.subtitle': 'Attivita, eventi e avvisi mangime da controllare ora.',
+    'today.empty': 'Niente di urgente oggi. La giornata in scuderia sembra tranquilla.',
+    'today.tasksDue': 'Attivita di oggi',
+    'today.eventsToday': 'Eventi di oggi',
+    'today.feedWarnings': 'Avvisi mangime',
+    'quick.addHorse': 'Aggiungi cavallo',
+    'quick.addTask': 'Aggiungi attivita',
+    'quick.addHours': 'Aggiungi ore lavoro',
+    'quick.addFeed': 'Aggiungi mangime',
+    'quick.addEvent': 'Aggiungi evento calendario',
+    'empty.actionHorse': 'Aggiungi il primo cavallo',
+    'empty.actionTask': 'Aggiungi attivita',
+    'empty.actionHours': 'Aggiungi ore lavoro',
+    'empty.actionFeed': 'Aggiungi mangime',
     'tabs.horses': 'Cavalli',
     'tabs.tasks': 'Attivita',
     'tabs.hours': 'Ore lavoro',
@@ -633,9 +684,12 @@ let activeView = 'home';
 const els = {
   horseCount: document.querySelector('#horseCount'),
   openTaskCount: document.querySelector('#openTaskCount'),
+  todayTaskCount: document.querySelector('#todayTaskCount'),
   hoursTotal: document.querySelector('#hoursTotal'),
   lowFeedCount: document.querySelector('#lowFeedCount'),
+  upcomingEventCount: document.querySelector('#upcomingEventCount'),
   appMessage: document.querySelector('#appMessage'),
+  todayList: document.querySelector('#todayList'),
   horsesList: document.querySelector('#horsesList'),
   tasksList: document.querySelector('#tasksList'),
   hoursList: document.querySelector('#hoursList'),
@@ -868,6 +922,7 @@ function renderHorseOptions() {
 function render() {
   renderSummary();
   renderHorseOptions();
+  renderToday();
   renderHorses();
   renderTasks();
   renderHours();
@@ -877,15 +932,17 @@ function render() {
 }
 
 function renderSummary() {
+  const todayValue = today();
   els.horseCount.textContent = state.horses.length;
   els.openTaskCount.textContent = state.tasks.filter((task) => !task.done).length;
+  els.todayTaskCount.textContent = state.tasks.filter((task) => task.date === todayValue && !task.done).length;
   els.hoursTotal.textContent = state.hours.reduce((total, entry) => total + Number(entry.hours || 0), 0).toFixed(1);
   els.lowFeedCount.textContent = state.inventory.filter((item) => {
     const status = getFeedStatus(item).key;
     return status === 'low' || status === 'critical' || status === 'empty';
   }).length;
+  els.upcomingEventCount.textContent = state.calendarEvents.filter((event) => event.date >= todayValue).length;
   if (els.eventsTodayCount && els.eventsWeekCount) {
-    const todayValue = today();
     const now = new Date(`${todayValue}T00:00:00`);
     const weekEnd = new Date(now);
     weekEnd.setDate(weekEnd.getDate() + 7);
@@ -897,9 +954,53 @@ function renderSummary() {
   }
 }
 
+function renderToday() {
+  const todayValue = today();
+  const tasksToday = state.tasks.filter((task) => task.date === todayValue && !task.done);
+  const eventsToday = state.calendarEvents.filter((event) => event.date === todayValue);
+  const feedWarnings = state.inventory
+    .map(normalizeFeedItem)
+    .filter((item) => ['low', 'critical', 'empty'].includes(getFeedStatus(item).key));
+
+  if (!tasksToday.length && !eventsToday.length && !feedWarnings.length) {
+    els.todayList.innerHTML = `<p class="empty-state today-empty">${t('today.empty')}</p>`;
+    return;
+  }
+
+  const sections = [];
+  if (tasksToday.length) {
+    sections.push(`
+      <article class="today-card">
+        <h4>${t('today.tasksDue')}</h4>
+        ${tasksToday.map((task) => `<p>${escapeHtml(task.title)}</p>`).join('')}
+      </article>
+    `);
+  }
+  if (eventsToday.length) {
+    sections.push(`
+      <article class="today-card">
+        <h4>${t('today.eventsToday')}</h4>
+        ${eventsToday.map((event) => `<p>${escapeHtml(event.time ? `${event.time} - ${event.name}` : event.name)}</p>`).join('')}
+      </article>
+    `);
+  }
+  if (feedWarnings.length) {
+    sections.push(`
+      <article class="today-card">
+        <h4>${t('today.feedWarnings')}</h4>
+        ${feedWarnings.map((item) => {
+          const status = getFeedStatus(item);
+          return `<p><span class="pill ${status.className}">${t(`feed.${status.key}`)}</span> ${escapeHtml(item.name)}</p>`;
+        }).join('')}
+      </article>
+    `);
+  }
+  els.todayList.innerHTML = sections.join('');
+}
+
 function renderHorses() {
   if (state.horses.length === 0) {
-    els.horsesList.innerHTML = `<p class="empty-state">${t('empty.horses')}</p>`;
+    els.horsesList.innerHTML = renderActionEmpty('empty.horses', 'empty.actionHorse', 'horse');
     return;
   }
   els.horsesList.innerHTML = state.horses.map((rawHorse) => {
@@ -930,7 +1031,7 @@ function renderHorses() {
 
 function renderTasks() {
   if (state.tasks.length === 0) {
-    els.tasksList.innerHTML = `<p class="empty-state">${t('empty.tasks')}</p>`;
+    els.tasksList.innerHTML = renderActionEmpty('empty.tasks', 'empty.actionTask', 'task');
     return;
   }
   const sortedTasks = [...state.tasks].sort((a, b) => a.date.localeCompare(b.date));
@@ -959,7 +1060,7 @@ function renderTasks() {
 
 function renderHours() {
   if (state.hours.length === 0) {
-    els.hoursList.innerHTML = `<p class="empty-state">${t('empty.hours')}</p>`;
+    els.hoursList.innerHTML = renderActionEmpty('empty.hours', 'empty.actionHours', 'hours');
     return;
   }
   els.hoursList.innerHTML = state.hours.map((entry) => `
@@ -982,7 +1083,7 @@ function renderHours() {
 
 function renderInventory() {
   if (state.inventory.length === 0) {
-    els.inventoryList.innerHTML = `<p class="empty-state">${t('empty.inventory')}</p>`;
+    els.inventoryList.innerHTML = renderActionEmpty('empty.inventory', 'empty.actionFeed', 'feed');
     return;
   }
   els.inventoryList.innerHTML = state.inventory.map((item) => {
@@ -1011,6 +1112,15 @@ function renderInventory() {
       </article>
     `;
   }).join('');
+}
+
+function renderActionEmpty(messageKey, actionKey, action) {
+  return `
+    <div class="empty-state action-empty">
+      <p>${t(messageKey)}</p>
+      <button class="button secondary" type="button" data-quick-action="${action}">${t(actionKey)}</button>
+    </div>
+  `;
 }
 
 function renderEvents() {
@@ -1220,6 +1330,24 @@ function handleListClick(event) {
   if (action === 'delete-inventory') deleteItem('inventory', id, t('delete.inventory'), t('message.inventoryDeleted'));
   if (action === 'edit-event') fillEventForm(id);
   if (action === 'delete-event') deleteItem('calendarEvents', id, t('delete.event'), t('message.eventDeleted'));
+}
+
+function handleQuickAction(event) {
+  const button = event.target.closest('[data-quick-action]');
+  if (!button) return;
+  const action = button.dataset.quickAction;
+  const actionMap = {
+    horse: { view: 'stable', tab: 'horses', form: els.horseForm },
+    task: { view: 'stable', tab: 'tasks', form: els.taskForm },
+    hours: { view: 'stable', tab: 'hours', form: els.hoursForm },
+    feed: { view: 'stable', tab: 'inventory', form: els.inventoryForm },
+    event: { view: 'calendar', form: els.eventForm }
+  };
+  const target = actionMap[action];
+  if (!target) return;
+  showView(target.view);
+  if (target.tab) activateTab(target.tab);
+  target.form?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 function fillHorseForm(id) {
@@ -1435,6 +1563,7 @@ function registerServiceWorker() {
 }
 
 document.querySelectorAll('.item-list').forEach((list) => list.addEventListener('click', handleListClick));
+document.querySelector('#stableView').addEventListener('click', handleQuickAction);
 els.horseForm.addEventListener('submit', handleHorseSubmit);
 els.taskForm.addEventListener('submit', handleTaskSubmit);
 els.hoursForm.addEventListener('submit', handleHoursSubmit);
