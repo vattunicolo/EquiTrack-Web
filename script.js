@@ -81,13 +81,19 @@ const translations = {
     'tabs.tasks': 'Tasks',
     'tabs.hours': 'Work hours',
     'tabs.inventory': 'Feed PRO',
-    'horses.title': 'Horse management',
-    'horses.subtitle': 'Add horses and keep care notes close at hand.',
+    'horses.title': 'Horse Profile PRO',
+    'horses.subtitle': "Keep each horse's identity, care, feeding, and health notes in one clear profile.",
+    'horses.optionalHelp': 'Only the horse name is required. Add the details you need now and fill the rest later.',
+    'horses.basicInfo': 'Basic info',
+    'horses.care': 'Care',
+    'horses.feeding': 'Feeding',
+    'horses.health': 'Health',
+    'horses.notesGroup': 'Notes',
     'horses.name': 'Horse name',
     'horses.nickname': 'Stable name / nickname',
     'horses.owner': 'Owner',
     'horses.breed': 'Breed',
-    'horses.birth': 'Birth year or date',
+    'horses.birth': 'Date of birth or birth year',
     'horses.gender': 'Gender',
     'horses.color': 'Color',
     'horses.registration': 'Registration number',
@@ -102,6 +108,9 @@ const translations = {
     'horses.carePlaceholder': 'Daily care, handling, routines',
     'horses.save': 'Save horse record',
     'horses.notesPlaceholder': 'Training, temperament, or other notes',
+    'horses.viewDetails': 'View full profile',
+    'horses.hideDetails': 'Hide full profile',
+    'horses.profileEmpty': 'No extra profile details yet.',
     'tasks.title': 'Daily tasks',
     'tasks.subtitle': 'Plan and complete stable jobs for each day.',
     'tasks.task': 'Task',
@@ -294,13 +303,19 @@ const translations = {
     'tabs.tasks': 'Tehtävät',
     'tabs.hours': 'Työtunnit',
     'tabs.inventory': 'Rehu PRO',
-    'horses.title': 'Hevosten hallinta',
-    'horses.subtitle': 'Lisää hevoset ja pidä hoitomuistiinpanot lähellä.',
+    'horses.title': 'Horse Profile PRO',
+    'horses.subtitle': 'Pidä hevosen perustiedot, hoito, ruokinta ja terveysmuistiinpanot yhdessä selkeässä profiilissa.',
+    'horses.optionalHelp': 'Vain hevosen nimi on pakollinen. Lisää tarvittavat tiedot nyt ja täydennä loput myöhemmin.',
+    'horses.basicInfo': 'Perustiedot',
+    'horses.care': 'Hoito',
+    'horses.feeding': 'Ruokinta',
+    'horses.health': 'Terveys',
+    'horses.notesGroup': 'Muistiinpanot',
     'horses.name': 'Hevosen nimi',
     'horses.nickname': 'Tallinimi / lempinimi',
     'horses.owner': 'Omistaja',
     'horses.breed': 'Rotu',
-    'horses.birth': 'Syntymavuosi tai -paiva',
+    'horses.birth': 'Syntymäaika tai -vuosi',
     'horses.gender': 'Sukupuoli',
     'horses.color': 'Vari',
     'horses.registration': 'Rekisterinumero',
@@ -315,6 +330,9 @@ const translations = {
     'horses.carePlaceholder': 'Paivittainen hoito, kasittely ja rutiinit',
     'horses.save': 'Tallenna hevonen',
     'horses.notesPlaceholder': 'Harjoittelu, luonne tai muut muistiinpanot',
+    'horses.viewDetails': 'Näytä koko profiili',
+    'horses.hideDetails': 'Piilota koko profiili',
+    'horses.profileEmpty': 'Lisätietoja ei ole vielä lisätty.',
     'tasks.title': 'Päivittäiset tehtävät',
     'tasks.subtitle': 'Suunnittele ja kuittaa tallin päivittäiset työt.',
     'tasks.task': 'Tehtävä',
@@ -507,8 +525,14 @@ const translations = {
     'tabs.tasks': 'Attivita',
     'tabs.hours': 'Ore lavoro',
     'tabs.inventory': 'Mangimi PRO',
-    'horses.title': 'Gestione cavalli',
-    'horses.subtitle': 'Aggiungi cavalli e tieni le note di cura a portata di mano.',
+    'horses.title': 'Horse Profile PRO',
+    'horses.subtitle': "Tieni identità, cura, alimentazione e salute di ogni cavallo in un profilo chiaro.",
+    'horses.optionalHelp': 'Solo il nome del cavallo è obbligatorio. Aggiungi ora i dettagli utili e completa il resto più tardi.',
+    'horses.basicInfo': 'Informazioni base',
+    'horses.care': 'Cura',
+    'horses.feeding': 'Alimentazione',
+    'horses.health': 'Salute',
+    'horses.notesGroup': 'Note',
     'horses.name': 'Nome cavallo',
     'horses.nickname': 'Nome in scuderia / soprannome',
     'horses.owner': 'Proprietario',
@@ -528,6 +552,9 @@ const translations = {
     'horses.carePlaceholder': 'Cura quotidiana, gestione e routine',
     'horses.save': 'Salva cavallo',
     'horses.notesPlaceholder': 'Allenamento, carattere o altre note',
+    'horses.viewDetails': 'Vedi profilo completo',
+    'horses.hideDetails': 'Nascondi profilo completo',
+    'horses.profileEmpty': 'Nessun dettaglio extra ancora aggiunto.',
     'tasks.title': 'Attivita giornaliere',
     'tasks.subtitle': 'Pianifica e completa i lavori quotidiani della scuderia.',
     'tasks.task': 'Attivita',
@@ -1005,20 +1032,54 @@ function renderHorses() {
   }
   els.horsesList.innerHTML = state.horses.map((rawHorse) => {
     const horse = normalizeHorse(rawHorse);
-    const notes = [horse.feedingNotes, horse.careNotes, horse.shoeingNotes, horse.vaccinationNotes, horse.vetNotes, horse.notes]
-      .filter(Boolean)
-      .join(' | ');
+    const headline = [horse.breed, horse.gender, horse.color].filter(Boolean).join(' · ');
+    const importantMeta = [
+      horse.owner && `${t('horses.owner')}: ${horse.owner}`,
+      horse.birth && `${t('horses.birth')}: ${horse.birth}`,
+      horse.registration && `${t('horses.registration')}: ${horse.registration}`
+    ].filter(Boolean);
     return `
-      <article class="item-card horse-card">
-        <div>
-          <h4>${escapeHtml(horse.name)}${horse.nickname ? ` <span class="subtle-name">(${escapeHtml(horse.nickname)})</span>` : ''}</h4>
-          <p>${escapeHtml(notes || t('common.noNotes'))}</p>
-          <div class="item-meta">
-            <span class="pill">${t('horses.owner')}: ${escapeHtml(horse.owner || t('common.notSet'))}</span>
-            <span class="pill">${t('horses.birth')}: ${escapeHtml(horse.birth || t('common.notSet'))}</span>
-            <span class="pill">${t('horses.breed')}: ${escapeHtml(horse.breed || t('common.notSet'))}</span>
-            <span class="pill">${t('horses.registration')}: ${escapeHtml(horse.registration || t('common.notSet'))}</span>
+      <article class="item-card horse-card horse-profile-card">
+        <div class="horse-profile-main">
+          <div class="horse-profile-head">
+            <div>
+              <h4>${escapeHtml(horse.name)}${horse.nickname ? ` <span class="subtle-name">(${escapeHtml(horse.nickname)})</span>` : ''}</h4>
+              <p>${escapeHtml(headline || t('horses.profileEmpty'))}</p>
+            </div>
           </div>
+          <div class="item-meta">
+            ${importantMeta.length
+              ? importantMeta.map((item) => `<span class="pill">${escapeHtml(item)}</span>`).join('')
+              : `<span class="pill">${t('horses.profileEmpty')}</span>`}
+          </div>
+          <details class="horse-details">
+            <summary>${t('horses.viewDetails')}</summary>
+            <div class="horse-detail-grid">
+              ${renderHorseDetailGroup('horses.basicInfo', [
+                ['horses.owner', horse.owner],
+                ['horses.breed', horse.breed],
+                ['horses.birth', horse.birth],
+                ['horses.gender', horse.gender],
+                ['horses.color', horse.color],
+                ['horses.registration', horse.registration]
+              ])}
+              ${renderHorseDetailGroup('horses.care', [
+                ['horses.careNotes', horse.careNotes],
+                ['horses.shoeingNotes', horse.shoeingNotes]
+              ])}
+              ${renderHorseDetailGroup('horses.feeding', [
+                ['horses.feedingNotes', horse.feedingNotes]
+              ])}
+              ${renderHorseDetailGroup('horses.health', [
+                ['horses.vaccinationNotes', horse.vaccinationNotes],
+                ['horses.dewormingNotes', horse.dewormingNotes],
+                ['horses.vetNotes', horse.vetNotes]
+              ])}
+              ${renderHorseDetailGroup('horses.notesGroup', [
+                ['horses.generalNotes', horse.notes]
+              ])}
+            </div>
+          </details>
         </div>
         <div class="item-actions">
           <button class="button ghost" type="button" data-action="edit-horse" data-id="${horse.id}">${t('common.edit')}</button>
@@ -1027,6 +1088,18 @@ function renderHorses() {
       </article>
     `;
   }).join('');
+}
+
+function renderHorseDetailGroup(titleKey, rows) {
+  const content = rows.map(([labelKey, value]) => `
+    <p><strong>${t(labelKey)}</strong><span>${escapeHtml(value || t('common.notSet'))}</span></p>
+  `).join('');
+  return `
+    <section class="horse-detail-group">
+      <h5>${t(titleKey)}</h5>
+      ${content}
+    </section>
+  `;
 }
 
 function renderTasks() {

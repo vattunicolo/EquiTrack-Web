@@ -177,24 +177,40 @@
 
           <div class="module-shell">
             <section class="module-panel active" id="horsesPanel">
-              <div class="module-header"><div><h3 data-i18n="horses.title">Horse management</h3><p data-i18n="horses.subtitle">Add horses and keep care notes close at hand.</p></div></div>
+              <div class="module-header"><div><h3 data-i18n="horses.title">Horse Profile PRO</h3><p data-i18n="horses.subtitle">Keep each horse's identity, care, feeding, and health notes in one clear profile.</p></div></div>
               <form id="horseForm" class="entry-form">
                 <input type="hidden" name="id">
-                <label><span data-i18n="horses.name">Horse name</span><input name="name" required placeholder="Aurora"></label>
-                <label><span data-i18n="horses.nickname">Stable name / nickname</span><input name="nickname" placeholder="Auri"></label>
-                <label><span data-i18n="horses.owner">Owner</span><input name="owner" placeholder="Stable owner"></label>
-                <label><span data-i18n="horses.breed">Breed</span><input name="breed" placeholder="Finnhorse"></label>
-                <label><span data-i18n="horses.birth">Birth year or date</span><input name="birth" placeholder="2018 or 2018-05-12"></label>
-                <label><span data-i18n="horses.gender">Gender</span><input name="gender" placeholder="Mare"></label>
-                <label><span data-i18n="horses.color">Color</span><input name="color" placeholder="Bay"></label>
-                <label><span data-i18n="horses.registration">Registration number</span><input name="registration" placeholder="FI-12345"></label>
-                <label class="full"><span data-i18n="horses.feedingNotes">Feeding notes</span><textarea name="feedingNotes" rows="2" data-i18n-placeholder="horses.feedingPlaceholder" placeholder="Feed plan and supplements"></textarea></label>
-                <label class="full"><span data-i18n="horses.careNotes">Care notes</span><textarea name="careNotes" rows="2" data-i18n-placeholder="horses.carePlaceholder" placeholder="Daily care, handling, routines"></textarea></label>
-                <label class="full"><span data-i18n="horses.shoeingNotes">Shoeing notes</span><textarea name="shoeingNotes" rows="2"></textarea></label>
-                <label class="full"><span data-i18n="horses.vaccinationNotes">Vaccination notes</span><textarea name="vaccinationNotes" rows="2"></textarea></label>
-                <label class="full"><span data-i18n="horses.dewormingNotes">Deworming notes</span><textarea name="dewormingNotes" rows="2"></textarea></label>
-                <label class="full"><span data-i18n="horses.vetNotes">Vet / contact notes</span><textarea name="vetNotes" rows="2"></textarea></label>
-                <label class="full"><span data-i18n="horses.generalNotes">General notes</span><textarea name="notes" rows="3" data-i18n-placeholder="horses.notesPlaceholder" placeholder="Training, temperament, or other notes"></textarea></label>
+                <p class="form-help full" data-i18n="horses.optionalHelp">Only the horse name is required. Add the details you need now and fill the rest later.</p>
+                <fieldset class="form-group">
+                  <legend data-i18n="horses.basicInfo">Basic info</legend>
+                  <label><span data-i18n="horses.name">Horse name</span><input name="name" required placeholder="Aurora"></label>
+                  <label><span data-i18n="horses.nickname">Stable name / nickname</span><input name="nickname" placeholder="Auri"></label>
+                  <label><span data-i18n="horses.owner">Owner</span><input name="owner" placeholder="Stable owner"></label>
+                  <label><span data-i18n="horses.breed">Breed</span><input name="breed" placeholder="Finnhorse"></label>
+                  <label><span data-i18n="horses.birth">Date of birth or birth year</span><input name="birth" placeholder="2018 or 2018-05-12"></label>
+                  <label><span data-i18n="horses.gender">Gender</span><input name="gender" placeholder="Mare"></label>
+                  <label><span data-i18n="horses.color">Color</span><input name="color" placeholder="Bay"></label>
+                  <label><span data-i18n="horses.registration">Registration number</span><input name="registration" placeholder="FI-12345"></label>
+                </fieldset>
+                <fieldset class="form-group">
+                  <legend data-i18n="horses.care">Care</legend>
+                  <label class="full"><span data-i18n="horses.careNotes">Care notes</span><textarea name="careNotes" rows="2" data-i18n-placeholder="horses.carePlaceholder" placeholder="Daily care, handling, routines"></textarea></label>
+                  <label class="full"><span data-i18n="horses.shoeingNotes">Shoeing notes</span><textarea name="shoeingNotes" rows="2"></textarea></label>
+                </fieldset>
+                <fieldset class="form-group">
+                  <legend data-i18n="horses.feeding">Feeding</legend>
+                  <label class="full"><span data-i18n="horses.feedingNotes">Feeding notes</span><textarea name="feedingNotes" rows="2" data-i18n-placeholder="horses.feedingPlaceholder" placeholder="Feed plan and supplements"></textarea></label>
+                </fieldset>
+                <fieldset class="form-group">
+                  <legend data-i18n="horses.health">Health</legend>
+                  <label class="full"><span data-i18n="horses.vaccinationNotes">Vaccination notes</span><textarea name="vaccinationNotes" rows="2"></textarea></label>
+                  <label class="full"><span data-i18n="horses.dewormingNotes">Deworming notes</span><textarea name="dewormingNotes" rows="2"></textarea></label>
+                  <label class="full"><span data-i18n="horses.vetNotes">Vet / contact notes</span><textarea name="vetNotes" rows="2"></textarea></label>
+                </fieldset>
+                <fieldset class="form-group">
+                  <legend data-i18n="horses.notesGroup">Notes</legend>
+                  <label class="full"><span data-i18n="horses.generalNotes">General notes</span><textarea name="notes" rows="3" data-i18n-placeholder="horses.notesPlaceholder" placeholder="Training, temperament, or other notes"></textarea></label>
+                </fieldset>
                 <button class="button primary" type="submit" data-i18n="horses.save">Save horse record</button>
               </form>
               <div id="horsesList" class="item-list"></div>
