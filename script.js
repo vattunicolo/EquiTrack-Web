@@ -215,6 +215,15 @@ const translations = {
     'backup.confirmRestore': 'Restore the local data saved before the last import?',
     'backup.errorInvalidJson': 'The selected file is not valid JSON.',
     'backup.errorInvalidShape': 'This does not look like an EquiTrack backup.',
+    'pwa.installTitle': 'Install EquiTrack',
+    'pwa.installText': 'Use EquiTrack like an app from your phone or computer.',
+    'pwa.installIos': 'iPhone / Safari: Share -> Add to Home Screen.',
+    'pwa.installAndroid': 'Android / Chrome: menu -> Install app or Add to Home screen.',
+    'pwa.installDesktop': 'Desktop Chrome / Edge: use the install icon in the address bar if available.',
+    'pwa.offlineText': 'You are offline. EquiTrack still works with saved local data in this browser.',
+    'pwa.onlineText': 'Back online.',
+    'pwa.updateText': 'A new version is available. Refresh to update.',
+    'pwa.refresh': 'Refresh',
     'footer.local': 'Data is stored locally in your browser.',
     'common.date': 'Date',
     'common.time': 'Time',
@@ -489,6 +498,15 @@ const translations = {
     'backup.confirmRestore': 'Palautetaanko ennen viimeista tuontia tallennetut paikalliset tiedot?',
     'backup.errorInvalidJson': 'Valittu tiedosto ei ole kelvollinen JSON.',
     'backup.errorInvalidShape': 'Tama ei nayta EquiTrack-varmuuskopiolta.',
+    'pwa.installTitle': 'Asenna EquiTrack',
+    'pwa.installText': 'Kayta EquiTrackia sovelluksena puhelimessa tai tietokoneella.',
+    'pwa.installIos': 'iPhone / Safari: Jaa -> Lisaa Koti-valikkoon.',
+    'pwa.installAndroid': 'Android / Chrome: valikko -> Asenna sovellus tai Lisaa aloitusnayttoon.',
+    'pwa.installDesktop': 'Desktop Chrome / Edge: kayta osoiterivin asennuskuvaketta, jos se nakyy.',
+    'pwa.offlineText': 'Olet offline-tilassa. EquiTrack toimii edelleen tahan selaimeen tallennetuilla paikallisilla tiedoilla.',
+    'pwa.onlineText': 'Yhteys palautui.',
+    'pwa.updateText': 'Uusi versio on saatavilla. Paivita lataamalla sivu uudelleen.',
+    'pwa.refresh': 'Paivita',
     'footer.local': 'Tiedot tallennetaan paikallisesti selaimeesi.',
     'common.date': 'Päivä',
     'common.time': 'Aika',
@@ -763,6 +781,15 @@ const translations = {
     'backup.confirmRestore': "Ripristinare i dati locali salvati prima dell'ultima importazione?",
     'backup.errorInvalidJson': 'Il file selezionato non e JSON valido.',
     'backup.errorInvalidShape': 'Questo non sembra un backup EquiTrack.',
+    'pwa.installTitle': 'Installa EquiTrack',
+    'pwa.installText': 'Usa EquiTrack come app dal telefono o dal computer.',
+    'pwa.installIos': 'iPhone / Safari: Condividi -> Aggiungi alla schermata Home.',
+    'pwa.installAndroid': 'Android / Chrome: menu -> Installa app o Aggiungi alla schermata Home.',
+    'pwa.installDesktop': "Desktop Chrome / Edge: usa l'icona di installazione nella barra indirizzi se disponibile.",
+    'pwa.offlineText': 'Sei offline. EquiTrack funziona ancora con i dati locali salvati in questo browser.',
+    'pwa.onlineText': 'Di nuovo online.',
+    'pwa.updateText': 'Una nuova versione e disponibile. Aggiorna per installarla.',
+    'pwa.refresh': 'Aggiorna',
     'footer.local': 'I dati sono salvati localmente nel browser.',
     'common.date': 'Data',
     'common.time': 'Ora',
@@ -865,6 +892,7 @@ const defaultData = {
 let state = loadData();
 let activeView = 'home';
 let calendarFilters = { scope: 'all', type: 'all', horse: 'all' };
+let pendingServiceWorker = null;
 
 const els = {
   horseCount: document.querySelector('#horseCount'),
@@ -901,6 +929,9 @@ const els = {
   importPreview: document.querySelector('#importPreview'),
   lastBackupAt: document.querySelector('#lastBackupAt'),
   restoreEmergencyButton: document.querySelector('#restoreEmergencyButton'),
+  offlineStatus: document.querySelector('#offlineStatus'),
+  updateNotice: document.querySelector('#updateNotice'),
+  refreshAppButton: document.querySelector('#refreshAppButton'),
   resetDataButton: document.querySelector('#resetDataButton'),
   languageSelect: document.querySelector('#languageSelect')
 };
@@ -2044,16 +2075,58 @@ function handleLanguageChange(event) {
   localStorage.setItem(LANGUAGE_KEY, currentLanguage);
   applyTranslations();
   render();
+  updateOfflineStatus(false);
   showMessage(t('message.languageChanged'));
 }
 
 function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js').catch(() => {
+    navigator.serviceWorker.register('service-worker.js').then((registration) => {
+      if (registration.waiting && navigator.serviceWorker.controller) {
+        pendingServiceWorker = registration.waiting;
+        showUpdateNotice();
+      }
+      registration.addEventListener('updatefound', () => {
+        const worker = registration.installing;
+        if (!worker) return;
+        worker.addEventListener('statechange', () => {
+          if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+            pendingServiceWorker = worker;
+            showUpdateNotice();
+          }
+        });
+      });
+    }).catch(() => {
       // PWA support is optional; normal browser use should continue quietly.
     });
   });
+}
+
+function showUpdateNotice() {
+  if (!els.updateNotice) return;
+  els.updateNotice.hidden = false;
+}
+
+function updateOfflineStatus(showFeedback = true) {
+  if (!els.offlineStatus) return;
+  const offline = !navigator.onLine;
+  els.offlineStatus.hidden = !offline;
+  if (showFeedback) showMessage(offline ? t('pwa.offlineText') : t('pwa.onlineText'));
+}
+
+function refreshForUpdate() {
+  if (!pendingServiceWorker) {
+    window.location.reload();
+    return;
+  }
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (refreshing) return;
+    refreshing = true;
+    window.location.reload();
+  });
+  pendingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
 }
 
 document.querySelectorAll('.item-list').forEach((list) => list.addEventListener('click', handleListClick));
@@ -2066,6 +2139,7 @@ els.eventForm.addEventListener('submit', handleEventSubmit);
 els.exportButton.addEventListener('click', exportBackup);
 els.importInput.addEventListener('change', (event) => importBackup(event.target.files[0]));
 els.restoreEmergencyButton?.addEventListener('click', restoreEmergencyBackup);
+els.refreshAppButton?.addEventListener('click', refreshForUpdate);
 els.resetDataButton.addEventListener('click', resetLocalData);
 els.languageSelect.addEventListener('change', handleLanguageChange);
 els.calendarScopeFilter?.addEventListener('change', handleCalendarFilterChange);
@@ -2080,4 +2154,7 @@ setupViewNav();
 setupOnboarding();
 setupTabs();
 render();
+updateOfflineStatus(false);
+window.addEventListener('online', () => updateOfflineStatus(true));
+window.addEventListener('offline', () => updateOfflineStatus(true));
 registerServiceWorker();

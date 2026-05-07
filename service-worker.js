@@ -1,4 +1,4 @@
-const CACHE_NAME = 'equitrack-web-v9';
+const CACHE_NAME = 'equitrack-web-static-v10';
 const APP_ASSETS = [
   './',
   './index.html',
@@ -7,12 +7,12 @@ const APP_ASSETS = [
   './manifest.webmanifest',
   './EquiTrack lolo.png'
 ];
+const CACHE_PATHS = new Set(APP_ASSETS);
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => cache.addAll(APP_ASSETS))
-      .then(() => self.skipWaiting())
   );
 });
 
@@ -24,16 +24,28 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+self.addEventListener('message', (event) => {
+  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
+});
+
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) return;
+  const path = url.pathname.split('/').pop();
+  const isAppRoute = event.request.mode === 'navigate';
+  const isStaticAsset = CACHE_PATHS.has(`./${path}`) || CACHE_PATHS.has(url.pathname);
+  if (!isAppRoute && !isStaticAsset) return;
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
+    fetch(event.request).then((response) => {
+      if (response.ok && isStaticAsset) {
         const copy = response.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-        return response;
-      });
+      }
+      return response;
+    }).catch(() => {
+      if (isAppRoute) return caches.match('./index.html');
+      return caches.match(event.request).then((cached) => cached || caches.match(`./${path}`));
     })
   );
 });

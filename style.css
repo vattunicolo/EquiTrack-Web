@@ -471,6 +471,34 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
 .summary-card strong { display: block; margin-top: 12px; font-size: 42px; line-height: 1; color: #14335a; }
 .panel { background: var(--surface-strong); }
 .panel strong { display: block; margin-bottom: 10px; font-size: 28px; color: #14335a; }
+.install-list {
+  color: var(--muted);
+  display: grid;
+  gap: 8px;
+  line-height: 1.55;
+  margin: 14px 0;
+  padding-left: 18px;
+}
+.offline-status, .update-notice {
+  border: 1px solid rgba(78, 205, 196, 0.35);
+  border-radius: 8px;
+  background: #f3fbfa;
+  color: #14335a;
+  font-weight: 750;
+  margin-top: 12px;
+  padding: 12px;
+}
+.offline-status[hidden], .update-notice[hidden] { display: none; }
+.update-notice {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+.update-notice .button {
+  min-height: 38px;
+  width: auto;
+}
 .social-links { flex-wrap: wrap; gap: 10px; }
 .social-links a, .panel a {
   display: inline-flex;
@@ -854,6 +882,7 @@ textarea { resize: vertical; }
   .summary-grid, .feature-grid, .side-tabs, .entry-form, .item-card, .feed-stats, .quick-actions, .form-group, .horse-detail-grid, .calendar-tools { grid-template-columns: minmax(0, 1fr); }
   .summary-card strong { font-size: 36px; }
   .feature-card, .panel, .summary-card { padding: 18px; }
+  .update-notice { align-items: stretch; display: grid; }
   .about-panel { align-items: flex-start; }
   .settings-emblem { width: 48px; height: 48px; }
   .module-panel { padding: 16px; }

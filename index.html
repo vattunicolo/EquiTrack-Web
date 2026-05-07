@@ -363,6 +363,21 @@
             </label>
           </article>
 
+          <article class="panel install-panel">
+            <h3 data-i18n="pwa.installTitle">Install EquiTrack</h3>
+            <p data-i18n="pwa.installText">Use EquiTrack like an app from your phone or computer.</p>
+            <ul class="install-list">
+              <li data-i18n="pwa.installIos">iPhone / Safari: Share -> Add to Home Screen.</li>
+              <li data-i18n="pwa.installAndroid">Android / Chrome: menu -> Install app or Add to Home screen.</li>
+              <li data-i18n="pwa.installDesktop">Desktop Chrome / Edge: use the install icon in the address bar if available.</li>
+            </ul>
+            <p id="offlineStatus" class="offline-status" hidden data-i18n="pwa.offlineText">You are offline. EquiTrack still works with saved local data in this browser.</p>
+            <div id="updateNotice" class="update-notice" hidden>
+              <span data-i18n="pwa.updateText">A new version is available. Refresh to update.</span>
+              <button id="refreshAppButton" class="button secondary" type="button" data-i18n="pwa.refresh">Refresh</button>
+            </div>
+          </article>
+
           <article class="panel">
             <h3 data-i18n="settings.backupTitle">Backup PRO</h3>
             <p data-i18n="settings.backupText">Export a dated JSON backup or safely preview and restore one you saved earlier.</p>
