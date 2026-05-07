@@ -243,17 +243,40 @@
             </section>
 
             <section class="module-panel" id="inventoryPanel">
-              <div class="module-header"><div><h3 data-i18n="inventory.title">Feed Inventory PRO</h3><p data-i18n="inventory.subtitle">Track feed categories, daily usage, estimated days remaining, and stock warnings.</p></div></div>
+              <div class="module-header"><div><h3 data-i18n="inventory.title">Feed Inventory PRO 2.0</h3><p data-i18n="inventory.subtitle">Track stock, usage, suppliers, storage, horse consumption, and shopping needs.</p></div></div>
               <form id="inventoryForm" class="entry-form">
                 <input type="hidden" name="id">
                 <label><span data-i18n="inventory.name">Feed item name</span><input name="name" required placeholder="Hay"></label>
                 <label><span data-i18n="inventory.category">Type / category</span><input name="category" required placeholder="Forage"></label>
                 <label><span data-i18n="inventory.quantity">Current amount</span><input name="quantity" type="number" min="0" step="0.1" required placeholder="42"></label>
                 <label><span data-i18n="inventory.unit">Unit</span><input name="unit" required placeholder="bales"></label>
-                <label><span data-i18n="inventory.dailyUsage">Daily usage</span><input name="dailyUsage" type="number" min="0" step="0.1" required placeholder="3.5"></label>
+                <label><span data-i18n="inventory.dailyUsage">Daily usage</span><input name="dailyUsage" type="number" min="0" step="0.1" placeholder="3.5"></label>
                 <label><span data-i18n="inventory.minimum">Low stock threshold</span><input name="minimum" type="number" min="0" step="0.1" required placeholder="12"></label>
+                <fieldset class="form-group">
+                  <legend data-i18n="inventory.advanced">Advanced details, optional</legend>
+                  <label><span data-i18n="inventory.supplier">Supplier / shop</span><input name="supplier" placeholder="Feed shop"></label>
+                  <label><span data-i18n="inventory.purchaseDate">Purchase date</span><input name="purchaseDate" type="date"></label>
+                  <label><span data-i18n="inventory.expiryDate">Expiry date</span><input name="expiryDate" type="date"></label>
+                  <label><span data-i18n="inventory.storageLocation">Storage location</span><input name="storageLocation" placeholder="Barn A"></label>
+                  <label><span data-i18n="inventory.cost">Cost / price</span><input name="cost" type="number" min="0" step="0.01" placeholder="89.90"></label>
+                  <label class="full"><span data-i18n="common.notesSimple">Notes</span><textarea name="notes" rows="2" data-i18n-placeholder="inventory.notesPlaceholder" placeholder="Delivery notes, batch, supplier contact"></textarea></label>
+                </fieldset>
+                <fieldset class="form-group">
+                  <legend data-i18n="inventory.horseUsage">Per-horse consumption, optional</legend>
+                  <label><span data-i18n="inventory.assignedHorses">Assigned horses</span><select name="horseIds" multiple></select></label>
+                  <label><span data-i18n="inventory.perHorseUsage">Daily usage per horse</span><input name="perHorseUsage" type="number" min="0" step="0.1" placeholder="1.5"></label>
+                </fieldset>
                 <button class="button primary" type="submit" data-i18n="inventory.save">Save inventory item</button>
               </form>
+              <section class="shopping-panel" aria-labelledby="shoppingTitle">
+                <div class="module-header">
+                  <div>
+                    <h3 id="shoppingTitle" data-i18n="shopping.title">Shopping list</h3>
+                    <p data-i18n="shopping.subtitle">Low, critical, and empty feed items appear here automatically.</p>
+                  </div>
+                </div>
+                <div id="shoppingList" class="item-list"></div>
+              </section>
               <div id="inventoryList" class="item-list"></div>
             </section>
           </div>

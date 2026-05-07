@@ -124,15 +124,31 @@ const translations = {
     'hours.hours': 'Hours',
     'hours.notesPlaceholder': 'Morning shift, stalls cleaned, feeding done',
     'hours.save': 'Save work log',
-    'inventory.title': 'Feed Inventory PRO',
-    'inventory.subtitle': 'Track feed categories, daily usage, estimated days remaining, and stock warnings.',
+    'inventory.title': 'Feed Inventory PRO 2.0',
+    'inventory.subtitle': 'Track stock, usage, suppliers, storage, horse consumption, and shopping needs.',
     'inventory.name': 'Feed item name',
     'inventory.category': 'Type / category',
     'inventory.quantity': 'Current amount',
     'inventory.unit': 'Unit',
     'inventory.dailyUsage': 'Daily usage',
     'inventory.minimum': 'Low stock threshold',
+    'inventory.advanced': 'Advanced details, optional',
+    'inventory.supplier': 'Supplier / shop',
+    'inventory.purchaseDate': 'Purchase date',
+    'inventory.expiryDate': 'Expiry date',
+    'inventory.storageLocation': 'Storage location',
+    'inventory.cost': 'Cost / price',
+    'inventory.notesPlaceholder': 'Delivery notes, batch, supplier contact',
+    'inventory.horseUsage': 'Per-horse consumption, optional',
+    'inventory.assignedHorses': 'Assigned horses',
+    'inventory.perHorseUsage': 'Daily usage per horse',
     'inventory.save': 'Save inventory item',
+    'shopping.title': 'Shopping list',
+    'shopping.subtitle': 'Low, critical, and empty feed items appear here automatically.',
+    'shopping.empty': 'No feed items need shopping right now.',
+    'shopping.added': 'Added to shopping list',
+    'shopping.markAdded': 'Mark added',
+    'shopping.markNeeded': 'Mark needed',
     'calendar.eyebrow': 'Calendar PRO',
     'calendar.title': 'Plan race days and stable events.',
     'calendar.eventName': 'Event name',
@@ -215,6 +231,14 @@ const translations = {
     'feed.dailyUsage': 'Daily usage',
     'feed.daysLeft': 'Days left',
     'feed.lowThreshold': 'Low threshold',
+    'feed.supplier': 'Supplier',
+    'feed.storage': 'Storage',
+    'feed.cost': 'Cost',
+    'feed.expiry': 'Expiry',
+    'feed.horses': 'Horses',
+    'feed.perHorse': 'Per horse',
+    'feed.lastUpdated': 'Last updated',
+    'feed.history': 'Stock history',
     'feed.notSet': 'Not set',
     'feed.ok': 'OK',
     'feed.low': 'Low soon',
@@ -231,6 +255,7 @@ const translations = {
     'message.taskSaved': 'Task saved.',
     'message.hoursSaved': 'Work hours saved.',
     'message.inventorySaved': 'Feed inventory item saved with days remaining updated.',
+    'message.shoppingUpdated': 'Shopping list status updated.',
     'message.eventSaved': 'Calendar event saved.',
     'message.deleteCancelled': 'Delete cancelled. No data was changed.',
     'message.horseDeleted': 'Horse record deleted.',
@@ -364,15 +389,31 @@ const translations = {
     'hours.hours': 'Tunnit',
     'hours.notesPlaceholder': 'Aamuvuoro, karsinat siivottu, ruokinta tehty',
     'hours.save': 'Tallenna työkirjaus',
-    'inventory.title': 'Rehuvarasto PRO',
-    'inventory.subtitle': 'Seuraa rehuluokkia, päivittäistä käyttöä, jäljellä olevia päiviä ja varoituksia.',
+    'inventory.title': 'Rehuvarasto PRO 2.0',
+    'inventory.subtitle': 'Seuraa varastoa, kayttoa, toimittajia, sijainteja, hevoskohtaista kulutusta ja ostotarpeita.',
     'inventory.name': 'Rehun nimi',
     'inventory.category': 'Tyyppi / luokka',
     'inventory.quantity': 'Nykyinen määrä',
     'inventory.unit': 'Yksikkö',
     'inventory.dailyUsage': 'Päiväkäyttö',
     'inventory.minimum': 'Alaraja',
+    'inventory.advanced': 'Lisatiedot, valinnainen',
+    'inventory.supplier': 'Toimittaja / kauppa',
+    'inventory.purchaseDate': 'Ostopaiva',
+    'inventory.expiryDate': 'Viimeinen kayttopaiva',
+    'inventory.storageLocation': 'Sailytyspaikka',
+    'inventory.cost': 'Hinta',
+    'inventory.notesPlaceholder': 'Toimitus, era, toimittajan yhteystiedot',
+    'inventory.horseUsage': 'Hevoskohtainen kulutus, valinnainen',
+    'inventory.assignedHorses': 'Hevoset',
+    'inventory.perHorseUsage': 'Paivakaytto per hevonen',
     'inventory.save': 'Tallenna varastotuote',
+    'shopping.title': 'Ostoslista',
+    'shopping.subtitle': 'Vahissa, kriittiset ja tyhjat rehut nakyvat tassa automaattisesti.',
+    'shopping.empty': 'Yhtaan rehua ei tarvitse ostaa juuri nyt.',
+    'shopping.added': 'Lisatty ostoslistalle',
+    'shopping.markAdded': 'Merkitse lisatyksi',
+    'shopping.markNeeded': 'Merkitse tarvittavaksi',
     'calendar.eyebrow': 'Calendar PRO',
     'calendar.title': 'Suunnittele kilpailupäivät ja tallitapahtumat.',
     'calendar.eventName': 'Tapahtuman nimi',
@@ -455,6 +496,14 @@ const translations = {
     'feed.dailyUsage': 'Päiväkäyttö',
     'feed.daysLeft': 'Päiviä jäljellä',
     'feed.lowThreshold': 'Alaraja',
+    'feed.supplier': 'Toimittaja',
+    'feed.storage': 'Sailytys',
+    'feed.cost': 'Hinta',
+    'feed.expiry': 'Vanhenee',
+    'feed.horses': 'Hevoset',
+    'feed.perHorse': 'Per hevonen',
+    'feed.lastUpdated': 'Paivitetty',
+    'feed.history': 'Varastohistoria',
     'feed.notSet': 'Ei asetettu',
     'feed.ok': 'OK',
     'feed.low': 'Vähissä pian',
@@ -471,6 +520,7 @@ const translations = {
     'message.taskSaved': 'Tehtävä tallennettu.',
     'message.hoursSaved': 'Työtunnit tallennettu.',
     'message.inventorySaved': 'Rehuvaraston tuote tallennettu ja päivät päivitetty.',
+    'message.shoppingUpdated': 'Ostoslistan tila paivitetty.',
     'message.eventSaved': 'Kalenteritapahtuma tallennettu.',
     'message.deleteCancelled': 'Poisto peruttu. Tietoja ei muutettu.',
     'message.horseDeleted': 'Hevonen poistettu.',
@@ -604,15 +654,31 @@ const translations = {
     'hours.hours': 'Ore',
     'hours.notesPlaceholder': 'Turno mattina, box puliti, alimentazione completata',
     'hours.save': 'Salva ore',
-    'inventory.title': 'Inventario Mangimi PRO',
-    'inventory.subtitle': 'Monitora categorie, uso giornaliero, giorni rimanenti stimati e avvisi di scorta.',
+    'inventory.title': 'Inventario Mangimi PRO 2.0',
+    'inventory.subtitle': 'Monitora scorte, uso, fornitori, deposito, consumo per cavallo e acquisti.',
     'inventory.name': 'Nome mangime',
     'inventory.category': 'Tipo / categoria',
     'inventory.quantity': 'Quantita attuale',
     'inventory.unit': 'Unita',
     'inventory.dailyUsage': 'Uso giornaliero',
     'inventory.minimum': 'Soglia scorta bassa',
+    'inventory.advanced': 'Dettagli avanzati, opzionali',
+    'inventory.supplier': 'Fornitore / negozio',
+    'inventory.purchaseDate': 'Data acquisto',
+    'inventory.expiryDate': 'Data scadenza',
+    'inventory.storageLocation': 'Posizione deposito',
+    'inventory.cost': 'Costo / prezzo',
+    'inventory.notesPlaceholder': 'Consegna, lotto, contatto fornitore',
+    'inventory.horseUsage': 'Consumo per cavallo, opzionale',
+    'inventory.assignedHorses': 'Cavalli assegnati',
+    'inventory.perHorseUsage': 'Uso giornaliero per cavallo',
     'inventory.save': 'Salva inventario',
+    'shopping.title': 'Lista acquisti',
+    'shopping.subtitle': 'Mangimi bassi, critici e vuoti appaiono qui automaticamente.',
+    'shopping.empty': 'Nessun mangime da acquistare ora.',
+    'shopping.added': 'Aggiunto alla lista acquisti',
+    'shopping.markAdded': 'Segna aggiunto',
+    'shopping.markNeeded': 'Segna necessario',
     'calendar.eyebrow': 'Calendar PRO',
     'calendar.title': 'Pianifica giornate di gara ed eventi.',
     'calendar.eventName': 'Nome evento',
@@ -695,6 +761,14 @@ const translations = {
     'feed.dailyUsage': 'Uso giornaliero',
     'feed.daysLeft': 'Giorni rimasti',
     'feed.lowThreshold': 'Soglia bassa',
+    'feed.supplier': 'Fornitore',
+    'feed.storage': 'Deposito',
+    'feed.cost': 'Costo',
+    'feed.expiry': 'Scadenza',
+    'feed.horses': 'Cavalli',
+    'feed.perHorse': 'Per cavallo',
+    'feed.lastUpdated': 'Ultimo aggiornamento',
+    'feed.history': 'Storico scorte',
     'feed.notSet': 'Non impostato',
     'feed.ok': 'OK',
     'feed.low': 'Basso presto',
@@ -711,6 +785,7 @@ const translations = {
     'message.taskSaved': 'Attivita salvata.',
     'message.hoursSaved': 'Ore di lavoro salvate.',
     'message.inventorySaved': 'Voce inventario salvata con giorni rimanenti aggiornati.',
+    'message.shoppingUpdated': 'Stato lista acquisti aggiornato.',
     'message.eventSaved': 'Evento calendario salvato.',
     'message.deleteCancelled': 'Eliminazione annullata. Nessun dato modificato.',
     'message.horseDeleted': 'Cavallo eliminato.',
@@ -776,6 +851,7 @@ const els = {
   tasksList: document.querySelector('#tasksList'),
   hoursList: document.querySelector('#hoursList'),
   inventoryList: document.querySelector('#inventoryList'),
+  shoppingList: document.querySelector('#shoppingList'),
   eventsList: document.querySelector('#eventsList'),
   eventsTodayCount: document.querySelector('#eventsTodayCount'),
   eventsWeekCount: document.querySelector('#eventsWeekCount'),
@@ -835,14 +911,27 @@ function toSafeNumber(value, fallback = 0) {
 }
 
 function normalizeFeedItem(item) {
+  const quantity = toSafeNumber(item.quantity ?? item.currentAmount ?? item.amount);
+  const history = Array.isArray(item.history) ? item.history : [];
   return {
     id: item.id || createId(),
     name: item.name || 'Unnamed feed',
     category: item.category || item.type || 'General',
-    quantity: toSafeNumber(item.quantity ?? item.currentAmount),
+    quantity,
     unit: item.unit || 'units',
     dailyUsage: toSafeNumber(item.dailyUsage ?? item.daily_use),
-    minimum: toSafeNumber(item.minimum ?? item.threshold)
+    minimum: toSafeNumber(item.minimum ?? item.threshold),
+    supplier: item.supplier || item.shop || '',
+    purchaseDate: item.purchaseDate || '',
+    expiryDate: item.expiryDate || '',
+    storageLocation: item.storageLocation || item.location || '',
+    cost: item.cost || item.price || '',
+    notes: item.notes || '',
+    horseIds: Array.isArray(item.horseIds) ? item.horseIds : [],
+    perHorseUsage: toSafeNumber(item.perHorseUsage),
+    shoppingListed: Boolean(item.shoppingListed),
+    lastUpdated: item.lastUpdated || item.updatedAt || '',
+    history
   };
 }
 
@@ -1001,6 +1090,11 @@ function renderHorseOptions() {
   els.eventForm.elements.horseIds.innerHTML = state.horses
     .map((horse) => `<option value="${horse.id}">${escapeHtml(horse.name)}</option>`)
     .join('');
+  if (els.inventoryForm.elements.horseIds) {
+    els.inventoryForm.elements.horseIds.innerHTML = state.horses
+      .map((horse) => `<option value="${horse.id}">${escapeHtml(horse.name)}</option>`)
+      .join('');
+  }
 
   const typeOptions = EVENT_TYPES
     .map((type) => `<option value="${type}">${t(`eventType.${type}`)}</option>`)
@@ -1027,6 +1121,7 @@ function render() {
   renderTasks();
   renderHours();
   renderInventory();
+  renderShoppingList();
   renderEvents();
   renderCalendarPlanner();
   renderBackupStatus();
@@ -1248,25 +1343,70 @@ function renderInventory() {
     const normalized = normalizeFeedItem(item);
     const status = getFeedStatus(normalized);
     const daysRemaining = getDaysRemaining(normalized);
+    const horseNames = normalized.horseIds
+      .map((id) => state.horses.find((horse) => horse.id === id)?.name)
+      .filter(Boolean);
+    const advancedDetails = [
+      normalized.supplier && `${t('feed.supplier')}: ${normalized.supplier}`,
+      normalized.storageLocation && `${t('feed.storage')}: ${normalized.storageLocation}`,
+      normalized.cost && `${t('feed.cost')}: ${normalized.cost}`,
+      normalized.expiryDate && `${t('feed.expiry')}: ${normalized.expiryDate}`,
+      normalized.lastUpdated && `${t('feed.lastUpdated')}: ${normalized.lastUpdated}`
+    ].filter(Boolean);
     return `
       <article class="item-card feed-card">
         <div class="feed-main">
           <div>
             <h4>${escapeHtml(normalized.name)}</h4>
-            <p>${escapeHtml(t('feed.description', { category: normalized.category }))}</p>
+            <p>${escapeHtml(normalized.notes || t('feed.description', { category: normalized.category }))}</p>
           </div>
           <span class="pill ${status.className}">${t(`feed.${status.key}`)}</span>
         </div>
         <div class="feed-stats">
           <div><span class="meta-label">${t('feed.current')}</span><strong>${formatNumber(normalized.quantity)} ${escapeHtml(normalized.unit)}</strong></div>
-          <div><span class="meta-label">${t('feed.dailyUsage')}</span><strong>${formatNumber(normalized.dailyUsage)} ${escapeHtml(normalized.unit)}</strong></div>
+          <div><span class="meta-label">${t('feed.dailyUsage')}</span><strong>${formatNumber(getEffectiveDailyUsage(normalized))} ${escapeHtml(normalized.unit)}</strong></div>
           <div><span class="meta-label">${t('feed.daysLeft')}</span><strong>${daysRemaining}</strong></div>
           <div><span class="meta-label">${t('feed.lowThreshold')}</span><strong>${formatNumber(normalized.minimum)} ${escapeHtml(normalized.unit)}</strong></div>
         </div>
+        <div class="item-meta feed-extra">
+          ${horseNames.length ? `<span class="pill">${t('feed.horses')}: ${escapeHtml(horseNames.join(', '))}</span>` : ''}
+          ${normalized.perHorseUsage ? `<span class="pill">${t('feed.perHorse')}: ${formatNumber(normalized.perHorseUsage)} ${escapeHtml(normalized.unit)}</span>` : ''}
+          ${advancedDetails.map((detail) => `<span class="pill">${escapeHtml(detail)}</span>`).join('')}
+          ${normalized.shoppingListed ? `<span class="pill warn">${t('shopping.added')}</span>` : ''}
+        </div>
+        ${normalized.history.length ? `<div class="detail-box"><strong>${t('feed.history')}</strong><p>${escapeHtml(normalized.history.slice(-3).map((entry) => `${entry.date}: ${formatNumber(entry.quantity)} ${normalized.unit}`).join(' | '))}</p></div>` : ''}
         <div class="item-actions">
           <button class="button ghost" type="button" data-action="edit-inventory" data-id="${normalized.id}">${t('common.edit')}</button>
+          <button class="button ghost" type="button" data-action="toggle-shopping" data-id="${normalized.id}">${normalized.shoppingListed ? t('shopping.markNeeded') : t('shopping.markAdded')}</button>
           <button class="button ghost danger" type="button" data-action="delete-inventory" data-id="${normalized.id}">${t('common.delete')}</button>
         </div>
+      </article>
+    `;
+  }).join('');
+}
+
+function renderShoppingList() {
+  if (!els.shoppingList) return;
+  const shoppingItems = state.inventory
+    .map(normalizeFeedItem)
+    .filter((item) => ['low', 'critical', 'empty'].includes(getFeedStatus(item).key));
+
+  if (!shoppingItems.length) {
+    els.shoppingList.innerHTML = `<p class="empty-state">${t('shopping.empty')}</p>`;
+    return;
+  }
+
+  els.shoppingList.innerHTML = shoppingItems.map((item) => {
+    const status = getFeedStatus(item);
+    return `
+      <article class="shopping-item">
+        <div>
+          <strong>${escapeHtml(item.name)}</strong>
+          <p>${formatNumber(item.quantity)} ${escapeHtml(item.unit)} - ${t('feed.daysLeft')}: ${getDaysRemaining(item)}</p>
+        </div>
+        <span class="pill ${status.className}">${t(`feed.${status.key}`)}</span>
+        ${item.shoppingListed ? `<span class="pill warn">${t('shopping.added')}</span>` : ''}
+        <button class="button ghost" type="button" data-action="toggle-shopping" data-id="${item.id}">${item.shoppingListed ? t('shopping.markNeeded') : t('shopping.markAdded')}</button>
       </article>
     `;
   }).join('');
@@ -1396,14 +1536,26 @@ function formatEventLine(event) {
 
 function getDaysRemaining(item) {
   if (Number(item.quantity) <= 0) return '0';
-  if (Number(item.dailyUsage) <= 0) return t('feed.notSet');
-  return Math.floor(Number(item.quantity) / Number(item.dailyUsage)).toString();
+  const dailyUsage = getEffectiveDailyUsage(item);
+  if (dailyUsage <= 0) return t('feed.notSet');
+  return Math.floor(Number(item.quantity) / dailyUsage).toString();
+}
+
+function getEffectiveDailyUsage(item) {
+  const normalized = normalizeFeedItem(item);
+  if (Number(normalized.dailyUsage) > 0) return Number(normalized.dailyUsage);
+  if (Number(normalized.perHorseUsage) > 0 && normalized.horseIds.length) {
+    return Number(normalized.perHorseUsage) * normalized.horseIds.length;
+  }
+  return 0;
 }
 
 function getFeedStatus(item) {
-  const quantity = Number(item.quantity);
-  const minimum = Number(item.minimum);
-  const days = Number(item.dailyUsage) > 0 ? quantity / Number(item.dailyUsage) : Infinity;
+  const normalized = normalizeFeedItem(item);
+  const quantity = Number(normalized.quantity);
+  const minimum = Number(normalized.minimum);
+  const dailyUsage = getEffectiveDailyUsage(normalized);
+  const days = dailyUsage > 0 ? quantity / dailyUsage : Infinity;
   if (quantity <= 0) return { key: 'empty', className: 'empty' };
   if (quantity <= minimum || days <= 3) return { key: 'critical', className: 'critical' };
   if (quantity <= minimum * 1.5 || days <= 7) return { key: 'low', className: 'warn' };
@@ -1496,14 +1648,33 @@ function handleHoursSubmit(event) {
 function handleInventorySubmit(event) {
   event.preventDefault();
   const form = event.currentTarget;
+  const existing = state.inventory.find((entry) => entry.id === form.elements.id.value);
+  const existingNormalized = existing ? normalizeFeedItem(existing) : null;
+  const quantity = Number(form.elements.quantity.value);
+  const todayValue = today();
+  const history = existingNormalized?.history ? [...existingNormalized.history] : [];
+  if (!existingNormalized || Number(existingNormalized.quantity) !== quantity) {
+    history.push({ date: todayValue, quantity });
+  }
   upsert('inventory', {
     id: form.elements.id.value,
     name: form.elements.name.value.trim(),
     category: form.elements.category.value.trim(),
-    quantity: Number(form.elements.quantity.value),
+    quantity,
     unit: form.elements.unit.value.trim(),
     dailyUsage: Number(form.elements.dailyUsage.value),
-    minimum: Number(form.elements.minimum.value)
+    minimum: Number(form.elements.minimum.value),
+    supplier: form.elements.supplier.value.trim(),
+    purchaseDate: form.elements.purchaseDate.value,
+    expiryDate: form.elements.expiryDate.value,
+    storageLocation: form.elements.storageLocation.value.trim(),
+    cost: form.elements.cost.value,
+    notes: form.elements.notes.value.trim(),
+    horseIds: getSelectedOptions(form.elements.horseIds),
+    perHorseUsage: Number(form.elements.perHorseUsage.value || 0),
+    shoppingListed: existingNormalized?.shoppingListed || false,
+    lastUpdated: todayValue,
+    history
   });
   resetForm(form);
   showMessage(t('message.inventorySaved'));
@@ -1550,6 +1721,7 @@ function handleListClick(event) {
   if (action === 'delete-hours') deleteItem('hours', id, t('delete.hours'), t('message.hoursDeleted'));
   if (action === 'edit-inventory') fillInventoryForm(id);
   if (action === 'delete-inventory') deleteItem('inventory', id, t('delete.inventory'), t('message.inventoryDeleted'));
+  if (action === 'toggle-shopping') toggleShoppingStatus(id);
   if (action === 'edit-event') fillEventForm(id);
   if (action === 'delete-event') deleteItem('calendarEvents', id, t('delete.event'), t('message.eventDeleted'));
 }
@@ -1561,6 +1733,17 @@ function handleCalendarFilterChange() {
     horse: els.calendarHorseFilter?.value || 'all'
   };
   renderEvents();
+}
+
+function toggleShoppingStatus(id) {
+  state.inventory = state.inventory.map((item) => {
+    if (item.id !== id) return item;
+    const normalized = normalizeFeedItem(item);
+    return { ...normalized, shoppingListed: !normalized.shoppingListed };
+  });
+  saveData();
+  render();
+  showMessage(t('message.shoppingUpdated'));
 }
 
 function handleQuickAction(event) {
@@ -1628,15 +1811,24 @@ function fillHoursForm(id) {
 }
 
 function fillInventoryForm(id) {
-  const item = state.inventory.find((entry) => entry.id === id);
-  if (!item) return;
+  const found = state.inventory.find((entry) => entry.id === id);
+  if (!found) return;
+  const item = normalizeFeedItem(found);
   els.inventoryForm.elements.id.value = item.id;
   els.inventoryForm.elements.name.value = item.name;
-  els.inventoryForm.elements.category.value = item.category || item.type || 'General';
+  els.inventoryForm.elements.category.value = item.category;
   els.inventoryForm.elements.quantity.value = item.quantity;
   els.inventoryForm.elements.unit.value = item.unit;
-  els.inventoryForm.elements.dailyUsage.value = item.dailyUsage ?? 0;
+  els.inventoryForm.elements.dailyUsage.value = item.dailyUsage;
   els.inventoryForm.elements.minimum.value = item.minimum;
+  els.inventoryForm.elements.supplier.value = item.supplier;
+  els.inventoryForm.elements.purchaseDate.value = item.purchaseDate;
+  els.inventoryForm.elements.expiryDate.value = item.expiryDate;
+  els.inventoryForm.elements.storageLocation.value = item.storageLocation;
+  els.inventoryForm.elements.cost.value = item.cost;
+  els.inventoryForm.elements.notes.value = item.notes;
+  els.inventoryForm.elements.perHorseUsage.value = item.perHorseUsage || '';
+  setSelectedOptions(els.inventoryForm.elements.horseIds, item.horseIds);
   els.inventoryForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 

@@ -408,6 +408,14 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
   padding: 18px;
 }
 .calendar-planner .module-header { margin-bottom: 12px; }
+.shopping-panel {
+  border: 1px solid rgba(78, 205, 196, 0.34);
+  border-radius: 8px;
+  background: #f3fbfa;
+  margin: 0 0 18px;
+  padding: 18px;
+}
+.shopping-panel .module-header { margin-bottom: 12px; }
 .stable-today .module-header { margin-bottom: 12px; }
 .today-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .today-card {
@@ -633,6 +641,20 @@ textarea { resize: vertical; }
   background: #e9faf8;
   color: #14335a;
 }
+.feed-extra {
+  grid-column: 1 / -1;
+}
+.shopping-item {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  padding: 12px;
+}
+.shopping-item p { margin: 4px 0 0; color: var(--muted); }
 .horse-profile-card { align-items: start; }
 .horse-profile-main {
   display: grid;
@@ -837,12 +859,14 @@ textarea { resize: vertical; }
   .module-panel { padding: 16px; }
   .stable-today { padding: 16px; }
   .calendar-planner { padding: 16px; }
+  .shopping-panel { padding: 16px; }
   .entry-form { gap: 14px; margin: 18px 0 20px; padding: 16px; }
   .entry-form label, .language-picker { font-size: 14px; }
   .form-group { padding: 14px; }
   input, select, textarea { min-height: 48px; font-size: 16px; }
   textarea { min-height: 112px; }
   select[multiple] { min-height: 150px; }
+  .shopping-item { grid-template-columns: minmax(0, 1fr); }
   .feed-main { flex-direction: column; }
   .feed-main .pill { align-self: flex-start; }
   .item-actions { display: grid; grid-template-columns: 1fr; width: 100%; }
