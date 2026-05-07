@@ -133,7 +133,7 @@ const translations = {
     'inventory.dailyUsage': 'Daily usage',
     'inventory.minimum': 'Low stock threshold',
     'inventory.save': 'Save inventory item',
-    'calendar.eyebrow': 'Calendar',
+    'calendar.eyebrow': 'Calendar PRO',
     'calendar.title': 'Plan race days and stable events.',
     'calendar.eventName': 'Event name',
     'calendar.eventPlaceholder': 'Spring race day',
@@ -142,6 +142,7 @@ const translations = {
     'calendar.locationPlaceholder': 'Helsinki',
     'calendar.horsesRunning': 'Horse(s) running',
     'calendar.handler': 'Driver / rider / handler',
+    'calendar.raceOptional': 'Race details, optional',
     'calendar.raceNumber': 'Race number',
     'calendar.startNumber': 'Start number',
     'calendar.driver': 'Driver',
@@ -151,11 +152,28 @@ const translations = {
     'calendar.postRaceNotes': 'Post-race notes',
     'calendar.today': 'Today',
     'calendar.nextSeven': 'Next 7 days',
+    'calendar.scheduledHorses': 'Scheduled horses',
+    'calendar.plannerTitle': 'Today / This week',
+    'calendar.plannerSubtitle': 'Quickly see what is scheduled and which horses are involved.',
+    'calendar.plannerEmpty': 'Nothing scheduled for today or the next 7 days.',
+    'calendar.todayEvents': 'Events today',
+    'calendar.weekEvents': 'Next 7 days',
+    'calendar.horsesScheduled': 'Horses scheduled',
+    'calendar.filterScope': 'Show',
+    'calendar.filterAll': 'All events',
+    'calendar.filterUpcoming': 'Upcoming events',
+    'calendar.filterPast': 'Past events',
+    'calendar.filterType': 'Event type',
+    'calendar.filterHorse': 'Horse',
+    'calendar.allTypes': 'All event types',
+    'calendar.allHorses': 'All horses',
+    'calendar.past': 'Past event',
     'calendar.raceDetails': 'Race details',
     'calendar.notesPlaceholder': 'Transport, start time, owner notes',
     'calendar.save': 'Save event',
     'calendar.empty': 'No calendar events yet. Add a race day or stable event above.',
     'calendar.upcoming': 'Upcoming event',
+    'calendar.noFilteredEvents': 'No events match these filters.',
     'settings.eyebrow': 'Settings / Backup',
     'settings.title': 'Manage language, backups, and local data.',
     'settings.languageHelp': 'Choose interface language',
@@ -355,7 +373,7 @@ const translations = {
     'inventory.dailyUsage': 'Päiväkäyttö',
     'inventory.minimum': 'Alaraja',
     'inventory.save': 'Tallenna varastotuote',
-    'calendar.eyebrow': 'Kalenteri',
+    'calendar.eyebrow': 'Calendar PRO',
     'calendar.title': 'Suunnittele kilpailupäivät ja tallitapahtumat.',
     'calendar.eventName': 'Tapahtuman nimi',
     'calendar.eventPlaceholder': 'Kevään kilpailupäivä',
@@ -364,6 +382,7 @@ const translations = {
     'calendar.locationPlaceholder': 'Helsinki',
     'calendar.horsesRunning': 'Juoksevat hevoset',
     'calendar.handler': 'Ohjastaja / ratsastaja / hoitaja',
+    'calendar.raceOptional': 'Kilpailutiedot, valinnainen',
     'calendar.raceNumber': 'Lahto numero',
     'calendar.startNumber': 'Lahtorata / numero',
     'calendar.driver': 'Ohjastaja',
@@ -373,11 +392,28 @@ const translations = {
     'calendar.postRaceNotes': 'Kilpailun jalkeiset muistiinpanot',
     'calendar.today': 'Tanaan',
     'calendar.nextSeven': 'Seuraavat 7 paivaa',
+    'calendar.scheduledHorses': 'Aikataulutetut hevoset',
+    'calendar.plannerTitle': 'Tanaan / talla viikolla',
+    'calendar.plannerSubtitle': 'Nae nopeasti mita on aikataulussa ja mitka hevoset ovat mukana.',
+    'calendar.plannerEmpty': 'Tanaan tai seuraavan 7 paivan aikana ei ole tapahtumia.',
+    'calendar.todayEvents': 'Taman paivan tapahtumat',
+    'calendar.weekEvents': 'Seuraavat 7 paivaa',
+    'calendar.horsesScheduled': 'Aikataulutetut hevoset',
+    'calendar.filterScope': 'Nayta',
+    'calendar.filterAll': 'Kaikki tapahtumat',
+    'calendar.filterUpcoming': 'Tulevat tapahtumat',
+    'calendar.filterPast': 'Menneet tapahtumat',
+    'calendar.filterType': 'Tapahtumatyyppi',
+    'calendar.filterHorse': 'Hevonen',
+    'calendar.allTypes': 'Kaikki tapahtumatyypit',
+    'calendar.allHorses': 'Kaikki hevoset',
+    'calendar.past': 'Mennyt tapahtuma',
     'calendar.raceDetails': 'Kilpailutiedot',
     'calendar.notesPlaceholder': 'Kuljetus, lähtöaika, omistajan muistiinpanot',
     'calendar.save': 'Tallenna tapahtuma',
     'calendar.empty': 'Kalenteritapahtumia ei ole vielä. Lisää kilpailupäivä tai tallitapahtuma.',
     'calendar.upcoming': 'Tuleva tapahtuma',
+    'calendar.noFilteredEvents': 'Suodattimilla ei loydy tapahtumia.',
     'settings.eyebrow': 'Asetukset / varmuuskopio',
     'settings.title': 'Hallitse kieltä, varmuuskopioita ja paikallisia tietoja.',
     'settings.languageHelp': 'Valitse käyttöliittymän kieli',
@@ -577,7 +613,7 @@ const translations = {
     'inventory.dailyUsage': 'Uso giornaliero',
     'inventory.minimum': 'Soglia scorta bassa',
     'inventory.save': 'Salva inventario',
-    'calendar.eyebrow': 'Calendario',
+    'calendar.eyebrow': 'Calendar PRO',
     'calendar.title': 'Pianifica giornate di gara ed eventi.',
     'calendar.eventName': 'Nome evento',
     'calendar.eventPlaceholder': 'Giornata gare primavera',
@@ -586,6 +622,7 @@ const translations = {
     'calendar.locationPlaceholder': 'Helsinki',
     'calendar.horsesRunning': 'Cavalli in gara',
     'calendar.handler': 'Driver / cavaliere / handler',
+    'calendar.raceOptional': 'Dettagli gara, opzionali',
     'calendar.raceNumber': 'Numero gara',
     'calendar.startNumber': 'Numero partenza',
     'calendar.driver': 'Driver',
@@ -595,11 +632,28 @@ const translations = {
     'calendar.postRaceNotes': 'Note dopo gara',
     'calendar.today': 'Oggi',
     'calendar.nextSeven': 'Prossimi 7 giorni',
+    'calendar.scheduledHorses': 'Cavalli programmati',
+    'calendar.plannerTitle': 'Oggi / questa settimana',
+    'calendar.plannerSubtitle': 'Vedi rapidamente cosa e programmato e quali cavalli sono coinvolti.',
+    'calendar.plannerEmpty': 'Niente in programma per oggi o per i prossimi 7 giorni.',
+    'calendar.todayEvents': 'Eventi di oggi',
+    'calendar.weekEvents': 'Prossimi 7 giorni',
+    'calendar.horsesScheduled': 'Cavalli programmati',
+    'calendar.filterScope': 'Mostra',
+    'calendar.filterAll': 'Tutti gli eventi',
+    'calendar.filterUpcoming': 'Eventi futuri',
+    'calendar.filterPast': 'Eventi passati',
+    'calendar.filterType': 'Tipo evento',
+    'calendar.filterHorse': 'Cavallo',
+    'calendar.allTypes': 'Tutti i tipi',
+    'calendar.allHorses': 'Tutti i cavalli',
+    'calendar.past': 'Evento passato',
     'calendar.raceDetails': 'Dettagli gara',
     'calendar.notesPlaceholder': 'Trasporto, orario, note proprietario',
     'calendar.save': 'Salva evento',
     'calendar.empty': 'Nessun evento in calendario. Aggiungi una gara o un evento.',
     'calendar.upcoming': 'Evento in arrivo',
+    'calendar.noFilteredEvents': 'Nessun evento corrisponde ai filtri.',
     'settings.eyebrow': 'Impostazioni / backup',
     'settings.title': 'Gestisci lingua, backup e dati locali.',
     'settings.languageHelp': 'Scegli lingua interfaccia',
@@ -707,6 +761,7 @@ const defaultData = {
 
 let state = loadData();
 let activeView = 'home';
+let calendarFilters = { scope: 'all', type: 'all', horse: 'all' };
 
 const els = {
   horseCount: document.querySelector('#horseCount'),
@@ -724,6 +779,11 @@ const els = {
   eventsList: document.querySelector('#eventsList'),
   eventsTodayCount: document.querySelector('#eventsTodayCount'),
   eventsWeekCount: document.querySelector('#eventsWeekCount'),
+  scheduledHorseCount: document.querySelector('#scheduledHorseCount'),
+  calendarPlannerList: document.querySelector('#calendarPlannerList'),
+  calendarScopeFilter: document.querySelector('#calendarScopeFilter'),
+  calendarTypeFilter: document.querySelector('#calendarTypeFilter'),
+  calendarHorseFilter: document.querySelector('#calendarHorseFilter'),
   horseForm: document.querySelector('#horseForm'),
   taskForm: document.querySelector('#taskForm'),
   hoursForm: document.querySelector('#hoursForm'),
@@ -808,14 +868,15 @@ function normalizeHorse(item) {
 }
 
 function normalizeCalendarEvent(item) {
+  const type = String(item.type || item.eventType || 'other').toLowerCase();
   return {
     id: item.id || createId(),
     date: item.date || today(),
     time: item.time || '',
     name: item.name || item.title || '',
-    type: EVENT_TYPES.includes(item.type) ? item.type : 'other',
+    type: EVENT_TYPES.includes(type) ? type : 'other',
     location: item.location || '',
-    horseIds: Array.isArray(item.horseIds) ? item.horseIds : [],
+    horseIds: Array.isArray(item.horseIds) ? item.horseIds : (item.horseId ? [item.horseId] : []),
     handler: item.handler || item.driverRiderHandler || '',
     raceNumber: item.raceNumber || '',
     startNumber: item.startNumber || '',
@@ -941,9 +1002,21 @@ function renderHorseOptions() {
     .map((horse) => `<option value="${horse.id}">${escapeHtml(horse.name)}</option>`)
     .join('');
 
-  els.eventForm.elements.type.innerHTML = EVENT_TYPES
+  const typeOptions = EVENT_TYPES
     .map((type) => `<option value="${type}">${t(`eventType.${type}`)}</option>`)
     .join('');
+  els.eventForm.elements.type.innerHTML = typeOptions;
+  if (els.calendarTypeFilter) {
+    els.calendarTypeFilter.innerHTML = `<option value="all">${t('calendar.allTypes')}</option>${typeOptions}`;
+    els.calendarTypeFilter.value = calendarFilters.type;
+  }
+  if (els.calendarHorseFilter) {
+    els.calendarHorseFilter.innerHTML = `<option value="all">${t('calendar.allHorses')}</option>${state.horses
+      .map((horse) => `<option value="${horse.id}">${escapeHtml(horse.name)}</option>`)
+      .join('')}`;
+    els.calendarHorseFilter.value = calendarFilters.horse;
+  }
+  if (els.calendarScopeFilter) els.calendarScopeFilter.value = calendarFilters.scope;
 }
 
 function render() {
@@ -955,6 +1028,7 @@ function render() {
   renderHours();
   renderInventory();
   renderEvents();
+  renderCalendarPlanner();
   renderBackupStatus();
 }
 
@@ -978,6 +1052,17 @@ function renderSummary() {
       const eventDate = new Date(`${event.date}T00:00:00`);
       return eventDate >= now && eventDate <= weekEnd;
     }).length;
+    if (els.scheduledHorseCount) {
+      const scheduledHorseIds = new Set(
+        state.calendarEvents
+          .filter((event) => {
+            const eventDate = new Date(`${event.date}T00:00:00`);
+            return eventDate >= now && eventDate <= weekEnd;
+          })
+          .flatMap((event) => normalizeCalendarEvent(event).horseIds)
+      );
+      els.scheduledHorseCount.textContent = scheduledHorseIds.size;
+    }
   }
 }
 
@@ -1201,9 +1286,16 @@ function renderEvents() {
     els.eventsList.innerHTML = `<p class="empty-state">${t('calendar.empty')}</p>`;
     return;
   }
-  const sortedEvents = [...state.calendarEvents].sort((a, b) => `${a.date}T${a.time || '00:00'}`.localeCompare(`${b.date}T${b.time || '00:00'}`));
+  const todayValue = today();
+  const sortedEvents = getFilteredCalendarEvents()
+    .sort((a, b) => `${a.date}T${a.time || '00:00'}`.localeCompare(`${b.date}T${b.time || '00:00'}`));
+  if (sortedEvents.length === 0) {
+    els.eventsList.innerHTML = `<p class="empty-state">${t('calendar.noFilteredEvents')}</p>`;
+    return;
+  }
   els.eventsList.innerHTML = sortedEvents.map((rawEvent) => {
     const event = normalizeCalendarEvent(rawEvent);
+    const isPast = event.date < todayValue;
     const horses = event.horseIds
       .map((id) => state.horses.find((horse) => horse.id === id)?.name)
       .filter(Boolean);
@@ -1216,19 +1308,20 @@ function renderEvents() {
       event.prize && `${t('calendar.prize')}: ${event.prize}`
     ].filter(Boolean);
     return `
-      <article class="item-card">
+      <article class="item-card calendar-card ${isPast ? 'past-event' : ''}">
         <div>
           <h4>${escapeHtml(event.name)}</h4>
           <p>${escapeHtml(event.notes || t('common.noNotes'))}</p>
           <div class="item-meta">
             <span class="pill">${escapeHtml(event.date)}</span>
             <span class="pill">${escapeHtml(event.time || t('common.notSet'))}</span>
-            <span class="pill good">${t(`eventType.${event.type}`)}</span>
+            <span class="pill ${isPast ? '' : 'good'}">${isPast ? t('calendar.past') : t('calendar.upcoming')}</span>
+            <span class="pill event-type-pill">${t(`eventType.${event.type}`)}</span>
             <span class="pill">${escapeHtml(event.location || t('common.notSet'))}</span>
             <span class="pill">${horses.length ? escapeHtml(horses.join(', ')) : t('tasks.noHorse')}</span>
-            <span class="pill">${t('calendar.handler')}: ${escapeHtml(event.handler || t('common.notSet'))}</span>
+            ${event.handler ? `<span class="pill">${t('calendar.handler')}: ${escapeHtml(event.handler)}</span>` : ''}
           </div>
-          ${raceDetails.length || event.postRaceNotes ? `
+          ${event.type === 'race' && (raceDetails.length || event.postRaceNotes) ? `
             <div class="detail-box">
               <strong>${t('calendar.raceDetails')}</strong>
               ${raceDetails.length ? `<p>${escapeHtml(raceDetails.join(' | '))}</p>` : ''}
@@ -1243,6 +1336,62 @@ function renderEvents() {
       </article>
     `;
   }).join('');
+}
+
+function getFilteredCalendarEvents() {
+  const todayValue = today();
+  return state.calendarEvents
+    .map(normalizeCalendarEvent)
+    .filter((event) => {
+      const matchesScope =
+        calendarFilters.scope === 'all' ||
+        (calendarFilters.scope === 'upcoming' && event.date >= todayValue) ||
+        (calendarFilters.scope === 'past' && event.date < todayValue);
+      const matchesType = calendarFilters.type === 'all' || event.type === calendarFilters.type;
+      const matchesHorse = calendarFilters.horse === 'all' || event.horseIds.includes(calendarFilters.horse);
+      return matchesScope && matchesType && matchesHorse;
+    });
+}
+
+function renderCalendarPlanner() {
+  if (!els.calendarPlannerList) return;
+  const todayValue = today();
+  const now = new Date(`${todayValue}T00:00:00`);
+  const weekEnd = new Date(now);
+  weekEnd.setDate(weekEnd.getDate() + 7);
+  const eventsToday = state.calendarEvents.map(normalizeCalendarEvent).filter((event) => event.date === todayValue);
+  const weekEvents = state.calendarEvents.map(normalizeCalendarEvent).filter((event) => {
+    const eventDate = new Date(`${event.date}T00:00:00`);
+    return eventDate >= now && eventDate <= weekEnd;
+  });
+  const horseNames = [...new Set(weekEvents
+    .flatMap((event) => event.horseIds)
+    .map((id) => state.horses.find((horse) => horse.id === id)?.name)
+    .filter(Boolean))];
+
+  if (!eventsToday.length && !weekEvents.length && !horseNames.length) {
+    els.calendarPlannerList.innerHTML = `<p class="empty-state today-empty">${t('calendar.plannerEmpty')}</p>`;
+    return;
+  }
+
+  els.calendarPlannerList.innerHTML = `
+    <article class="today-card">
+      <h4>${t('calendar.todayEvents')}</h4>
+      ${eventsToday.length ? eventsToday.map((event) => `<p>${escapeHtml(formatEventLine(event))}</p>`).join('') : `<p>${t('calendar.plannerEmpty')}</p>`}
+    </article>
+    <article class="today-card">
+      <h4>${t('calendar.weekEvents')}</h4>
+      ${weekEvents.length ? weekEvents.map((event) => `<p>${escapeHtml(formatEventLine(event))}</p>`).join('') : `<p>${t('calendar.plannerEmpty')}</p>`}
+    </article>
+    <article class="today-card">
+      <h4>${t('calendar.horsesScheduled')}</h4>
+      <p>${horseNames.length ? escapeHtml(horseNames.join(', ')) : t('tasks.noHorse')}</p>
+    </article>
+  `;
+}
+
+function formatEventLine(event) {
+  return `${event.date}${event.time ? ` ${event.time}` : ''} - ${event.name} (${t(`eventType.${event.type}`)})`;
 }
 
 function getDaysRemaining(item) {
@@ -1403,6 +1552,15 @@ function handleListClick(event) {
   if (action === 'delete-inventory') deleteItem('inventory', id, t('delete.inventory'), t('message.inventoryDeleted'));
   if (action === 'edit-event') fillEventForm(id);
   if (action === 'delete-event') deleteItem('calendarEvents', id, t('delete.event'), t('message.eventDeleted'));
+}
+
+function handleCalendarFilterChange() {
+  calendarFilters = {
+    scope: els.calendarScopeFilter?.value || 'all',
+    type: els.calendarTypeFilter?.value || 'all',
+    horse: els.calendarHorseFilter?.value || 'all'
+  };
+  renderEvents();
 }
 
 function handleQuickAction(event) {
@@ -1646,6 +1804,9 @@ els.exportButton.addEventListener('click', exportBackup);
 els.importInput.addEventListener('change', (event) => importBackup(event.target.files[0]));
 els.resetDataButton.addEventListener('click', resetLocalData);
 els.languageSelect.addEventListener('change', handleLanguageChange);
+els.calendarScopeFilter?.addEventListener('change', handleCalendarFilterChange);
+els.calendarTypeFilter?.addEventListener('change', handleCalendarFilterChange);
+els.calendarHorseFilter?.addEventListener('change', handleCalendarFilterChange);
 els.taskForm.elements.date.value = today();
 els.hoursForm.elements.date.value = today();
 els.eventForm.elements.date.value = today();

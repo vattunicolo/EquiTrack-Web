@@ -262,7 +262,7 @@
 
       <section id="calendarView" class="view">
         <div class="section-heading">
-          <div><p class="eyebrow" data-i18n="calendar.eyebrow">Calendar</p><h2 data-i18n="calendar.title">Plan race days and stable events.</h2></div>
+          <div><p class="eyebrow" data-i18n="calendar.eyebrow">Calendar PRO</p><h2 data-i18n="calendar.title">Plan race days and stable events.</h2></div>
         </div>
         <form id="eventForm" class="entry-form">
           <input type="hidden" name="id">
@@ -273,20 +273,42 @@
           <label><span data-i18n="calendar.location">Location</span><input name="location" data-i18n-placeholder="calendar.locationPlaceholder" placeholder="Helsinki"></label>
           <label><span data-i18n="calendar.horsesRunning">Horse(s) running</span><select name="horseIds" multiple></select></label>
           <label><span data-i18n="calendar.handler">Driver / rider / handler</span><input name="handler" placeholder="Name"></label>
-          <label><span data-i18n="calendar.raceNumber">Race number</span><input name="raceNumber" placeholder="4"></label>
-          <label><span data-i18n="calendar.startNumber">Start number</span><input name="startNumber" placeholder="7"></label>
-          <label><span data-i18n="calendar.driver">Driver</span><input name="driver" placeholder="Driver name"></label>
-          <label><span data-i18n="calendar.placement">Placement</span><input name="placement" placeholder="2nd"></label>
-          <label><span data-i18n="calendar.result">Race time / result</span><input name="result" placeholder="1:15.2"></label>
-          <label><span data-i18n="calendar.prize">Prize</span><input name="prize" placeholder="500"></label>
-          <label class="full"><span data-i18n="calendar.postRaceNotes">Post-race notes</span><textarea name="postRaceNotes" rows="2"></textarea></label>
+          <fieldset class="form-group">
+            <legend data-i18n="calendar.raceOptional">Race details, optional</legend>
+            <label><span data-i18n="calendar.raceNumber">Race number</span><input name="raceNumber" placeholder="4"></label>
+            <label><span data-i18n="calendar.startNumber">Start number</span><input name="startNumber" placeholder="7"></label>
+            <label><span data-i18n="calendar.driver">Driver</span><input name="driver" placeholder="Driver name"></label>
+            <label><span data-i18n="calendar.placement">Placement</span><input name="placement" placeholder="2nd"></label>
+            <label><span data-i18n="calendar.result">Race time / result</span><input name="result" placeholder="1:15.2"></label>
+            <label><span data-i18n="calendar.prize">Prize</span><input name="prize" placeholder="500"></label>
+            <label class="full"><span data-i18n="calendar.postRaceNotes">Post-race notes</span><textarea name="postRaceNotes" rows="2"></textarea></label>
+          </fieldset>
           <label class="full"><span data-i18n="common.notesSimple">Notes</span><textarea name="notes" rows="3" data-i18n-placeholder="calendar.notesPlaceholder" placeholder="Transport, start time, owner notes"></textarea></label>
           <button class="button primary" type="submit" data-i18n="calendar.save">Save event</button>
         </form>
+        <section class="calendar-tools" aria-label="Calendar filters">
+          <label><span data-i18n="calendar.filterScope">Show</span><select id="calendarScopeFilter">
+            <option value="all" data-i18n="calendar.filterAll">All events</option>
+            <option value="upcoming" data-i18n="calendar.filterUpcoming">Upcoming events</option>
+            <option value="past" data-i18n="calendar.filterPast">Past events</option>
+          </select></label>
+          <label><span data-i18n="calendar.filterType">Event type</span><select id="calendarTypeFilter"></select></label>
+          <label><span data-i18n="calendar.filterHorse">Horse</span><select id="calendarHorseFilter"></select></label>
+        </section>
         <div class="summary-grid calendar-summary" aria-label="Calendar summary">
           <article class="summary-card"><span data-i18n="calendar.today">Today</span><strong id="eventsTodayCount">0</strong></article>
           <article class="summary-card"><span data-i18n="calendar.nextSeven">Next 7 days</span><strong id="eventsWeekCount">0</strong></article>
+          <article class="summary-card"><span data-i18n="calendar.scheduledHorses">Scheduled horses</span><strong id="scheduledHorseCount">0</strong></article>
         </div>
+        <section class="calendar-planner" aria-labelledby="calendarPlannerTitle">
+          <div class="module-header">
+            <div>
+              <h3 id="calendarPlannerTitle" data-i18n="calendar.plannerTitle">Today / This week</h3>
+              <p data-i18n="calendar.plannerSubtitle">Quickly see what is scheduled and which horses are involved.</p>
+            </div>
+          </div>
+          <div id="calendarPlannerList" class="today-list"></div>
+        </section>
         <div id="eventsList" class="item-list"></div>
       </section>
 
