@@ -364,8 +364,8 @@
           </article>
 
           <article class="panel">
-            <h3 data-i18n="settings.backupTitle">Backup</h3>
-            <p data-i18n="settings.backupText">Export a JSON backup or restore one you saved earlier.</p>
+            <h3 data-i18n="settings.backupTitle">Backup PRO</h3>
+            <p data-i18n="settings.backupText">Export a dated JSON backup or safely preview and restore one you saved earlier.</p>
             <div class="backup-actions">
               <button id="exportButton" class="button secondary" type="button" data-i18n="backup.export">Download backup</button>
               <label class="button secondary file-button"><span data-i18n="backup.import">Restore backup</span><input id="importInput" type="file" accept="application/json,.json"></label>
@@ -377,6 +377,9 @@
             <p data-i18n="settings.backupPreviewText">When you choose a backup file, EquiTrack shows counts before replacing local data.</p>
             <div id="importPreview" class="backup-preview" data-i18n="backup.noPreview">No backup selected.</div>
             <p class="update-note"><span data-i18n="backup.lastExport">Last export</span>: <strong id="lastBackupAt">-</strong></p>
+            <p class="update-note" data-i18n="backup.storageHelp">Data is stored locally in this browser. Export backups regularly.</p>
+            <button id="restoreEmergencyButton" class="button secondary" type="button" data-i18n="backup.restorePrevious">Restore previous data</button>
+            <p class="update-note" id="restoreEmergencyHelp" data-i18n="backup.restoreHelp">Available after an import. Restores the local data saved just before the last import.</p>
           </article>
 
           <article class="panel">

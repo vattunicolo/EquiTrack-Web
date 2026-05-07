@@ -1,6 +1,7 @@
 const STORAGE_KEY = 'equitrack-web-data-v1';
 const LANGUAGE_KEY = 'equitrack-web-language';
 const LAST_BACKUP_KEY = 'equitrack-web-last-backup';
+const EMERGENCY_BACKUP_KEY = 'equitrack-web-emergency-backup';
 const ONBOARDING_KEY = 'equitrack-web-onboarding-complete';
 const DEFAULT_LANGUAGE = 'en';
 const EVENT_TYPES = ['race', 'training', 'shoeing', 'vaccination', 'vet', 'feeding', 'other'];
@@ -193,8 +194,8 @@ const translations = {
     'settings.eyebrow': 'Settings / Backup',
     'settings.title': 'Manage language, backups, and local data.',
     'settings.languageHelp': 'Choose interface language',
-    'settings.backupTitle': 'Backup',
-    'settings.backupText': 'Export a JSON backup or restore one you saved earlier.',
+    'settings.backupTitle': 'Backup PRO',
+    'settings.backupText': 'Export a dated JSON backup or safely preview and restore one you saved earlier.',
     'settings.backupPreviewTitle': 'Import preview',
     'settings.backupPreviewText': 'When you choose a backup file, EquiTrack shows counts before replacing local data.',
     'settings.resetTitle': 'Reset local data',
@@ -207,6 +208,13 @@ const translations = {
     'backup.preview': 'Backup preview: {horses} horses, {tasks} tasks, {hours} work logs, {inventory} feed items, {events} calendar events.',
     'backup.confirmImport': 'Import this backup and replace current local data?',
     'backup.lastExport': 'Last export',
+    'backup.storageHelp': 'Data is stored locally in this browser. Export backups regularly.',
+    'backup.restorePrevious': 'Restore previous data',
+    'backup.restoreHelp': 'Available after an import. Restores the local data saved just before the last import.',
+    'backup.noEmergency': 'No previous import backup is available yet.',
+    'backup.confirmRestore': 'Restore the local data saved before the last import?',
+    'backup.errorInvalidJson': 'The selected file is not valid JSON.',
+    'backup.errorInvalidShape': 'This does not look like an EquiTrack backup.',
     'footer.local': 'Data is stored locally in your browser.',
     'common.date': 'Date',
     'common.time': 'Time',
@@ -267,12 +275,14 @@ const translations = {
     'message.taskReopened': 'Task reopened.',
     'message.backupExported': 'Backup exported with {count} saved records.',
     'message.backupImported': 'Backup restored with {count} saved records.',
+    'message.emergencySaved': 'Previous local data was saved before import.',
+    'message.emergencyRestored': 'Previous local data restored.',
     'message.importFailed': 'Import failed: {error}',
     'message.languageChanged': 'Language updated.',
     'message.resetDone': 'Local data reset.',
     'message.resetCancelled': 'Reset cancelled. No data was changed.',
     'confirm.delete': 'Delete {label}? This cannot be undone.',
-    'confirm.reset': 'Type RESET to permanently delete all local EquiTrack data from this browser.',
+    'confirm.reset': 'Type DELETE to permanently delete all local EquiTrack data from this browser.',
     'delete.horse': 'this horse record',
     'delete.task': 'this daily task',
     'delete.hours': 'this work log',
@@ -458,8 +468,8 @@ const translations = {
     'settings.eyebrow': 'Asetukset / varmuuskopio',
     'settings.title': 'Hallitse kieltä, varmuuskopioita ja paikallisia tietoja.',
     'settings.languageHelp': 'Valitse käyttöliittymän kieli',
-    'settings.backupTitle': 'Varmuuskopio',
-    'settings.backupText': 'Vie JSON-varmuuskopio tai palauta aiemmin tallennettu tiedosto.',
+    'settings.backupTitle': 'Backup PRO',
+    'settings.backupText': 'Vie paivatty JSON-varmuuskopio tai esikatsele ja palauta tallennettu tiedosto turvallisesti.',
     'settings.backupPreviewTitle': 'Tuonnin esikatselu',
     'settings.backupPreviewText': 'Kun valitset varmuuskopion, EquiTrack nayttaa maarat ennen paikallisten tietojen korvaamista.',
     'settings.resetTitle': 'Nollaa paikalliset tiedot',
@@ -472,6 +482,13 @@ const translations = {
     'backup.preview': 'Esikatselu: {horses} hevosta, {tasks} tehtavaa, {hours} tyokirjausta, {inventory} rehua, {events} kalenteritapahtumaa.',
     'backup.confirmImport': 'Tuodaanko tama varmuuskopio ja korvataanko nykyiset paikalliset tiedot?',
     'backup.lastExport': 'Viimeisin vienti',
+    'backup.storageHelp': 'Tiedot tallennetaan paikallisesti tähän selaimeen. Vie varmuuskopioita säännöllisesti.',
+    'backup.restorePrevious': 'Palauta aiemmat tiedot',
+    'backup.restoreHelp': 'Kaytettavissa tuonnin jalkeen. Palauttaa paikalliset tiedot, jotka tallennettiin juuri ennen viimeista tuontia.',
+    'backup.noEmergency': 'Aiemman tuonnin varmuuskopiota ei ole viela saatavilla.',
+    'backup.confirmRestore': 'Palautetaanko ennen viimeista tuontia tallennetut paikalliset tiedot?',
+    'backup.errorInvalidJson': 'Valittu tiedosto ei ole kelvollinen JSON.',
+    'backup.errorInvalidShape': 'Tama ei nayta EquiTrack-varmuuskopiolta.',
     'footer.local': 'Tiedot tallennetaan paikallisesti selaimeesi.',
     'common.date': 'Päivä',
     'common.time': 'Aika',
@@ -532,12 +549,14 @@ const translations = {
     'message.taskReopened': 'Tehtävä avattu uudelleen.',
     'message.backupExported': 'Varmuuskopio ladattu, {count} tallennettua tietuetta.',
     'message.backupImported': 'Varmuuskopio palautettu, {count} tallennettua tietuetta.',
+    'message.emergencySaved': 'Aiemmat paikalliset tiedot tallennettiin ennen tuontia.',
+    'message.emergencyRestored': 'Aiemmat paikalliset tiedot palautettu.',
     'message.importFailed': 'Tuonti epäonnistui: {error}',
     'message.languageChanged': 'Kieli päivitetty.',
     'message.resetDone': 'Paikalliset tiedot nollattu.',
     'message.resetCancelled': 'Nollaus peruttu. Tietoja ei muutettu.',
     'confirm.delete': 'Poistetaanko {label}? Tätä ei voi perua.',
-    'confirm.reset': 'Kirjoita RESET poistaaksesi kaikki tämän selaimen EquiTrack-tiedot pysyvästi.',
+    'confirm.reset': 'Kirjoita DELETE poistaaksesi kaikki tämän selaimen EquiTrack-tiedot pysyvästi.',
     'delete.horse': 'tämä hevonen',
     'delete.task': 'tämä tehtävä',
     'delete.hours': 'tämä työkirjaus',
@@ -723,8 +742,8 @@ const translations = {
     'settings.eyebrow': 'Impostazioni / backup',
     'settings.title': 'Gestisci lingua, backup e dati locali.',
     'settings.languageHelp': 'Scegli lingua interfaccia',
-    'settings.backupTitle': 'Backup',
-    'settings.backupText': 'Esporta un backup JSON o ripristina un file salvato.',
+    'settings.backupTitle': 'Backup PRO',
+    'settings.backupText': 'Esporta un backup JSON datato oppure visualizza e ripristina in modo sicuro un file salvato.',
     'settings.backupPreviewTitle': 'Anteprima importazione',
     'settings.backupPreviewText': 'Quando scegli un backup, EquiTrack mostra i conteggi prima di sostituire i dati locali.',
     'settings.resetTitle': 'Reimposta dati locali',
@@ -737,6 +756,13 @@ const translations = {
     'backup.preview': 'Anteprima: {horses} cavalli, {tasks} attivita, {hours} registri ore, {inventory} mangimi, {events} eventi calendario.',
     'backup.confirmImport': 'Importare questo backup e sostituire i dati locali attuali?',
     'backup.lastExport': 'Ultima esportazione',
+    'backup.storageHelp': 'I dati sono salvati localmente in questo browser. Esporta backup regolarmente.',
+    'backup.restorePrevious': 'Ripristina dati precedenti',
+    'backup.restoreHelp': "Disponibile dopo un'importazione. Ripristina i dati locali salvati appena prima dell'ultima importazione.",
+    'backup.noEmergency': 'Nessun backup precedente di importazione disponibile.',
+    'backup.confirmRestore': "Ripristinare i dati locali salvati prima dell'ultima importazione?",
+    'backup.errorInvalidJson': 'Il file selezionato non e JSON valido.',
+    'backup.errorInvalidShape': 'Questo non sembra un backup EquiTrack.',
     'footer.local': 'I dati sono salvati localmente nel browser.',
     'common.date': 'Data',
     'common.time': 'Ora',
@@ -797,12 +823,14 @@ const translations = {
     'message.taskReopened': 'Attivita riaperta.',
     'message.backupExported': 'Backup esportato con {count} record salvati.',
     'message.backupImported': 'Backup ripristinato con {count} record salvati.',
+    'message.emergencySaved': "I dati locali precedenti sono stati salvati prima dell'importazione.",
+    'message.emergencyRestored': 'Dati locali precedenti ripristinati.',
     'message.importFailed': 'Importazione non riuscita: {error}',
     'message.languageChanged': 'Lingua aggiornata.',
     'message.resetDone': 'Dati locali reimpostati.',
     'message.resetCancelled': 'Reimpostazione annullata. Nessun dato modificato.',
     'confirm.delete': 'Eliminare {label}? Questa azione non puo essere annullata.',
-    'confirm.reset': 'Scrivi RESET per eliminare definitivamente tutti i dati locali di EquiTrack da questo browser.',
+    'confirm.reset': 'Scrivi DELETE per eliminare definitivamente tutti i dati locali di EquiTrack da questo browser.',
     'delete.horse': 'questo cavallo',
     'delete.task': 'questa attivita',
     'delete.hours': 'questo registro ore',
@@ -872,6 +900,7 @@ const els = {
   importInput: document.querySelector('#importInput'),
   importPreview: document.querySelector('#importPreview'),
   lastBackupAt: document.querySelector('#lastBackupAt'),
+  restoreEmergencyButton: document.querySelector('#restoreEmergencyButton'),
   resetDataButton: document.querySelector('#resetDataButton'),
   languageSelect: document.querySelector('#languageSelect')
 };
@@ -1876,42 +1905,60 @@ function toggleTask(id) {
 }
 
 function normalizeImportedData(imported) {
-  if (!imported || typeof imported !== 'object') throw new Error('Backup file is not valid EquiTrack JSON.');
-  if (!Array.isArray(imported.horses) || !Array.isArray(imported.tasks) || !Array.isArray(imported.hours) || !Array.isArray(imported.inventory)) {
-    throw new Error('Backup file is missing EquiTrack data.');
+  if (!imported || typeof imported !== 'object') throw new Error(t('backup.errorInvalidShape'));
+  const data = imported.data && typeof imported.data === 'object' ? imported.data : imported;
+  const hasModernMetadata = imported.appName === 'EquiTrack' || imported.app === 'EquiTrack';
+  const hasExpectedArrays = ['horses', 'tasks', 'hours', 'inventory'].some((key) => Array.isArray(data[key]));
+  if (!hasModernMetadata && !hasExpectedArrays) throw new Error(t('backup.errorInvalidShape'));
+  if (!Array.isArray(data.horses) || !Array.isArray(data.tasks) || !Array.isArray(data.hours) || !Array.isArray(data.inventory)) {
+    throw new Error(t('backup.errorInvalidShape'));
   }
   return {
-    horses: imported.horses.map(normalizeHorse),
-    tasks: imported.tasks,
-    hours: imported.hours,
-    inventory: imported.inventory.map(normalizeFeedItem),
-    calendarEvents: Array.isArray(imported.calendarEvents) ? imported.calendarEvents.map(normalizeCalendarEvent) : []
+    horses: data.horses.map(normalizeHorse),
+    tasks: data.tasks,
+    hours: data.hours,
+    inventory: data.inventory.map(normalizeFeedItem),
+    calendarEvents: Array.isArray(data.calendarEvents) ? data.calendarEvents.map(normalizeCalendarEvent) : []
   };
 }
 
 function renderBackupStatus() {
   if (!els.lastBackupAt) return;
   els.lastBackupAt.textContent = localStorage.getItem(LAST_BACKUP_KEY) || '-';
+  if (els.restoreEmergencyButton) {
+    els.restoreEmergencyButton.disabled = !localStorage.getItem(EMERGENCY_BACKUP_KEY);
+  }
   if (els.importPreview && !els.importPreview.textContent.trim()) {
     els.importPreview.textContent = t('backup.noPreview');
   }
 }
 
-function exportBackup() {
-  const createdAt = new Date().toISOString();
-  const counts = getCounts();
-  const backup = {
-    app: 'EquiTrack',
-    formatVersion: 2,
+function formatBackupStamp(date = new Date()) {
+  const pad = (value) => String(value).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}-${pad(date.getHours())}${pad(date.getMinutes())}`;
+}
+
+function createBackupPayload(createdAt = new Date().toISOString(), data = state) {
+  const normalizedData = normalizeImportedData(data);
+  return {
+    appName: 'EquiTrack',
+    backupFormatVersion: 3,
     createdAt,
-    counts,
-    data: state
+    exportedFrom: 'EquiTrack-Web',
+    counts: getCounts(normalizedData),
+    data: normalizedData
   };
+}
+
+function exportBackup() {
+  const now = new Date();
+  const createdAt = now.toISOString();
+  const backup = createBackupPayload(createdAt);
   const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = `equitrack-backup-${createdAt.replace(/[:.]/g, '-').slice(0, 19)}.json`;
+  link.download = `equitrack-backup-${formatBackupStamp(now)}.json`;
   document.body.appendChild(link);
   link.click();
   link.remove();
@@ -1924,15 +1971,21 @@ function exportBackup() {
 async function importBackup(file) {
   if (!file) return;
   try {
-    const parsed = JSON.parse(await file.text());
-    const nextState = normalizeImportedData(parsed.data || parsed);
+    let parsed;
+    try {
+      parsed = JSON.parse(await file.text());
+    } catch {
+      throw new Error(t('backup.errorInvalidJson'));
+    }
+    const nextState = normalizeImportedData(parsed);
     const counts = getCounts(nextState);
     els.importPreview.textContent = t('backup.preview', counts);
     if (!window.confirm(t('backup.confirmImport'))) return;
+    localStorage.setItem(EMERGENCY_BACKUP_KEY, JSON.stringify(createBackupPayload(new Date().toISOString(), state)));
     state = nextState;
     saveData();
     render();
-    showMessage(t('message.backupImported', { count: getTotalCount() }));
+    showMessage(`${t('message.emergencySaved')} ${t('message.backupImported', { count: getTotalCount() })}`);
   } catch (error) {
     showMessage(t('message.importFailed', { error: error.message }));
   } finally {
@@ -1940,9 +1993,27 @@ async function importBackup(file) {
   }
 }
 
+function restoreEmergencyBackup() {
+  const stored = localStorage.getItem(EMERGENCY_BACKUP_KEY);
+  if (!stored) {
+    showMessage(t('backup.noEmergency'));
+    return;
+  }
+  if (!window.confirm(t('backup.confirmRestore'))) return;
+  try {
+    const parsed = JSON.parse(stored);
+    state = normalizeImportedData(parsed);
+    saveData();
+    render();
+    showMessage(t('message.emergencyRestored'));
+  } catch (error) {
+    showMessage(t('message.importFailed', { error: error.message }));
+  }
+}
+
 function resetLocalData() {
   const answer = window.prompt(t('confirm.reset'));
-  if (answer !== 'RESET') {
+  if (answer !== 'DELETE') {
     showMessage(t('message.resetCancelled'));
     return;
   }
@@ -1994,6 +2065,7 @@ els.inventoryForm.addEventListener('submit', handleInventorySubmit);
 els.eventForm.addEventListener('submit', handleEventSubmit);
 els.exportButton.addEventListener('click', exportBackup);
 els.importInput.addEventListener('change', (event) => importBackup(event.target.files[0]));
+els.restoreEmergencyButton?.addEventListener('click', restoreEmergencyBackup);
 els.resetDataButton.addEventListener('click', resetLocalData);
 els.languageSelect.addEventListener('change', handleLanguageChange);
 els.calendarScopeFilter?.addEventListener('change', handleCalendarFilterChange);
