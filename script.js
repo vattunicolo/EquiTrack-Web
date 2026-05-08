@@ -112,6 +112,22 @@ const translations = {
     'migration.schemaNeeded': 'Cloud upload needs the local_id database migration. Run supabase/migrations/add_local_ids.sql in Supabase, then try again.',
     'migration.uploadSuccess': 'Cloud upload complete: {horses} horses, {tasks} tasks, {hours} work logs, {inventory} feed items, {events} calendar events.',
     'migration.uploadFailed': 'Cloud upload failed: {error}',
+    'cloudRead.title': 'Cloud read preview',
+    'cloudRead.text': 'Check cloud counts for the active stable without changing local data.',
+    'cloudRead.targetStable': 'Read target stable',
+    'cloudRead.compareHelp': 'Each row shows local count / cloud count.',
+    'cloudRead.warningReadOnly': 'This is read-only.',
+    'cloudRead.warningLocalActive': 'Your app is still using local data.',
+    'cloudRead.warningNoSync': 'Cloud sync is not enabled yet.',
+    'cloudRead.warningNoLocalChange': 'No local data will be changed.',
+    'cloudRead.button': 'Check cloud data',
+    'cloudRead.notReady': 'Log in and assign an active stable before reading cloud data.',
+    'cloudRead.ready': 'Ready to check cloud data.',
+    'cloudRead.loading': 'Checking cloud data...',
+    'cloudRead.success': 'Cloud counts loaded.',
+    'cloudRead.noStable': 'Assign a stable before reading cloud data.',
+    'cloudRead.permissionBlocked': 'Cloud data access is blocked by database permissions.',
+    'cloudRead.failed': 'Cloud read failed: {error}',
     'message.authProtected': 'Please log in to open this section.',
     'message.authConfigMissing': 'Supabase login is not configured yet.',
     'message.authLoading': 'Checking login session...',
@@ -448,6 +464,22 @@ const translations = {
     'migration.schemaNeeded': 'Pilveen lataus tarvitsee local_id-tietokantamigraation. Suorita supabase/migrations/add_local_ids.sql Supabasessa ja yritä uudelleen.',
     'migration.uploadSuccess': 'Pilveen lataus valmis: {horses} hevosta, {tasks} tehtävää, {hours} työkirjausta, {inventory} ruokavaraston tuotetta, {events} kalenteritapahtumaa.',
     'migration.uploadFailed': 'Pilveen lataus epäonnistui: {error}',
+    'cloudRead.title': 'Pilvitietojen esikatselu',
+    'cloudRead.text': 'Tarkista aktiivisen tallin pilvimäärät muuttamatta paikallisia tietoja.',
+    'cloudRead.targetStable': 'Luettava talli',
+    'cloudRead.compareHelp': 'Jokainen rivi näyttää paikallisen määrän / pilvimäärän.',
+    'cloudRead.warningReadOnly': 'Tämä on vain luku -toiminto.',
+    'cloudRead.warningLocalActive': 'Sovellus käyttää edelleen paikallisia tietoja.',
+    'cloudRead.warningNoSync': 'Pilvisynkronointi ei ole vielä käytössä.',
+    'cloudRead.warningNoLocalChange': 'Paikallisia tietoja ei muuteta.',
+    'cloudRead.button': 'Tarkista pilvitiedot',
+    'cloudRead.notReady': 'Kirjaudu sisään ja määritä aktiivinen talli ennen pilvitietojen lukemista.',
+    'cloudRead.ready': 'Valmis tarkistamaan pilvitiedot.',
+    'cloudRead.loading': 'Tarkistetaan pilvitietoja...',
+    'cloudRead.success': 'Pilvimäärät ladattu.',
+    'cloudRead.noStable': 'Määritä talli ennen pilvitietojen lukemista.',
+    'cloudRead.permissionBlocked': 'Tietokannan käyttöoikeudet estävät pilvitietojen lukemisen.',
+    'cloudRead.failed': 'Pilvitietojen luku epäonnistui: {error}',
     'message.authProtected': 'Kirjaudu sisään avataksesi tämän osion.',
     'message.authConfigMissing': 'Supabase-kirjautumista ei ole vielä määritetty.',
     'message.authLoading': 'Tarkistetaan kirjautumisistuntoa...',
@@ -784,6 +816,22 @@ const translations = {
     'migration.schemaNeeded': 'Il caricamento cloud richiede la migrazione database local_id. Esegui supabase/migrations/add_local_ids.sql in Supabase, poi riprova.',
     'migration.uploadSuccess': 'Caricamento cloud completato: {horses} cavalli, {tasks} attività, {hours} registri ore, {inventory} scorte di mangime, {events} eventi calendario.',
     'migration.uploadFailed': 'Caricamento cloud non riuscito: {error}',
+    'cloudRead.title': 'Anteprima lettura cloud',
+    'cloudRead.text': 'Controlla i conteggi cloud della scuderia attiva senza modificare i dati locali.',
+    'cloudRead.targetStable': 'Scuderia da leggere',
+    'cloudRead.compareHelp': 'Ogni riga mostra conteggio locale / conteggio cloud.',
+    'cloudRead.warningReadOnly': 'Questa operazione è di sola lettura.',
+    'cloudRead.warningLocalActive': 'L’app usa ancora i dati locali.',
+    'cloudRead.warningNoSync': 'La sincronizzazione cloud non è ancora attiva.',
+    'cloudRead.warningNoLocalChange': 'Nessun dato locale verrà modificato.',
+    'cloudRead.button': 'Controlla dati cloud',
+    'cloudRead.notReady': 'Accedi e assegna una scuderia attiva prima di leggere i dati cloud.',
+    'cloudRead.ready': 'Pronto a controllare i dati cloud.',
+    'cloudRead.loading': 'Controllo dati cloud...',
+    'cloudRead.success': 'Conteggi cloud caricati.',
+    'cloudRead.noStable': 'Assegna una scuderia prima di leggere i dati cloud.',
+    'cloudRead.permissionBlocked': 'L’accesso ai dati cloud è bloccato dai permessi del database.',
+    'cloudRead.failed': 'Lettura cloud non riuscita: {error}',
     'message.authProtected': 'Accedi per aprire questa sezione.',
     'message.authConfigMissing': "L'accesso Supabase non è ancora configurato.",
     'message.authLoading': 'Controllo della sessione in corso...',
@@ -1066,6 +1114,8 @@ let supabaseClient = null;
 let authUser = null;
 let isCloudUploading = false;
 let migrationUploadStatusText = '';
+let cloudReadStatusText = '';
+let cloudReadCounts = null;
 let cloudState = {
   status: 'notConnected',
   email: '',
@@ -1134,7 +1184,20 @@ const els = {
   migrationLastUpload: document.querySelector('#migrationLastUpload'),
   migrationConfirmInput: document.querySelector('#migrationConfirmInput'),
   migrationUploadButton: document.querySelector('#migrationUploadButton'),
-  migrationUploadStatus: document.querySelector('#migrationUploadStatus')
+  migrationUploadStatus: document.querySelector('#migrationUploadStatus'),
+  cloudReadStableName: document.querySelector('#cloudReadStableName'),
+  cloudReadLocalHorses: document.querySelector('#cloudReadLocalHorses'),
+  cloudReadCloudHorses: document.querySelector('#cloudReadCloudHorses'),
+  cloudReadLocalTasks: document.querySelector('#cloudReadLocalTasks'),
+  cloudReadCloudTasks: document.querySelector('#cloudReadCloudTasks'),
+  cloudReadLocalHours: document.querySelector('#cloudReadLocalHours'),
+  cloudReadCloudHours: document.querySelector('#cloudReadCloudHours'),
+  cloudReadLocalFeed: document.querySelector('#cloudReadLocalFeed'),
+  cloudReadCloudFeed: document.querySelector('#cloudReadCloudFeed'),
+  cloudReadLocalEvents: document.querySelector('#cloudReadLocalEvents'),
+  cloudReadCloudEvents: document.querySelector('#cloudReadCloudEvents'),
+  cloudReadButton: document.querySelector('#cloudReadButton'),
+  cloudReadStatus: document.querySelector('#cloudReadStatus')
 };
 
 function t(key, params = {}) {
@@ -1382,6 +1445,7 @@ function updateAuthUi() {
   }
   renderCloudStatus();
   renderMigrationPreview();
+  renderCloudReadPreview();
 }
 
 function getCurrentUser() {
@@ -1402,6 +1466,7 @@ function setCloudStatus(nextState = {}) {
   };
   renderCloudStatus();
   renderMigrationPreview();
+  renderCloudReadPreview();
 }
 
 function getCloudStatusText() {
@@ -1482,6 +1547,68 @@ function logMigrationUploadGate(gate = getMigrationUploadGate()) {
     enabled: gate.canUpload,
     reason: gate.reason
   });
+}
+
+function renderCloudReadPreview() {
+  const localCounts = getLocalDataCounts();
+  const activeStable = getActiveStable();
+  const canRead = Boolean(getCurrentUser() && activeStable.id);
+  if (els.cloudReadStableName) els.cloudReadStableName.textContent = activeStable.name || t('cloudRead.noStable');
+  if (els.cloudReadLocalHorses) els.cloudReadLocalHorses.textContent = localCounts.horses;
+  if (els.cloudReadLocalTasks) els.cloudReadLocalTasks.textContent = localCounts.tasks;
+  if (els.cloudReadLocalHours) els.cloudReadLocalHours.textContent = localCounts.hours;
+  if (els.cloudReadLocalFeed) els.cloudReadLocalFeed.textContent = localCounts.inventory;
+  if (els.cloudReadLocalEvents) els.cloudReadLocalEvents.textContent = localCounts.events;
+  if (els.cloudReadCloudHorses) els.cloudReadCloudHorses.textContent = cloudReadCounts?.horses ?? '-';
+  if (els.cloudReadCloudTasks) els.cloudReadCloudTasks.textContent = cloudReadCounts?.tasks ?? '-';
+  if (els.cloudReadCloudHours) els.cloudReadCloudHours.textContent = cloudReadCounts?.hours ?? '-';
+  if (els.cloudReadCloudFeed) els.cloudReadCloudFeed.textContent = cloudReadCounts?.inventory ?? '-';
+  if (els.cloudReadCloudEvents) els.cloudReadCloudEvents.textContent = cloudReadCounts?.events ?? '-';
+  if (els.cloudReadButton) els.cloudReadButton.disabled = !canRead;
+  if (els.cloudReadStatus) {
+    els.cloudReadStatus.textContent = cloudReadStatusText || (canRead ? t('cloudRead.ready') : t('cloudRead.notReady'));
+  }
+}
+
+async function getCloudTableCount(table, stableId) {
+  const { count, error } = await supabaseClient
+    .from(table)
+    .select('id', { count: 'exact', head: true })
+    .eq('stable_id', stableId);
+  if (error) throw error;
+  return count || 0;
+}
+
+async function checkCloudDataPreview() {
+  const activeStable = getActiveStable();
+  if (!getCurrentUser() || !activeStable.id) {
+    cloudReadStatusText = t('cloudRead.noStable');
+    renderCloudReadPreview();
+    showMessage(cloudReadStatusText);
+    return;
+  }
+  cloudReadStatusText = t('cloudRead.loading');
+  renderCloudReadPreview();
+  try {
+    const stableId = activeStable.id;
+    const [horses, tasks, hours, inventory, events] = await Promise.all([
+      getCloudTableCount('horses', stableId),
+      getCloudTableCount('tasks', stableId),
+      getCloudTableCount('work_logs', stableId),
+      getCloudTableCount('feed_items', stableId),
+      getCloudTableCount('calendar_events', stableId)
+    ]);
+    cloudReadCounts = { horses, tasks, hours, inventory, events };
+    cloudReadStatusText = t('cloudRead.success');
+    renderCloudReadPreview();
+    showMessage(cloudReadStatusText);
+  } catch (error) {
+    console.error('[EquiTrack cloud] Read preview failed', error);
+    const errorMessage = isPermissionError(error) ? t('cloudRead.permissionBlocked') : getAuthErrorMessage(error);
+    cloudReadStatusText = t('cloudRead.failed', { error: errorMessage });
+    renderCloudReadPreview();
+    showMessage(cloudReadStatusText);
+  }
 }
 
 function isMissingLocalIdSchemaError(error) {
@@ -1911,6 +2038,7 @@ function render() {
   renderCalendarPlanner();
   renderBackupStatus();
   renderMigrationPreview();
+  renderCloudReadPreview();
 }
 
 function renderSummary() {
@@ -2929,6 +3057,7 @@ els.loginForm?.addEventListener('submit', handleLoginSubmit);
 els.logoutButton?.addEventListener('click', handleLogout);
 els.migrationConfirmInput?.addEventListener('input', handleMigrationConfirmationChange);
 els.migrationUploadButton?.addEventListener('click', uploadLocalDataToCloud);
+els.cloudReadButton?.addEventListener('click', checkCloudDataPreview);
 els.calendarScopeFilter?.addEventListener('change', handleCalendarFilterChange);
 els.calendarTypeFilter?.addEventListener('change', handleCalendarFilterChange);
 els.calendarHorseFilter?.addEventListener('change', handleCalendarFilterChange);

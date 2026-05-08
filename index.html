@@ -430,6 +430,28 @@
             <p id="migrationUploadStatus" class="update-note" data-i18n="migration.uploadNotReady">Manual upload is disabled until you are logged in, have an active stable, and type CLOUD.</p>
           </article>
 
+          <article class="panel cloud-panel">
+            <h3 data-i18n="cloudRead.title">Cloud read preview</h3>
+            <p data-i18n="cloudRead.text">Check cloud counts for the active stable without changing local data.</p>
+            <div class="cloud-status-list">
+              <p><span data-i18n="cloudRead.targetStable">Read target stable</span>: <strong id="cloudReadStableName">-</strong></p>
+              <p class="update-note" data-i18n="cloudRead.compareHelp">Each row shows local count / cloud count.</p>
+              <p><span data-i18n="summary.horses">Horses</span>: <strong><span id="cloudReadLocalHorses">0</span> / <span id="cloudReadCloudHorses">-</span></strong></p>
+              <p><span data-i18n="tabs.tasks">Tasks</span>: <strong><span id="cloudReadLocalTasks">0</span> / <span id="cloudReadCloudTasks">-</span></strong></p>
+              <p><span data-i18n="tabs.hours">Work hours</span>: <strong><span id="cloudReadLocalHours">0</span> / <span id="cloudReadCloudHours">-</span></strong></p>
+              <p><span data-i18n="tabs.inventory">Feed Inventory</span>: <strong><span id="cloudReadLocalFeed">0</span> / <span id="cloudReadCloudFeed">-</span></strong></p>
+              <p><span data-i18n="nav.calendar">Calendar</span>: <strong><span id="cloudReadLocalEvents">0</span> / <span id="cloudReadCloudEvents">-</span></strong></p>
+            </div>
+            <ul class="migration-warnings">
+              <li data-i18n="cloudRead.warningReadOnly">This is read-only.</li>
+              <li data-i18n="cloudRead.warningLocalActive">Your app is still using local data.</li>
+              <li data-i18n="cloudRead.warningNoSync">Cloud sync is not enabled yet.</li>
+              <li data-i18n="cloudRead.warningNoLocalChange">No local data will be changed.</li>
+            </ul>
+            <button id="cloudReadButton" class="button secondary" type="button" disabled data-i18n="cloudRead.button">Check cloud data</button>
+            <p id="cloudReadStatus" class="update-note" data-i18n="cloudRead.notReady">Log in and assign an active stable before reading cloud data.</p>
+          </article>
+
           <article class="panel install-panel">
             <h3 data-i18n="pwa.installTitle">Install EquiTrack</h3>
             <p data-i18n="pwa.installText">Use EquiTrack like an app from your phone or computer.</p>
