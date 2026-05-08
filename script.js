@@ -8,8 +8,8 @@ const EVENT_TYPES = ['race', 'training', 'shoeing', 'vaccination', 'vet', 'feedi
 const PROTECTED_VIEWS = ['stable', 'calendar', 'settings'];
 
 const SUPABASE_CONFIG = {
-  SUPABASE_URL: 'YOUR_SUPABASE_URL',
-  SUPABASE_ANON_KEY: 'YOUR_SUPABASE_ANON_KEY'
+  SUPABASE_URL: 'https://fuojlxcexpnszepgjpbv.supabase.co',
+  SUPABASE_ANON_KEY: 'sb_publishable_6_byc2-epHvcZw1g5LlFOg_wAGSYMkU'
 };
 
 // Never put service_role key in browser code.
