@@ -84,6 +84,8 @@ const translations = {
     'cloud.connectedAs': 'Connected as {email}',
     'cloud.activeStable': 'Active stable: {name}',
     'cloud.noStable': 'No stable has been assigned to this account yet.',
+    'cloud.permissionBlocked': 'Stable access is blocked by database permissions.',
+    'cloud.loadError': 'Error loading stable.',
     'cloud.syncLocal': 'Cloud sync is not enabled yet. Local data still stays in this browser.',
     'cloud.prepTitle': 'Cloud sync preparation',
     'cloud.prepText': 'Your data is still stored locally in this browser. Cloud sync will be enabled in a later step.',
@@ -405,6 +407,8 @@ const translations = {
     'cloud.connectedAs': 'Yhdistetty käyttäjänä {email}',
     'cloud.activeStable': 'Aktiivinen talli: {name}',
     'cloud.noStable': 'Tälle tilille ei ole vielä määritetty tallia.',
+    'cloud.permissionBlocked': 'Tietokannan käyttöoikeudet estävät tallin avaamisen.',
+    'cloud.loadError': 'Tallin lataaminen epäonnistui.',
     'cloud.syncLocal': 'Pilvisynkronointi ei ole vielä käytössä. Paikalliset tiedot pysyvät tässä selaimessa.',
     'cloud.prepTitle': 'Pilvisynkronoinnin valmistelu',
     'cloud.prepText': 'Tietosi tallennetaan edelleen paikallisesti tähän selaimeen. Pilvisynkronointi otetaan käyttöön myöhemmässä vaiheessa.',
@@ -726,6 +730,8 @@ const translations = {
     'cloud.connectedAs': 'Connesso come {email}',
     'cloud.activeStable': 'Scuderia attiva: {name}',
     'cloud.noStable': 'Nessuna scuderia è stata ancora assegnata a questo account.',
+    'cloud.permissionBlocked': 'L’accesso alla scuderia è bloccato dai permessi del database.',
+    'cloud.loadError': 'Errore durante il caricamento della scuderia.',
     'cloud.syncLocal': 'La sincronizzazione cloud non è ancora attiva. I dati locali restano in questo browser.',
     'cloud.prepTitle': 'Preparazione sincronizzazione cloud',
     'cloud.prepText': 'I tuoi dati sono ancora salvati localmente in questo browser. La sincronizzazione cloud sarà attivata in un passaggio successivo.',
@@ -1279,6 +1285,20 @@ function getAuthErrorMessage(error) {
   return t('message.authLoginFailed', { error: message || 'Unknown error' });
 }
 
+function isPermissionError(error) {
+  const message = String(error?.message || error || '').toLowerCase();
+  const code = String(error?.code || '');
+  return error?.status === 401 || error?.status === 403 || code === '42501' || message.includes('row-level security') || message.includes('permission denied');
+}
+
+function withTimeout(promise, milliseconds, label) {
+  let timeoutId;
+  const timeout = new Promise((_, reject) => {
+    timeoutId = window.setTimeout(() => reject(new Error(`${label} timed out`)), milliseconds);
+  });
+  return Promise.race([promise, timeout]).finally(() => window.clearTimeout(timeoutId));
+}
+
 function isProtectedView(viewName) {
   return PROTECTED_VIEWS.includes(viewName);
 }
@@ -1315,6 +1335,8 @@ function setCloudStatus(nextState = {}) {
 function getCloudStatusText() {
   if (cloudState.status === 'connected') return t('cloud.connectedAs', { email: cloudState.email });
   if (cloudState.status === 'noStable') return t('cloud.noStable');
+  if (cloudState.status === 'permissionBlocked') return t('cloud.permissionBlocked');
+  if (cloudState.status === 'error') return t('cloud.loadError');
   if (cloudState.status === 'loading') return t('cloud.loadingStable');
   return t(cloudState.messageKey || 'cloud.notConnected');
 }
@@ -1347,20 +1369,32 @@ function renderMigrationPreview() {
 
 async function getUserStable(user = getCurrentUser()) {
   if (!supabaseClient || !user) return null;
-  const { data: membership, error: membershipError } = await supabaseClient
-    .from('stable_members')
-    .select('stable_id, role')
-    .eq('user_id', user.id)
-    .limit(1)
-    .maybeSingle();
+  console.info('[EquiTrack cloud] Current auth user id', user.id);
+  const { data: memberships, error: membershipError } = await withTimeout(
+    supabaseClient
+      .from('stable_members')
+      .select('stable_id, role')
+      .eq('user_id', user.id)
+      .limit(1),
+    10000,
+    'stable_members query'
+  );
+  console.info('[EquiTrack cloud] stable_members query result', { memberships, membershipError });
   if (membershipError) throw membershipError;
+  const membership = Array.isArray(memberships) ? memberships[0] : null;
   if (!membership?.stable_id) return null;
-  const { data: stable, error: stableError } = await supabaseClient
-    .from('stables')
-    .select('id, name')
-    .eq('id', membership.stable_id)
-    .maybeSingle();
+  const { data: stables, error: stableError } = await withTimeout(
+    supabaseClient
+      .from('stables')
+      .select('id, name')
+      .eq('id', membership.stable_id)
+      .limit(1),
+    10000,
+    'stables query'
+  );
+  console.info('[EquiTrack cloud] stables query result', { stables, stableError });
   if (stableError) throw stableError;
+  const stable = Array.isArray(stables) ? stables[0] : null;
   if (!stable) return null;
   return {
     stableId: stable.id,
@@ -1411,14 +1445,25 @@ async function refreshCloudConnection() {
     return cloudState.status;
   } catch (error) {
     logAuthError('Stable lookup failed', error);
+    if (isPermissionError(error)) {
+      setCloudStatus({
+        status: 'permissionBlocked',
+        email: user.email || '',
+        stableId: '',
+        stableName: '',
+        messageKey: 'cloud.permissionBlocked'
+      });
+      showMessage(t('cloud.permissionBlocked'));
+      return cloudState.status;
+    }
     setCloudStatus({
-      status: 'notConnected',
+      status: 'error',
       email: user.email || '',
       stableId: '',
       stableName: '',
-      messageKey: 'auth.networkError'
+      messageKey: 'cloud.loadError'
     });
-    showMessage(getAuthErrorMessage(error));
+    showMessage(getAuthErrorMessage(error) || t('cloud.loadError'));
     return cloudState.status;
   }
 }
