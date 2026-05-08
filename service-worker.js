@@ -1,4 +1,4 @@
-const CACHE_NAME = 'equitrack-web-static-v11';
+const CACHE_NAME = 'equitrack-web-static-v12';
 const APP_ASSETS = [
   './',
   './index.html',
@@ -29,9 +29,12 @@ self.addEventListener('message', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
-  if (url.origin !== self.location.origin) return;
+  if (url.origin !== self.location.origin) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+  if (event.request.method !== 'GET') return;
   const path = url.pathname.split('/').pop();
   const isAppRoute = event.request.mode === 'navigate';
   const isStaticAsset = CACHE_PATHS.has(`./${path}`) || CACHE_PATHS.has(url.pathname);

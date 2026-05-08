@@ -9,7 +9,7 @@ const PROTECTED_VIEWS = ['stable', 'calendar', 'settings'];
 
 const SUPABASE_CONFIG = {
   SUPABASE_URL: 'https://fuojlxcexpnszepgjpbv.supabase.co',
-  SUPABASE_ANON_KEY: 'sb_publishable_6_byc2-epHvcZw1g5LlFOg_wAGSYMkU'
+  SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_6_byc2-epHvcZw1g5LlFOg_wAGSYMkU'
 };
 
 // Never put service_role key in browser code.
@@ -74,8 +74,10 @@ const translations = {
     'auth.login': 'Log in',
     'auth.logout': 'Log out',
     'auth.signedOut': 'Signed out',
-    'auth.setupNeeded': 'Supabase is not configured yet. Add your Supabase URL and anon key in script.js to enable login.',
+    'auth.setupNeeded': 'Supabase is not configured yet. Add your Supabase URL and publishable key in script.js to enable login.',
     'auth.setupReady': 'Login is ready for existing Supabase users.',
+    'auth.networkError': 'Supabase could not be reached. Check the project URL, publishable key, allowed site URL, and network connection.',
+    'auth.invalidCredentials': 'Invalid email or password.',
     'auth.noRegistration': 'No public sign-up is available. Accounts are created by the administrator.',
     'message.authProtected': 'Please log in to open this section.',
     'message.authConfigMissing': 'Supabase login is not configured yet.',
@@ -376,8 +378,10 @@ const translations = {
     'auth.login': 'Kirjaudu',
     'auth.logout': 'Kirjaudu ulos',
     'auth.signedOut': 'Ei kirjautunut',
-    'auth.setupNeeded': 'Supabasea ei ole vielä määritetty. Lisää Supabase URL ja anon key script.js-tiedostoon kirjautumisen käyttöön ottamiseksi.',
+    'auth.setupNeeded': 'Supabasea ei ole vielä määritetty. Lisää Supabase URL ja publishable key script.js-tiedostoon kirjautumisen käyttöön ottamiseksi.',
     'auth.setupReady': 'Kirjautuminen on valmis olemassa oleville Supabase-käyttäjille.',
+    'auth.networkError': 'Supabaseen ei saada yhteyttä. Tarkista projektin URL, publishable key, sallittu sivuston URL ja verkkoyhteys.',
+    'auth.invalidCredentials': 'Virheellinen sähköposti tai salasana.',
     'auth.noRegistration': 'Julkista rekisteröitymistä ei ole. Ylläpitäjä luo käyttäjätilit.',
     'message.authProtected': 'Kirjaudu sisään avataksesi tämän osion.',
     'message.authConfigMissing': 'Supabase-kirjautumista ei ole vielä määritetty.',
@@ -678,8 +682,10 @@ const translations = {
     'auth.login': 'Accedi',
     'auth.logout': 'Esci',
     'auth.signedOut': 'Non connesso',
-    'auth.setupNeeded': "Supabase non è ancora configurato. Aggiungi l'URL Supabase e la anon key in script.js per abilitare l'accesso.",
+    'auth.setupNeeded': "Supabase non è ancora configurato. Aggiungi l'URL Supabase e la publishable key in script.js per abilitare l'accesso.",
     'auth.setupReady': 'Accesso pronto per gli utenti Supabase esistenti.',
+    'auth.networkError': "Supabase non è raggiungibile. Controlla l'URL del progetto, la publishable key, l'URL del sito consentito e la connessione.",
+    'auth.invalidCredentials': 'Email o password non validi.',
     'auth.noRegistration': "La registrazione pubblica non è disponibile. Gli account sono creati dall'amministratore.",
     'message.authProtected': 'Accedi per aprire questa sezione.',
     'message.authConfigMissing': "L'accesso Supabase non è ancora configurato.",
@@ -1163,10 +1169,45 @@ function confirmDelete(label) {
 function isSupabaseConfigured() {
   return Boolean(
     SUPABASE_CONFIG.SUPABASE_URL &&
-    SUPABASE_CONFIG.SUPABASE_ANON_KEY &&
+    SUPABASE_CONFIG.SUPABASE_PUBLISHABLE_KEY &&
     SUPABASE_CONFIG.SUPABASE_URL !== 'YOUR_SUPABASE_URL' &&
-    SUPABASE_CONFIG.SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY'
+    SUPABASE_CONFIG.SUPABASE_PUBLISHABLE_KEY !== 'YOUR_SUPABASE_PUBLISHABLE_KEY'
   );
+}
+
+function getAuthDiagnostics() {
+  const key = SUPABASE_CONFIG.SUPABASE_PUBLISHABLE_KEY || '';
+  return {
+    configured: isSupabaseConfigured(),
+    clientInitialized: Boolean(supabaseClient),
+    supabaseUrl: SUPABASE_CONFIG.SUPABASE_URL,
+    publishableKeyPrefix: key ? `${key.slice(0, 14)}...` : '',
+    siteOrigin: window.location.origin
+  };
+}
+
+function logAuthError(context, error) {
+  console.error(`[EquiTrack auth] ${context}`, {
+    error,
+    diagnostics: getAuthDiagnostics()
+  });
+}
+
+function getAuthErrorMessage(error) {
+  const message = String(error?.message || error || '');
+  const status = error?.status;
+  if (
+    message.toLowerCase().includes('failed to fetch') ||
+    message.toLowerCase().includes('network') ||
+    message.toLowerCase().includes('load supabase') ||
+    message.toLowerCase().includes('could not load supabase')
+  ) {
+    return t('auth.networkError');
+  }
+  if (status === 400 || status === 401 || message.toLowerCase().includes('invalid login credentials')) {
+    return t('auth.invalidCredentials');
+  }
+  return t('message.authLoginFailed', { error: message || 'Unknown error' });
 }
 
 function isProtectedView(viewName) {
@@ -1216,7 +1257,9 @@ async function setupAuth() {
   showMessage(t('message.authLoading'));
   try {
     await loadSupabaseScript();
-    supabaseClient = window.supabase.createClient(SUPABASE_CONFIG.SUPABASE_URL, SUPABASE_CONFIG.SUPABASE_ANON_KEY);
+    if (!window.supabase?.createClient) throw new Error('Could not load Supabase client.');
+    supabaseClient = window.supabase.createClient(SUPABASE_CONFIG.SUPABASE_URL, SUPABASE_CONFIG.SUPABASE_PUBLISHABLE_KEY);
+    console.info('[EquiTrack auth] Supabase client initialized', getAuthDiagnostics());
     const { data, error } = await supabaseClient.auth.getSession();
     if (error) throw error;
     authUser = data.session?.user || null;
@@ -1226,7 +1269,8 @@ async function setupAuth() {
       if (!authUser && isProtectedView(activeView)) showView('login');
     });
   } catch (error) {
-    showMessage(t('message.authLoginFailed', { error: error.message }));
+    logAuthError('Session initialization failed', error);
+    showMessage(getAuthErrorMessage(error));
   } finally {
     updateAuthUi();
   }
@@ -2259,7 +2303,8 @@ async function handleLoginSubmit(event) {
     showMessage(t('message.authLoginSuccess'));
     showView('stable');
   } catch (error) {
-    showMessage(t('message.authLoginFailed', { error: error.message }));
+    logAuthError('Login failed', error);
+    showMessage(getAuthErrorMessage(error));
   } finally {
     updateAuthUi();
   }
