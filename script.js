@@ -98,6 +98,8 @@ const translations = {
     'migration.warningLocal': 'Your data is currently stored locally in this browser.',
     'migration.warningConfirm': 'Cloud upload will be done only after user confirmation in a later step.',
     'migration.warningOverwrite': 'Existing cloud data should not be overwritten without warning.',
+    'migration.disabledButton': 'Preview only - upload not enabled yet',
+    'migration.noStable': 'Assign a stable before cloud migration.',
     'message.authProtected': 'Please log in to open this section.',
     'message.authConfigMissing': 'Supabase login is not configured yet.',
     'message.authLoading': 'Checking login session...',
@@ -421,6 +423,8 @@ const translations = {
     'migration.warningLocal': 'Tietosi ovat tällä hetkellä paikallisesti tässä selaimessa.',
     'migration.warningConfirm': 'Pilveen lataus tehdään myöhemmin vain käyttäjän vahvistuksen jälkeen.',
     'migration.warningOverwrite': 'Pilvessä olevia tietoja ei pidä korvata ilman varoitusta.',
+    'migration.disabledButton': 'Vain esikatselu - lataus ei ole vielä käytössä',
+    'migration.noStable': 'Määritä talli ennen pilvisiirtoa.',
     'message.authProtected': 'Kirjaudu sisään avataksesi tämän osion.',
     'message.authConfigMissing': 'Supabase-kirjautumista ei ole vielä määritetty.',
     'message.authLoading': 'Tarkistetaan kirjautumisistuntoa...',
@@ -744,6 +748,8 @@ const translations = {
     'migration.warningLocal': 'I tuoi dati sono attualmente salvati localmente in questo browser.',
     'migration.warningConfirm': 'Il caricamento cloud verrà eseguito solo dopo conferma dell’utente in un passaggio successivo.',
     'migration.warningOverwrite': 'I dati cloud esistenti non devono essere sovrascritti senza avviso.',
+    'migration.disabledButton': 'Solo anteprima - caricamento non ancora attivo',
+    'migration.noStable': 'Assegna una scuderia prima della migrazione cloud.',
     'message.authProtected': 'Accedi per aprire questa sezione.',
     'message.authConfigMissing': "L'accesso Supabase non è ancora configurato.",
     'message.authLoading': 'Controllo della sessione in corso...',
@@ -1216,12 +1222,16 @@ function saveData() {
 
 function getCounts(data = state) {
   return {
-    horses: data.horses?.length || 0,
-    tasks: data.tasks?.length || 0,
-    hours: data.hours?.length || 0,
-    inventory: data.inventory?.length || 0,
-    events: data.calendarEvents?.length || 0
+    horses: Array.isArray(data.horses) ? data.horses.length : 0,
+    tasks: Array.isArray(data.tasks) ? data.tasks.length : 0,
+    hours: Array.isArray(data.hours) ? data.hours.length : 0,
+    inventory: Array.isArray(data.inventory) ? data.inventory.length : 0,
+    events: Array.isArray(data.calendarEvents) ? data.calendarEvents.length : 0
   };
+}
+
+function getLocalDataCounts(data = state) {
+  return getCounts(data);
 }
 
 function getTotalCount(data = state) {
@@ -1344,6 +1354,7 @@ function getCloudStatusText() {
 function renderCloudStatus() {
   const statusText = getCloudStatusText();
   const stableText = cloudState.stableName || '-';
+  const migrationStableText = cloudState.stableName || t('migration.noStable');
   if (els.headerStableName) {
     els.headerStableName.textContent = cloudState.status === 'connected'
       ? t('cloud.activeStable', { name: cloudState.stableName })
@@ -1354,17 +1365,17 @@ function renderCloudStatus() {
   if (els.cloudStableName) els.cloudStableName.textContent = stableText;
   if (els.cloudConnectionStatus) els.cloudConnectionStatus.textContent = statusText;
   if (els.cloudLocalNotice) els.cloudLocalNotice.textContent = t('cloud.syncLocal');
-  if (els.migrationStableName) els.migrationStableName.textContent = stableText;
+  if (els.migrationStableName) els.migrationStableName.textContent = migrationStableText;
 }
 
 function renderMigrationPreview() {
-  const counts = getCounts();
+  const counts = getLocalDataCounts();
   if (els.migrationHorseCount) els.migrationHorseCount.textContent = counts.horses;
   if (els.migrationTaskCount) els.migrationTaskCount.textContent = counts.tasks;
   if (els.migrationHoursCount) els.migrationHoursCount.textContent = counts.hours;
   if (els.migrationFeedCount) els.migrationFeedCount.textContent = counts.inventory;
   if (els.migrationEventCount) els.migrationEventCount.textContent = counts.events;
-  if (els.migrationStableName) els.migrationStableName.textContent = cloudState.stableName || '-';
+  if (els.migrationStableName) els.migrationStableName.textContent = cloudState.stableName || t('migration.noStable');
 }
 
 async function getUserStable(user = getCurrentUser()) {
