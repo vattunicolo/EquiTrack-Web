@@ -8,7 +8,7 @@ const EVENT_TYPES = ['race', 'training', 'shoeing', 'vaccination', 'vet', 'feedi
 const PROTECTED_VIEWS = ['stable', 'calendar', 'settings'];
 
 const SUPABASE_CONFIG = {
-  SUPABASE_URL: 'https://fuojlxcexpnszepgjpbv.supabase.co',
+  SUPABASE_URL: 'https://fuojlxcexpnszepgipbv.supabase.co',
   SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_6_byc2-epHvcZw1g5LlFOg_wAGSYMkU'
 };
 
