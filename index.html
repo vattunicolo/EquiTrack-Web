@@ -406,7 +406,7 @@
 
           <article class="panel cloud-panel">
             <h3 data-i18n="migration.title">Move local data to cloud</h3>
-            <p data-i18n="migration.text">Preview the local browser data that could be uploaded later. Nothing is uploaded in this step.</p>
+            <p data-i18n="migration.text">Review the local browser data that will be copied to the active cloud stable after confirmation.</p>
             <div class="cloud-status-list">
               <p><span data-i18n="migration.targetStable">Upload target stable</span>: <strong id="migrationStableName">-</strong></p>
               <p><span data-i18n="summary.horses">Horses</span>: <strong id="migrationHorseCount">0</strong></p>
@@ -416,11 +416,18 @@
               <p><span data-i18n="nav.calendar">Calendar</span>: <strong id="migrationEventCount">0</strong></p>
             </div>
             <ul class="migration-warnings">
-              <li data-i18n="migration.warningLocal">Your data is currently stored locally in this browser.</li>
-              <li data-i18n="migration.warningConfirm">Cloud upload will be done only after user confirmation in a later step.</li>
-              <li data-i18n="migration.warningOverwrite">Existing cloud data should not be overwritten without warning.</li>
+              <li data-i18n="migration.warningLocal">This will copy your current local browser data to the cloud.</li>
+              <li data-i18n="migration.warningConfirm">Your local data will stay in this browser.</li>
+              <li data-i18n="migration.warningOverwrite">This does not enable automatic sync yet.</li>
+              <li data-i18n="migration.warningCloudRows">Rows from earlier manual uploads may be updated, but cloud rows are not deleted.</li>
             </ul>
-            <button class="button secondary" type="button" disabled data-i18n="migration.disabledButton">Preview only - upload not enabled yet</button>
+            <p class="update-note"><span data-i18n="migration.lastUpload">Last cloud upload</span>: <strong id="migrationLastUpload">-</strong></p>
+            <label class="full-width">
+              <span data-i18n="migration.confirmLabel">Type CLOUD to enable manual upload</span>
+              <input id="migrationConfirmInput" type="text" autocomplete="off" placeholder="CLOUD">
+            </label>
+            <button id="migrationUploadButton" class="button secondary" type="button" disabled data-i18n="migration.uploadButton">Upload local data to cloud</button>
+            <p id="migrationUploadStatus" class="update-note" data-i18n="migration.uploadNotReady">Manual upload is disabled until you are logged in, have an active stable, and type CLOUD.</p>
           </article>
 
           <article class="panel install-panel">

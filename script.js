@@ -3,6 +3,7 @@ const LANGUAGE_KEY = 'equitrack-web-language';
 const LAST_BACKUP_KEY = 'equitrack-web-last-backup';
 const EMERGENCY_BACKUP_KEY = 'equitrack-web-emergency-backup';
 const ONBOARDING_KEY = 'equitrack-web-onboarding-complete';
+const LAST_CLOUD_UPLOAD_KEY = 'equitrack-web-last-cloud-upload';
 const DEFAULT_LANGUAGE = 'en';
 const EVENT_TYPES = ['race', 'training', 'shoeing', 'vaccination', 'vet', 'feeding', 'other'];
 const PROTECTED_VIEWS = ['stable', 'calendar', 'settings'];
@@ -93,13 +94,24 @@ const translations = {
     'cloud.stable': 'Active stable',
     'cloud.status': 'Cloud status',
     'migration.title': 'Move local data to cloud',
-    'migration.text': 'Preview the local browser data that could be uploaded later. Nothing is uploaded in this step.',
+    'migration.text': 'Review the local browser data that will be copied to the active cloud stable after confirmation.',
     'migration.targetStable': 'Upload target stable',
-    'migration.warningLocal': 'Your data is currently stored locally in this browser.',
-    'migration.warningConfirm': 'Cloud upload will be done only after user confirmation in a later step.',
-    'migration.warningOverwrite': 'Existing cloud data should not be overwritten without warning.',
+    'migration.warningLocal': 'This will copy your current local browser data to the cloud.',
+    'migration.warningConfirm': 'Your local data will stay in this browser.',
+    'migration.warningOverwrite': 'This does not enable automatic sync yet.',
+    'migration.warningCloudRows': 'Rows from earlier manual uploads may be updated, but cloud rows are not deleted.',
     'migration.disabledButton': 'Preview only - upload not enabled yet',
     'migration.noStable': 'Assign a stable before cloud migration.',
+    'migration.lastUpload': 'Last cloud upload',
+    'migration.confirmLabel': 'Type CLOUD to enable manual upload',
+    'migration.uploadButton': 'Upload local data to cloud',
+    'migration.uploadNotReady': 'Manual upload is disabled until you are logged in, have an active stable, and type CLOUD.',
+    'migration.uploadReady': 'Ready to copy local data to the active cloud stable.',
+    'migration.uploading': 'Uploading local data to cloud...',
+    'migration.confirmUpload': 'Upload current local browser data to the active cloud stable? Local data will stay in this browser.',
+    'migration.schemaNeeded': 'Cloud upload needs the local_id database migration. Run supabase/migrations/add_local_ids.sql in Supabase, then try again.',
+    'migration.uploadSuccess': 'Cloud upload complete: {horses} horses, {tasks} tasks, {hours} work logs, {inventory} feed items, {events} calendar events.',
+    'migration.uploadFailed': 'Cloud upload failed: {error}',
     'message.authProtected': 'Please log in to open this section.',
     'message.authConfigMissing': 'Supabase login is not configured yet.',
     'message.authLoading': 'Checking login session...',
@@ -418,13 +430,24 @@ const translations = {
     'cloud.stable': 'Aktiivinen talli',
     'cloud.status': 'Pilven tila',
     'migration.title': 'Siirrä paikalliset tiedot pilveen',
-    'migration.text': 'Esikatsele paikalliset selaintiedot, jotka voidaan myöhemmin ladata pilveen. Tässä vaiheessa mitään ei ladata.',
+    'migration.text': 'Tarkista paikalliset selaintiedot, jotka kopioidaan aktiiviseen pilvitalliin vahvistuksen jälkeen.',
     'migration.targetStable': 'Kohdetalli',
-    'migration.warningLocal': 'Tietosi ovat tällä hetkellä paikallisesti tässä selaimessa.',
-    'migration.warningConfirm': 'Pilveen lataus tehdään myöhemmin vain käyttäjän vahvistuksen jälkeen.',
-    'migration.warningOverwrite': 'Pilvessä olevia tietoja ei pidä korvata ilman varoitusta.',
+    'migration.warningLocal': 'Tämä kopioi nykyiset paikalliset selaintietosi pilveen.',
+    'migration.warningConfirm': 'Paikalliset tietosi säilyvät tässä selaimessa.',
+    'migration.warningOverwrite': 'Tämä ei ota automaattista synkronointia vielä käyttöön.',
+    'migration.warningCloudRows': 'Aiemmin manuaalisesti ladattuja rivejä voidaan päivittää, mutta pilvirivejä ei poisteta.',
     'migration.disabledButton': 'Vain esikatselu - lataus ei ole vielä käytössä',
     'migration.noStable': 'Määritä talli ennen pilvisiirtoa.',
+    'migration.lastUpload': 'Viimeisin pilveen lataus',
+    'migration.confirmLabel': 'Kirjoita CLOUD ottaaksesi manuaalisen latauksen käyttöön',
+    'migration.uploadButton': 'Lataa paikalliset tiedot pilveen',
+    'migration.uploadNotReady': 'Manuaalinen lataus on pois käytöstä, kunnes olet kirjautunut sisään, aktiivinen talli on valittu ja kirjoitat CLOUD.',
+    'migration.uploadReady': 'Valmis kopioimaan paikalliset tiedot aktiiviseen pilvitalliin.',
+    'migration.uploading': 'Ladataan paikallisia tietoja pilveen...',
+    'migration.confirmUpload': 'Ladataanko tämän selaimen paikalliset tiedot aktiiviseen pilvitalliin? Paikalliset tiedot säilyvät tässä selaimessa.',
+    'migration.schemaNeeded': 'Pilveen lataus tarvitsee local_id-tietokantamigraation. Suorita supabase/migrations/add_local_ids.sql Supabasessa ja yritä uudelleen.',
+    'migration.uploadSuccess': 'Pilveen lataus valmis: {horses} hevosta, {tasks} tehtävää, {hours} työkirjausta, {inventory} ruokavaraston tuotetta, {events} kalenteritapahtumaa.',
+    'migration.uploadFailed': 'Pilveen lataus epäonnistui: {error}',
     'message.authProtected': 'Kirjaudu sisään avataksesi tämän osion.',
     'message.authConfigMissing': 'Supabase-kirjautumista ei ole vielä määritetty.',
     'message.authLoading': 'Tarkistetaan kirjautumisistuntoa...',
@@ -743,13 +766,24 @@ const translations = {
     'cloud.stable': 'Scuderia attiva',
     'cloud.status': 'Stato cloud',
     'migration.title': 'Sposta dati locali nel cloud',
-    'migration.text': 'Visualizza l’anteprima dei dati locali del browser che potranno essere caricati più avanti. In questo passaggio non viene caricato nulla.',
+    'migration.text': 'Controlla i dati locali del browser che saranno copiati nella scuderia cloud attiva dopo la conferma.',
     'migration.targetStable': 'Scuderia di destinazione',
-    'migration.warningLocal': 'I tuoi dati sono attualmente salvati localmente in questo browser.',
-    'migration.warningConfirm': 'Il caricamento cloud verrà eseguito solo dopo conferma dell’utente in un passaggio successivo.',
-    'migration.warningOverwrite': 'I dati cloud esistenti non devono essere sovrascritti senza avviso.',
+    'migration.warningLocal': 'Questo copierà nel cloud i dati locali attuali del browser.',
+    'migration.warningConfirm': 'I dati locali resteranno in questo browser.',
+    'migration.warningOverwrite': 'Questo non abilita ancora la sincronizzazione automatica.',
+    'migration.warningCloudRows': 'Le righe caricate manualmente in precedenza possono essere aggiornate, ma nessuna riga cloud viene eliminata.',
     'migration.disabledButton': 'Solo anteprima - caricamento non ancora attivo',
     'migration.noStable': 'Assegna una scuderia prima della migrazione cloud.',
+    'migration.lastUpload': 'Ultimo caricamento cloud',
+    'migration.confirmLabel': 'Digita CLOUD per abilitare il caricamento manuale',
+    'migration.uploadButton': 'Carica dati locali nel cloud',
+    'migration.uploadNotReady': "Il caricamento manuale è disabilitato finché non hai effettuato l'accesso, hai una scuderia attiva e digiti CLOUD.",
+    'migration.uploadReady': 'Pronto a copiare i dati locali nella scuderia cloud attiva.',
+    'migration.uploading': 'Caricamento dati locali nel cloud...',
+    'migration.confirmUpload': 'Caricare i dati locali di questo browser nella scuderia cloud attiva? I dati locali resteranno in questo browser.',
+    'migration.schemaNeeded': 'Il caricamento cloud richiede la migrazione database local_id. Esegui supabase/migrations/add_local_ids.sql in Supabase, poi riprova.',
+    'migration.uploadSuccess': 'Caricamento cloud completato: {horses} cavalli, {tasks} attività, {hours} registri ore, {inventory} scorte di mangime, {events} eventi calendario.',
+    'migration.uploadFailed': 'Caricamento cloud non riuscito: {error}',
     'message.authProtected': 'Accedi per aprire questa sezione.',
     'message.authConfigMissing': "L'accesso Supabase non è ancora configurato.",
     'message.authLoading': 'Controllo della sessione in corso...',
@@ -1030,6 +1064,8 @@ let calendarFilters = { scope: 'all', type: 'all', horse: 'all' };
 let pendingServiceWorker = null;
 let supabaseClient = null;
 let authUser = null;
+let isCloudUploading = false;
+let migrationUploadStatusText = '';
 let cloudState = {
   status: 'notConnected',
   email: '',
@@ -1094,7 +1130,11 @@ const els = {
   migrationTaskCount: document.querySelector('#migrationTaskCount'),
   migrationHoursCount: document.querySelector('#migrationHoursCount'),
   migrationFeedCount: document.querySelector('#migrationFeedCount'),
-  migrationEventCount: document.querySelector('#migrationEventCount')
+  migrationEventCount: document.querySelector('#migrationEventCount'),
+  migrationLastUpload: document.querySelector('#migrationLastUpload'),
+  migrationConfirmInput: document.querySelector('#migrationConfirmInput'),
+  migrationUploadButton: document.querySelector('#migrationUploadButton'),
+  migrationUploadStatus: document.querySelector('#migrationUploadStatus')
 };
 
 function t(key, params = {}) {
@@ -1232,6 +1272,19 @@ function getCounts(data = state) {
 
 function getLocalDataCounts(data = state) {
   return getCounts(data);
+}
+
+function isValidDate(value) {
+  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : null;
+}
+
+function cleanText(value) {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function nullableNumber(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
 }
 
 function getTotalCount(data = state) {
@@ -1376,6 +1429,182 @@ function renderMigrationPreview() {
   if (els.migrationFeedCount) els.migrationFeedCount.textContent = counts.inventory;
   if (els.migrationEventCount) els.migrationEventCount.textContent = counts.events;
   if (els.migrationStableName) els.migrationStableName.textContent = cloudState.stableName || t('migration.noStable');
+  if (els.migrationLastUpload) els.migrationLastUpload.textContent = localStorage.getItem(LAST_CLOUD_UPLOAD_KEY) || '-';
+  const confirmationReady = els.migrationConfirmInput?.value.trim().toUpperCase() === 'CLOUD';
+  const canUpload = Boolean(getCurrentUser() && cloudState.stableId && confirmationReady && !isCloudUploading);
+  if (els.migrationUploadButton) els.migrationUploadButton.disabled = !canUpload;
+  if (els.migrationUploadStatus && !isCloudUploading) {
+    els.migrationUploadStatus.textContent = migrationUploadStatusText || (canUpload ? t('migration.uploadReady') : t('migration.uploadNotReady'));
+  }
+}
+
+function handleMigrationConfirmationChange() {
+  migrationUploadStatusText = '';
+  renderMigrationPreview();
+}
+
+function isMissingLocalIdSchemaError(error) {
+  const message = `${error?.message || ''} ${error?.details || ''} ${error?.hint || ''}`;
+  return error?.code === 'PGRST204' || error?.code === '42P10' || message.toLowerCase().includes('local_id');
+}
+
+function buildHorseRows(stableId) {
+  return state.horses.map((rawHorse) => {
+    const horse = normalizeHorse(rawHorse);
+    return {
+      stable_id: stableId,
+      local_id: horse.id,
+      name: horse.name,
+      nickname: cleanText(horse.nickname),
+      owner: cleanText(horse.owner),
+      breed: cleanText(horse.breed),
+      date_of_birth: cleanText(horse.birth),
+      gender: cleanText(horse.gender),
+      color: cleanText(horse.color),
+      registration_number: cleanText(horse.registration),
+      feeding_notes: cleanText(horse.feedingNotes),
+      care_notes: cleanText(horse.careNotes),
+      shoeing_notes: cleanText(horse.shoeingNotes),
+      vaccination_notes: cleanText(horse.vaccinationNotes),
+      deworming_notes: cleanText(horse.dewormingNotes),
+      vet_notes: cleanText(horse.vetNotes),
+      general_notes: cleanText(horse.notes)
+    };
+  });
+}
+
+function buildTaskRows(stableId, horseIdMap) {
+  return state.tasks.map((task) => ({
+    stable_id: stableId,
+    local_id: task.id || createId(),
+    title: cleanText(task.title) || 'Untitled task',
+    description: cleanText(task.notes || task.description),
+    due_date: isValidDate(task.date || task.dueDate),
+    status: task.done ? 'done' : cleanText(task.status) || 'open',
+    horse_id: horseIdMap.get(task.horseId) || null
+  }));
+}
+
+function buildWorkLogRows(stableId, horseIdMap) {
+  return state.hours.map((entry) => {
+    const worker = cleanText(entry.worker);
+    const notes = cleanText(entry.notes || entry.description);
+    const description = [worker, notes].filter(Boolean).join(' - ');
+    return {
+      stable_id: stableId,
+      local_id: entry.id || createId(),
+      horse_id: horseIdMap.get(entry.horseId) || null,
+      description,
+      hours: toSafeNumber(entry.hours),
+      work_date: isValidDate(entry.date || entry.workDate)
+    };
+  });
+}
+
+function buildFeedRows(stableId) {
+  return state.inventory.map((rawItem) => {
+    const item = normalizeFeedItem(rawItem);
+    return {
+      stable_id: stableId,
+      local_id: item.id,
+      name: item.name,
+      category: cleanText(item.category),
+      current_amount: toSafeNumber(item.quantity),
+      unit: cleanText(item.unit),
+      daily_usage: toSafeNumber(item.dailyUsage),
+      low_stock_threshold: toSafeNumber(item.minimum),
+      supplier: cleanText(item.supplier),
+      purchase_date: isValidDate(item.purchaseDate),
+      expiry_date: isValidDate(item.expiryDate),
+      storage_location: cleanText(item.storageLocation),
+      cost: nullableNumber(item.cost),
+      notes: cleanText(item.notes)
+    };
+  });
+}
+
+function buildCalendarRows(stableId, horseIdMap) {
+  return state.calendarEvents.map((rawEvent) => {
+    const event = normalizeCalendarEvent(rawEvent);
+    return {
+      stable_id: stableId,
+      local_id: event.id,
+      date: isValidDate(event.date) || today(),
+      time: cleanText(event.time),
+      name: cleanText(event.name) || 'Untitled event',
+      event_type: event.type,
+      location: cleanText(event.location),
+      horse_ids: event.horseIds.map((horseId) => horseIdMap.get(horseId)).filter(Boolean),
+      handler: cleanText(event.handler),
+      notes: cleanText(event.notes),
+      race_number: cleanText(event.raceNumber),
+      start_number: cleanText(event.startNumber),
+      driver: cleanText(event.driver),
+      placement: cleanText(event.placement),
+      race_result: cleanText(event.raceResult),
+      prize: cleanText(event.prize),
+      post_race_notes: cleanText(event.postRaceNotes)
+    };
+  });
+}
+
+async function upsertCloudRows(table, rows, selectColumns = 'id, local_id') {
+  if (!rows.length) return [];
+  const { data, error } = await supabaseClient
+    .from(table)
+    .upsert(rows, { onConflict: 'stable_id,local_id' })
+    .select(selectColumns);
+  if (error) throw error;
+  return data || [];
+}
+
+async function uploadLocalDataToCloud() {
+  if (!getCurrentUser() || !cloudState.stableId) {
+    showMessage(t('migration.uploadNotReady'));
+    renderMigrationPreview();
+    return;
+  }
+  if (els.migrationConfirmInput?.value.trim().toUpperCase() !== 'CLOUD') {
+    showMessage(t('migration.uploadNotReady'));
+    renderMigrationPreview();
+    return;
+  }
+  if (!window.confirm(t('migration.confirmUpload'))) return;
+
+  isCloudUploading = true;
+  if (els.migrationUploadStatus) els.migrationUploadStatus.textContent = t('migration.uploading');
+  renderMigrationPreview();
+
+  const stableId = cloudState.stableId;
+  const counts = { horses: 0, tasks: 0, hours: 0, inventory: 0, events: 0 };
+  try {
+    const uploadedHorses = await upsertCloudRows('horses', buildHorseRows(stableId));
+    counts.horses = uploadedHorses.length;
+    const horseIdMap = new Map(uploadedHorses.map((horse) => [horse.local_id, horse.id]));
+
+    counts.tasks = (await upsertCloudRows('tasks', buildTaskRows(stableId, horseIdMap), 'local_id')).length;
+    counts.hours = (await upsertCloudRows('work_logs', buildWorkLogRows(stableId, horseIdMap), 'local_id')).length;
+    counts.inventory = (await upsertCloudRows('feed_items', buildFeedRows(stableId), 'local_id')).length;
+    counts.events = (await upsertCloudRows('calendar_events', buildCalendarRows(stableId, horseIdMap), 'local_id')).length;
+
+    const uploadedAt = new Date().toISOString();
+    localStorage.setItem(LAST_CLOUD_UPLOAD_KEY, uploadedAt);
+    if (els.migrationConfirmInput) els.migrationConfirmInput.value = '';
+    const message = t('migration.uploadSuccess', counts);
+    migrationUploadStatusText = message;
+    if (els.migrationUploadStatus) els.migrationUploadStatus.textContent = message;
+    showMessage(message);
+  } catch (error) {
+    console.error('[EquiTrack cloud] Manual upload failed', error);
+    const errorMessage = isMissingLocalIdSchemaError(error) ? t('migration.schemaNeeded') : getAuthErrorMessage(error);
+    const message = t('migration.uploadFailed', { error: errorMessage });
+    migrationUploadStatusText = message;
+    if (els.migrationUploadStatus) els.migrationUploadStatus.textContent = message;
+    showMessage(message);
+  } finally {
+    isCloudUploading = false;
+    renderMigrationPreview();
+  }
 }
 
 async function getUserStable(user = getCurrentUser()) {
@@ -2660,6 +2889,8 @@ els.resetDataButton.addEventListener('click', resetLocalData);
 els.languageSelect.addEventListener('change', handleLanguageChange);
 els.loginForm?.addEventListener('submit', handleLoginSubmit);
 els.logoutButton?.addEventListener('click', handleLogout);
+els.migrationConfirmInput?.addEventListener('input', handleMigrationConfirmationChange);
+els.migrationUploadButton?.addEventListener('click', uploadLocalDataToCloud);
 els.calendarScopeFilter?.addEventListener('change', handleCalendarFilterChange);
 els.calendarTypeFilter?.addEventListener('change', handleCalendarFilterChange);
 els.calendarHorseFilter?.addEventListener('change', handleCalendarFilterChange);

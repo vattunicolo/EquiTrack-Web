@@ -12,6 +12,14 @@ The current web app still stores active app data in browser `localStorage`. This
 4. Paste the full SQL into the SQL Editor.
 5. Review it, then run it once.
 
+For duplicate-safe manual local-to-cloud upload, also run:
+
+```text
+supabase/migrations/add_local_ids.sql
+```
+
+That migration adds `local_id` columns and unique `(stable_id, local_id)` indexes so repeated manual uploads update the same cloud rows instead of creating duplicates.
+
 Do not run this from the browser app. The browser app must only use the publishable key.
 
 ## Tables Created
@@ -50,11 +58,11 @@ Never put the Supabase `service_role` key in browser code.
 
 The EquiTrack-Web browser app should only use the Supabase publishable key. The `service_role` key bypasses RLS and must stay only in trusted server-side code, such as Supabase Edge Functions or a private backend.
 
-## Not Migrated Yet
+## Manual Upload Preparation
 
-This schema is preparation only.
+The app can prepare and manually upload local browser data to Supabase after login, but it does not enable automatic sync yet.
 
-The app still reads and writes:
+The browser app still reads and writes active app data from local storage:
 
 - horses
 - tasks
@@ -65,6 +73,8 @@ The app still reads and writes:
 
 from local browser storage.
 
+Manual upload copies local data to the active stable. It does not delete local data and does not replace browser data with cloud data.
+
 ## Next Step
 
-The next development step is to connect EquiTrack-Web reads and writes to these Supabase tables while preserving backup/import/export and offering a safe migration path from existing `localStorage` data.
+The next development step is to connect EquiTrack-Web reads and writes to these Supabase tables while preserving backup/import/export and keeping cloud sync explicit and safe.
