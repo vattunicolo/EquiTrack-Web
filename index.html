@@ -41,6 +41,7 @@
 
       <div class="auth-status" aria-live="polite">
         <span id="authUserEmail" data-i18n="auth.signedOut">Signed out</span>
+        <span id="headerStableName" data-i18n="cloud.notConnected">Not connected</span>
         <button id="loginNavButton" class="button auth-button" type="button" data-view-link="login" data-i18n="auth.login">Log in</button>
         <button id="logoutButton" class="button auth-button" type="button" hidden data-i18n="auth.logout">Log out</button>
       </div>
@@ -390,6 +391,17 @@
                 <option value="it">Italiano</option>
               </select>
             </label>
+          </article>
+
+          <article class="panel cloud-panel">
+            <h3 data-i18n="cloud.prepTitle">Cloud sync preparation</h3>
+            <p data-i18n="cloud.prepText">Your data is still stored locally in this browser. Cloud sync will be enabled in a later step.</p>
+            <div class="cloud-status-list">
+              <p><span data-i18n="cloud.email">Logged-in email</span>: <strong id="cloudUserEmail">-</strong></p>
+              <p><span data-i18n="cloud.stable">Active stable</span>: <strong id="cloudStableName">-</strong></p>
+              <p><span data-i18n="cloud.status">Cloud status</span>: <strong id="cloudConnectionStatus">Not connected</strong></p>
+            </div>
+            <p class="update-note" id="cloudLocalNotice" data-i18n="cloud.syncLocal">Cloud sync is not enabled yet. Local data still stays in this browser.</p>
           </article>
 
           <article class="panel install-panel">

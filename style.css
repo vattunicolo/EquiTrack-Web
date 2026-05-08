@@ -199,6 +199,9 @@ h1, h2, h3, h4, p, span, strong, button, a, label {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.auth-status span + span {
+  color: var(--accent-strong);
+}
 .auth-button {
   min-height: 36px;
   border-color: var(--line-strong);
@@ -236,6 +239,24 @@ h1, h2, h3, h4, p, span, strong, button, a, label {
   border-color: rgba(78, 205, 196, 0.36);
   background: #eefbf9;
   color: #14335a;
+}
+.cloud-status-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+.cloud-status-list p {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  margin: 0;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.cloud-status-list strong {
+  margin: 0;
+  font-size: 15px;
+  text-align: right;
 }
 
 .onboarding-panel[hidden] { display: none; }
@@ -947,6 +968,13 @@ textarea { resize: vertical; }
   .auth-status { display: grid; grid-template-columns: minmax(0, 1fr); }
   .auth-status span { max-width: 100%; text-align: center; }
   .auth-button { width: 100%; min-height: 46px; }
+  .cloud-status-list p {
+    display: grid;
+    gap: 4px;
+  }
+  .cloud-status-list strong {
+    text-align: left;
+  }
   .button { min-height: 50px; padding: 0 14px; }
   .summary-grid, .feature-grid, .side-tabs, .entry-form, .item-card, .feed-stats, .quick-actions, .form-group, .horse-detail-grid, .calendar-tools { grid-template-columns: minmax(0, 1fr); }
   .summary-card strong { font-size: 36px; }

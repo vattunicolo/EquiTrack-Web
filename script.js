@@ -79,6 +79,17 @@ const translations = {
     'auth.networkError': 'Supabase could not be reached. Check the project URL, publishable key, allowed site URL, and network connection.',
     'auth.invalidCredentials': 'Invalid email or password.',
     'auth.noRegistration': 'No public sign-up is available. Accounts are created by the administrator.',
+    'cloud.notConnected': 'Not connected',
+    'cloud.loadingStable': 'Loading stable...',
+    'cloud.connectedAs': 'Connected as {email}',
+    'cloud.activeStable': 'Active stable: {name}',
+    'cloud.noStable': 'No stable has been assigned to this account yet.',
+    'cloud.syncLocal': 'Cloud sync is not enabled yet. Local data still stays in this browser.',
+    'cloud.prepTitle': 'Cloud sync preparation',
+    'cloud.prepText': 'Your data is still stored locally in this browser. Cloud sync will be enabled in a later step.',
+    'cloud.email': 'Logged-in email',
+    'cloud.stable': 'Active stable',
+    'cloud.status': 'Cloud status',
     'message.authProtected': 'Please log in to open this section.',
     'message.authConfigMissing': 'Supabase login is not configured yet.',
     'message.authLoading': 'Checking login session...',
@@ -383,6 +394,17 @@ const translations = {
     'auth.networkError': 'Supabaseen ei saada yhteyttä. Tarkista projektin URL, publishable key, sallittu sivuston URL ja verkkoyhteys.',
     'auth.invalidCredentials': 'Virheellinen sähköposti tai salasana.',
     'auth.noRegistration': 'Julkista rekisteröitymistä ei ole. Ylläpitäjä luo käyttäjätilit.',
+    'cloud.notConnected': 'Ei yhdistetty',
+    'cloud.loadingStable': 'Ladataan tallia...',
+    'cloud.connectedAs': 'Yhdistetty käyttäjänä {email}',
+    'cloud.activeStable': 'Aktiivinen talli: {name}',
+    'cloud.noStable': 'Tälle tilille ei ole vielä määritetty tallia.',
+    'cloud.syncLocal': 'Pilvisynkronointi ei ole vielä käytössä. Paikalliset tiedot pysyvät tässä selaimessa.',
+    'cloud.prepTitle': 'Pilvisynkronoinnin valmistelu',
+    'cloud.prepText': 'Tietosi tallennetaan edelleen paikallisesti tähän selaimeen. Pilvisynkronointi otetaan käyttöön myöhemmässä vaiheessa.',
+    'cloud.email': 'Kirjautuneen sähköposti',
+    'cloud.stable': 'Aktiivinen talli',
+    'cloud.status': 'Pilven tila',
     'message.authProtected': 'Kirjaudu sisään avataksesi tämän osion.',
     'message.authConfigMissing': 'Supabase-kirjautumista ei ole vielä määritetty.',
     'message.authLoading': 'Tarkistetaan kirjautumisistuntoa...',
@@ -687,6 +709,17 @@ const translations = {
     'auth.networkError': "Supabase non è raggiungibile. Controlla l'URL del progetto, la publishable key, l'URL del sito consentito e la connessione.",
     'auth.invalidCredentials': 'Email o password non validi.',
     'auth.noRegistration': "La registrazione pubblica non è disponibile. Gli account sono creati dall'amministratore.",
+    'cloud.notConnected': 'Non connesso',
+    'cloud.loadingStable': 'Caricamento scuderia...',
+    'cloud.connectedAs': 'Connesso come {email}',
+    'cloud.activeStable': 'Scuderia attiva: {name}',
+    'cloud.noStable': 'Nessuna scuderia è stata ancora assegnata a questo account.',
+    'cloud.syncLocal': 'La sincronizzazione cloud non è ancora attiva. I dati locali restano in questo browser.',
+    'cloud.prepTitle': 'Preparazione sincronizzazione cloud',
+    'cloud.prepText': 'I tuoi dati sono ancora salvati localmente in questo browser. La sincronizzazione cloud sarà attivata in un passaggio successivo.',
+    'cloud.email': 'Email connessa',
+    'cloud.stable': 'Scuderia attiva',
+    'cloud.status': 'Stato cloud',
     'message.authProtected': 'Accedi per aprire questa sezione.',
     'message.authConfigMissing': "L'accesso Supabase non è ancora configurato.",
     'message.authLoading': 'Controllo della sessione in corso...',
@@ -967,6 +1000,13 @@ let calendarFilters = { scope: 'all', type: 'all', horse: 'all' };
 let pendingServiceWorker = null;
 let supabaseClient = null;
 let authUser = null;
+let cloudState = {
+  status: 'notConnected',
+  email: '',
+  stableId: '',
+  stableName: '',
+  messageKey: 'cloud.notConnected'
+};
 
 const els = {
   horseCount: document.querySelector('#horseCount'),
@@ -1013,7 +1053,12 @@ const els = {
   logoutButton: document.querySelector('#logoutButton'),
   loginNavButton: document.querySelector('#loginNavButton'),
   authUserEmail: document.querySelector('#authUserEmail'),
-  authSetupNotice: document.querySelector('#authSetupNotice')
+  authSetupNotice: document.querySelector('#authSetupNotice'),
+  headerStableName: document.querySelector('#headerStableName'),
+  cloudUserEmail: document.querySelector('#cloudUserEmail'),
+  cloudStableName: document.querySelector('#cloudStableName'),
+  cloudConnectionStatus: document.querySelector('#cloudConnectionStatus'),
+  cloudLocalNotice: document.querySelector('#cloudLocalNotice')
 };
 
 function t(key, params = {}) {
@@ -1228,6 +1273,119 @@ function updateAuthUi() {
     els.authSetupNotice.textContent = configured ? (loginReady ? t('auth.setupReady') : t('message.authLoading')) : t('auth.setupNeeded');
     els.authSetupNotice.classList.toggle('ready', loginReady);
   }
+  renderCloudStatus();
+}
+
+function getCurrentUser() {
+  return authUser;
+}
+
+function setCloudStatus(nextState = {}) {
+  cloudState = {
+    ...cloudState,
+    ...nextState
+  };
+  renderCloudStatus();
+}
+
+function getCloudStatusText() {
+  if (cloudState.status === 'connected') return t('cloud.connectedAs', { email: cloudState.email });
+  if (cloudState.status === 'noStable') return t('cloud.noStable');
+  if (cloudState.status === 'loading') return t('cloud.loadingStable');
+  return t(cloudState.messageKey || 'cloud.notConnected');
+}
+
+function renderCloudStatus() {
+  const statusText = getCloudStatusText();
+  const stableText = cloudState.stableName || '-';
+  if (els.headerStableName) {
+    els.headerStableName.textContent = cloudState.status === 'connected'
+      ? t('cloud.activeStable', { name: cloudState.stableName })
+      : statusText;
+    els.headerStableName.title = els.headerStableName.textContent;
+  }
+  if (els.cloudUserEmail) els.cloudUserEmail.textContent = cloudState.email || '-';
+  if (els.cloudStableName) els.cloudStableName.textContent = stableText;
+  if (els.cloudConnectionStatus) els.cloudConnectionStatus.textContent = statusText;
+  if (els.cloudLocalNotice) els.cloudLocalNotice.textContent = t('cloud.syncLocal');
+}
+
+async function getUserStable(user = getCurrentUser()) {
+  if (!supabaseClient || !user) return null;
+  const { data: membership, error: membershipError } = await supabaseClient
+    .from('stable_members')
+    .select('stable_id, role')
+    .eq('user_id', user.id)
+    .limit(1)
+    .maybeSingle();
+  if (membershipError) throw membershipError;
+  if (!membership?.stable_id) return null;
+  const { data: stable, error: stableError } = await supabaseClient
+    .from('stables')
+    .select('id, name')
+    .eq('id', membership.stable_id)
+    .maybeSingle();
+  if (stableError) throw stableError;
+  if (!stable) return null;
+  return {
+    stableId: stable.id,
+    stableName: stable.name,
+    membershipRole: membership.role || 'member'
+  };
+}
+
+async function refreshCloudConnection() {
+  const user = getCurrentUser();
+  if (!user) {
+    setCloudStatus({
+      status: 'notConnected',
+      email: '',
+      stableId: '',
+      stableName: '',
+      messageKey: 'cloud.notConnected'
+    });
+    return cloudState.status;
+  }
+  setCloudStatus({
+    status: 'loading',
+    email: user.email || '',
+    stableId: '',
+    stableName: '',
+    messageKey: 'cloud.loadingStable'
+  });
+  try {
+    const stable = await getUserStable(user);
+    if (!stable) {
+      setCloudStatus({
+        status: 'noStable',
+        email: user.email || '',
+        stableId: '',
+        stableName: '',
+        messageKey: 'cloud.noStable'
+      });
+      showMessage(t('cloud.noStable'));
+      return cloudState.status;
+    }
+    setCloudStatus({
+      status: 'connected',
+      email: user.email || '',
+      stableId: stable.stableId,
+      stableName: stable.stableName,
+      messageKey: 'cloud.connectedAs'
+    });
+    return cloudState.status;
+  } catch (error) {
+    logAuthError('Stable lookup failed', error);
+    setCloudStatus({
+      status: 'notConnected',
+      email: user.email || '',
+      stableId: '',
+      stableName: '',
+      messageKey: 'auth.networkError'
+    });
+    showMessage(getAuthErrorMessage(error));
+    return cloudState.status;
+  }
 }
 
 function loadSupabaseScript() {
@@ -1263,9 +1421,11 @@ async function setupAuth() {
     const { data, error } = await supabaseClient.auth.getSession();
     if (error) throw error;
     authUser = data.session?.user || null;
-    supabaseClient.auth.onAuthStateChange((_event, session) => {
+    await refreshCloudConnection();
+    supabaseClient.auth.onAuthStateChange(async (_event, session) => {
       authUser = session?.user || null;
       updateAuthUi();
+      await refreshCloudConnection();
       if (!authUser && isProtectedView(activeView)) showView('login');
     });
   } catch (error) {
@@ -2300,7 +2460,8 @@ async function handleLoginSubmit(event) {
     authUser = data.user || null;
     form.reset();
     updateAuthUi();
-    showMessage(t('message.authLoginSuccess'));
+    const cloudStatus = await refreshCloudConnection();
+    if (cloudStatus === 'connected') showMessage(t('message.authLoginSuccess'));
     showView('stable');
   } catch (error) {
     logAuthError('Login failed', error);
@@ -2313,6 +2474,13 @@ async function handleLoginSubmit(event) {
 async function handleLogout() {
   if (!supabaseClient) {
     authUser = null;
+    setCloudStatus({
+      status: 'notConnected',
+      email: '',
+      stableId: '',
+      stableName: '',
+      messageKey: 'cloud.notConnected'
+    });
     updateAuthUi();
     showView('home');
     showMessage(t('message.authLogoutSuccess'));
@@ -2322,6 +2490,13 @@ async function handleLogout() {
     await supabaseClient.auth.signOut();
   } finally {
     authUser = null;
+    setCloudStatus({
+      status: 'notConnected',
+      email: '',
+      stableId: '',
+      stableName: '',
+      messageKey: 'cloud.notConnected'
+    });
     updateAuthUi();
     showView('home');
     showMessage(t('message.authLogoutSuccess'));
