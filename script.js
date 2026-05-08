@@ -5,6 +5,15 @@ const EMERGENCY_BACKUP_KEY = 'equitrack-web-emergency-backup';
 const ONBOARDING_KEY = 'equitrack-web-onboarding-complete';
 const DEFAULT_LANGUAGE = 'en';
 const EVENT_TYPES = ['race', 'training', 'shoeing', 'vaccination', 'vet', 'feeding', 'other'];
+const PROTECTED_VIEWS = ['stable', 'calendar', 'settings'];
+
+const SUPABASE_CONFIG = {
+  SUPABASE_URL: 'YOUR_SUPABASE_URL',
+  SUPABASE_ANON_KEY: 'YOUR_SUPABASE_ANON_KEY'
+};
+
+// Never put service_role key in browser code.
+// Admin user creation must happen later via a Supabase Edge Function or trusted server.
 
 function createId() {
   return `eq-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
@@ -55,6 +64,25 @@ const translations = {
     'onboarding.restart': 'Restart onboarding',
     'message.onboardingDone': 'Onboarding hidden. You can restart it from Settings / Backup.',
     'message.onboardingRestarted': 'Onboarding restarted.',
+    'auth.eyebrow': 'Account access',
+    'auth.title': 'Log in to EquiTrack',
+    'auth.description': 'Use an existing account created by the EquiTrack admin. Stable data stays in this browser for now.',
+    'auth.email': 'Email',
+    'auth.password': 'Password',
+    'auth.emailPlaceholder': 'you@example.com',
+    'auth.passwordPlaceholder': 'Password',
+    'auth.login': 'Log in',
+    'auth.logout': 'Log out',
+    'auth.signedOut': 'Signed out',
+    'auth.setupNeeded': 'Supabase is not configured yet. Add your Supabase URL and anon key in script.js to enable login.',
+    'auth.setupReady': 'Login is ready for existing Supabase users.',
+    'auth.noRegistration': 'No public sign-up is available. Accounts are created by the administrator.',
+    'message.authProtected': 'Please log in to open this section.',
+    'message.authConfigMissing': 'Supabase login is not configured yet.',
+    'message.authLoading': 'Checking login session...',
+    'message.authLoginSuccess': 'Logged in.',
+    'message.authLogoutSuccess': 'Logged out.',
+    'message.authLoginFailed': 'Login failed: {error}',
     'stable.eyebrow': 'My Stable',
     'stable.title': 'Your daily stable workspace.',
     'summary.horses': 'Horses',
@@ -338,6 +366,25 @@ const translations = {
     'onboarding.restart': 'Aloita opastus uudelleen',
     'message.onboardingDone': 'Opastus piilotettu. Voit aloittaa sen uudelleen Asetukset / Varmuuskopio -näkymässä.',
     'message.onboardingRestarted': 'Opastus aloitettu uudelleen.',
+    'auth.eyebrow': 'Tilin käyttö',
+    'auth.title': 'Kirjaudu EquiTrackiin',
+    'auth.description': 'Käytä olemassa olevaa tiliä, jonka EquiTrack-ylläpitäjä on luonut. Tallin tiedot pysyvät toistaiseksi tässä selaimessa.',
+    'auth.email': 'Sähköposti',
+    'auth.password': 'Salasana',
+    'auth.emailPlaceholder': 'sinä@example.com',
+    'auth.passwordPlaceholder': 'Salasana',
+    'auth.login': 'Kirjaudu',
+    'auth.logout': 'Kirjaudu ulos',
+    'auth.signedOut': 'Ei kirjautunut',
+    'auth.setupNeeded': 'Supabasea ei ole vielä määritetty. Lisää Supabase URL ja anon key script.js-tiedostoon kirjautumisen käyttöön ottamiseksi.',
+    'auth.setupReady': 'Kirjautuminen on valmis olemassa oleville Supabase-käyttäjille.',
+    'auth.noRegistration': 'Julkista rekisteröitymistä ei ole. Ylläpitäjä luo käyttäjätilit.',
+    'message.authProtected': 'Kirjaudu sisään avataksesi tämän osion.',
+    'message.authConfigMissing': 'Supabase-kirjautumista ei ole vielä määritetty.',
+    'message.authLoading': 'Tarkistetaan kirjautumisistuntoa...',
+    'message.authLoginSuccess': 'Kirjautuminen onnistui.',
+    'message.authLogoutSuccess': 'Kirjauduttu ulos.',
+    'message.authLoginFailed': 'Kirjautuminen epäonnistui: {error}',
     'stable.eyebrow': 'Oma talli',
     'stable.title': 'Tallin päivittäinen työtila.',
     'summary.horses': 'Hevoset',
@@ -621,6 +668,25 @@ const translations = {
     'onboarding.restart': 'Riavvia onboarding',
     'message.onboardingDone': 'Onboarding nascosto. Puoi riavviarlo da Impostazioni / backup.',
     'message.onboardingRestarted': 'Onboarding riavviato.',
+    'auth.eyebrow': 'Accesso account',
+    'auth.title': 'Accedi a EquiTrack',
+    'auth.description': "Usa un account esistente creato dall'amministratore EquiTrack. Per ora i dati della scuderia restano in questo browser.",
+    'auth.email': 'Email',
+    'auth.password': 'Password',
+    'auth.emailPlaceholder': 'tu@example.com',
+    'auth.passwordPlaceholder': 'Password',
+    'auth.login': 'Accedi',
+    'auth.logout': 'Esci',
+    'auth.signedOut': 'Non connesso',
+    'auth.setupNeeded': "Supabase non è ancora configurato. Aggiungi l'URL Supabase e la anon key in script.js per abilitare l'accesso.",
+    'auth.setupReady': 'Accesso pronto per gli utenti Supabase esistenti.',
+    'auth.noRegistration': "La registrazione pubblica non è disponibile. Gli account sono creati dall'amministratore.",
+    'message.authProtected': 'Accedi per aprire questa sezione.',
+    'message.authConfigMissing': "L'accesso Supabase non è ancora configurato.",
+    'message.authLoading': 'Controllo della sessione in corso...',
+    'message.authLoginSuccess': 'Accesso effettuato.',
+    'message.authLogoutSuccess': 'Uscita effettuata.',
+    'message.authLoginFailed': 'Accesso non riuscito: {error}',
     'stable.eyebrow': 'La mia scuderia',
     'stable.title': 'Il tuo spazio di lavoro quotidiano.',
     'summary.horses': 'Cavalli',
@@ -893,6 +959,8 @@ let state = loadData();
 let activeView = 'home';
 let calendarFilters = { scope: 'all', type: 'all', horse: 'all' };
 let pendingServiceWorker = null;
+let supabaseClient = null;
+let authUser = null;
 
 const els = {
   horseCount: document.querySelector('#horseCount'),
@@ -933,7 +1001,13 @@ const els = {
   updateNotice: document.querySelector('#updateNotice'),
   refreshAppButton: document.querySelector('#refreshAppButton'),
   resetDataButton: document.querySelector('#resetDataButton'),
-  languageSelect: document.querySelector('#languageSelect')
+  languageSelect: document.querySelector('#languageSelect'),
+  loginForm: document.querySelector('#loginForm'),
+  loginButton: document.querySelector('#loginButton'),
+  logoutButton: document.querySelector('#logoutButton'),
+  loginNavButton: document.querySelector('#loginNavButton'),
+  authUserEmail: document.querySelector('#authUserEmail'),
+  authSetupNotice: document.querySelector('#authSetupNotice')
 };
 
 function t(key, params = {}) {
@@ -1086,7 +1160,90 @@ function confirmDelete(label) {
   return window.confirm(t('confirm.delete', { label }));
 }
 
+function isSupabaseConfigured() {
+  return Boolean(
+    SUPABASE_CONFIG.SUPABASE_URL &&
+    SUPABASE_CONFIG.SUPABASE_ANON_KEY &&
+    SUPABASE_CONFIG.SUPABASE_URL !== 'YOUR_SUPABASE_URL' &&
+    SUPABASE_CONFIG.SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY'
+  );
+}
+
+function isProtectedView(viewName) {
+  return PROTECTED_VIEWS.includes(viewName);
+}
+
+function updateAuthUi() {
+  const configured = isSupabaseConfigured();
+  const loginReady = configured && Boolean(supabaseClient);
+  if (els.authUserEmail) {
+    els.authUserEmail.textContent = authUser?.email || t('auth.signedOut');
+    els.authUserEmail.title = authUser?.email || '';
+  }
+  if (els.loginNavButton) els.loginNavButton.hidden = Boolean(authUser);
+  if (els.logoutButton) els.logoutButton.hidden = !authUser;
+  if (els.loginButton) els.loginButton.disabled = !loginReady;
+  if (els.authSetupNotice) {
+    els.authSetupNotice.textContent = configured ? (loginReady ? t('auth.setupReady') : t('message.authLoading')) : t('auth.setupNeeded');
+    els.authSetupNotice.classList.toggle('ready', loginReady);
+  }
+}
+
+function loadSupabaseScript() {
+  if (window.supabase?.createClient) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const existing = document.querySelector('script[data-supabase-js]');
+    if (existing) {
+      existing.addEventListener('load', resolve, { once: true });
+      existing.addEventListener('error', () => reject(new Error('Could not load Supabase client.')), { once: true });
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    script.async = true;
+    script.dataset.supabaseJs = 'true';
+    script.onload = resolve;
+    script.onerror = () => reject(new Error('Could not load Supabase client.'));
+    document.head.appendChild(script);
+  });
+}
+
+async function setupAuth() {
+  updateAuthUi();
+  if (!isSupabaseConfigured()) {
+    return;
+  }
+  showMessage(t('message.authLoading'));
+  try {
+    await loadSupabaseScript();
+    supabaseClient = window.supabase.createClient(SUPABASE_CONFIG.SUPABASE_URL, SUPABASE_CONFIG.SUPABASE_ANON_KEY);
+    const { data, error } = await supabaseClient.auth.getSession();
+    if (error) throw error;
+    authUser = data.session?.user || null;
+    supabaseClient.auth.onAuthStateChange((_event, session) => {
+      authUser = session?.user || null;
+      updateAuthUi();
+      if (!authUser && isProtectedView(activeView)) showView('login');
+    });
+  } catch (error) {
+    showMessage(t('message.authLoginFailed', { error: error.message }));
+  } finally {
+    updateAuthUi();
+  }
+}
+
 function showView(viewName) {
+  if (isProtectedView(viewName) && !authUser) {
+    activeView = 'login';
+    document.querySelectorAll('.view').forEach((view) => view.classList.remove('active'));
+    document.querySelector('#loginView').classList.add('active');
+    document.querySelectorAll('[data-view-link]').forEach((button) => {
+      button.classList.toggle('active', button.dataset.viewLink === 'login');
+    });
+    showMessage(isSupabaseConfigured() ? t('message.authProtected') : t('message.authConfigMissing'));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
   activeView = viewName;
   document.querySelectorAll('.view').forEach((view) => view.classList.remove('active'));
   document.querySelector(`#${viewName}View`).classList.add('active');
@@ -2078,7 +2235,52 @@ function handleLanguageChange(event) {
   applyTranslations();
   render();
   updateOfflineStatus(false);
+  updateAuthUi();
   showMessage(t('message.languageChanged'));
+}
+
+async function handleLoginSubmit(event) {
+  event.preventDefault();
+  if (!isSupabaseConfigured() || !supabaseClient) {
+    showMessage(t('message.authConfigMissing'));
+    updateAuthUi();
+    return;
+  }
+  const form = event.currentTarget;
+  const email = form.elements.email.value.trim();
+  const password = form.elements.password.value;
+  els.loginButton.disabled = true;
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    authUser = data.user || null;
+    form.reset();
+    updateAuthUi();
+    showMessage(t('message.authLoginSuccess'));
+    showView('stable');
+  } catch (error) {
+    showMessage(t('message.authLoginFailed', { error: error.message }));
+  } finally {
+    updateAuthUi();
+  }
+}
+
+async function handleLogout() {
+  if (!supabaseClient) {
+    authUser = null;
+    updateAuthUi();
+    showView('home');
+    showMessage(t('message.authLogoutSuccess'));
+    return;
+  }
+  try {
+    await supabaseClient.auth.signOut();
+  } finally {
+    authUser = null;
+    updateAuthUi();
+    showView('home');
+    showMessage(t('message.authLogoutSuccess'));
+  }
 }
 
 function registerServiceWorker() {
@@ -2144,6 +2346,8 @@ els.restoreEmergencyButton?.addEventListener('click', restoreEmergencyBackup);
 els.refreshAppButton?.addEventListener('click', refreshForUpdate);
 els.resetDataButton.addEventListener('click', resetLocalData);
 els.languageSelect.addEventListener('change', handleLanguageChange);
+els.loginForm?.addEventListener('submit', handleLoginSubmit);
+els.logoutButton?.addEventListener('click', handleLogout);
 els.calendarScopeFilter?.addEventListener('change', handleCalendarFilterChange);
 els.calendarTypeFilter?.addEventListener('change', handleCalendarFilterChange);
 els.calendarHorseFilter?.addEventListener('change', handleCalendarFilterChange);
@@ -2156,6 +2360,7 @@ setupViewNav();
 setupOnboarding();
 setupTabs();
 render();
+setupAuth();
 updateOfflineStatus(false);
 window.addEventListener('online', () => updateOfflineStatus(true));
 window.addEventListener('offline', () => updateOfflineStatus(true));

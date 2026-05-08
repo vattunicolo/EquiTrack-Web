@@ -21,6 +21,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html {
   max-width: 100%;
   overflow-x: hidden;
@@ -86,7 +87,7 @@ h1, h2, h3, h4, p, span, strong, button, a, label {
   backdrop-filter: blur(16px);
 }
 
-.brand, .top-nav, .hero-actions, .backup-actions, .item-actions, .social-links {
+.brand, .top-nav, .hero-actions, .backup-actions, .item-actions, .social-links, .auth-status {
   display: flex;
   align-items: center;
 }
@@ -183,6 +184,59 @@ h1, h2, h3, h4, p, span, strong, button, a, label {
 
 .view { display: none; padding: 42px 0 42px; }
 .view.active { display: block; }
+
+.auth-status {
+  gap: 8px;
+  justify-content: flex-end;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 850;
+}
+.auth-status span {
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.auth-button {
+  min-height: 36px;
+  border-color: var(--line-strong);
+  background: #ffffff;
+  color: #14335a;
+  padding: 0 12px;
+  box-shadow: none;
+}
+.auth-button:hover {
+  border-color: rgba(78, 205, 196, 0.55);
+  background: #f1fbfa;
+}
+.login-shell {
+  display: grid;
+  min-height: 58vh;
+  place-items: center;
+}
+.login-panel {
+  width: min(560px, 100%);
+}
+.auth-form {
+  grid-template-columns: minmax(0, 1fr);
+}
+.auth-notice {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(178, 107, 0, 0.24);
+  border-radius: 8px;
+  background: #fff8e8;
+  color: #7a4d00;
+  font-weight: 800;
+  line-height: 1.5;
+}
+.auth-notice.ready {
+  border-color: rgba(78, 205, 196, 0.36);
+  background: #eefbf9;
+  color: #14335a;
+}
 
 .onboarding-panel[hidden] { display: none; }
 .onboarding-panel {
@@ -335,6 +389,14 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
   transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
 }
 .button:hover { transform: translateY(-1px); }
+.button:disabled {
+  cursor: not-allowed;
+  transform: none;
+  border-color: var(--line);
+  background: #f4f7f8;
+  color: var(--quiet);
+  box-shadow: none;
+}
 .button:focus-visible, .nav-button:focus-visible, .tab-button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
   outline: 2px solid rgba(78, 205, 196, 0.75);
   outline-offset: 3px;
@@ -829,6 +891,10 @@ textarea { resize: vertical; }
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+  .auth-status {
+    width: 100%;
+    justify-content: space-between;
+  }
   .nav-button {
     width: 100%;
     min-height: 44px;
@@ -878,6 +944,9 @@ textarea { resize: vertical; }
   .onboarding-card { padding: 18px; }
   .onboarding-copy p { max-width: 30ch; }
   .button, .file-button { width: 100%; }
+  .auth-status { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .auth-status span { max-width: 100%; text-align: center; }
+  .auth-button { width: 100%; min-height: 46px; }
   .button { min-height: 50px; padding: 0 14px; }
   .summary-grid, .feature-grid, .side-tabs, .entry-form, .item-card, .feed-stats, .quick-actions, .form-group, .horse-detail-grid, .calendar-tools { grid-template-columns: minmax(0, 1fr); }
   .summary-card strong { font-size: 36px; }

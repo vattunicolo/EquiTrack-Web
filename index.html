@@ -38,6 +38,12 @@
           <button class="nav-button" type="button" data-view-link="settings" data-i18n="nav.settings">Settings / Backup</button>
         </div>
       </details>
+
+      <div class="auth-status" aria-live="polite">
+        <span id="authUserEmail" data-i18n="auth.signedOut">Signed out</span>
+        <button id="loginNavButton" class="button auth-button" type="button" data-view-link="login" data-i18n="auth.login">Log in</button>
+        <button id="logoutButton" class="button auth-button" type="button" hidden data-i18n="auth.logout">Log out</button>
+      </div>
     </header>
 
     <main>
@@ -130,6 +136,29 @@
             </div>
           </article>
         </section>
+      </section>
+
+      <section id="loginView" class="view">
+        <div class="login-shell">
+          <article class="panel login-panel">
+            <p class="eyebrow" data-i18n="auth.eyebrow">Account access</p>
+            <h2 data-i18n="auth.title">Log in to EquiTrack</h2>
+            <p data-i18n="auth.description">Use an existing account created by the EquiTrack admin. Stable data stays in this browser for now.</p>
+            <div id="authSetupNotice" class="auth-notice" data-i18n="auth.setupNeeded">Supabase is not configured yet. Add your Supabase URL and anon key in script.js to enable login.</div>
+            <form id="loginForm" class="entry-form auth-form">
+              <label class="full">
+                <span data-i18n="auth.email">Email</span>
+                <input name="email" type="email" autocomplete="email" required data-i18n-placeholder="auth.emailPlaceholder" placeholder="you@example.com">
+              </label>
+              <label class="full">
+                <span data-i18n="auth.password">Password</span>
+                <input name="password" type="password" autocomplete="current-password" required data-i18n-placeholder="auth.passwordPlaceholder" placeholder="Password">
+              </label>
+              <button id="loginButton" class="button primary" type="submit" data-i18n="auth.login">Log in</button>
+            </form>
+            <p class="update-note" data-i18n="auth.noRegistration">No public sign-up is available. Accounts are created by the administrator.</p>
+          </article>
+        </div>
       </section>
 
       <section id="stableView" class="view">
