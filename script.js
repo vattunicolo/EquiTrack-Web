@@ -1381,10 +1381,18 @@ function updateAuthUi() {
     els.authSetupNotice.classList.toggle('ready', loginReady);
   }
   renderCloudStatus();
+  renderMigrationPreview();
 }
 
 function getCurrentUser() {
   return authUser;
+}
+
+function getActiveStable() {
+  return {
+    id: cloudState.stableId || '',
+    name: cloudState.stableName || ''
+  };
 }
 
 function setCloudStatus(nextState = {}) {
@@ -1393,6 +1401,7 @@ function setCloudStatus(nextState = {}) {
     ...nextState
   };
   renderCloudStatus();
+  renderMigrationPreview();
 }
 
 function getCloudStatusText() {
@@ -1423,24 +1432,56 @@ function renderCloudStatus() {
 
 function renderMigrationPreview() {
   const counts = getLocalDataCounts();
+  const activeStable = getActiveStable();
+  const uploadGate = getMigrationUploadGate();
   if (els.migrationHorseCount) els.migrationHorseCount.textContent = counts.horses;
   if (els.migrationTaskCount) els.migrationTaskCount.textContent = counts.tasks;
   if (els.migrationHoursCount) els.migrationHoursCount.textContent = counts.hours;
   if (els.migrationFeedCount) els.migrationFeedCount.textContent = counts.inventory;
   if (els.migrationEventCount) els.migrationEventCount.textContent = counts.events;
-  if (els.migrationStableName) els.migrationStableName.textContent = cloudState.stableName || t('migration.noStable');
+  if (els.migrationStableName) els.migrationStableName.textContent = activeStable.name || t('migration.noStable');
   if (els.migrationLastUpload) els.migrationLastUpload.textContent = localStorage.getItem(LAST_CLOUD_UPLOAD_KEY) || '-';
-  const confirmationReady = els.migrationConfirmInput?.value.trim().toUpperCase() === 'CLOUD';
-  const canUpload = Boolean(getCurrentUser() && cloudState.stableId && confirmationReady && !isCloudUploading);
-  if (els.migrationUploadButton) els.migrationUploadButton.disabled = !canUpload;
+  if (els.migrationUploadButton) els.migrationUploadButton.disabled = !uploadGate.canUpload;
   if (els.migrationUploadStatus && !isCloudUploading) {
-    els.migrationUploadStatus.textContent = migrationUploadStatusText || (canUpload ? t('migration.uploadReady') : t('migration.uploadNotReady'));
+    els.migrationUploadStatus.textContent = migrationUploadStatusText || (uploadGate.canUpload ? t('migration.uploadReady') : t('migration.uploadNotReady'));
   }
+  logMigrationUploadGate(uploadGate);
 }
 
 function handleMigrationConfirmationChange() {
   migrationUploadStatusText = '';
   renderMigrationPreview();
+}
+
+function getMigrationUploadGate() {
+  const currentUser = getCurrentUser();
+  const activeStable = getActiveStable();
+  const confirmationValue = els.migrationConfirmInput?.value || '';
+  const confirmationReady = confirmationValue === 'CLOUD';
+  const reasons = [];
+  if (!currentUser) reasons.push('missing auth user');
+  if (!activeStable.id) reasons.push('missing active stable id');
+  if (!confirmationReady) reasons.push('confirmation is not exactly CLOUD');
+  if (isCloudUploading) reasons.push('upload already in progress');
+  return {
+    currentUserExists: Boolean(currentUser),
+    activeStable,
+    confirmationValue,
+    confirmationReady,
+    canUpload: reasons.length === 0,
+    reason: reasons.length ? reasons.join('; ') : 'enabled'
+  };
+}
+
+function logMigrationUploadGate(gate = getMigrationUploadGate()) {
+  console.info('[EquiTrack cloud] Manual upload gate', {
+    currentUserExists: gate.currentUserExists,
+    activeStableId: gate.activeStable.id || '',
+    activeStableName: gate.activeStable.name || '',
+    confirmationValue: gate.confirmationValue,
+    enabled: gate.canUpload,
+    reason: gate.reason
+  });
 }
 
 function isMissingLocalIdSchemaError(error) {
@@ -1559,12 +1600,9 @@ async function upsertCloudRows(table, rows, selectColumns = 'id, local_id') {
 }
 
 async function uploadLocalDataToCloud() {
-  if (!getCurrentUser() || !cloudState.stableId) {
-    showMessage(t('migration.uploadNotReady'));
-    renderMigrationPreview();
-    return;
-  }
-  if (els.migrationConfirmInput?.value.trim().toUpperCase() !== 'CLOUD') {
+  const uploadGate = getMigrationUploadGate();
+  logMigrationUploadGate(uploadGate);
+  if (!uploadGate.canUpload) {
     showMessage(t('migration.uploadNotReady'));
     renderMigrationPreview();
     return;
@@ -1575,7 +1613,7 @@ async function uploadLocalDataToCloud() {
   if (els.migrationUploadStatus) els.migrationUploadStatus.textContent = t('migration.uploading');
   renderMigrationPreview();
 
-  const stableId = cloudState.stableId;
+  const stableId = uploadGate.activeStable.id;
   const counts = { horses: 0, tasks: 0, hours: 0, inventory: 0, events: 0 };
   try {
     const uploadedHorses = await upsertCloudRows('horses', buildHorseRows(stableId));
