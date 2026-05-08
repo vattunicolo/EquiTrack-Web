@@ -321,22 +321,22 @@ const translations = {
     'home.socialHeading': 'Seuraa EquiTrackia',
     'home.email': 'Sähköposti tai yhteys',
     'home.localTitle': 'Selain ensin',
-    'home.localHeading': 'Tallin tiedot pysyvat talla laitteella.',
+    'home.localHeading': 'Tallin tiedot pysyvät tällä laitteella.',
     'home.localText': 'EquiTrack toimii suoraan selaimessa ja tallentaa hevoset, tehtävät, työtunnit, ruokavaraston ja tapahtumat paikallisesti.',
-    'home.backupReminder': 'Vie JSON-varmuuskopio Asetukset / varmuuskopio -nakymassa, kun haluat turvallisen kopion.',
+    'home.backupReminder': 'Vie JSON-varmuuskopio Asetukset / Varmuuskopio -näkymässä, kun haluat turvallisen kopion.',
     'onboarding.eyebrow': 'Ensiaskeleet',
     'onboarding.title': 'Ota EquiTrack käyttöön muutamassa minuutissa.',
     'onboarding.text': 'Aloita olennaisista: hevoset, ruokavarasto, kalenteri ja varmuuskopio.',
     'onboarding.stepHorse': 'Lisää ensimmäinen hevonen',
     'onboarding.stepFeed': 'Lisää ruokavarasto',
     'onboarding.stepEvent': 'Lisää kalenteritapahtuma',
-    'onboarding.stepBackup': 'Vie ensimmainen varmuuskopio',
+    'onboarding.stepBackup': 'Vie ensimmäinen varmuuskopio',
     'onboarding.start': 'Avaa oma talli',
     'onboarding.skip': 'Ohita nyt',
     'onboarding.restartTitle': 'Opastus',
     'onboarding.restartText': 'Näytä käyttöönoton opastus uudelleen.',
     'onboarding.restart': 'Aloita opastus uudelleen',
-    'message.onboardingDone': 'Opastus piilotettu. Voit aloittaa sen uudelleen Asetukset / varmuuskopio -nakymassa.',
+    'message.onboardingDone': 'Opastus piilotettu. Voit aloittaa sen uudelleen Asetukset / Varmuuskopio -näkymässä.',
     'message.onboardingRestarted': 'Opastus aloitettu uudelleen.',
     'stable.eyebrow': 'Oma talli',
     'stable.title': 'Tallin päivittäinen työtila.',
@@ -1143,6 +1143,12 @@ function setupOnboarding() {
 }
 
 function renderHorseOptions() {
+  if (!EVENT_TYPES.includes(calendarFilters.type)) calendarFilters.type = 'all';
+  if (!['all', 'upcoming', 'past'].includes(calendarFilters.scope)) calendarFilters.scope = 'all';
+  if (calendarFilters.horse !== 'all' && !state.horses.some((horse) => horse.id === calendarFilters.horse)) {
+    calendarFilters.horse = 'all';
+  }
+
   const singleOptions = [`<option value="">${t('tasks.noHorseAssigned')}</option>`]
     .concat(state.horses.map((horse) => `<option value="${horse.id}">${escapeHtml(horse.name)}</option>`));
   els.taskForm.elements.horseId.innerHTML = singleOptions.join('');
@@ -1938,17 +1944,13 @@ function toggleTask(id) {
 function normalizeImportedData(imported) {
   if (!imported || typeof imported !== 'object') throw new Error(t('backup.errorInvalidShape'));
   const data = imported.data && typeof imported.data === 'object' ? imported.data : imported;
-  const hasModernMetadata = imported.appName === 'EquiTrack' || imported.app === 'EquiTrack';
   const hasExpectedArrays = ['horses', 'tasks', 'hours', 'inventory'].some((key) => Array.isArray(data[key]));
-  if (!hasModernMetadata && !hasExpectedArrays) throw new Error(t('backup.errorInvalidShape'));
-  if (!Array.isArray(data.horses) || !Array.isArray(data.tasks) || !Array.isArray(data.hours) || !Array.isArray(data.inventory)) {
-    throw new Error(t('backup.errorInvalidShape'));
-  }
+  if (!hasExpectedArrays) throw new Error(t('backup.errorInvalidShape'));
   return {
-    horses: data.horses.map(normalizeHorse),
-    tasks: data.tasks,
-    hours: data.hours,
-    inventory: data.inventory.map(normalizeFeedItem),
+    horses: Array.isArray(data.horses) ? data.horses.map(normalizeHorse) : [],
+    tasks: Array.isArray(data.tasks) ? data.tasks : [],
+    hours: Array.isArray(data.hours) ? data.hours : [],
+    inventory: Array.isArray(data.inventory) ? data.inventory.map(normalizeFeedItem) : [],
     calendarEvents: Array.isArray(data.calendarEvents) ? data.calendarEvents.map(normalizeCalendarEvent) : []
   };
 }
