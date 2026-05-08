@@ -452,6 +452,26 @@
             <p id="cloudReadStatus" class="update-note" data-i18n="cloudRead.notReady">Log in and assign an active stable before reading cloud data.</p>
           </article>
 
+          <article class="panel cloud-panel danger-zone">
+            <h3 data-i18n="cloudCleanup.title">Cloud cleanup</h3>
+            <p data-i18n="cloudCleanup.text">Delete cloud rows for the active stable when cloud preview counts are duplicated or wrong.</p>
+            <div class="cloud-status-list">
+              <p><span data-i18n="cloudCleanup.targetStable">Cleanup target stable</span>: <strong id="cloudCleanupStableName">-</strong></p>
+            </div>
+            <ul class="migration-warnings">
+              <li data-i18n="cloudCleanup.warningDeletesCloud">This can delete cloud rows for the active stable.</li>
+              <li data-i18n="cloudCleanup.warningLocalSafe">Local browser data will not be deleted.</li>
+              <li data-i18n="cloudCleanup.warningUseCase">Use this only if cloud preview counts are duplicated or wrong.</li>
+              <li data-i18n="cloudCleanup.warningReupload">After cleanup, run manual upload again to copy local data back to cloud.</li>
+            </ul>
+            <label class="full-width">
+              <span data-i18n="cloudCleanup.confirmLabel">Type RESET CLOUD to enable cleanup</span>
+              <input id="cloudCleanupConfirmInput" type="text" autocomplete="off" placeholder="RESET CLOUD">
+            </label>
+            <button id="cloudCleanupButton" class="button secondary danger" type="button" disabled data-i18n="cloudCleanup.button">Delete cloud data for this stable</button>
+            <p id="cloudCleanupStatus" class="update-note" data-i18n="cloudCleanup.notReady">Cleanup is disabled until you are logged in, have an active stable, and type RESET CLOUD.</p>
+          </article>
+
           <article class="panel install-panel">
             <h3 data-i18n="pwa.installTitle">Install EquiTrack</h3>
             <p data-i18n="pwa.installText">Use EquiTrack like an app from your phone or computer.</p>

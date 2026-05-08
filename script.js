@@ -128,6 +128,22 @@ const translations = {
     'cloudRead.noStable': 'Assign a stable before reading cloud data.',
     'cloudRead.permissionBlocked': 'Cloud data access is blocked by database permissions.',
     'cloudRead.failed': 'Cloud read failed: {error}',
+    'cloudCleanup.title': 'Cloud cleanup',
+    'cloudCleanup.text': 'Delete cloud rows for the active stable when cloud preview counts are duplicated or wrong.',
+    'cloudCleanup.targetStable': 'Cleanup target stable',
+    'cloudCleanup.warningDeletesCloud': 'This can delete cloud rows for the active stable.',
+    'cloudCleanup.warningLocalSafe': 'Local browser data will not be deleted.',
+    'cloudCleanup.warningUseCase': 'Use this only if cloud preview counts are duplicated or wrong.',
+    'cloudCleanup.warningReupload': 'After cleanup, run manual upload again to copy local data back to cloud.',
+    'cloudCleanup.confirmLabel': 'Type RESET CLOUD to enable cleanup',
+    'cloudCleanup.button': 'Delete cloud data for this stable',
+    'cloudCleanup.notReady': 'Cleanup is disabled until you are logged in, have an active stable, and type RESET CLOUD.',
+    'cloudCleanup.ready': 'Ready to delete cloud data for the active stable.',
+    'cloudCleanup.deleting': 'Deleting cloud data for the active stable...',
+    'cloudCleanup.confirmDelete': 'Delete cloud data for the active stable? Local browser data will not be deleted.',
+    'cloudCleanup.success': 'Cloud cleanup complete: {events} calendar events, {inventory} feed items, {hours} work logs, {tasks} tasks, {horses} horses deleted.',
+    'cloudCleanup.failed': 'Cloud cleanup failed: {error}',
+    'cloudCleanup.permissionBlocked': 'Cloud cleanup is blocked by database permissions.',
     'message.authProtected': 'Please log in to open this section.',
     'message.authConfigMissing': 'Supabase login is not configured yet.',
     'message.authLoading': 'Checking login session...',
@@ -480,6 +496,22 @@ const translations = {
     'cloudRead.noStable': 'Määritä talli ennen pilvitietojen lukemista.',
     'cloudRead.permissionBlocked': 'Tietokannan käyttöoikeudet estävät pilvitietojen lukemisen.',
     'cloudRead.failed': 'Pilvitietojen luku epäonnistui: {error}',
+    'cloudCleanup.title': 'Pilvidatan siivous',
+    'cloudCleanup.text': 'Poista aktiivisen tallin pilvirivit, jos pilviesikatselun määrät ovat kahdentuneet tai virheelliset.',
+    'cloudCleanup.targetStable': 'Siivottava talli',
+    'cloudCleanup.warningDeletesCloud': 'Tämä voi poistaa aktiivisen tallin pilvirivejä.',
+    'cloudCleanup.warningLocalSafe': 'Tämän selaimen paikallista dataa ei poisteta.',
+    'cloudCleanup.warningUseCase': 'Käytä tätä vain, jos pilviesikatselun määrät ovat kahdentuneet tai virheelliset.',
+    'cloudCleanup.warningReupload': 'Siivouksen jälkeen voit ladata paikalliset tiedot pilveen uudelleen manuaalisesti.',
+    'cloudCleanup.confirmLabel': 'Kirjoita RESET CLOUD ottaaksesi siivouksen käyttöön',
+    'cloudCleanup.button': 'Poista tämän tallin pilvidata',
+    'cloudCleanup.notReady': 'Siivous on pois käytöstä, kunnes olet kirjautunut sisään, aktiivinen talli on valittu ja kirjoitat RESET CLOUD.',
+    'cloudCleanup.ready': 'Valmis poistamaan aktiivisen tallin pilvidata.',
+    'cloudCleanup.deleting': 'Poistetaan aktiivisen tallin pilvidataa...',
+    'cloudCleanup.confirmDelete': 'Poistetaanko aktiivisen tallin pilvidata? Paikallista selaindataa ei poisteta.',
+    'cloudCleanup.success': 'Pilvisiivoaminen valmis: {events} kalenteritapahtumaa, {inventory} ruokavaraston tuotetta, {hours} työkirjausta, {tasks} tehtävää, {horses} hevosta poistettu.',
+    'cloudCleanup.failed': 'Pilvisiivoaminen epäonnistui: {error}',
+    'cloudCleanup.permissionBlocked': 'Tietokannan käyttöoikeudet estävät pilvidatan siivoamisen.',
     'message.authProtected': 'Kirjaudu sisään avataksesi tämän osion.',
     'message.authConfigMissing': 'Supabase-kirjautumista ei ole vielä määritetty.',
     'message.authLoading': 'Tarkistetaan kirjautumisistuntoa...',
@@ -832,6 +864,22 @@ const translations = {
     'cloudRead.noStable': 'Assegna una scuderia prima di leggere i dati cloud.',
     'cloudRead.permissionBlocked': 'L’accesso ai dati cloud è bloccato dai permessi del database.',
     'cloudRead.failed': 'Lettura cloud non riuscita: {error}',
+    'cloudCleanup.title': 'Pulizia cloud',
+    'cloudCleanup.text': 'Elimina le righe cloud della scuderia attiva quando i conteggi sono duplicati o errati.',
+    'cloudCleanup.targetStable': 'Scuderia da pulire',
+    'cloudCleanup.warningDeletesCloud': 'Questo può eliminare righe cloud della scuderia attiva.',
+    'cloudCleanup.warningLocalSafe': 'I dati locali del browser non verranno eliminati.',
+    'cloudCleanup.warningUseCase': 'Usalo solo se i conteggi dell anteprima cloud sono duplicati o errati.',
+    'cloudCleanup.warningReupload': 'Dopo la pulizia, esegui di nuovo il caricamento manuale per copiare i dati locali nel cloud.',
+    'cloudCleanup.confirmLabel': 'Digita RESET CLOUD per abilitare la pulizia',
+    'cloudCleanup.button': 'Elimina i dati cloud di questa scuderia',
+    'cloudCleanup.notReady': 'La pulizia è disabilitata finché non hai effettuato l accesso, hai una scuderia attiva e digiti RESET CLOUD.',
+    'cloudCleanup.ready': 'Pronto a eliminare i dati cloud della scuderia attiva.',
+    'cloudCleanup.deleting': 'Eliminazione dati cloud della scuderia attiva...',
+    'cloudCleanup.confirmDelete': 'Eliminare i dati cloud della scuderia attiva? I dati locali del browser non verranno eliminati.',
+    'cloudCleanup.success': 'Pulizia cloud completata: {events} eventi calendario, {inventory} scorte di mangime, {hours} registri ore, {tasks} attività, {horses} cavalli eliminati.',
+    'cloudCleanup.failed': 'Pulizia cloud non riuscita: {error}',
+    'cloudCleanup.permissionBlocked': 'La pulizia cloud è bloccata dai permessi del database.',
     'message.authProtected': 'Accedi per aprire questa sezione.',
     'message.authConfigMissing': "L'accesso Supabase non è ancora configurato.",
     'message.authLoading': 'Controllo della sessione in corso...',
@@ -1116,6 +1164,8 @@ let isCloudUploading = false;
 let migrationUploadStatusText = '';
 let cloudReadStatusText = '';
 let cloudReadCounts = null;
+let cloudCleanupStatusText = '';
+let isCloudCleaning = false;
 let cloudState = {
   status: 'notConnected',
   email: '',
@@ -1197,7 +1247,11 @@ const els = {
   cloudReadLocalEvents: document.querySelector('#cloudReadLocalEvents'),
   cloudReadCloudEvents: document.querySelector('#cloudReadCloudEvents'),
   cloudReadButton: document.querySelector('#cloudReadButton'),
-  cloudReadStatus: document.querySelector('#cloudReadStatus')
+  cloudReadStatus: document.querySelector('#cloudReadStatus'),
+  cloudCleanupStableName: document.querySelector('#cloudCleanupStableName'),
+  cloudCleanupConfirmInput: document.querySelector('#cloudCleanupConfirmInput'),
+  cloudCleanupButton: document.querySelector('#cloudCleanupButton'),
+  cloudCleanupStatus: document.querySelector('#cloudCleanupStatus')
 };
 
 function t(key, params = {}) {
@@ -1446,6 +1500,7 @@ function updateAuthUi() {
   renderCloudStatus();
   renderMigrationPreview();
   renderCloudReadPreview();
+  renderCloudCleanup();
 }
 
 function getCurrentUser() {
@@ -1467,6 +1522,7 @@ function setCloudStatus(nextState = {}) {
   renderCloudStatus();
   renderMigrationPreview();
   renderCloudReadPreview();
+  renderCloudCleanup();
 }
 
 function getCloudStatusText() {
@@ -1608,6 +1664,95 @@ async function checkCloudDataPreview() {
     cloudReadStatusText = t('cloudRead.failed', { error: errorMessage });
     renderCloudReadPreview();
     showMessage(cloudReadStatusText);
+  }
+}
+
+function getCloudCleanupGate() {
+  const currentUser = getCurrentUser();
+  const activeStable = getActiveStable();
+  const confirmationValue = els.cloudCleanupConfirmInput?.value || '';
+  const confirmationReady = confirmationValue === 'RESET CLOUD';
+  const reasons = [];
+  if (!currentUser) reasons.push('missing auth user');
+  if (!activeStable.id) reasons.push('missing active stable id');
+  if (!confirmationReady) reasons.push('confirmation is not exactly RESET CLOUD');
+  if (isCloudCleaning) reasons.push('cleanup already in progress');
+  return {
+    currentUserExists: Boolean(currentUser),
+    activeStable,
+    confirmationValue,
+    confirmationReady,
+    canClean: reasons.length === 0,
+    reason: reasons.length ? reasons.join('; ') : 'enabled'
+  };
+}
+
+function renderCloudCleanup() {
+  const activeStable = getActiveStable();
+  const cleanupGate = getCloudCleanupGate();
+  if (els.cloudCleanupStableName) els.cloudCleanupStableName.textContent = activeStable.name || t('cloudRead.noStable');
+  if (els.cloudCleanupButton) els.cloudCleanupButton.disabled = !cleanupGate.canClean;
+  if (els.cloudCleanupStatus && !isCloudCleaning) {
+    els.cloudCleanupStatus.textContent = cloudCleanupStatusText || (cleanupGate.canClean ? t('cloudCleanup.ready') : t('cloudCleanup.notReady'));
+  }
+}
+
+function handleCloudCleanupConfirmationChange() {
+  cloudCleanupStatusText = '';
+  renderCloudCleanup();
+}
+
+async function deleteCloudRowsForStable(table, stableId) {
+  const { data, error } = await supabaseClient
+    .from(table)
+    .delete()
+    .eq('stable_id', stableId)
+    .select('id');
+  if (error) throw error;
+  return Array.isArray(data) ? data.length : 0;
+}
+
+async function cleanupCloudDataForStable() {
+  const cleanupGate = getCloudCleanupGate();
+  if (!cleanupGate.canClean) {
+    showMessage(t('cloudCleanup.notReady'));
+    renderCloudCleanup();
+    return;
+  }
+  if (!window.confirm(t('cloudCleanup.confirmDelete'))) return;
+
+  isCloudCleaning = true;
+  cloudCleanupStatusText = t('cloudCleanup.deleting');
+  if (els.cloudCleanupStatus) els.cloudCleanupStatus.textContent = cloudCleanupStatusText;
+  renderCloudCleanup();
+
+  const stableId = cleanupGate.activeStable.id;
+  const counts = { events: 0, inventory: 0, hours: 0, tasks: 0, horses: 0 };
+  try {
+    counts.events = await deleteCloudRowsForStable('calendar_events', stableId);
+    counts.inventory = await deleteCloudRowsForStable('feed_items', stableId);
+    counts.hours = await deleteCloudRowsForStable('work_logs', stableId);
+    counts.tasks = await deleteCloudRowsForStable('tasks', stableId);
+    counts.horses = await deleteCloudRowsForStable('horses', stableId);
+
+    if (els.cloudCleanupConfirmInput) els.cloudCleanupConfirmInput.value = '';
+    const message = t('cloudCleanup.success', counts);
+    cloudCleanupStatusText = message;
+    cloudReadCounts = null;
+    await checkCloudDataPreview();
+    cloudCleanupStatusText = message;
+    renderCloudCleanup();
+    showMessage(message);
+  } catch (error) {
+    console.error('[EquiTrack cloud] Cleanup failed', error);
+    const errorMessage = isPermissionError(error) ? t('cloudCleanup.permissionBlocked') : getAuthErrorMessage(error);
+    const message = t('cloudCleanup.failed', { error: errorMessage });
+    cloudCleanupStatusText = message;
+    renderCloudCleanup();
+    showMessage(message);
+  } finally {
+    isCloudCleaning = false;
+    renderCloudCleanup();
   }
 }
 
@@ -2039,6 +2184,7 @@ function render() {
   renderBackupStatus();
   renderMigrationPreview();
   renderCloudReadPreview();
+  renderCloudCleanup();
 }
 
 function renderSummary() {
@@ -3058,6 +3204,8 @@ els.logoutButton?.addEventListener('click', handleLogout);
 els.migrationConfirmInput?.addEventListener('input', handleMigrationConfirmationChange);
 els.migrationUploadButton?.addEventListener('click', uploadLocalDataToCloud);
 els.cloudReadButton?.addEventListener('click', checkCloudDataPreview);
+els.cloudCleanupConfirmInput?.addEventListener('input', handleCloudCleanupConfirmationChange);
+els.cloudCleanupButton?.addEventListener('click', cleanupCloudDataForStable);
 els.calendarScopeFilter?.addEventListener('change', handleCalendarFilterChange);
 els.calendarTypeFilter?.addEventListener('change', handleCalendarFilterChange);
 els.calendarHorseFilter?.addEventListener('change', handleCalendarFilterChange);
