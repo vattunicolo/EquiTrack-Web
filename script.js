@@ -90,6 +90,12 @@ const translations = {
     'cloud.email': 'Logged-in email',
     'cloud.stable': 'Active stable',
     'cloud.status': 'Cloud status',
+    'migration.title': 'Move local data to cloud',
+    'migration.text': 'Preview the local browser data that could be uploaded later. Nothing is uploaded in this step.',
+    'migration.targetStable': 'Upload target stable',
+    'migration.warningLocal': 'Your data is currently stored locally in this browser.',
+    'migration.warningConfirm': 'Cloud upload will be done only after user confirmation in a later step.',
+    'migration.warningOverwrite': 'Existing cloud data should not be overwritten without warning.',
     'message.authProtected': 'Please log in to open this section.',
     'message.authConfigMissing': 'Supabase login is not configured yet.',
     'message.authLoading': 'Checking login session...',
@@ -405,6 +411,12 @@ const translations = {
     'cloud.email': 'Kirjautuneen sähköposti',
     'cloud.stable': 'Aktiivinen talli',
     'cloud.status': 'Pilven tila',
+    'migration.title': 'Siirrä paikalliset tiedot pilveen',
+    'migration.text': 'Esikatsele paikalliset selaintiedot, jotka voidaan myöhemmin ladata pilveen. Tässä vaiheessa mitään ei ladata.',
+    'migration.targetStable': 'Kohdetalli',
+    'migration.warningLocal': 'Tietosi ovat tällä hetkellä paikallisesti tässä selaimessa.',
+    'migration.warningConfirm': 'Pilveen lataus tehdään myöhemmin vain käyttäjän vahvistuksen jälkeen.',
+    'migration.warningOverwrite': 'Pilvessä olevia tietoja ei pidä korvata ilman varoitusta.',
     'message.authProtected': 'Kirjaudu sisään avataksesi tämän osion.',
     'message.authConfigMissing': 'Supabase-kirjautumista ei ole vielä määritetty.',
     'message.authLoading': 'Tarkistetaan kirjautumisistuntoa...',
@@ -720,6 +732,12 @@ const translations = {
     'cloud.email': 'Email connessa',
     'cloud.stable': 'Scuderia attiva',
     'cloud.status': 'Stato cloud',
+    'migration.title': 'Sposta dati locali nel cloud',
+    'migration.text': 'Visualizza l’anteprima dei dati locali del browser che potranno essere caricati più avanti. In questo passaggio non viene caricato nulla.',
+    'migration.targetStable': 'Scuderia di destinazione',
+    'migration.warningLocal': 'I tuoi dati sono attualmente salvati localmente in questo browser.',
+    'migration.warningConfirm': 'Il caricamento cloud verrà eseguito solo dopo conferma dell’utente in un passaggio successivo.',
+    'migration.warningOverwrite': 'I dati cloud esistenti non devono essere sovrascritti senza avviso.',
     'message.authProtected': 'Accedi per aprire questa sezione.',
     'message.authConfigMissing': "L'accesso Supabase non è ancora configurato.",
     'message.authLoading': 'Controllo della sessione in corso...',
@@ -1058,7 +1076,13 @@ const els = {
   cloudUserEmail: document.querySelector('#cloudUserEmail'),
   cloudStableName: document.querySelector('#cloudStableName'),
   cloudConnectionStatus: document.querySelector('#cloudConnectionStatus'),
-  cloudLocalNotice: document.querySelector('#cloudLocalNotice')
+  cloudLocalNotice: document.querySelector('#cloudLocalNotice'),
+  migrationStableName: document.querySelector('#migrationStableName'),
+  migrationHorseCount: document.querySelector('#migrationHorseCount'),
+  migrationTaskCount: document.querySelector('#migrationTaskCount'),
+  migrationHoursCount: document.querySelector('#migrationHoursCount'),
+  migrationFeedCount: document.querySelector('#migrationFeedCount'),
+  migrationEventCount: document.querySelector('#migrationEventCount')
 };
 
 function t(key, params = {}) {
@@ -1308,6 +1332,17 @@ function renderCloudStatus() {
   if (els.cloudStableName) els.cloudStableName.textContent = stableText;
   if (els.cloudConnectionStatus) els.cloudConnectionStatus.textContent = statusText;
   if (els.cloudLocalNotice) els.cloudLocalNotice.textContent = t('cloud.syncLocal');
+  if (els.migrationStableName) els.migrationStableName.textContent = stableText;
+}
+
+function renderMigrationPreview() {
+  const counts = getCounts();
+  if (els.migrationHorseCount) els.migrationHorseCount.textContent = counts.horses;
+  if (els.migrationTaskCount) els.migrationTaskCount.textContent = counts.tasks;
+  if (els.migrationHoursCount) els.migrationHoursCount.textContent = counts.hours;
+  if (els.migrationFeedCount) els.migrationFeedCount.textContent = counts.inventory;
+  if (els.migrationEventCount) els.migrationEventCount.textContent = counts.events;
+  if (els.migrationStableName) els.migrationStableName.textContent = cloudState.stableName || '-';
 }
 
 async function getUserStable(user = getCurrentUser()) {
@@ -1552,6 +1587,7 @@ function render() {
   renderEvents();
   renderCalendarPlanner();
   renderBackupStatus();
+  renderMigrationPreview();
 }
 
 function renderSummary() {

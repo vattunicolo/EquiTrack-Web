@@ -404,6 +404,24 @@
             <p class="update-note" id="cloudLocalNotice" data-i18n="cloud.syncLocal">Cloud sync is not enabled yet. Local data still stays in this browser.</p>
           </article>
 
+          <article class="panel cloud-panel">
+            <h3 data-i18n="migration.title">Move local data to cloud</h3>
+            <p data-i18n="migration.text">Preview the local browser data that could be uploaded later. Nothing is uploaded in this step.</p>
+            <div class="cloud-status-list">
+              <p><span data-i18n="migration.targetStable">Upload target stable</span>: <strong id="migrationStableName">-</strong></p>
+              <p><span data-i18n="summary.horses">Horses</span>: <strong id="migrationHorseCount">0</strong></p>
+              <p><span data-i18n="tabs.tasks">Tasks</span>: <strong id="migrationTaskCount">0</strong></p>
+              <p><span data-i18n="tabs.hours">Work hours</span>: <strong id="migrationHoursCount">0</strong></p>
+              <p><span data-i18n="tabs.inventory">Feed Inventory</span>: <strong id="migrationFeedCount">0</strong></p>
+              <p><span data-i18n="nav.calendar">Calendar</span>: <strong id="migrationEventCount">0</strong></p>
+            </div>
+            <ul class="migration-warnings">
+              <li data-i18n="migration.warningLocal">Your data is currently stored locally in this browser.</li>
+              <li data-i18n="migration.warningConfirm">Cloud upload will be done only after user confirmation in a later step.</li>
+              <li data-i18n="migration.warningOverwrite">Existing cloud data should not be overwritten without warning.</li>
+            </ul>
+          </article>
+
           <article class="panel install-panel">
             <h3 data-i18n="pwa.installTitle">Install EquiTrack</h3>
             <p data-i18n="pwa.installText">Use EquiTrack like an app from your phone or computer.</p>

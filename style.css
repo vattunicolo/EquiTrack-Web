@@ -258,6 +258,17 @@ h1, h2, h3, h4, p, span, strong, button, a, label {
   font-size: 15px;
   text-align: right;
 }
+.migration-warnings {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0 0;
+  padding-left: 20px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.migration-warnings li::marker {
+  color: var(--warn);
+}
 
 .onboarding-panel[hidden] { display: none; }
 .onboarding-panel {
