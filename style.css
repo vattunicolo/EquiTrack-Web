@@ -202,6 +202,10 @@ h1, h2, h3, h4, p, span, strong, button, a, label {
 .auth-status span + span {
   color: var(--accent-strong);
 }
+.auth-status .cloud-preview-active {
+  color: #8a5a00;
+  font-weight: 850;
+}
 .auth-button {
   min-height: 36px;
   border-color: var(--line-strong);

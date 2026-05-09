@@ -128,6 +128,26 @@ const translations = {
     'cloudRead.noStable': 'Assign a stable before reading cloud data.',
     'cloudRead.permissionBlocked': 'Cloud data access is blocked by database permissions.',
     'cloudRead.failed': 'Cloud read failed: {error}',
+    'cloudMode.title': 'Cloud mode preview',
+    'cloudMode.text': 'Preview cloud data in the app without replacing local browser data.',
+    'cloudMode.currentMode': 'Current mode',
+    'cloudMode.targetStable': 'Preview stable',
+    'cloudMode.localStatus': 'Local data mode',
+    'cloudMode.previewStatus': 'Cloud preview mode, read-only',
+    'cloudMode.warningLocalDefault': 'Local data is still the default.',
+    'cloudMode.warningViewCloud': 'Cloud mode preview lets you view cloud data in the app.',
+    'cloudMode.warningLocalSafe': 'This does not delete local data.',
+    'cloudMode.warningNoSync': 'This does not enable automatic sync yet.',
+    'cloudMode.warningReadOnly': 'Cloud preview is read-only.',
+    'cloudMode.previewButton': 'Preview cloud data',
+    'cloudMode.localButton': 'Return to local data',
+    'cloudMode.notReady': 'Log in and assign an active stable before previewing cloud data.',
+    'cloudMode.ready': 'Ready to load a read-only cloud snapshot.',
+    'cloudMode.loading': 'Loading cloud preview...',
+    'cloudMode.enabled': 'Cloud preview loaded. Editing is read-only.',
+    'cloudMode.returnedLocal': 'Returned to local data mode.',
+    'cloudMode.failed': 'Cloud preview failed: {error}',
+    'cloudMode.readOnlyMessage': 'Cloud preview is read-only. Return to local data to make changes.',
     'cloudCleanup.title': 'Cloud cleanup',
     'cloudCleanup.text': 'Delete cloud rows for the active stable when cloud preview counts are duplicated or wrong.',
     'cloudCleanup.targetStable': 'Cleanup target stable',
@@ -496,6 +516,26 @@ const translations = {
     'cloudRead.noStable': 'Määritä talli ennen pilvitietojen lukemista.',
     'cloudRead.permissionBlocked': 'Tietokannan käyttöoikeudet estävät pilvitietojen lukemisen.',
     'cloudRead.failed': 'Pilvitietojen luku epäonnistui: {error}',
+    'cloudMode.title': 'Pilvitilan esikatselu',
+    'cloudMode.text': 'Esikatsele pilvidataa sovelluksessa korvaamatta selaimen paikallista dataa.',
+    'cloudMode.currentMode': 'Nykyinen tila',
+    'cloudMode.targetStable': 'Esikatseltava talli',
+    'cloudMode.localStatus': 'Paikallisen datan tila',
+    'cloudMode.previewStatus': 'Pilviesikatselutila, vain luku',
+    'cloudMode.warningLocalDefault': 'Paikallinen data on edelleen oletus.',
+    'cloudMode.warningViewCloud': 'Pilvitilan esikatselu näyttää pilvidatan sovelluksessa.',
+    'cloudMode.warningLocalSafe': 'Tämä ei poista paikallista dataa.',
+    'cloudMode.warningNoSync': 'Tämä ei ota automaattista synkronointia käyttöön.',
+    'cloudMode.warningReadOnly': 'Pilviesikatselu on vain lukutilassa.',
+    'cloudMode.previewButton': 'Esikatsele pilvidataa',
+    'cloudMode.localButton': 'Palaa paikalliseen dataan',
+    'cloudMode.notReady': 'Kirjaudu sisään ja varmista aktiivinen talli ennen pilvidatan esikatselua.',
+    'cloudMode.ready': 'Valmis lataamaan pilvidatan vain luku -esikatselun.',
+    'cloudMode.loading': 'Ladataan pilviesikatselua...',
+    'cloudMode.enabled': 'Pilviesikatselu ladattu. Muokkaus on vain lukutilassa.',
+    'cloudMode.returnedLocal': 'Palattu paikallisen datan tilaan.',
+    'cloudMode.failed': 'Pilviesikatselu epäonnistui: {error}',
+    'cloudMode.readOnlyMessage': 'Pilviesikatselu on vain lukutilassa. Palaa paikalliseen dataan tehdäksesi muutoksia.',
     'cloudCleanup.title': 'Pilvidatan siivous',
     'cloudCleanup.text': 'Poista aktiivisen tallin pilvirivit, jos pilviesikatselun määrät ovat kahdentuneet tai virheelliset.',
     'cloudCleanup.targetStable': 'Siivottava talli',
@@ -864,6 +904,26 @@ const translations = {
     'cloudRead.noStable': 'Assegna una scuderia prima di leggere i dati cloud.',
     'cloudRead.permissionBlocked': 'L’accesso ai dati cloud è bloccato dai permessi del database.',
     'cloudRead.failed': 'Lettura cloud non riuscita: {error}',
+    'cloudMode.title': 'Anteprima modalità cloud',
+    'cloudMode.text': "Visualizza i dati cloud nell'app senza sostituire i dati locali del browser.",
+    'cloudMode.currentMode': 'Modalità attuale',
+    'cloudMode.targetStable': 'Scuderia in anteprima',
+    'cloudMode.localStatus': 'Modalità dati locali',
+    'cloudMode.previewStatus': 'Modalità anteprima cloud, sola lettura',
+    'cloudMode.warningLocalDefault': "I dati locali restano l'impostazione predefinita.",
+    'cloudMode.warningViewCloud': "L'anteprima modalità cloud ti permette di vedere i dati cloud nell'app.",
+    'cloudMode.warningLocalSafe': 'Questo non elimina i dati locali.',
+    'cloudMode.warningNoSync': 'Questo non abilita ancora la sincronizzazione automatica.',
+    'cloudMode.warningReadOnly': "L'anteprima cloud è in sola lettura.",
+    'cloudMode.previewButton': 'Anteprima dati cloud',
+    'cloudMode.localButton': 'Torna ai dati locali',
+    'cloudMode.notReady': "Accedi e assegna una scuderia attiva prima di vedere l'anteprima cloud.",
+    'cloudMode.ready': "Pronto a caricare un'anteprima cloud in sola lettura.",
+    'cloudMode.loading': 'Caricamento anteprima cloud...',
+    'cloudMode.enabled': 'Anteprima cloud caricata. Le modifiche sono bloccate.',
+    'cloudMode.returnedLocal': 'Ritorno alla modalità dati locali.',
+    'cloudMode.failed': 'Anteprima cloud non riuscita: {error}',
+    'cloudMode.readOnlyMessage': "L'anteprima cloud è in sola lettura. Torna ai dati locali per apportare modifiche.",
     'cloudCleanup.title': 'Pulizia cloud',
     'cloudCleanup.text': 'Elimina le righe cloud della scuderia attiva quando i conteggi sono duplicati o errati.',
     'cloudCleanup.targetStable': 'Scuderia da pulire',
@@ -1166,6 +1226,8 @@ let cloudReadStatusText = '';
 let cloudReadCounts = null;
 let cloudCleanupStatusText = '';
 let isCloudCleaning = false;
+let cloudPreviewMode = false;
+let cloudModeStatusText = '';
 let cloudState = {
   status: 'notConnected',
   email: '',
@@ -1221,6 +1283,7 @@ const els = {
   authUserEmail: document.querySelector('#authUserEmail'),
   authSetupNotice: document.querySelector('#authSetupNotice'),
   headerStableName: document.querySelector('#headerStableName'),
+  dataModeStatus: document.querySelector('#dataModeStatus'),
   cloudUserEmail: document.querySelector('#cloudUserEmail'),
   cloudStableName: document.querySelector('#cloudStableName'),
   cloudConnectionStatus: document.querySelector('#cloudConnectionStatus'),
@@ -1248,6 +1311,11 @@ const els = {
   cloudReadCloudEvents: document.querySelector('#cloudReadCloudEvents'),
   cloudReadButton: document.querySelector('#cloudReadButton'),
   cloudReadStatus: document.querySelector('#cloudReadStatus'),
+  cloudModeCurrent: document.querySelector('#cloudModeCurrent'),
+  cloudModeStableName: document.querySelector('#cloudModeStableName'),
+  cloudModePreviewButton: document.querySelector('#cloudModePreviewButton'),
+  cloudModeLocalButton: document.querySelector('#cloudModeLocalButton'),
+  cloudModeStatus: document.querySelector('#cloudModeStatus'),
   cloudCleanupStableName: document.querySelector('#cloudCleanupStableName'),
   cloudCleanupConfirmInput: document.querySelector('#cloudCleanupConfirmInput'),
   cloudCleanupButton: document.querySelector('#cloudCleanupButton'),
@@ -1374,6 +1442,10 @@ function loadData() {
 }
 
 function saveData() {
+  if (cloudPreviewMode) {
+    showMessage(t('cloudMode.readOnlyMessage'));
+    return;
+  }
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
@@ -1387,8 +1459,18 @@ function getCounts(data = state) {
   };
 }
 
-function getLocalDataCounts(data = state) {
-  return getCounts(data);
+function getLocalDataCounts() {
+  return getCounts(loadData());
+}
+
+function isCloudPreviewActive() {
+  return cloudPreviewMode;
+}
+
+function blockCloudPreviewEdit() {
+  if (!isCloudPreviewActive()) return false;
+  showMessage(t('cloudMode.readOnlyMessage'));
+  return true;
 }
 
 function isValidDate(value) {
@@ -1500,6 +1582,7 @@ function updateAuthUi() {
   renderCloudStatus();
   renderMigrationPreview();
   renderCloudReadPreview();
+  renderCloudMode();
   renderCloudCleanup();
 }
 
@@ -1522,6 +1605,7 @@ function setCloudStatus(nextState = {}) {
   renderCloudStatus();
   renderMigrationPreview();
   renderCloudReadPreview();
+  renderCloudMode();
   renderCloudCleanup();
 }
 
@@ -1667,6 +1751,171 @@ async function checkCloudDataPreview() {
   }
 }
 
+function renderCloudMode() {
+  const activeStable = getActiveStable();
+  const canPreview = Boolean(getCurrentUser() && activeStable.id && !cloudPreviewMode);
+  const modeText = cloudPreviewMode ? t('cloudMode.previewStatus') : t('cloudMode.localStatus');
+  if (els.dataModeStatus) {
+    els.dataModeStatus.textContent = modeText;
+    els.dataModeStatus.classList.toggle('cloud-preview-active', cloudPreviewMode);
+  }
+  if (els.cloudModeCurrent) els.cloudModeCurrent.textContent = modeText;
+  if (els.cloudModeStableName) els.cloudModeStableName.textContent = activeStable.name || t('cloudRead.noStable');
+  if (els.cloudModePreviewButton) els.cloudModePreviewButton.disabled = !canPreview;
+  if (els.cloudModeLocalButton) els.cloudModeLocalButton.hidden = !cloudPreviewMode;
+  if (els.cloudModeStatus) {
+    els.cloudModeStatus.textContent = cloudModeStatusText || (canPreview ? t('cloudMode.ready') : t('cloudMode.notReady'));
+  }
+}
+
+async function fetchCloudRows(table, stableId, orderColumn = 'created_at') {
+  const { data, error } = await supabaseClient
+    .from(table)
+    .select('*')
+    .eq('stable_id', stableId)
+    .order(orderColumn, { ascending: true });
+  if (error) throw error;
+  return Array.isArray(data) ? data : [];
+}
+
+function mapCloudHorse(row) {
+  return normalizeHorse({
+    id: row.local_id || row.id,
+    name: row.name,
+    nickname: row.nickname,
+    owner: row.owner,
+    breed: row.breed,
+    birth: row.date_of_birth,
+    gender: row.gender,
+    color: row.color,
+    registration: row.registration_number,
+    feedingNotes: row.feeding_notes,
+    careNotes: row.care_notes,
+    shoeingNotes: row.shoeing_notes,
+    vaccinationNotes: row.vaccination_notes,
+    dewormingNotes: row.deworming_notes,
+    vetNotes: row.vet_notes,
+    notes: row.general_notes
+  });
+}
+
+function mapCloudTask(row, horseIdMap) {
+  return {
+    id: row.local_id || row.id,
+    title: row.title || 'Untitled task',
+    date: row.due_date || '',
+    horseId: horseIdMap.get(row.horse_id) || '',
+    notes: row.description || '',
+    done: row.status === 'done'
+  };
+}
+
+function mapCloudWorkLog(row, horseIdMap) {
+  return {
+    id: row.local_id || row.id,
+    worker: '',
+    date: row.work_date || '',
+    horseId: horseIdMap.get(row.horse_id) || '',
+    hours: toSafeNumber(row.hours),
+    notes: row.description || ''
+  };
+}
+
+function mapCloudFeedItem(row) {
+  return normalizeFeedItem({
+    id: row.local_id || row.id,
+    name: row.name,
+    category: row.category,
+    quantity: row.current_amount,
+    unit: row.unit,
+    dailyUsage: row.daily_usage,
+    minimum: row.low_stock_threshold,
+    supplier: row.supplier,
+    purchaseDate: row.purchase_date,
+    expiryDate: row.expiry_date,
+    storageLocation: row.storage_location,
+    cost: row.cost,
+    notes: row.notes
+  });
+}
+
+function mapCloudCalendarEvent(row, horseIdMap) {
+  return normalizeCalendarEvent({
+    id: row.local_id || row.id,
+    date: row.date,
+    time: row.time,
+    name: row.name,
+    type: row.event_type,
+    location: row.location,
+    horseIds: Array.isArray(row.horse_ids) ? row.horse_ids.map((id) => horseIdMap.get(id)).filter(Boolean) : [],
+    handler: row.handler,
+    notes: row.notes,
+    raceNumber: row.race_number,
+    startNumber: row.start_number,
+    driver: row.driver,
+    placement: row.placement,
+    raceResult: row.race_result,
+    prize: row.prize,
+    postRaceNotes: row.post_race_notes
+  });
+}
+
+async function loadCloudSnapshot(stableId) {
+  const [horseRows, taskRows, workRows, feedRows, eventRows] = await Promise.all([
+    fetchCloudRows('horses', stableId),
+    fetchCloudRows('tasks', stableId),
+    fetchCloudRows('work_logs', stableId),
+    fetchCloudRows('feed_items', stableId),
+    fetchCloudRows('calendar_events', stableId, 'date')
+  ]);
+  const horses = horseRows.map(mapCloudHorse);
+  const horseIdMap = new Map(horseRows.map((row, index) => [row.id, horses[index].id]));
+  return {
+    horses,
+    tasks: taskRows.map((row) => mapCloudTask(row, horseIdMap)),
+    hours: workRows.map((row) => mapCloudWorkLog(row, horseIdMap)),
+    inventory: feedRows.map(mapCloudFeedItem),
+    calendarEvents: eventRows.map((row) => mapCloudCalendarEvent(row, horseIdMap))
+  };
+}
+
+async function enableCloudModePreview() {
+  const activeStable = getActiveStable();
+  if (!getCurrentUser() || !activeStable.id) {
+    cloudModeStatusText = t('cloudMode.notReady');
+    renderCloudMode();
+    showMessage(cloudModeStatusText);
+    return;
+  }
+  cloudModeStatusText = t('cloudMode.loading');
+  renderCloudMode();
+  try {
+    state = await loadCloudSnapshot(activeStable.id);
+    cloudPreviewMode = true;
+    cloudModeStatusText = t('cloudMode.enabled');
+    cloudReadCounts = getCounts(state);
+    render();
+    showView('stable');
+    showMessage(cloudModeStatusText);
+  } catch (error) {
+    console.error('[EquiTrack cloud] Cloud mode preview failed', error);
+    state = loadData();
+    cloudPreviewMode = false;
+    const errorMessage = isPermissionError(error) ? t('cloudRead.permissionBlocked') : getAuthErrorMessage(error);
+    cloudModeStatusText = t('cloudMode.failed', { error: errorMessage });
+    render();
+    showMessage(cloudModeStatusText);
+  }
+}
+
+function returnToLocalDataMode() {
+  state = loadData();
+  cloudPreviewMode = false;
+  cloudModeStatusText = t('cloudMode.returnedLocal');
+  render();
+  showMessage(cloudModeStatusText);
+}
+
 function getCloudCleanupGate() {
   const currentUser = getCurrentUser();
   const activeStable = getActiveStable();
@@ -1713,6 +1962,7 @@ async function deleteCloudRowsForStable(table, stableId) {
 }
 
 async function cleanupCloudDataForStable() {
+  if (blockCloudPreviewEdit()) return;
   const cleanupGate = getCloudCleanupGate();
   if (!cleanupGate.canClean) {
     showMessage(t('cloudCleanup.notReady'));
@@ -1872,6 +2122,7 @@ async function upsertCloudRows(table, rows, selectColumns = 'id, local_id') {
 }
 
 async function uploadLocalDataToCloud() {
+  if (blockCloudPreviewEdit()) return;
   const uploadGate = getMigrationUploadGate();
   logMigrationUploadGate(uploadGate);
   if (!uploadGate.canUpload) {
@@ -1956,6 +2207,11 @@ async function getUserStable(user = getCurrentUser()) {
 async function refreshCloudConnection() {
   const user = getCurrentUser();
   if (!user) {
+    if (cloudPreviewMode) {
+      state = loadData();
+      cloudPreviewMode = false;
+      cloudModeStatusText = '';
+    }
     setCloudStatus({
       status: 'notConnected',
       email: '',
@@ -2184,6 +2440,7 @@ function render() {
   renderBackupStatus();
   renderMigrationPreview();
   renderCloudReadPreview();
+  renderCloudMode();
   renderCloudCleanup();
 }
 
@@ -2627,6 +2884,7 @@ function formatNumber(value) {
 }
 
 function upsert(collection, item) {
+  if (blockCloudPreviewEdit()) return;
   const existingIndex = state[collection].findIndex((entry) => entry.id === item.id);
   if (existingIndex >= 0) state[collection][existingIndex] = item;
   else state[collection].push({ ...item, id: createId() });
@@ -2651,6 +2909,7 @@ function setSelectedOptions(select, values) {
 
 function handleHorseSubmit(event) {
   event.preventDefault();
+  if (blockCloudPreviewEdit()) return;
   const form = event.currentTarget;
   upsert('horses', {
     id: form.elements.id.value,
@@ -2676,6 +2935,7 @@ function handleHorseSubmit(event) {
 
 function handleTaskSubmit(event) {
   event.preventDefault();
+  if (blockCloudPreviewEdit()) return;
   const form = event.currentTarget;
   upsert('tasks', {
     id: form.elements.id.value,
@@ -2692,6 +2952,7 @@ function handleTaskSubmit(event) {
 
 function handleHoursSubmit(event) {
   event.preventDefault();
+  if (blockCloudPreviewEdit()) return;
   const form = event.currentTarget;
   upsert('hours', {
     id: form.elements.id.value,
@@ -2707,6 +2968,7 @@ function handleHoursSubmit(event) {
 
 function handleInventorySubmit(event) {
   event.preventDefault();
+  if (blockCloudPreviewEdit()) return;
   const form = event.currentTarget;
   const existing = state.inventory.find((entry) => entry.id === form.elements.id.value);
   const existingNormalized = existing ? normalizeFeedItem(existing) : null;
@@ -2742,6 +3004,7 @@ function handleInventorySubmit(event) {
 
 function handleEventSubmit(event) {
   event.preventDefault();
+  if (blockCloudPreviewEdit()) return;
   const form = event.currentTarget;
   upsert('calendarEvents', {
     id: form.elements.id.value,
@@ -2772,6 +3035,10 @@ function handleListClick(event) {
   event.preventDefault();
   event.stopPropagation();
   const { action, id } = button.dataset;
+  if (isCloudPreviewActive() && /^(edit|delete|toggle)/.test(action)) {
+    blockCloudPreviewEdit();
+    return;
+  }
   if (action === 'edit-horse') fillHorseForm(id);
   if (action === 'delete-horse') deleteItem('horses', id, t('delete.horse'), t('message.horseDeleted'));
   if (action === 'toggle-task') toggleTask(id);
@@ -2796,6 +3063,7 @@ function handleCalendarFilterChange() {
 }
 
 function toggleShoppingStatus(id) {
+  if (blockCloudPreviewEdit()) return;
   state.inventory = state.inventory.map((item) => {
     if (item.id !== id) return item;
     const normalized = normalizeFeedItem(item);
@@ -2916,6 +3184,7 @@ function fillEventForm(id) {
 }
 
 function deleteItem(collection, id, label, message) {
+  if (blockCloudPreviewEdit()) return;
   if (!confirmDelete(label)) {
     showMessage(t('message.deleteCancelled'));
     return;
@@ -2927,6 +3196,7 @@ function deleteItem(collection, id, label, message) {
 }
 
 function toggleTask(id) {
+  if (blockCloudPreviewEdit()) return;
   const task = state.tasks.find((item) => item.id === id);
   if (!task) return;
   task.done = !task.done;
@@ -2978,6 +3248,7 @@ function createBackupPayload(createdAt = new Date().toISOString(), data = state)
 }
 
 function exportBackup() {
+  if (blockCloudPreviewEdit()) return;
   const now = new Date();
   const createdAt = now.toISOString();
   const backup = createBackupPayload(createdAt);
@@ -2997,6 +3268,10 @@ function exportBackup() {
 
 async function importBackup(file) {
   if (!file) return;
+  if (blockCloudPreviewEdit()) {
+    els.importInput.value = '';
+    return;
+  }
   try {
     let parsed;
     try {
@@ -3021,6 +3296,7 @@ async function importBackup(file) {
 }
 
 function restoreEmergencyBackup() {
+  if (blockCloudPreviewEdit()) return;
   const stored = localStorage.getItem(EMERGENCY_BACKUP_KEY);
   if (!stored) {
     showMessage(t('backup.noEmergency'));
@@ -3039,6 +3315,7 @@ function restoreEmergencyBackup() {
 }
 
 function resetLocalData() {
+  if (blockCloudPreviewEdit()) return;
   const answer = window.prompt(t('confirm.reset'));
   if (answer !== 'DELETE') {
     showMessage(t('message.resetCancelled'));
@@ -3107,6 +3384,9 @@ async function handleLoginSubmit(event) {
 async function handleLogout() {
   if (!supabaseClient) {
     authUser = null;
+    state = loadData();
+    cloudPreviewMode = false;
+    cloudModeStatusText = '';
     setCloudStatus({
       status: 'notConnected',
       email: '',
@@ -3123,6 +3403,9 @@ async function handleLogout() {
     await supabaseClient.auth.signOut();
   } finally {
     authUser = null;
+    state = loadData();
+    cloudPreviewMode = false;
+    cloudModeStatusText = '';
     setCloudStatus({
       status: 'notConnected',
       email: '',
@@ -3204,6 +3487,8 @@ els.logoutButton?.addEventListener('click', handleLogout);
 els.migrationConfirmInput?.addEventListener('input', handleMigrationConfirmationChange);
 els.migrationUploadButton?.addEventListener('click', uploadLocalDataToCloud);
 els.cloudReadButton?.addEventListener('click', checkCloudDataPreview);
+els.cloudModePreviewButton?.addEventListener('click', enableCloudModePreview);
+els.cloudModeLocalButton?.addEventListener('click', returnToLocalDataMode);
 els.cloudCleanupConfirmInput?.addEventListener('input', handleCloudCleanupConfirmationChange);
 els.cloudCleanupButton?.addEventListener('click', cleanupCloudDataForStable);
 els.calendarScopeFilter?.addEventListener('change', handleCalendarFilterChange);

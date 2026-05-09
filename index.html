@@ -42,6 +42,7 @@
       <div class="auth-status" aria-live="polite">
         <span id="authUserEmail" data-i18n="auth.signedOut">Signed out</span>
         <span id="headerStableName" data-i18n="cloud.notConnected">Not connected</span>
+        <span id="dataModeStatus" data-i18n="cloudMode.localStatus">Local data mode</span>
         <button id="loginNavButton" class="button auth-button" type="button" data-view-link="login" data-i18n="auth.login">Log in</button>
         <button id="logoutButton" class="button auth-button" type="button" hidden data-i18n="auth.logout">Log out</button>
       </div>
@@ -450,6 +451,27 @@
             </ul>
             <button id="cloudReadButton" class="button secondary" type="button" disabled data-i18n="cloudRead.button">Check cloud data</button>
             <p id="cloudReadStatus" class="update-note" data-i18n="cloudRead.notReady">Log in and assign an active stable before reading cloud data.</p>
+          </article>
+
+          <article class="panel cloud-panel">
+            <h3 data-i18n="cloudMode.title">Cloud mode preview</h3>
+            <p data-i18n="cloudMode.text">Preview cloud data in the app without replacing local browser data.</p>
+            <div class="cloud-status-list">
+              <p><span data-i18n="cloudMode.currentMode">Current mode</span>: <strong id="cloudModeCurrent">Local data mode</strong></p>
+              <p><span data-i18n="cloudMode.targetStable">Preview stable</span>: <strong id="cloudModeStableName">-</strong></p>
+            </div>
+            <ul class="migration-warnings">
+              <li data-i18n="cloudMode.warningLocalDefault">Local data is still the default.</li>
+              <li data-i18n="cloudMode.warningViewCloud">Cloud mode preview lets you view cloud data in the app.</li>
+              <li data-i18n="cloudMode.warningLocalSafe">This does not delete local data.</li>
+              <li data-i18n="cloudMode.warningNoSync">This does not enable automatic sync yet.</li>
+              <li data-i18n="cloudMode.warningReadOnly">Cloud preview is read-only.</li>
+            </ul>
+            <div class="backup-actions">
+              <button id="cloudModePreviewButton" class="button secondary" type="button" disabled data-i18n="cloudMode.previewButton">Preview cloud data</button>
+              <button id="cloudModeLocalButton" class="button secondary" type="button" hidden data-i18n="cloudMode.localButton">Return to local data</button>
+            </div>
+            <p id="cloudModeStatus" class="update-note" data-i18n="cloudMode.notReady">Log in and assign an active stable before previewing cloud data.</p>
           </article>
 
           <article class="panel cloud-panel danger-zone">
