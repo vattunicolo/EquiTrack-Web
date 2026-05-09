@@ -499,6 +499,31 @@
             <p id="horseCloudStatus" class="update-note" data-i18n="horseCloud.notReady">Horse cloud writes are disabled until you are logged in, have an active stable, and type HORSES CLOUD.</p>
           </article>
 
+          <article class="panel cloud-panel">
+            <h3 data-i18n="taskCloud.title">Cloud write mode - Tasks</h3>
+            <p data-i18n="taskCloud.text">Experimental phase: only task data is saved to the cloud.</p>
+            <div class="cloud-status-list">
+              <p><span data-i18n="taskCloud.currentMode">Task data mode</span>: <strong id="taskCloudCurrent">Local</strong></p>
+              <p><span data-i18n="taskCloud.targetStable">Task cloud stable</span>: <strong id="taskCloudStableName">-</strong></p>
+            </div>
+            <ul class="migration-warnings">
+              <li data-i18n="taskCloud.warningExperimental">This is an experimental phase.</li>
+              <li data-i18n="taskCloud.warningTasksOnly">Only task data will be saved to the cloud.</li>
+              <li data-i18n="taskCloud.warningOthersLocal">Work hours, feed inventory, and calendar still stay local for now.</li>
+              <li data-i18n="taskCloud.warningLocalSafe">Local task data will not be deleted.</li>
+              <li data-i18n="taskCloud.warningReturn">You can return task writes to local mode.</li>
+            </ul>
+            <label class="full-width">
+              <span data-i18n="taskCloud.confirmLabel">Type TASKS CLOUD to enable cloud task writes</span>
+              <input id="taskCloudConfirmInput" type="text" autocomplete="off" placeholder="TASKS CLOUD">
+            </label>
+            <div class="backup-actions">
+              <button id="taskCloudEnableButton" class="button secondary" type="button" disabled data-i18n="taskCloud.enableButton">Enable cloud task writes</button>
+              <button id="taskCloudLocalButton" class="button secondary" type="button" hidden data-i18n="taskCloud.localButton">Return task writes to local mode</button>
+            </div>
+            <p id="taskCloudStatus" class="update-note" data-i18n="taskCloud.notReady">Task cloud writes are disabled until you are logged in, have an active stable, and type TASKS CLOUD.</p>
+          </article>
+
           <article class="panel cloud-panel danger-zone">
             <h3 data-i18n="cloudCleanup.title">Cloud cleanup</h3>
             <p data-i18n="cloudCleanup.text">Delete cloud rows for the active stable when cloud preview counts are duplicated or wrong.</p>

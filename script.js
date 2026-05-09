@@ -173,6 +173,32 @@ const translations = {
     'horseCloud.permissionBlocked': 'Cloud horse writes are blocked by database permissions.',
     'horseCloud.saved': 'Horse saved to cloud.',
     'horseCloud.deleted': 'Horse deleted from cloud.',
+    'taskCloud.title': 'Cloud write mode - Tasks',
+    'taskCloud.text': 'Experimental phase: only task data is saved to the cloud.',
+    'taskCloud.currentMode': 'Task data mode',
+    'taskCloud.targetStable': 'Task cloud stable',
+    'taskCloud.localMode': 'Local',
+    'taskCloud.cloudMode': 'Cloud writes enabled',
+    'taskCloud.warningExperimental': 'This is an experimental phase.',
+    'taskCloud.warningTasksOnly': 'Only task data will be saved to the cloud.',
+    'taskCloud.warningOthersLocal': 'Work hours, feed inventory, and calendar still stay local for now.',
+    'taskCloud.warningLocalSafe': 'Local task data will not be deleted.',
+    'taskCloud.warningReturn': 'You can return task writes to local mode.',
+    'taskCloud.confirmLabel': 'Type TASKS CLOUD to enable cloud task writes',
+    'taskCloud.enableButton': 'Enable cloud task writes',
+    'taskCloud.localButton': 'Return task writes to local mode',
+    'taskCloud.notReady': 'Task cloud writes are disabled until you are logged in, have an active stable, and type TASKS CLOUD.',
+    'taskCloud.ready': 'Ready to enable cloud writes for tasks only.',
+    'taskCloud.loading': 'Loading cloud tasks...',
+    'taskCloud.enabled': 'Cloud task writes enabled. Work hours, feed inventory, and calendar remain local.',
+    'taskCloud.returnedLocal': 'Task writes returned to local mode.',
+    'taskCloud.saveFailed': 'Cloud task save failed: {error}',
+    'taskCloud.deleteFailed': 'Cloud task delete failed: {error}',
+    'taskCloud.loadFailed': 'Cloud task mode failed: {error}',
+    'taskCloud.permissionBlocked': 'Cloud task writes are blocked by database permissions.',
+    'taskCloud.saved': 'Task saved to cloud.',
+    'taskCloud.deleted': 'Task deleted from cloud.',
+    'taskCloud.toggled': 'Task status saved to cloud.',
     'cloudCleanup.title': 'Cloud cleanup',
     'cloudCleanup.text': 'Delete cloud rows for the active stable when cloud preview counts are duplicated or wrong.',
     'cloudCleanup.targetStable': 'Cleanup target stable',
@@ -586,6 +612,32 @@ const translations = {
     'horseCloud.permissionBlocked': 'Tietokannan käyttöoikeudet estävät hevosten pilvikirjoituksen.',
     'horseCloud.saved': 'Hevonen tallennettu pilveen.',
     'horseCloud.deleted': 'Hevonen poistettu pilvestä.',
+    'taskCloud.title': 'Pilvikirjoitustila - Tehtävät',
+    'taskCloud.text': 'Kokeellinen vaihe: vain tehtävädata tallennetaan pilveen.',
+    'taskCloud.currentMode': 'Tehtävädatan tila',
+    'taskCloud.targetStable': 'Tehtävien pilvitalli',
+    'taskCloud.localMode': 'Paikallinen',
+    'taskCloud.cloudMode': 'Pilvikirjoitus käytössä',
+    'taskCloud.warningExperimental': 'Tämä on kokeellinen vaihe.',
+    'taskCloud.warningTasksOnly': 'Vain tehtävädata tallennetaan pilveen.',
+    'taskCloud.warningOthersLocal': 'Työtunnit, ruokavarasto ja kalenteri pysyvät toistaiseksi paikallisina.',
+    'taskCloud.warningLocalSafe': 'Paikallista tehtävädataa ei poisteta.',
+    'taskCloud.warningReturn': 'Voit palauttaa tehtävien tallennuksen paikalliseen tilaan.',
+    'taskCloud.confirmLabel': 'Kirjoita TASKS CLOUD ottaaksesi tehtävien pilvikirjoituksen käyttöön',
+    'taskCloud.enableButton': 'Ota tehtävien pilvikirjoitus käyttöön',
+    'taskCloud.localButton': 'Palauta tehtävät paikalliseen tilaan',
+    'taskCloud.notReady': 'Tehtävien pilvikirjoitus on pois käytöstä, kunnes olet kirjautunut sisään, aktiivinen talli on valittu ja kirjoitat TASKS CLOUD.',
+    'taskCloud.ready': 'Valmis ottamaan käyttöön tehtävien pilvikirjoituksen.',
+    'taskCloud.loading': 'Ladataan pilvitehtäviä...',
+    'taskCloud.enabled': 'Tehtävien pilvikirjoitus käytössä. Työtunnit, ruokavarasto ja kalenteri pysyvät paikallisina.',
+    'taskCloud.returnedLocal': 'Tehtävien tallennus palautettu paikalliseen tilaan.',
+    'taskCloud.saveFailed': 'Tehtävän pilvitallennus epäonnistui: {error}',
+    'taskCloud.deleteFailed': 'Tehtävän pilvipoisto epäonnistui: {error}',
+    'taskCloud.loadFailed': 'Tehtävien pilvitila epäonnistui: {error}',
+    'taskCloud.permissionBlocked': 'Tietokannan käyttöoikeudet estävät tehtävien pilvikirjoituksen.',
+    'taskCloud.saved': 'Tehtävä tallennettu pilveen.',
+    'taskCloud.deleted': 'Tehtävä poistettu pilvestä.',
+    'taskCloud.toggled': 'Tehtävän tila tallennettu pilveen.',
     'cloudCleanup.title': 'Pilvidatan siivous',
     'cloudCleanup.text': 'Poista aktiivisen tallin pilvirivit, jos pilviesikatselun määrät ovat kahdentuneet tai virheelliset.',
     'cloudCleanup.targetStable': 'Siivottava talli',
@@ -999,6 +1051,32 @@ const translations = {
     'horseCloud.permissionBlocked': 'La scrittura cloud dei cavalli è bloccata dai permessi del database.',
     'horseCloud.saved': 'Cavallo salvato nel cloud.',
     'horseCloud.deleted': 'Cavallo eliminato dal cloud.',
+    'taskCloud.title': 'Modalità scrittura cloud - Attività',
+    'taskCloud.text': 'Fase sperimentale: solo le attività vengono salvate nel cloud.',
+    'taskCloud.currentMode': 'Modalità dati attività',
+    'taskCloud.targetStable': 'Scuderia cloud attività',
+    'taskCloud.localMode': 'Locale',
+    'taskCloud.cloudMode': 'Scrittura cloud attiva',
+    'taskCloud.warningExperimental': 'Questa è una fase sperimentale.',
+    'taskCloud.warningTasksOnly': 'Solo le attività verranno salvate nel cloud.',
+    'taskCloud.warningOthersLocal': 'Ore di lavoro, scorte mangime e calendario restano locali per ora.',
+    'taskCloud.warningLocalSafe': 'I dati locali delle attività non verranno eliminati.',
+    'taskCloud.warningReturn': 'Puoi riportare la scrittura attività in modalità locale.',
+    'taskCloud.confirmLabel': 'Digita TASKS CLOUD per abilitare la scrittura cloud delle attività',
+    'taskCloud.enableButton': 'Abilita scrittura cloud attività',
+    'taskCloud.localButton': 'Riporta attività in modalità locale',
+    'taskCloud.notReady': 'La scrittura cloud attività è disabilitata finché non hai effettuato l accesso, hai una scuderia attiva e digiti TASKS CLOUD.',
+    'taskCloud.ready': 'Pronto ad abilitare la scrittura cloud solo per le attività.',
+    'taskCloud.loading': 'Caricamento attività cloud...',
+    'taskCloud.enabled': 'Scrittura cloud attività attiva. Ore di lavoro, scorte mangime e calendario restano locali.',
+    'taskCloud.returnedLocal': 'Scrittura attività tornata in modalità locale.',
+    'taskCloud.saveFailed': 'Salvataggio attività cloud non riuscito: {error}',
+    'taskCloud.deleteFailed': 'Eliminazione attività cloud non riuscita: {error}',
+    'taskCloud.loadFailed': 'Modalità attività cloud non riuscita: {error}',
+    'taskCloud.permissionBlocked': 'La scrittura cloud delle attività è bloccata dai permessi del database.',
+    'taskCloud.saved': 'Attività salvata nel cloud.',
+    'taskCloud.deleted': 'Attività eliminata dal cloud.',
+    'taskCloud.toggled': 'Stato attività salvato nel cloud.',
     'cloudCleanup.title': 'Pulizia cloud',
     'cloudCleanup.text': 'Elimina le righe cloud della scuderia attiva quando i conteggi sono duplicati o errati.',
     'cloudCleanup.targetStable': 'Scuderia da pulire',
@@ -1305,6 +1383,8 @@ let cloudPreviewMode = false;
 let cloudModeStatusText = '';
 let horseCloudWriteMode = false;
 let horseCloudStatusText = '';
+let taskCloudWriteMode = false;
+let taskCloudStatusText = '';
 let cloudState = {
   status: 'notConnected',
   email: '',
@@ -1399,6 +1479,12 @@ const els = {
   horseCloudEnableButton: document.querySelector('#horseCloudEnableButton'),
   horseCloudLocalButton: document.querySelector('#horseCloudLocalButton'),
   horseCloudStatus: document.querySelector('#horseCloudStatus'),
+  taskCloudCurrent: document.querySelector('#taskCloudCurrent'),
+  taskCloudStableName: document.querySelector('#taskCloudStableName'),
+  taskCloudConfirmInput: document.querySelector('#taskCloudConfirmInput'),
+  taskCloudEnableButton: document.querySelector('#taskCloudEnableButton'),
+  taskCloudLocalButton: document.querySelector('#taskCloudLocalButton'),
+  taskCloudStatus: document.querySelector('#taskCloudStatus'),
   cloudCleanupStableName: document.querySelector('#cloudCleanupStableName'),
   cloudCleanupConfirmInput: document.querySelector('#cloudCleanupConfirmInput'),
   cloudCleanupButton: document.querySelector('#cloudCleanupButton'),
@@ -1508,6 +1594,18 @@ function normalizeCalendarEvent(item) {
   };
 }
 
+function normalizeTask(item) {
+  return {
+    id: item.id || createId(),
+    cloudId: item.cloudId || item.cloud_id || '',
+    title: item.title || 'Untitled task',
+    date: item.date || item.dueDate || '',
+    horseId: item.horseId || '',
+    notes: item.notes || item.description || '',
+    done: Boolean(item.done || item.status === 'done')
+  };
+}
+
 function loadData() {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -1515,7 +1613,7 @@ function loadData() {
     const parsed = JSON.parse(stored);
     return {
       horses: Array.isArray(parsed.horses) ? parsed.horses.map(normalizeHorse) : [],
-      tasks: Array.isArray(parsed.tasks) ? parsed.tasks : [],
+      tasks: Array.isArray(parsed.tasks) ? parsed.tasks.map(normalizeTask) : [],
       hours: Array.isArray(parsed.hours) ? parsed.hours : [],
       inventory: Array.isArray(parsed.inventory) ? parsed.inventory.map(normalizeFeedItem) : [],
       calendarEvents: Array.isArray(parsed.calendarEvents) ? parsed.calendarEvents.map(normalizeCalendarEvent) : []
@@ -1530,7 +1628,12 @@ function saveData() {
     showMessage(t('cloudMode.readOnlyMessage'));
     return;
   }
-  const nextState = horseCloudWriteMode ? { ...state, horses: loadData().horses } : state;
+  const localData = loadData();
+  const nextState = {
+    ...state,
+    horses: horseCloudWriteMode ? localData.horses : state.horses,
+    tasks: taskCloudWriteMode ? localData.tasks : state.tasks
+  };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(nextState));
 }
 
@@ -1669,6 +1772,7 @@ function updateAuthUi() {
   renderCloudReadPreview();
   renderCloudMode();
   renderHorseCloudMode();
+  renderTaskCloudMode();
   renderCloudCleanup();
 }
 
@@ -1693,6 +1797,7 @@ function setCloudStatus(nextState = {}) {
   renderCloudReadPreview();
   renderCloudMode();
   renderHorseCloudMode();
+  renderTaskCloudMode();
   renderCloudCleanup();
 }
 
@@ -1841,7 +1946,14 @@ async function checkCloudDataPreview() {
 function renderCloudMode() {
   const activeStable = getActiveStable();
   const canPreview = Boolean(getCurrentUser() && activeStable.id && !cloudPreviewMode);
-  const modeText = cloudPreviewMode ? t('cloudMode.previewStatus') : t('cloudMode.localStatus');
+  const writeModes = [];
+  if (horseCloudWriteMode) writeModes.push(t('tabs.horses'));
+  if (taskCloudWriteMode) writeModes.push(t('tabs.tasks'));
+  const modeText = cloudPreviewMode
+    ? t('cloudMode.previewStatus')
+    : writeModes.length
+      ? `${t('cloudMode.localStatus')} / ${writeModes.join(', ')} ${t('horseCloud.cloudMode')}`
+      : t('cloudMode.localStatus');
   if (els.dataModeStatus) {
     els.dataModeStatus.textContent = modeText;
     els.dataModeStatus.classList.toggle('cloud-preview-active', cloudPreviewMode);
@@ -1892,12 +2004,19 @@ function mapCloudHorse(row) {
 function mapCloudTask(row, horseIdMap) {
   return {
     id: row.local_id || row.id,
+    cloudId: row.id,
     title: row.title || 'Untitled task',
     date: row.due_date || '',
     horseId: horseIdMap.get(row.horse_id) || '',
     notes: row.description || '',
     done: row.status === 'done'
   };
+}
+
+function getCloudHorseIdForTask(task) {
+  if (!task.horseId) return null;
+  const horse = state.horses.find((entry) => entry.id === task.horseId);
+  return horse?.cloudId || null;
 }
 
 function mapCloudWorkLog(row, horseIdMap) {
@@ -1971,6 +2090,7 @@ async function loadCloudSnapshot(stableId) {
 
 async function enableCloudModePreview() {
   if (horseCloudWriteMode) returnHorseWritesToLocalMode();
+  if (taskCloudWriteMode) returnTaskWritesToLocalMode();
   const activeStable = getActiveStable();
   if (!getCurrentUser() || !activeStable.id) {
     cloudModeStatusText = t('cloudMode.notReady');
@@ -2084,7 +2204,8 @@ async function enableHorseCloudWrites() {
   horseCloudStatusText = t('horseCloud.loading');
   renderHorseCloudMode();
   try {
-    state = { ...loadData(), horses: await loadCloudHorses(gate.activeStable.id) };
+    const localData = loadData();
+    state = { ...localData, horses: await loadCloudHorses(gate.activeStable.id), tasks: taskCloudWriteMode ? state.tasks : localData.tasks };
     horseCloudWriteMode = true;
     if (els.horseCloudConfirmInput) els.horseCloudConfirmInput.value = '';
     horseCloudStatusText = t('horseCloud.enabled');
@@ -2097,7 +2218,8 @@ async function enableHorseCloudWrites() {
     const errorMessage = isPermissionError(error) ? t('horseCloud.permissionBlocked') : getAuthErrorMessage(error);
     horseCloudStatusText = t('horseCloud.loadFailed', { error: errorMessage });
     horseCloudWriteMode = false;
-    state = loadData();
+    const localData = loadData();
+    state = { ...localData, tasks: taskCloudWriteMode ? state.tasks : localData.tasks };
     render();
     showMessage(horseCloudStatusText);
   }
@@ -2171,6 +2293,166 @@ async function handleCloudHorseDelete(id) {
     console.error('[EquiTrack cloud] Horse delete failed', error);
     const errorMessage = isPermissionError(error) ? t('horseCloud.permissionBlocked') : getAuthErrorMessage(error);
     showMessage(t('horseCloud.deleteFailed', { error: errorMessage }));
+  }
+}
+
+function getTaskCloudGate() {
+  const currentUser = getCurrentUser();
+  const activeStable = getActiveStable();
+  const confirmationValue = els.taskCloudConfirmInput?.value || '';
+  const confirmationReady = confirmationValue === 'TASKS CLOUD';
+  const reasons = [];
+  if (!currentUser) reasons.push('missing auth user');
+  if (!activeStable.id) reasons.push('missing active stable id');
+  if (!confirmationReady) reasons.push('confirmation is not exactly TASKS CLOUD');
+  if (cloudPreviewMode) reasons.push('cloud preview is read-only');
+  if (taskCloudWriteMode) reasons.push('task cloud writes already enabled');
+  return {
+    currentUserExists: Boolean(currentUser),
+    activeStable,
+    confirmationValue,
+    canEnable: reasons.length === 0,
+    reason: reasons.length ? reasons.join('; ') : 'enabled'
+  };
+}
+
+function renderTaskCloudMode() {
+  const activeStable = getActiveStable();
+  const gate = getTaskCloudGate();
+  const modeText = taskCloudWriteMode ? t('taskCloud.cloudMode') : t('taskCloud.localMode');
+  if (els.taskCloudCurrent) els.taskCloudCurrent.textContent = modeText;
+  if (els.taskCloudStableName) els.taskCloudStableName.textContent = activeStable.name || t('cloudRead.noStable');
+  if (els.taskCloudEnableButton) els.taskCloudEnableButton.disabled = !gate.canEnable;
+  if (els.taskCloudLocalButton) els.taskCloudLocalButton.hidden = !taskCloudWriteMode;
+  if (els.taskCloudStatus) {
+    els.taskCloudStatus.textContent = taskCloudStatusText || (gate.canEnable ? t('taskCloud.ready') : t('taskCloud.notReady'));
+  }
+}
+
+function handleTaskCloudConfirmationChange() {
+  taskCloudStatusText = '';
+  renderTaskCloudMode();
+}
+
+function taskToCloudRow(stableId, rawTask) {
+  const task = normalizeTask(rawTask);
+  return {
+    stable_id: stableId,
+    local_id: task.id || createId(),
+    title: cleanText(task.title) || 'Untitled task',
+    description: cleanText(task.notes),
+    due_date: isValidDate(task.date),
+    status: task.done ? 'done' : 'open',
+    horse_id: getCloudHorseIdForTask(task)
+  };
+}
+
+async function loadCloudTasks(stableId) {
+  const rows = await fetchCloudRows('tasks', stableId);
+  const horseIdMap = new Map(state.horses.filter((horse) => horse.cloudId).map((horse) => [horse.cloudId, horse.id]));
+  return rows.map((row) => mapCloudTask(row, horseIdMap));
+}
+
+async function enableTaskCloudWrites() {
+  const gate = getTaskCloudGate();
+  if (!gate.canEnable) {
+    showMessage(t('taskCloud.notReady'));
+    renderTaskCloudMode();
+    return;
+  }
+  taskCloudStatusText = t('taskCloud.loading');
+  renderTaskCloudMode();
+  try {
+    const localData = loadData();
+    state = { ...localData, horses: horseCloudWriteMode ? state.horses : localData.horses, tasks: await loadCloudTasks(gate.activeStable.id) };
+    taskCloudWriteMode = true;
+    if (els.taskCloudConfirmInput) els.taskCloudConfirmInput.value = '';
+    taskCloudStatusText = t('taskCloud.enabled');
+    render();
+    showView('stable');
+    activateTab('tasks');
+    showMessage(taskCloudStatusText);
+  } catch (error) {
+    console.error('[EquiTrack cloud] Task cloud mode failed', error);
+    const errorMessage = isPermissionError(error) ? t('taskCloud.permissionBlocked') : getAuthErrorMessage(error);
+    taskCloudStatusText = t('taskCloud.loadFailed', { error: errorMessage });
+    taskCloudWriteMode = false;
+    const localData = loadData();
+    state = { ...localData, horses: horseCloudWriteMode ? state.horses : localData.horses };
+    render();
+    showMessage(taskCloudStatusText);
+  }
+}
+
+function returnTaskWritesToLocalMode() {
+  state = { ...state, tasks: loadData().tasks };
+  taskCloudWriteMode = false;
+  taskCloudStatusText = t('taskCloud.returnedLocal');
+  render();
+  showMessage(taskCloudStatusText);
+}
+
+async function saveTaskToCloud(rawTask) {
+  const activeStable = getActiveStable();
+  if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
+  const row = taskToCloudRow(activeStable.id, rawTask);
+  const request = rawTask.cloudId
+    ? supabaseClient
+      .from('tasks')
+      .update(row)
+      .eq('stable_id', activeStable.id)
+      .eq('id', rawTask.cloudId)
+    : supabaseClient
+      .from('tasks')
+      .upsert(row, { onConflict: 'stable_id,local_id' });
+  const { data, error } = await request.select('*').single();
+  if (error) throw error;
+  const horseIdMap = new Map(state.horses.filter((horse) => horse.cloudId).map((horse) => [horse.cloudId, horse.id]));
+  return mapCloudTask(data, horseIdMap);
+}
+
+async function handleCloudTaskSave(rawTask, successMessage = t('taskCloud.saved')) {
+  try {
+    const savedTask = await saveTaskToCloud(rawTask);
+    const existingIndex = state.tasks.findIndex((task) => task.id === savedTask.id);
+    if (existingIndex >= 0) state.tasks[existingIndex] = savedTask;
+    else state.tasks.push(savedTask);
+    render();
+    showMessage(successMessage);
+    return true;
+  } catch (error) {
+    console.error('[EquiTrack cloud] Task save failed', error);
+    const errorMessage = isPermissionError(error) ? t('taskCloud.permissionBlocked') : getAuthErrorMessage(error);
+    showMessage(t('taskCloud.saveFailed', { error: errorMessage }));
+    return false;
+  }
+}
+
+async function deleteTaskFromCloud(id) {
+  const activeStable = getActiveStable();
+  if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
+  const task = state.tasks.find((entry) => entry.id === id);
+  if (!task) return;
+  let query = supabaseClient.from('tasks').delete().eq('stable_id', activeStable.id);
+  query = task.cloudId ? query.eq('id', task.cloudId) : query.eq('local_id', task.id);
+  const { error } = await query.select('id');
+  if (error) throw error;
+}
+
+async function handleCloudTaskDelete(id) {
+  if (!confirmDelete(t('delete.task'))) {
+    showMessage(t('message.deleteCancelled'));
+    return;
+  }
+  try {
+    await deleteTaskFromCloud(id);
+    state.tasks = state.tasks.filter((task) => task.id !== id);
+    render();
+    showMessage(t('taskCloud.deleted'));
+  } catch (error) {
+    console.error('[EquiTrack cloud] Task delete failed', error);
+    const errorMessage = isPermissionError(error) ? t('taskCloud.permissionBlocked') : getAuthErrorMessage(error);
+    showMessage(t('taskCloud.deleteFailed', { error: errorMessage }));
   }
 }
 
@@ -2276,15 +2558,18 @@ function buildHorseRows(stableId, sourceData = state) {
 }
 
 function buildTaskRows(stableId, horseIdMap, sourceData = state) {
-  return sourceData.tasks.map((task) => ({
-    stable_id: stableId,
-    local_id: task.id || createId(),
-    title: cleanText(task.title) || 'Untitled task',
-    description: cleanText(task.notes || task.description),
-    due_date: isValidDate(task.date || task.dueDate),
-    status: task.done ? 'done' : cleanText(task.status) || 'open',
-    horse_id: horseIdMap.get(task.horseId) || null
-  }));
+  return sourceData.tasks.map((rawTask) => {
+    const task = normalizeTask(rawTask);
+    return {
+      stable_id: stableId,
+      local_id: task.id || createId(),
+      title: cleanText(task.title) || 'Untitled task',
+      description: cleanText(task.notes),
+      due_date: isValidDate(task.date),
+      status: task.done ? 'done' : 'open',
+      horse_id: horseIdMap.get(task.horseId) || null
+    };
+  });
 }
 
 function buildWorkLogRows(stableId, horseIdMap, sourceData = state) {
@@ -2456,6 +2741,11 @@ async function refreshCloudConnection() {
       state = loadData();
       horseCloudWriteMode = false;
       horseCloudStatusText = '';
+    }
+    if (taskCloudWriteMode) {
+      state = loadData();
+      taskCloudWriteMode = false;
+      taskCloudStatusText = '';
     }
     setCloudStatus({
       status: 'notConnected',
@@ -2687,6 +2977,7 @@ function render() {
   renderCloudReadPreview();
   renderCloudMode();
   renderHorseCloudMode();
+  renderTaskCloudMode();
   renderCloudCleanup();
 }
 
@@ -2850,7 +3141,7 @@ function renderTasks() {
     els.tasksList.innerHTML = renderActionEmpty('empty.tasks', 'empty.actionTask', 'task');
     return;
   }
-  const sortedTasks = [...state.tasks].sort((a, b) => a.date.localeCompare(b.date));
+  const sortedTasks = state.tasks.map(normalizeTask).sort((a, b) => a.date.localeCompare(b.date));
   els.tasksList.innerHTML = sortedTasks.map((task) => {
     const horse = state.horses.find((item) => item.id === task.horseId);
     return `
@@ -3193,14 +3484,27 @@ function handleTaskSubmit(event) {
   event.preventDefault();
   if (blockCloudPreviewEdit()) return;
   const form = event.currentTarget;
-  upsert('tasks', {
+  const task = {
     id: form.elements.id.value,
     title: form.elements.title.value.trim(),
     date: form.elements.date.value,
     horseId: form.elements.horseId.value,
     notes: form.elements.notes.value.trim(),
     done: state.tasks.find((task) => task.id === form.elements.id.value)?.done || false
-  });
+  };
+  if (taskCloudWriteMode) {
+    if (!task.id) task.id = createId();
+    const existingTask = state.tasks.find((entry) => entry.id === task.id);
+    if (existingTask?.cloudId) task.cloudId = existingTask.cloudId;
+    handleCloudTaskSave(task).then((saved) => {
+      if (saved) {
+        resetForm(form);
+        form.elements.date.value = today();
+      }
+    });
+    return;
+  }
+  upsert('tasks', task);
   resetForm(form);
   form.elements.date.value = today();
   showMessage(t('message.taskSaved'));
@@ -3302,7 +3606,10 @@ function handleListClick(event) {
   }
   if (action === 'toggle-task') toggleTask(id);
   if (action === 'edit-task') fillTaskForm(id);
-  if (action === 'delete-task') deleteItem('tasks', id, t('delete.task'), t('message.taskDeleted'));
+  if (action === 'delete-task') {
+    if (taskCloudWriteMode) handleCloudTaskDelete(id);
+    else deleteItem('tasks', id, t('delete.task'), t('message.taskDeleted'));
+  }
   if (action === 'edit-hours') fillHoursForm(id);
   if (action === 'delete-hours') deleteItem('hours', id, t('delete.hours'), t('message.hoursDeleted'));
   if (action === 'edit-inventory') fillInventoryForm(id);
@@ -3458,7 +3765,12 @@ function toggleTask(id) {
   if (blockCloudPreviewEdit()) return;
   const task = state.tasks.find((item) => item.id === id);
   if (!task) return;
-  task.done = !task.done;
+  const nextTask = { ...task, done: !task.done };
+  if (taskCloudWriteMode) {
+    handleCloudTaskSave(nextTask, t('taskCloud.toggled'));
+    return;
+  }
+  task.done = nextTask.done;
   saveData();
   render();
   showMessage(task.done ? t('message.taskDone') : t('message.taskReopened'));
@@ -3471,7 +3783,7 @@ function normalizeImportedData(imported) {
   if (!hasExpectedArrays) throw new Error(t('backup.errorInvalidShape'));
   return {
     horses: Array.isArray(data.horses) ? data.horses.map(normalizeHorse) : [],
-    tasks: Array.isArray(data.tasks) ? data.tasks : [],
+    tasks: Array.isArray(data.tasks) ? data.tasks.map(normalizeTask) : [],
     hours: Array.isArray(data.hours) ? data.hours : [],
     inventory: Array.isArray(data.inventory) ? data.inventory.map(normalizeFeedItem) : [],
     calendarEvents: Array.isArray(data.calendarEvents) ? data.calendarEvents.map(normalizeCalendarEvent) : []
@@ -3648,6 +3960,8 @@ async function handleLogout() {
     cloudModeStatusText = '';
     horseCloudWriteMode = false;
     horseCloudStatusText = '';
+    taskCloudWriteMode = false;
+    taskCloudStatusText = '';
     setCloudStatus({
       status: 'notConnected',
       email: '',
@@ -3669,6 +3983,8 @@ async function handleLogout() {
     cloudModeStatusText = '';
     horseCloudWriteMode = false;
     horseCloudStatusText = '';
+    taskCloudWriteMode = false;
+    taskCloudStatusText = '';
     setCloudStatus({
       status: 'notConnected',
       email: '',
@@ -3755,6 +4071,9 @@ els.cloudModeLocalButton?.addEventListener('click', returnToLocalDataMode);
 els.horseCloudConfirmInput?.addEventListener('input', handleHorseCloudConfirmationChange);
 els.horseCloudEnableButton?.addEventListener('click', enableHorseCloudWrites);
 els.horseCloudLocalButton?.addEventListener('click', returnHorseWritesToLocalMode);
+els.taskCloudConfirmInput?.addEventListener('input', handleTaskCloudConfirmationChange);
+els.taskCloudEnableButton?.addEventListener('click', enableTaskCloudWrites);
+els.taskCloudLocalButton?.addEventListener('click', returnTaskWritesToLocalMode);
 els.cloudCleanupConfirmInput?.addEventListener('input', handleCloudCleanupConfirmationChange);
 els.cloudCleanupButton?.addEventListener('click', cleanupCloudDataForStable);
 els.calendarScopeFilter?.addEventListener('change', handleCalendarFilterChange);
