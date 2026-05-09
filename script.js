@@ -148,6 +148,31 @@ const translations = {
     'cloudMode.returnedLocal': 'Returned to local data mode.',
     'cloudMode.failed': 'Cloud preview failed: {error}',
     'cloudMode.readOnlyMessage': 'Cloud preview is read-only. Return to local data to make changes.',
+    'horseCloud.title': 'Cloud write mode - Horses',
+    'horseCloud.text': 'Experimental phase: only horse profiles are saved to the cloud.',
+    'horseCloud.currentMode': 'Horse data mode',
+    'horseCloud.targetStable': 'Horse cloud stable',
+    'horseCloud.localMode': 'Local',
+    'horseCloud.cloudMode': 'Cloud writes enabled',
+    'horseCloud.warningExperimental': 'This is an experimental phase.',
+    'horseCloud.warningHorsesOnly': 'Only horse profiles will be saved to the cloud.',
+    'horseCloud.warningOthersLocal': 'Tasks, work hours, feed inventory, and calendar still stay local for now.',
+    'horseCloud.warningLocalSafe': 'Local horse data will not be deleted.',
+    'horseCloud.warningReturn': 'You can return horse writes to local mode.',
+    'horseCloud.confirmLabel': 'Type HORSES CLOUD to enable cloud horse writes',
+    'horseCloud.enableButton': 'Enable cloud horse writes',
+    'horseCloud.localButton': 'Return horse writes to local mode',
+    'horseCloud.notReady': 'Horse cloud writes are disabled until you are logged in, have an active stable, and type HORSES CLOUD.',
+    'horseCloud.ready': 'Ready to enable cloud writes for horses only.',
+    'horseCloud.loading': 'Loading cloud horses...',
+    'horseCloud.enabled': 'Cloud horse writes enabled. Other areas remain local.',
+    'horseCloud.returnedLocal': 'Horse writes returned to local mode.',
+    'horseCloud.saveFailed': 'Cloud horse save failed: {error}',
+    'horseCloud.deleteFailed': 'Cloud horse delete failed: {error}',
+    'horseCloud.loadFailed': 'Cloud horse mode failed: {error}',
+    'horseCloud.permissionBlocked': 'Cloud horse writes are blocked by database permissions.',
+    'horseCloud.saved': 'Horse saved to cloud.',
+    'horseCloud.deleted': 'Horse deleted from cloud.',
     'cloudCleanup.title': 'Cloud cleanup',
     'cloudCleanup.text': 'Delete cloud rows for the active stable when cloud preview counts are duplicated or wrong.',
     'cloudCleanup.targetStable': 'Cleanup target stable',
@@ -536,6 +561,31 @@ const translations = {
     'cloudMode.returnedLocal': 'Palattu paikallisen datan tilaan.',
     'cloudMode.failed': 'Pilviesikatselu epäonnistui: {error}',
     'cloudMode.readOnlyMessage': 'Pilviesikatselu on vain lukutilassa. Palaa paikalliseen dataan tehdäksesi muutoksia.',
+    'horseCloud.title': 'Pilvikirjoitustila - Hevoset',
+    'horseCloud.text': 'Kokeellinen vaihe: vain hevosprofiilit tallennetaan pilveen.',
+    'horseCloud.currentMode': 'Hevosdatan tila',
+    'horseCloud.targetStable': 'Hevosten pilvitalli',
+    'horseCloud.localMode': 'Paikallinen',
+    'horseCloud.cloudMode': 'Pilvikirjoitus käytössä',
+    'horseCloud.warningExperimental': 'Tämä on kokeellinen vaihe.',
+    'horseCloud.warningHorsesOnly': 'Vain hevosprofiilit tallennetaan pilveen.',
+    'horseCloud.warningOthersLocal': 'Tehtävät, työtunnit, ruokavarasto ja kalenteri pysyvät toistaiseksi paikallisina.',
+    'horseCloud.warningLocalSafe': 'Paikallista hevosdataa ei poisteta.',
+    'horseCloud.warningReturn': 'Voit palauttaa hevosten tallennuksen paikalliseen tilaan.',
+    'horseCloud.confirmLabel': 'Kirjoita HORSES CLOUD ottaaksesi hevosten pilvikirjoituksen käyttöön',
+    'horseCloud.enableButton': 'Ota hevosten pilvikirjoitus käyttöön',
+    'horseCloud.localButton': 'Palauta hevoset paikalliseen tilaan',
+    'horseCloud.notReady': 'Hevosten pilvikirjoitus on pois käytöstä, kunnes olet kirjautunut sisään, aktiivinen talli on valittu ja kirjoitat HORSES CLOUD.',
+    'horseCloud.ready': 'Valmis ottamaan käyttöön hevosten pilvikirjoituksen.',
+    'horseCloud.loading': 'Ladataan pilvihevosia...',
+    'horseCloud.enabled': 'Hevosten pilvikirjoitus käytössä. Muut osiot pysyvät paikallisina.',
+    'horseCloud.returnedLocal': 'Hevosten tallennus palautettu paikalliseen tilaan.',
+    'horseCloud.saveFailed': 'Hevosen pilvitallennus epäonnistui: {error}',
+    'horseCloud.deleteFailed': 'Hevosen pilvipoisto epäonnistui: {error}',
+    'horseCloud.loadFailed': 'Hevosten pilvitila epäonnistui: {error}',
+    'horseCloud.permissionBlocked': 'Tietokannan käyttöoikeudet estävät hevosten pilvikirjoituksen.',
+    'horseCloud.saved': 'Hevonen tallennettu pilveen.',
+    'horseCloud.deleted': 'Hevonen poistettu pilvestä.',
     'cloudCleanup.title': 'Pilvidatan siivous',
     'cloudCleanup.text': 'Poista aktiivisen tallin pilvirivit, jos pilviesikatselun määrät ovat kahdentuneet tai virheelliset.',
     'cloudCleanup.targetStable': 'Siivottava talli',
@@ -924,6 +974,31 @@ const translations = {
     'cloudMode.returnedLocal': 'Ritorno alla modalità dati locali.',
     'cloudMode.failed': 'Anteprima cloud non riuscita: {error}',
     'cloudMode.readOnlyMessage': "L'anteprima cloud è in sola lettura. Torna ai dati locali per apportare modifiche.",
+    'horseCloud.title': 'Modalità scrittura cloud - Cavalli',
+    'horseCloud.text': 'Fase sperimentale: solo i profili cavallo vengono salvati nel cloud.',
+    'horseCloud.currentMode': 'Modalità dati cavalli',
+    'horseCloud.targetStable': 'Scuderia cloud cavalli',
+    'horseCloud.localMode': 'Locale',
+    'horseCloud.cloudMode': 'Scrittura cloud attiva',
+    'horseCloud.warningExperimental': 'Questa è una fase sperimentale.',
+    'horseCloud.warningHorsesOnly': 'Solo i profili cavallo verranno salvati nel cloud.',
+    'horseCloud.warningOthersLocal': 'Attività, ore di lavoro, scorte mangime e calendario restano locali per ora.',
+    'horseCloud.warningLocalSafe': 'I dati locali dei cavalli non verranno eliminati.',
+    'horseCloud.warningReturn': 'Puoi riportare la scrittura cavalli in modalità locale.',
+    'horseCloud.confirmLabel': 'Digita HORSES CLOUD per abilitare la scrittura cloud dei cavalli',
+    'horseCloud.enableButton': 'Abilita scrittura cloud cavalli',
+    'horseCloud.localButton': 'Riporta cavalli in modalità locale',
+    'horseCloud.notReady': 'La scrittura cloud cavalli è disabilitata finché non hai effettuato l accesso, hai una scuderia attiva e digiti HORSES CLOUD.',
+    'horseCloud.ready': 'Pronto ad abilitare la scrittura cloud solo per i cavalli.',
+    'horseCloud.loading': 'Caricamento cavalli cloud...',
+    'horseCloud.enabled': 'Scrittura cloud cavalli attiva. Le altre aree restano locali.',
+    'horseCloud.returnedLocal': 'Scrittura cavalli tornata in modalità locale.',
+    'horseCloud.saveFailed': 'Salvataggio cavallo cloud non riuscito: {error}',
+    'horseCloud.deleteFailed': 'Eliminazione cavallo cloud non riuscita: {error}',
+    'horseCloud.loadFailed': 'Modalità cavalli cloud non riuscita: {error}',
+    'horseCloud.permissionBlocked': 'La scrittura cloud dei cavalli è bloccata dai permessi del database.',
+    'horseCloud.saved': 'Cavallo salvato nel cloud.',
+    'horseCloud.deleted': 'Cavallo eliminato dal cloud.',
     'cloudCleanup.title': 'Pulizia cloud',
     'cloudCleanup.text': 'Elimina le righe cloud della scuderia attiva quando i conteggi sono duplicati o errati.',
     'cloudCleanup.targetStable': 'Scuderia da pulire',
@@ -1228,6 +1303,8 @@ let cloudCleanupStatusText = '';
 let isCloudCleaning = false;
 let cloudPreviewMode = false;
 let cloudModeStatusText = '';
+let horseCloudWriteMode = false;
+let horseCloudStatusText = '';
 let cloudState = {
   status: 'notConnected',
   email: '',
@@ -1316,6 +1393,12 @@ const els = {
   cloudModePreviewButton: document.querySelector('#cloudModePreviewButton'),
   cloudModeLocalButton: document.querySelector('#cloudModeLocalButton'),
   cloudModeStatus: document.querySelector('#cloudModeStatus'),
+  horseCloudCurrent: document.querySelector('#horseCloudCurrent'),
+  horseCloudStableName: document.querySelector('#horseCloudStableName'),
+  horseCloudConfirmInput: document.querySelector('#horseCloudConfirmInput'),
+  horseCloudEnableButton: document.querySelector('#horseCloudEnableButton'),
+  horseCloudLocalButton: document.querySelector('#horseCloudLocalButton'),
+  horseCloudStatus: document.querySelector('#horseCloudStatus'),
   cloudCleanupStableName: document.querySelector('#cloudCleanupStableName'),
   cloudCleanupConfirmInput: document.querySelector('#cloudCleanupConfirmInput'),
   cloudCleanupButton: document.querySelector('#cloudCleanupButton'),
@@ -1384,6 +1467,7 @@ function normalizeFeedItem(item) {
 function normalizeHorse(item) {
   return {
     id: item.id || createId(),
+    cloudId: item.cloudId || item.cloud_id || '',
     name: item.name || 'Unnamed horse',
     nickname: item.nickname || item.stableName || '',
     owner: item.owner || '',
@@ -1446,7 +1530,8 @@ function saveData() {
     showMessage(t('cloudMode.readOnlyMessage'));
     return;
   }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  const nextState = horseCloudWriteMode ? { ...state, horses: loadData().horses } : state;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(nextState));
 }
 
 function getCounts(data = state) {
@@ -1583,6 +1668,7 @@ function updateAuthUi() {
   renderMigrationPreview();
   renderCloudReadPreview();
   renderCloudMode();
+  renderHorseCloudMode();
   renderCloudCleanup();
 }
 
@@ -1606,6 +1692,7 @@ function setCloudStatus(nextState = {}) {
   renderMigrationPreview();
   renderCloudReadPreview();
   renderCloudMode();
+  renderHorseCloudMode();
   renderCloudCleanup();
 }
 
@@ -1779,8 +1866,9 @@ async function fetchCloudRows(table, stableId, orderColumn = 'created_at') {
 }
 
 function mapCloudHorse(row) {
-  return normalizeHorse({
+  const horse = normalizeHorse({
     id: row.local_id || row.id,
+    cloudId: row.id,
     name: row.name,
     nickname: row.nickname,
     owner: row.owner,
@@ -1797,6 +1885,8 @@ function mapCloudHorse(row) {
     vetNotes: row.vet_notes,
     notes: row.general_notes
   });
+  horse.cloudId = row.id;
+  return horse;
 }
 
 function mapCloudTask(row, horseIdMap) {
@@ -1880,6 +1970,7 @@ async function loadCloudSnapshot(stableId) {
 }
 
 async function enableCloudModePreview() {
+  if (horseCloudWriteMode) returnHorseWritesToLocalMode();
   const activeStable = getActiveStable();
   if (!getCurrentUser() || !activeStable.id) {
     cloudModeStatusText = t('cloudMode.notReady');
@@ -1914,6 +2005,173 @@ function returnToLocalDataMode() {
   cloudModeStatusText = t('cloudMode.returnedLocal');
   render();
   showMessage(cloudModeStatusText);
+}
+
+function getHorseCloudGate() {
+  const currentUser = getCurrentUser();
+  const activeStable = getActiveStable();
+  const confirmationValue = els.horseCloudConfirmInput?.value || '';
+  const confirmationReady = confirmationValue === 'HORSES CLOUD';
+  const reasons = [];
+  if (!currentUser) reasons.push('missing auth user');
+  if (!activeStable.id) reasons.push('missing active stable id');
+  if (!confirmationReady) reasons.push('confirmation is not exactly HORSES CLOUD');
+  if (cloudPreviewMode) reasons.push('cloud preview is read-only');
+  if (horseCloudWriteMode) reasons.push('horse cloud writes already enabled');
+  return {
+    currentUserExists: Boolean(currentUser),
+    activeStable,
+    confirmationValue,
+    canEnable: reasons.length === 0,
+    reason: reasons.length ? reasons.join('; ') : 'enabled'
+  };
+}
+
+function renderHorseCloudMode() {
+  const activeStable = getActiveStable();
+  const gate = getHorseCloudGate();
+  const modeText = horseCloudWriteMode ? t('horseCloud.cloudMode') : t('horseCloud.localMode');
+  if (els.horseCloudCurrent) els.horseCloudCurrent.textContent = modeText;
+  if (els.horseCloudStableName) els.horseCloudStableName.textContent = activeStable.name || t('cloudRead.noStable');
+  if (els.horseCloudEnableButton) els.horseCloudEnableButton.disabled = !gate.canEnable;
+  if (els.horseCloudLocalButton) els.horseCloudLocalButton.hidden = !horseCloudWriteMode;
+  if (els.horseCloudStatus) {
+    els.horseCloudStatus.textContent = horseCloudStatusText || (gate.canEnable ? t('horseCloud.ready') : t('horseCloud.notReady'));
+  }
+}
+
+function handleHorseCloudConfirmationChange() {
+  horseCloudStatusText = '';
+  renderHorseCloudMode();
+}
+
+function horseToCloudRow(stableId, rawHorse) {
+  const horse = normalizeHorse(rawHorse);
+  const localId = horse.id || createId();
+  return {
+    stable_id: stableId,
+    local_id: localId,
+    name: horse.name,
+    nickname: cleanText(horse.nickname),
+    owner: cleanText(horse.owner),
+    breed: cleanText(horse.breed),
+    date_of_birth: cleanText(horse.birth),
+    gender: cleanText(horse.gender),
+    color: cleanText(horse.color),
+    registration_number: cleanText(horse.registration),
+    feeding_notes: cleanText(horse.feedingNotes),
+    care_notes: cleanText(horse.careNotes),
+    shoeing_notes: cleanText(horse.shoeingNotes),
+    vaccination_notes: cleanText(horse.vaccinationNotes),
+    deworming_notes: cleanText(horse.dewormingNotes),
+    vet_notes: cleanText(horse.vetNotes),
+    general_notes: cleanText(horse.notes)
+  };
+}
+
+async function loadCloudHorses(stableId) {
+  const rows = await fetchCloudRows('horses', stableId);
+  return rows.map(mapCloudHorse);
+}
+
+async function enableHorseCloudWrites() {
+  const gate = getHorseCloudGate();
+  if (!gate.canEnable) {
+    showMessage(t('horseCloud.notReady'));
+    renderHorseCloudMode();
+    return;
+  }
+  horseCloudStatusText = t('horseCloud.loading');
+  renderHorseCloudMode();
+  try {
+    state = { ...loadData(), horses: await loadCloudHorses(gate.activeStable.id) };
+    horseCloudWriteMode = true;
+    if (els.horseCloudConfirmInput) els.horseCloudConfirmInput.value = '';
+    horseCloudStatusText = t('horseCloud.enabled');
+    render();
+    showView('stable');
+    activateTab('horses');
+    showMessage(horseCloudStatusText);
+  } catch (error) {
+    console.error('[EquiTrack cloud] Horse cloud mode failed', error);
+    const errorMessage = isPermissionError(error) ? t('horseCloud.permissionBlocked') : getAuthErrorMessage(error);
+    horseCloudStatusText = t('horseCloud.loadFailed', { error: errorMessage });
+    horseCloudWriteMode = false;
+    state = loadData();
+    render();
+    showMessage(horseCloudStatusText);
+  }
+}
+
+function returnHorseWritesToLocalMode() {
+  state = { ...state, horses: loadData().horses };
+  horseCloudWriteMode = false;
+  horseCloudStatusText = t('horseCloud.returnedLocal');
+  render();
+  showMessage(horseCloudStatusText);
+}
+
+async function saveHorseToCloud(rawHorse) {
+  const activeStable = getActiveStable();
+  if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
+  const row = horseToCloudRow(activeStable.id, rawHorse);
+  const request = rawHorse.cloudId
+    ? supabaseClient
+      .from('horses')
+      .update(row)
+      .eq('stable_id', activeStable.id)
+      .eq('id', rawHorse.cloudId)
+    : supabaseClient
+      .from('horses')
+      .upsert(row, { onConflict: 'stable_id,local_id' });
+  const { data, error } = await request.select('*').single();
+  if (error) throw error;
+  return mapCloudHorse(data);
+}
+
+async function handleCloudHorseSave(rawHorse) {
+  try {
+    const savedHorse = await saveHorseToCloud(rawHorse);
+    const existingIndex = state.horses.findIndex((horse) => horse.id === savedHorse.id);
+    if (existingIndex >= 0) state.horses[existingIndex] = savedHorse;
+    else state.horses.push(savedHorse);
+    render();
+    showMessage(t('horseCloud.saved'));
+    return true;
+  } catch (error) {
+    console.error('[EquiTrack cloud] Horse save failed', error);
+    const errorMessage = isPermissionError(error) ? t('horseCloud.permissionBlocked') : getAuthErrorMessage(error);
+    showMessage(t('horseCloud.saveFailed', { error: errorMessage }));
+    return false;
+  }
+}
+
+async function deleteHorseFromCloud(id) {
+  const activeStable = getActiveStable();
+  if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
+  const horse = state.horses.find((entry) => entry.id === id);
+  if (!horse) return;
+  let query = supabaseClient.from('horses').delete().eq('stable_id', activeStable.id);
+  query = horse.cloudId ? query.eq('id', horse.cloudId) : query.eq('local_id', horse.id);
+  const { error } = await query.select('id');
+  if (error) throw error;
+}
+
+async function handleCloudHorseDelete(id) {
+  if (!confirmDelete(t('delete.horse'))) {
+    showMessage(t('message.deleteCancelled'));
+    return;
+  }
+  try {
+    await deleteHorseFromCloud(id);
+    state.horses = state.horses.filter((horse) => horse.id !== id);
+    render();
+    showMessage(t('horseCloud.deleted'));
+  } catch (error) {
+    console.error('[EquiTrack cloud] Horse delete failed', error);
+    const errorMessage = isPermissionError(error) ? t('horseCloud.permissionBlocked') : getAuthErrorMessage(error);
+    showMessage(t('horseCloud.deleteFailed', { error: errorMessage }));
+  }
 }
 
 function getCloudCleanupGate() {
@@ -2011,33 +2269,14 @@ function isMissingLocalIdSchemaError(error) {
   return error?.code === 'PGRST204' || error?.code === '42P10' || message.toLowerCase().includes('local_id');
 }
 
-function buildHorseRows(stableId) {
-  return state.horses.map((rawHorse) => {
-    const horse = normalizeHorse(rawHorse);
-    return {
-      stable_id: stableId,
-      local_id: horse.id,
-      name: horse.name,
-      nickname: cleanText(horse.nickname),
-      owner: cleanText(horse.owner),
-      breed: cleanText(horse.breed),
-      date_of_birth: cleanText(horse.birth),
-      gender: cleanText(horse.gender),
-      color: cleanText(horse.color),
-      registration_number: cleanText(horse.registration),
-      feeding_notes: cleanText(horse.feedingNotes),
-      care_notes: cleanText(horse.careNotes),
-      shoeing_notes: cleanText(horse.shoeingNotes),
-      vaccination_notes: cleanText(horse.vaccinationNotes),
-      deworming_notes: cleanText(horse.dewormingNotes),
-      vet_notes: cleanText(horse.vetNotes),
-      general_notes: cleanText(horse.notes)
-    };
+function buildHorseRows(stableId, sourceData = state) {
+  return sourceData.horses.map((rawHorse) => {
+    return horseToCloudRow(stableId, rawHorse);
   });
 }
 
-function buildTaskRows(stableId, horseIdMap) {
-  return state.tasks.map((task) => ({
+function buildTaskRows(stableId, horseIdMap, sourceData = state) {
+  return sourceData.tasks.map((task) => ({
     stable_id: stableId,
     local_id: task.id || createId(),
     title: cleanText(task.title) || 'Untitled task',
@@ -2048,8 +2287,8 @@ function buildTaskRows(stableId, horseIdMap) {
   }));
 }
 
-function buildWorkLogRows(stableId, horseIdMap) {
-  return state.hours.map((entry) => {
+function buildWorkLogRows(stableId, horseIdMap, sourceData = state) {
+  return sourceData.hours.map((entry) => {
     const worker = cleanText(entry.worker);
     const notes = cleanText(entry.notes || entry.description);
     const description = [worker, notes].filter(Boolean).join(' - ');
@@ -2064,8 +2303,8 @@ function buildWorkLogRows(stableId, horseIdMap) {
   });
 }
 
-function buildFeedRows(stableId) {
-  return state.inventory.map((rawItem) => {
+function buildFeedRows(stableId, sourceData = state) {
+  return sourceData.inventory.map((rawItem) => {
     const item = normalizeFeedItem(rawItem);
     return {
       stable_id: stableId,
@@ -2086,8 +2325,8 @@ function buildFeedRows(stableId) {
   });
 }
 
-function buildCalendarRows(stableId, horseIdMap) {
-  return state.calendarEvents.map((rawEvent) => {
+function buildCalendarRows(stableId, horseIdMap, sourceData = state) {
+  return sourceData.calendarEvents.map((rawEvent) => {
     const event = normalizeCalendarEvent(rawEvent);
     return {
       stable_id: stableId,
@@ -2139,14 +2378,15 @@ async function uploadLocalDataToCloud() {
   const stableId = uploadGate.activeStable.id;
   const counts = { horses: 0, tasks: 0, hours: 0, inventory: 0, events: 0 };
   try {
-    const uploadedHorses = await upsertCloudRows('horses', buildHorseRows(stableId));
+    const localUploadData = loadData();
+    const uploadedHorses = await upsertCloudRows('horses', buildHorseRows(stableId, localUploadData));
     counts.horses = uploadedHorses.length;
     const horseIdMap = new Map(uploadedHorses.map((horse) => [horse.local_id, horse.id]));
 
-    counts.tasks = (await upsertCloudRows('tasks', buildTaskRows(stableId, horseIdMap), 'local_id')).length;
-    counts.hours = (await upsertCloudRows('work_logs', buildWorkLogRows(stableId, horseIdMap), 'local_id')).length;
-    counts.inventory = (await upsertCloudRows('feed_items', buildFeedRows(stableId), 'local_id')).length;
-    counts.events = (await upsertCloudRows('calendar_events', buildCalendarRows(stableId, horseIdMap), 'local_id')).length;
+    counts.tasks = (await upsertCloudRows('tasks', buildTaskRows(stableId, horseIdMap, localUploadData), 'local_id')).length;
+    counts.hours = (await upsertCloudRows('work_logs', buildWorkLogRows(stableId, horseIdMap, localUploadData), 'local_id')).length;
+    counts.inventory = (await upsertCloudRows('feed_items', buildFeedRows(stableId, localUploadData), 'local_id')).length;
+    counts.events = (await upsertCloudRows('calendar_events', buildCalendarRows(stableId, horseIdMap, localUploadData), 'local_id')).length;
 
     const uploadedAt = new Date().toISOString();
     localStorage.setItem(LAST_CLOUD_UPLOAD_KEY, uploadedAt);
@@ -2211,6 +2451,11 @@ async function refreshCloudConnection() {
       state = loadData();
       cloudPreviewMode = false;
       cloudModeStatusText = '';
+    }
+    if (horseCloudWriteMode) {
+      state = loadData();
+      horseCloudWriteMode = false;
+      horseCloudStatusText = '';
     }
     setCloudStatus({
       status: 'notConnected',
@@ -2441,6 +2686,7 @@ function render() {
   renderMigrationPreview();
   renderCloudReadPreview();
   renderCloudMode();
+  renderHorseCloudMode();
   renderCloudCleanup();
 }
 
@@ -2911,7 +3157,7 @@ function handleHorseSubmit(event) {
   event.preventDefault();
   if (blockCloudPreviewEdit()) return;
   const form = event.currentTarget;
-  upsert('horses', {
+  const horse = {
     id: form.elements.id.value,
     name: form.elements.name.value.trim(),
     nickname: form.elements.nickname.value.trim(),
@@ -2928,7 +3174,17 @@ function handleHorseSubmit(event) {
     dewormingNotes: form.elements.dewormingNotes.value.trim(),
     vetNotes: form.elements.vetNotes.value.trim(),
     notes: form.elements.notes.value.trim()
-  });
+  };
+  if (horseCloudWriteMode) {
+    if (!horse.id) horse.id = createId();
+    const existingHorse = state.horses.find((entry) => entry.id === horse.id);
+    if (existingHorse?.cloudId) horse.cloudId = existingHorse.cloudId;
+    handleCloudHorseSave(horse).then((saved) => {
+      if (saved) resetForm(form);
+    });
+    return;
+  }
+  upsert('horses', horse);
   resetForm(form);
   showMessage(t('message.horseSaved'));
 }
@@ -3040,7 +3296,10 @@ function handleListClick(event) {
     return;
   }
   if (action === 'edit-horse') fillHorseForm(id);
-  if (action === 'delete-horse') deleteItem('horses', id, t('delete.horse'), t('message.horseDeleted'));
+  if (action === 'delete-horse') {
+    if (horseCloudWriteMode) handleCloudHorseDelete(id);
+    else deleteItem('horses', id, t('delete.horse'), t('message.horseDeleted'));
+  }
   if (action === 'toggle-task') toggleTask(id);
   if (action === 'edit-task') fillTaskForm(id);
   if (action === 'delete-task') deleteItem('tasks', id, t('delete.task'), t('message.taskDeleted'));
@@ -3387,6 +3646,8 @@ async function handleLogout() {
     state = loadData();
     cloudPreviewMode = false;
     cloudModeStatusText = '';
+    horseCloudWriteMode = false;
+    horseCloudStatusText = '';
     setCloudStatus({
       status: 'notConnected',
       email: '',
@@ -3406,6 +3667,8 @@ async function handleLogout() {
     state = loadData();
     cloudPreviewMode = false;
     cloudModeStatusText = '';
+    horseCloudWriteMode = false;
+    horseCloudStatusText = '';
     setCloudStatus({
       status: 'notConnected',
       email: '',
@@ -3489,6 +3752,9 @@ els.migrationUploadButton?.addEventListener('click', uploadLocalDataToCloud);
 els.cloudReadButton?.addEventListener('click', checkCloudDataPreview);
 els.cloudModePreviewButton?.addEventListener('click', enableCloudModePreview);
 els.cloudModeLocalButton?.addEventListener('click', returnToLocalDataMode);
+els.horseCloudConfirmInput?.addEventListener('input', handleHorseCloudConfirmationChange);
+els.horseCloudEnableButton?.addEventListener('click', enableHorseCloudWrites);
+els.horseCloudLocalButton?.addEventListener('click', returnHorseWritesToLocalMode);
 els.cloudCleanupConfirmInput?.addEventListener('input', handleCloudCleanupConfirmationChange);
 els.cloudCleanupButton?.addEventListener('click', cleanupCloudDataForStable);
 els.calendarScopeFilter?.addEventListener('change', handleCalendarFilterChange);

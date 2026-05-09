@@ -474,6 +474,31 @@
             <p id="cloudModeStatus" class="update-note" data-i18n="cloudMode.notReady">Log in and assign an active stable before previewing cloud data.</p>
           </article>
 
+          <article class="panel cloud-panel">
+            <h3 data-i18n="horseCloud.title">Cloud write mode - Horses</h3>
+            <p data-i18n="horseCloud.text">Experimental phase: only horse profiles are saved to the cloud.</p>
+            <div class="cloud-status-list">
+              <p><span data-i18n="horseCloud.currentMode">Horse data mode</span>: <strong id="horseCloudCurrent">Local</strong></p>
+              <p><span data-i18n="horseCloud.targetStable">Horse cloud stable</span>: <strong id="horseCloudStableName">-</strong></p>
+            </div>
+            <ul class="migration-warnings">
+              <li data-i18n="horseCloud.warningExperimental">This is an experimental phase.</li>
+              <li data-i18n="horseCloud.warningHorsesOnly">Only horse profiles will be saved to the cloud.</li>
+              <li data-i18n="horseCloud.warningOthersLocal">Tasks, work hours, feed inventory, and calendar still stay local for now.</li>
+              <li data-i18n="horseCloud.warningLocalSafe">Local horse data will not be deleted.</li>
+              <li data-i18n="horseCloud.warningReturn">You can return horse writes to local mode.</li>
+            </ul>
+            <label class="full-width">
+              <span data-i18n="horseCloud.confirmLabel">Type HORSES CLOUD to enable cloud horse writes</span>
+              <input id="horseCloudConfirmInput" type="text" autocomplete="off" placeholder="HORSES CLOUD">
+            </label>
+            <div class="backup-actions">
+              <button id="horseCloudEnableButton" class="button secondary" type="button" disabled data-i18n="horseCloud.enableButton">Enable cloud horse writes</button>
+              <button id="horseCloudLocalButton" class="button secondary" type="button" hidden data-i18n="horseCloud.localButton">Return horse writes to local mode</button>
+            </div>
+            <p id="horseCloudStatus" class="update-note" data-i18n="horseCloud.notReady">Horse cloud writes are disabled until you are logged in, have an active stable, and type HORSES CLOUD.</p>
+          </article>
+
           <article class="panel cloud-panel danger-zone">
             <h3 data-i18n="cloudCleanup.title">Cloud cleanup</h3>
             <p data-i18n="cloudCleanup.text">Delete cloud rows for the active stable when cloud preview counts are duplicated or wrong.</p>
