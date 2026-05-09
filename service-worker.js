@@ -1,4 +1,4 @@
-const CACHE_NAME = 'equitrack-web-static-v24';
+const CACHE_NAME = 'equitrack-web-static-v25';
 const APP_ASSETS = [
   './',
   './index.html',
