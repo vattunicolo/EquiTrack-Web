@@ -4,6 +4,7 @@ const LAST_BACKUP_KEY = 'equitrack-web-last-backup';
 const EMERGENCY_BACKUP_KEY = 'equitrack-web-emergency-backup';
 const ONBOARDING_KEY = 'equitrack-web-onboarding-complete';
 const LAST_CLOUD_UPLOAD_KEY = 'equitrack-web-last-cloud-upload';
+const CLOUD_LOCAL_OVERRIDE_KEY = 'equitrack-web-cloud-local-override';
 const DEFAULT_LANGUAGE = 'en';
 const EVENT_TYPES = ['race', 'training', 'shoeing', 'vaccination', 'vet', 'feeding', 'other'];
 const PROTECTED_VIEWS = ['stable', 'calendar', 'settings'];
@@ -87,12 +88,15 @@ const translations = {
     'cloud.noStable': 'No stable has been assigned to this account yet.',
     'cloud.permissionBlocked': 'Stable access is blocked by database permissions.',
     'cloud.loadError': 'Error loading stable.',
-    'cloud.syncLocal': 'Cloud sync is not enabled yet. Local data still stays in this browser.',
-    'cloud.prepTitle': 'Cloud sync preparation',
-    'cloud.prepText': 'Your data is still stored locally in this browser. Cloud sync will be enabled in a later step.',
+    'cloud.syncLocal': 'Local browser data remains available as fallback. Export backups regularly.',
+    'cloud.prepTitle': 'Cloud storage',
+    'cloud.prepText': 'Signed-in users use cloud storage automatically when an active stable is assigned.',
     'cloud.email': 'Logged-in email',
     'cloud.stable': 'Active stable',
     'cloud.status': 'Cloud status',
+    'cloudAdvanced.eyebrow': 'Advanced cloud tools',
+    'cloudAdvanced.title': 'Migration and troubleshooting',
+    'cloudAdvanced.text': 'These tools are for migration, checking cloud counts, and cleanup. Normal signed-in use does not need them.',
     'migration.title': 'Move local data to cloud',
     'migration.text': 'Review the local browser data that will be copied to the active cloud stable after confirmation.',
     'migration.targetStable': 'Upload target stable',
@@ -117,7 +121,7 @@ const translations = {
     'cloudRead.targetStable': 'Read target stable',
     'cloudRead.compareHelp': 'Each row shows local count / cloud count.',
     'cloudRead.warningReadOnly': 'This preview is read-only.',
-    'cloudRead.warningLocalActive': 'Your app is still using local browser data.',
+    'cloudRead.warningLocalActive': 'Local browser data remains available for comparison.',
     'cloudRead.warningNoSync': 'Cloud sync is not enabled yet.',
     'cloudRead.warningNoLocalChange': 'No local data will be changed.',
     'cloudRead.button': 'Check cloud data',
@@ -129,28 +133,36 @@ const translations = {
     'cloudRead.permissionBlocked': 'Cloud data access is blocked by database permissions.',
     'cloudRead.failed': 'Cloud read failed: {error}',
     'cloudMode.title': 'Cloud mode',
-    'cloudMode.text': 'Choose whether EquiTrack uses local browser data or saves app data to the active Supabase stable.',
+    'cloudMode.text': 'Signed-in users use cloud storage automatically when an active stable is assigned. Local data stays available as a fallback.',
     'cloudMode.currentMode': 'Current data mode',
     'cloudMode.targetStable': 'Active stable',
     'cloudMode.email': 'Logged-in email',
-    'cloudMode.localStatus': 'Local',
-    'cloudMode.cloudStatus': 'Cloud',
+    'cloudMode.localStatus': 'Local mode active',
+    'cloudMode.cloudStatus': 'Cloud mode active',
+    'cloudMode.unavailableStatus': 'Cloud unavailable',
     'cloudMode.previewStatus': 'Cloud preview mode, read-only',
-    'cloudMode.warningLocalDefault': 'Local mode keeps data in this browser.',
-    'cloudMode.warningViewCloud': 'Cloud mode saves data to the active stable in Supabase.',
-    'cloudMode.warningLocalSafe': 'Local data is kept as a fallback.',
-    'cloudMode.warningNoSync': 'You can return to local mode at any time.',
+    'cloudMode.warningLocalDefault': 'Signed-in users use cloud storage automatically.',
+    'cloudMode.warningViewCloud': 'App changes save to the active stable in Supabase when cloud is available.',
+    'cloudMode.warningLocalSafe': 'Local browser data is kept as fallback and is not deleted.',
+    'cloudMode.warningNoSync': 'Use local mode on this device only if you need a fallback.',
     'cloudMode.warningReadOnly': 'Cloud preview is read-only.',
-    'cloudMode.confirmLabel': 'Type ENABLE CLOUD to enable Cloud mode',
-    'cloudMode.enableButton': 'Enable Cloud mode',
+    'cloudMode.confirmLabel': 'Cloud mode starts automatically after login',
+    'cloudMode.enableButton': 'Return to cloud mode',
     'cloudMode.previewButton': 'Enable Cloud mode',
-    'cloudMode.localButton': 'Return to Local mode',
-    'cloudMode.notReady': 'Log in, assign an active stable, and type ENABLE CLOUD to enable Cloud mode.',
-    'cloudMode.ready': 'Ready to load cloud data and enable Cloud mode.',
+    'cloudMode.localButton': 'Use local mode on this device',
+    'cloudMode.useLocalButton': 'Use local mode on this device',
+    'cloudMode.returnCloudButton': 'Return to cloud mode',
+    'cloudMode.notReady': 'Sign in and make sure an active stable is assigned to use Cloud mode.',
+    'cloudMode.ready': 'Cloud will load automatically when your stable is ready.',
     'cloudMode.loading': 'Loading cloud data...',
-    'cloudMode.enabled': 'Cloud mode enabled. App changes now save to Supabase.',
-    'cloudMode.returnedLocal': 'Returned to Local mode.',
-    'cloudMode.failed': 'Cloud mode failed: {error}',
+    'cloudMode.autoLoading': 'Loading cloud data for your stable...',
+    'cloudMode.enabled': 'Cloud mode active. App changes save to Supabase.',
+    'cloudMode.returnedLocal': 'Local mode active on this device.',
+    'cloudMode.localOverride': 'Local mode is active on this device. Local browser data is being used.',
+    'cloudMode.returnReady': 'Cloud is available. You can return to cloud mode.',
+    'cloudMode.noStable': 'No stable assigned to this account yet.',
+    'cloudMode.cloudUnavailable': 'Cloud data could not be loaded. Local mode is active.',
+    'cloudMode.failed': 'Cloud data could not be loaded. Local mode is active.',
     'cloudMode.readOnlyMessage': 'Cloud preview is read-only. Return to local data to make changes.',
     'cloudMode.localFallbackMessage': 'Cloud mode is active. Local browser data was kept unchanged.',
     'horseCloud.title': 'Cloud write mode - Horses',
@@ -679,11 +691,11 @@ const translations = {
     'cloudMode.warningViewCloud': 'Pilvitila tallentaa datan aktiiviseen Supabase-talliin.',
     'cloudMode.warningLocalSafe': 'Paikallinen data säilytetään varalla.',
     'cloudMode.warningNoSync': 'Voit palata paikalliseen tilaan milloin tahansa.',
-    'cloudMode.confirmLabel': 'Kirjoita ENABLE CLOUD ottaaksesi pilvitilan käyttöön',
+    'cloudMode.confirmLabel': 'Pilvitila käynnistyy automaattisesti kirjautumisen jälkeen',
     'cloudMode.enableButton': 'Ota pilvitila käyttöön',
     'cloudMode.previewButton': 'Ota pilvitila käyttöön',
     'cloudMode.localButton': 'Palaa paikalliseen tilaan',
-    'cloudMode.notReady': 'Kirjaudu sisään, varmista aktiivinen talli ja kirjoita ENABLE CLOUD ottaaksesi pilvitilan käyttöön.',
+    'cloudMode.notReady': 'Kirjaudu sisään ja varmista, että aktiivinen talli on määritetty pilvitilaa varten.',
     'cloudMode.ready': 'Valmis lataamaan pilvidata ja ottamaan pilvitila käyttöön.',
     'cloudMode.loading': 'Ladataan pilvidataa...',
     'cloudMode.enabled': 'Pilvitila käytössä. Sovelluksen muutokset tallennetaan nyt Supabaseen.',
@@ -1216,11 +1228,11 @@ const translations = {
     'cloudMode.warningViewCloud': 'La modalità cloud salva i dati nella scuderia attiva in Supabase.',
     'cloudMode.warningLocalSafe': 'I dati locali restano disponibili come fallback.',
     'cloudMode.warningNoSync': 'Puoi tornare alla modalità locale in qualsiasi momento.',
-    'cloudMode.confirmLabel': 'Digita ENABLE CLOUD per abilitare la modalità cloud',
+    'cloudMode.confirmLabel': 'La modalità cloud si avvia automaticamente dopo il login',
     'cloudMode.enableButton': 'Abilita modalità cloud',
     'cloudMode.previewButton': 'Abilita modalità cloud',
     'cloudMode.localButton': 'Torna alla modalità locale',
-    'cloudMode.notReady': 'Accedi, assegna una scuderia attiva e digita ENABLE CLOUD per abilitare la modalità cloud.',
+    'cloudMode.notReady': 'Accedi e assicurati che una scuderia attiva sia assegnata per usare la modalità cloud.',
     'cloudMode.ready': 'Pronto a caricare i dati cloud e abilitare la modalità cloud.',
     'cloudMode.loading': 'Caricamento dati cloud...',
     'cloudMode.enabled': 'Modalità cloud attiva. Le modifiche ora vengono salvate in Supabase.',
@@ -1621,6 +1633,105 @@ const translations = {
   }
 };
 
+Object.assign(translations.en, {
+  'cloud.prepTitle': 'Cloud storage',
+  'cloud.prepText': 'Signed-in users use cloud storage automatically when an active stable is assigned.',
+  'cloud.syncLocal': 'Local browser data remains available as fallback. Export backups regularly.',
+  'cloudAdvanced.eyebrow': 'Advanced cloud tools',
+  'cloudAdvanced.title': 'Migration and troubleshooting',
+  'cloudAdvanced.text': 'These tools are for migration, checking cloud counts, and cleanup. Normal signed-in use does not need them.',
+  'cloudRead.warningLocalActive': 'Local browser data remains available for comparison.',
+  'cloudMode.text': 'Signed-in users use cloud storage automatically when an active stable is assigned. Local data stays available as a fallback.',
+  'cloudMode.localStatus': 'Local mode active',
+  'cloudMode.cloudStatus': 'Cloud mode active',
+  'cloudMode.unavailableStatus': 'Cloud unavailable',
+  'cloudMode.warningLocalDefault': 'Signed-in users use cloud storage automatically.',
+  'cloudMode.warningViewCloud': 'App changes save to the active stable in Supabase when cloud is available.',
+  'cloudMode.warningLocalSafe': 'Local browser data is kept as fallback and is not deleted.',
+  'cloudMode.warningNoSync': 'Use local mode on this device only if you need a fallback.',
+  'cloudMode.confirmLabel': 'Cloud mode starts automatically after login',
+  'cloudMode.enableButton': 'Return to cloud mode',
+  'cloudMode.localButton': 'Use local mode on this device',
+  'cloudMode.useLocalButton': 'Use local mode on this device',
+  'cloudMode.returnCloudButton': 'Return to cloud mode',
+  'cloudMode.notReady': 'Sign in and make sure an active stable is assigned to use Cloud mode.',
+  'cloudMode.ready': 'Cloud will load automatically when your stable is ready.',
+  'cloudMode.autoLoading': 'Loading cloud data for your stable...',
+  'cloudMode.enabled': 'Cloud mode active. App changes save to Supabase.',
+  'cloudMode.returnedLocal': 'Local mode active on this device.',
+  'cloudMode.localOverride': 'Local mode is active on this device. Local browser data is being used.',
+  'cloudMode.returnReady': 'Cloud is available. You can return to cloud mode.',
+  'cloudMode.noStable': 'No stable assigned to this account yet.',
+  'cloudMode.cloudUnavailable': 'Cloud data could not be loaded. Local mode is active.',
+  'cloudMode.failed': 'Cloud data could not be loaded. Local mode is active.'
+});
+
+Object.assign(translations.fi, {
+  'cloud.prepTitle': 'Pilvitallennus',
+  'cloud.prepText': 'Kirjautuneet käyttäjät käyttävät pilvitallennusta automaattisesti, kun aktiivinen talli on määritetty.',
+  'cloud.syncLocal': 'Paikallinen selaindata säilyy varalla. Vie varmuuskopioita säännöllisesti.',
+  'cloudAdvanced.eyebrow': 'Pilven lisätyökalut',
+  'cloudAdvanced.title': 'Siirto ja vianetsintä',
+  'cloudAdvanced.text': 'Nämä työkalut ovat siirtoa, pilvimäärien tarkistusta ja siivousta varten. Tavallinen käyttö ei tarvitse niitä.',
+  'cloudRead.warningLocalActive': 'Paikallinen selaindata säilyy vertailua varten.',
+  'cloudMode.text': 'Kirjautuneet käyttäjät käyttävät pilvitallennusta automaattisesti, kun aktiivinen talli on määritetty. Paikallinen data säilyy varalla.',
+  'cloudMode.localStatus': 'Paikallinen tila käytössä',
+  'cloudMode.cloudStatus': 'Pilvitila käytössä',
+  'cloudMode.unavailableStatus': 'Pilvi ei ole saatavilla',
+  'cloudMode.warningLocalDefault': 'Kirjautuneet käyttäjät käyttävät pilvitallennusta automaattisesti.',
+  'cloudMode.warningViewCloud': 'Muutokset tallennetaan aktiiviseen Supabase-talliin, kun pilvi on käytettävissä.',
+  'cloudMode.warningLocalSafe': 'Paikallinen selaindata säilyy varalla eikä sitä poisteta.',
+  'cloudMode.warningNoSync': 'Käytä paikallista tilaa tällä laitteella vain tarvittaessa.',
+  'cloudMode.confirmLabel': 'Pilvitila käynnistyy automaattisesti kirjautumisen jälkeen',
+  'cloudMode.enableButton': 'Palaa pilvitilaan',
+  'cloudMode.localButton': 'Käytä paikallista tilaa tällä laitteella',
+  'cloudMode.useLocalButton': 'Käytä paikallista tilaa tällä laitteella',
+  'cloudMode.returnCloudButton': 'Palaa pilvitilaan',
+  'cloudMode.notReady': 'Kirjaudu sisään ja varmista, että aktiivinen talli on määritetty pilvitilaa varten.',
+  'cloudMode.ready': 'Pilvi latautuu automaattisesti, kun talli on valmis.',
+  'cloudMode.autoLoading': 'Ladataan tallisi pilvidataa...',
+  'cloudMode.enabled': 'Pilvitila käytössä. Sovelluksen muutokset tallennetaan Supabaseen.',
+  'cloudMode.returnedLocal': 'Paikallinen tila käytössä tällä laitteella.',
+  'cloudMode.localOverride': 'Paikallinen tila on käytössä tällä laitteella. Käytössä on selaimen paikallinen data.',
+  'cloudMode.returnReady': 'Pilvi on käytettävissä. Voit palata pilvitilaan.',
+  'cloudMode.noStable': 'Tälle tilille ei ole vielä määritetty tallia.',
+  'cloudMode.cloudUnavailable': 'Pilvidataa ei voitu ladata. Paikallinen tila on käytössä.',
+  'cloudMode.failed': 'Pilvidataa ei voitu ladata. Paikallinen tila on käytössä.'
+});
+
+Object.assign(translations.it, {
+  'cloud.prepTitle': 'Archiviazione cloud',
+  'cloud.prepText': "Gli utenti connessi usano automaticamente l'archiviazione cloud quando è assegnata una scuderia attiva.",
+  'cloud.syncLocal': 'I dati locali del browser restano disponibili come fallback. Esporta backup regolarmente.',
+  'cloudAdvanced.eyebrow': 'Strumenti cloud avanzati',
+  'cloudAdvanced.title': 'Migrazione e risoluzione problemi',
+  'cloudAdvanced.text': 'Questi strumenti servono per migrazione, controllo dei conteggi cloud e pulizia. L’uso normale non ne ha bisogno.',
+  'cloudRead.warningLocalActive': 'I dati locali del browser restano disponibili per il confronto.',
+  'cloudMode.text': "Gli utenti connessi usano automaticamente l'archiviazione cloud quando è assegnata una scuderia attiva. I dati locali restano disponibili come fallback.",
+  'cloudMode.localStatus': 'Modalità locale attiva',
+  'cloudMode.cloudStatus': 'Modalità cloud attiva',
+  'cloudMode.unavailableStatus': 'Cloud non disponibile',
+  'cloudMode.warningLocalDefault': "Gli utenti connessi usano automaticamente l'archiviazione cloud.",
+  'cloudMode.warningViewCloud': 'Le modifiche vengono salvate nella scuderia attiva in Supabase quando il cloud è disponibile.',
+  'cloudMode.warningLocalSafe': 'I dati locali del browser restano come fallback e non vengono eliminati.',
+  'cloudMode.warningNoSync': 'Usa la modalità locale su questo dispositivo solo se ti serve un fallback.',
+  'cloudMode.confirmLabel': 'La modalità cloud si avvia automaticamente dopo il login',
+  'cloudMode.enableButton': 'Torna alla modalità cloud',
+  'cloudMode.localButton': 'Usa modalità locale su questo dispositivo',
+  'cloudMode.useLocalButton': 'Usa modalità locale su questo dispositivo',
+  'cloudMode.returnCloudButton': 'Torna alla modalità cloud',
+  'cloudMode.notReady': 'Accedi e assicurati che una scuderia attiva sia assegnata per usare la modalità cloud.',
+  'cloudMode.ready': 'Il cloud si caricherà automaticamente quando la scuderia sarà pronta.',
+  'cloudMode.autoLoading': 'Caricamento dei dati cloud della tua scuderia...',
+  'cloudMode.enabled': 'Modalità cloud attiva. Le modifiche vengono salvate in Supabase.',
+  'cloudMode.returnedLocal': 'Modalità locale attiva su questo dispositivo.',
+  'cloudMode.localOverride': 'La modalità locale è attiva su questo dispositivo. Sono in uso i dati locali del browser.',
+  'cloudMode.returnReady': 'Il cloud è disponibile. Puoi tornare alla modalità cloud.',
+  'cloudMode.noStable': 'Nessuna scuderia assegnata a questo account.',
+  'cloudMode.cloudUnavailable': 'Impossibile caricare i dati cloud. La modalità locale è attiva.',
+  'cloudMode.failed': 'Impossibile caricare i dati cloud. La modalità locale è attiva.'
+});
+
 let currentLanguage = localStorage.getItem(LANGUAGE_KEY) || DEFAULT_LANGUAGE;
 if (!translations[currentLanguage]) currentLanguage = DEFAULT_LANGUAGE;
 
@@ -1659,6 +1770,8 @@ let isCloudCleaning = false;
 let cloudPreviewMode = false;
 let cloudWriteMode = false;
 let cloudModeStatusText = '';
+let cloudLocalOverride = localStorage.getItem(CLOUD_LOCAL_OVERRIDE_KEY) === 'true';
+let cloudUnavailable = false;
 let horseCloudWriteMode = false;
 let horseCloudStatusText = '';
 let taskCloudWriteMode = false;
@@ -1755,10 +1868,9 @@ const els = {
   cloudModeCurrent: document.querySelector('#cloudModeCurrent'),
   cloudModeStableName: document.querySelector('#cloudModeStableName'),
   cloudModeEmail: document.querySelector('#cloudModeEmail'),
-  cloudModeConfirmInput: document.querySelector('#cloudModeConfirmInput'),
-  cloudModeEnableButton: document.querySelector('#cloudModeEnableButton'),
   cloudModePreviewButton: document.querySelector('#cloudModePreviewButton'),
   cloudModeLocalButton: document.querySelector('#cloudModeLocalButton'),
+  cloudModeReturnButton: document.querySelector('#cloudModeReturnButton'),
   cloudModeStatus: document.querySelector('#cloudModeStatus'),
   horseCloudCurrent: document.querySelector('#horseCloudCurrent'),
   horseCloudStableName: document.querySelector('#horseCloudStableName'),
@@ -2278,13 +2390,13 @@ async function checkCloudDataPreview() {
 function renderCloudMode() {
   const activeStable = getActiveStable();
   const currentUser = getCurrentUser();
-  const confirmationValue = els.cloudModeConfirmInput?.value || '';
-  const canEnable = Boolean(currentUser && activeStable.id && confirmationValue === 'ENABLE CLOUD' && !cloudWriteMode && !cloudPreviewMode);
   const modeText = cloudPreviewMode
     ? t('cloudMode.previewStatus')
     : cloudWriteMode
       ? t('cloudMode.cloudStatus')
-      : t('cloudMode.localStatus');
+      : cloudUnavailable || cloudState.status === 'error' || cloudState.status === 'permissionBlocked'
+        ? t('cloudMode.unavailableStatus')
+        : t('cloudMode.localStatus');
   if (els.dataModeStatus) {
     els.dataModeStatus.textContent = modeText;
     els.dataModeStatus.classList.toggle('cloud-preview-active', cloudPreviewMode || cloudWriteMode);
@@ -2292,11 +2404,15 @@ function renderCloudMode() {
   if (els.cloudModeCurrent) els.cloudModeCurrent.textContent = modeText;
   if (els.cloudModeStableName) els.cloudModeStableName.textContent = activeStable.name || t('cloudRead.noStable');
   if (els.cloudModeEmail) els.cloudModeEmail.textContent = currentUser?.email || t('auth.signedOut');
-  if (els.cloudModeEnableButton) els.cloudModeEnableButton.disabled = !canEnable;
-  if (els.cloudModePreviewButton) els.cloudModePreviewButton.disabled = !canEnable;
+  const canReturnToCloud = Boolean(currentUser && activeStable.id && !cloudWriteMode && !cloudPreviewMode);
+  if (els.cloudModePreviewButton) els.cloudModePreviewButton.disabled = !canReturnToCloud;
   if (els.cloudModeLocalButton) els.cloudModeLocalButton.hidden = !cloudWriteMode && !cloudPreviewMode;
+  if (els.cloudModeReturnButton) {
+    els.cloudModeReturnButton.hidden = !canReturnToCloud;
+    els.cloudModeReturnButton.disabled = !canReturnToCloud;
+  }
   if (els.cloudModeStatus) {
-    els.cloudModeStatus.textContent = cloudModeStatusText || (canEnable ? t('cloudMode.ready') : t('cloudMode.notReady'));
+    els.cloudModeStatus.textContent = cloudModeStatusText || (canReturnToCloud ? t('cloudMode.returnReady') : t('cloudMode.notReady'));
   }
 }
 
@@ -2464,60 +2580,70 @@ async function enableCloudModePreview() {
   }
 }
 
-function handleCloudModeConfirmationChange() {
-  cloudModeStatusText = '';
-  renderCloudMode();
-}
-
-async function enableCloudMode() {
+async function enableCloudMode(options = {}) {
+  const { automatic = false, navigateToStable = false } = options;
   const activeStable = getActiveStable();
-  const confirmationValue = els.cloudModeConfirmInput?.value || '';
-  if (!getCurrentUser() || !activeStable.id || confirmationValue !== 'ENABLE CLOUD') {
+  if (!getCurrentUser() || !activeStable.id) {
     cloudModeStatusText = t('cloudMode.notReady');
     renderCloudMode();
-    showMessage(cloudModeStatusText);
+    if (!automatic) showMessage(cloudModeStatusText);
     return;
   }
-  cloudModeStatusText = t('cloudMode.loading');
+  cloudModeStatusText = t(automatic ? 'cloudMode.autoLoading' : 'cloudMode.loading');
   renderCloudMode();
   try {
     state = await loadCloudSnapshot(activeStable.id);
     cloudWriteMode = true;
     cloudPreviewMode = false;
+    cloudUnavailable = false;
+    cloudLocalOverride = false;
+    localStorage.removeItem(CLOUD_LOCAL_OVERRIDE_KEY);
     horseCloudWriteMode = false;
     taskCloudWriteMode = false;
     workCloudWriteMode = false;
     feedCloudWriteMode = false;
     calendarCloudWriteMode = false;
-    if (els.cloudModeConfirmInput) els.cloudModeConfirmInput.value = '';
     cloudModeStatusText = t('cloudMode.enabled');
     cloudReadCounts = getCounts(state);
     render();
-    showView('stable');
-    showMessage(cloudModeStatusText);
+    if (navigateToStable) showView('stable');
+    if (!automatic) showMessage(cloudModeStatusText);
   } catch (error) {
     console.error('[EquiTrack cloud] Cloud mode failed', error);
     state = loadData();
     cloudWriteMode = false;
     cloudPreviewMode = false;
-    const errorMessage = isPermissionError(error) ? t('cloudRead.permissionBlocked') : getAuthErrorMessage(error);
-    cloudModeStatusText = t('cloudMode.failed', { error: errorMessage });
+    cloudUnavailable = true;
+    cloudModeStatusText = t('cloudMode.failed');
     render();
-    showMessage(cloudModeStatusText);
+    showMessage(t('cloudMode.cloudUnavailable'));
   }
 }
 
-function disableCloudMode() {
+function disableCloudMode(messageKey = 'cloudMode.returnedLocal') {
   state = loadData();
   cloudPreviewMode = false;
   cloudWriteMode = false;
-  cloudModeStatusText = t('cloudMode.returnedLocal');
+  cloudUnavailable = false;
+  cloudModeStatusText = t(messageKey);
   render();
   showMessage(cloudModeStatusText);
 }
 
+function useLocalModeOnThisDevice() {
+  cloudLocalOverride = true;
+  localStorage.setItem(CLOUD_LOCAL_OVERRIDE_KEY, 'true');
+  disableCloudMode('cloudMode.localOverride');
+}
+
+async function returnToCloudMode() {
+  cloudLocalOverride = false;
+  localStorage.removeItem(CLOUD_LOCAL_OVERRIDE_KEY);
+  await enableCloudMode({ navigateToStable: false });
+}
+
 function returnToLocalDataMode() {
-  disableCloudMode();
+  useLocalModeOnThisDevice();
 }
 
 function getHorseCloudGate() {
@@ -3673,6 +3799,7 @@ async function getUserStable(user = getCurrentUser()) {
 async function refreshCloudConnection() {
   const user = getCurrentUser();
   if (!user) {
+    cloudUnavailable = false;
     if (cloudPreviewMode) {
       state = loadData();
       cloudPreviewMode = false;
@@ -3727,6 +3854,13 @@ async function refreshCloudConnection() {
   try {
     const stable = await getUserStable(user);
     if (!stable) {
+      if (cloudWriteMode || cloudPreviewMode) {
+        state = loadData();
+        cloudWriteMode = false;
+        cloudPreviewMode = false;
+      }
+      cloudUnavailable = false;
+      cloudModeStatusText = t('cloudMode.noStable');
       setCloudStatus({
         status: 'noStable',
         email: user.email || '',
@@ -3734,7 +3868,7 @@ async function refreshCloudConnection() {
         stableName: '',
         messageKey: 'cloud.noStable'
       });
-      showMessage(t('cloud.noStable'));
+      showMessage(t('cloudMode.noStable'));
       return cloudState.status;
     }
     setCloudStatus({
@@ -3744,10 +3878,29 @@ async function refreshCloudConnection() {
       stableName: stable.stableName,
       messageKey: 'cloud.connectedAs'
     });
+    if (cloudLocalOverride) {
+      if (cloudWriteMode || cloudPreviewMode) {
+        state = loadData();
+        cloudWriteMode = false;
+        cloudPreviewMode = false;
+      }
+      cloudUnavailable = false;
+      cloudModeStatusText = t('cloudMode.localOverride');
+      render();
+      return cloudState.status;
+    }
+    await enableCloudMode({ automatic: true });
     return cloudState.status;
   } catch (error) {
     logAuthError('Stable lookup failed', error);
+    if (cloudWriteMode || cloudPreviewMode) {
+      state = loadData();
+      cloudWriteMode = false;
+      cloudPreviewMode = false;
+    }
+    cloudUnavailable = true;
     if (isPermissionError(error)) {
+      cloudModeStatusText = t('cloudMode.cloudUnavailable');
       setCloudStatus({
         status: 'permissionBlocked',
         email: user.email || '',
@@ -3758,6 +3911,7 @@ async function refreshCloudConnection() {
       showMessage(t('cloud.permissionBlocked'));
       return cloudState.status;
     }
+    cloudModeStatusText = t('cloudMode.cloudUnavailable');
     setCloudStatus({
       status: 'error',
       email: user.email || '',
@@ -4978,6 +5132,7 @@ async function handleLogout() {
     state = loadData();
     cloudPreviewMode = false;
     cloudWriteMode = false;
+    cloudUnavailable = false;
     cloudModeStatusText = '';
     horseCloudWriteMode = false;
     horseCloudStatusText = '';
@@ -5008,6 +5163,7 @@ async function handleLogout() {
     state = loadData();
     cloudPreviewMode = false;
     cloudWriteMode = false;
+    cloudUnavailable = false;
     cloudModeStatusText = '';
     horseCloudWriteMode = false;
     horseCloudStatusText = '';
@@ -5100,10 +5256,9 @@ els.logoutButton?.addEventListener('click', handleLogout);
 els.migrationConfirmInput?.addEventListener('input', handleMigrationConfirmationChange);
 els.migrationUploadButton?.addEventListener('click', uploadLocalDataToCloud);
 els.cloudReadButton?.addEventListener('click', checkCloudDataPreview);
-els.cloudModeConfirmInput?.addEventListener('input', handleCloudModeConfirmationChange);
-els.cloudModeEnableButton?.addEventListener('click', enableCloudMode);
-els.cloudModePreviewButton?.addEventListener('click', enableCloudMode);
-els.cloudModeLocalButton?.addEventListener('click', returnToLocalDataMode);
+els.cloudModePreviewButton?.addEventListener('click', () => enableCloudMode({ navigateToStable: false }));
+els.cloudModeLocalButton?.addEventListener('click', useLocalModeOnThisDevice);
+els.cloudModeReturnButton?.addEventListener('click', returnToCloudMode);
 els.horseCloudConfirmInput?.addEventListener('input', handleHorseCloudConfirmationChange);
 els.horseCloudEnableButton?.addEventListener('click', enableHorseCloudWrites);
 els.horseCloudLocalButton?.addEventListener('click', returnHorseWritesToLocalMode);

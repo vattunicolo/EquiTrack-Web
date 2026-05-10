@@ -395,14 +395,41 @@
           </article>
 
           <article class="panel cloud-panel">
-            <h3 data-i18n="cloud.prepTitle">Cloud sync preparation</h3>
-            <p data-i18n="cloud.prepText">Your data is still stored locally in this browser. Cloud sync will be enabled in a later step.</p>
+            <h3 data-i18n="cloud.prepTitle">Cloud storage</h3>
+            <p data-i18n="cloud.prepText">Signed-in users use cloud storage automatically when an active stable is assigned.</p>
             <div class="cloud-status-list">
               <p><span data-i18n="cloud.email">Logged-in email</span>: <strong id="cloudUserEmail">-</strong></p>
               <p><span data-i18n="cloud.stable">Active stable</span>: <strong id="cloudStableName">-</strong></p>
               <p><span data-i18n="cloud.status">Cloud status</span>: <strong id="cloudConnectionStatus">Not connected</strong></p>
             </div>
-            <p class="update-note" id="cloudLocalNotice" data-i18n="cloud.syncLocal">Cloud sync is not enabled yet. Local data still stays in this browser.</p>
+            <p class="update-note" id="cloudLocalNotice" data-i18n="cloud.syncLocal">Local browser data remains available as fallback. Export backups regularly.</p>
+          </article>
+
+          <article class="panel cloud-panel">
+            <h3 data-i18n="cloudMode.title">Cloud mode</h3>
+            <p data-i18n="cloudMode.text">Signed-in users use cloud storage automatically when an active stable is assigned. Local data stays available as a fallback.</p>
+            <div class="cloud-status-list">
+              <p><span data-i18n="cloudMode.currentMode">Current data mode</span>: <strong id="cloudModeCurrent">Local</strong></p>
+              <p><span data-i18n="cloudMode.targetStable">Active stable</span>: <strong id="cloudModeStableName">-</strong></p>
+              <p><span data-i18n="cloudMode.email">Logged-in email</span>: <strong id="cloudModeEmail">-</strong></p>
+            </div>
+            <ul class="migration-warnings">
+              <li data-i18n="cloudMode.warningLocalDefault">Signed-in users use cloud storage automatically.</li>
+              <li data-i18n="cloudMode.warningViewCloud">App changes save to the active stable in Supabase when cloud is available.</li>
+              <li data-i18n="cloudMode.warningLocalSafe">Local browser data is kept as fallback and is not deleted.</li>
+              <li data-i18n="cloudMode.warningNoSync">Use local mode on this device only if you need a fallback.</li>
+            </ul>
+            <div class="backup-actions">
+              <button id="cloudModeLocalButton" class="button secondary" type="button" hidden data-i18n="cloudMode.useLocalButton">Use local mode on this device</button>
+              <button id="cloudModeReturnButton" class="button secondary" type="button" hidden data-i18n="cloudMode.returnCloudButton">Return to cloud mode</button>
+            </div>
+            <p id="cloudModeStatus" class="update-note" data-i18n="cloudMode.notReady">Sign in and make sure an active stable is assigned to use Cloud mode.</p>
+          </article>
+
+          <article class="panel cloud-panel advanced-cloud-heading">
+            <p class="eyebrow" data-i18n="cloudAdvanced.eyebrow">Advanced cloud tools</p>
+            <h3 data-i18n="cloudAdvanced.title">Migration and troubleshooting</h3>
+            <p data-i18n="cloudAdvanced.text">These tools are for migration, checking cloud counts, and cleanup. Normal signed-in use does not need them.</p>
           </article>
 
           <article class="panel cloud-panel">
@@ -445,37 +472,12 @@
             </div>
             <ul class="migration-warnings">
               <li data-i18n="cloudRead.warningReadOnly">This preview is read-only.</li>
-              <li data-i18n="cloudRead.warningLocalActive">Your app is still using local browser data.</li>
+              <li data-i18n="cloudRead.warningLocalActive">Local browser data remains available for comparison.</li>
               <li data-i18n="cloudRead.warningNoSync">Cloud sync is not enabled yet.</li>
               <li data-i18n="cloudRead.warningNoLocalChange">No local data will be changed.</li>
             </ul>
             <button id="cloudReadButton" class="button secondary" type="button" disabled data-i18n="cloudRead.button">Check cloud data</button>
             <p id="cloudReadStatus" class="update-note" data-i18n="cloudRead.notReady">Log in and assign an active stable before reading cloud data.</p>
-          </article>
-
-          <article class="panel cloud-panel">
-            <h3 data-i18n="cloudMode.title">Cloud mode</h3>
-            <p data-i18n="cloudMode.text">Choose whether EquiTrack uses local browser data or saves app data to the active Supabase stable.</p>
-            <div class="cloud-status-list">
-              <p><span data-i18n="cloudMode.currentMode">Current data mode</span>: <strong id="cloudModeCurrent">Local</strong></p>
-              <p><span data-i18n="cloudMode.targetStable">Active stable</span>: <strong id="cloudModeStableName">-</strong></p>
-              <p><span data-i18n="cloudMode.email">Logged-in email</span>: <strong id="cloudModeEmail">-</strong></p>
-            </div>
-            <ul class="migration-warnings">
-              <li data-i18n="cloudMode.warningLocalDefault">Local mode keeps data in this browser.</li>
-              <li data-i18n="cloudMode.warningViewCloud">Cloud mode saves data to the active stable in Supabase.</li>
-              <li data-i18n="cloudMode.warningLocalSafe">Local data is kept as a fallback.</li>
-              <li data-i18n="cloudMode.warningNoSync">You can return to local mode at any time.</li>
-            </ul>
-            <label class="full-width">
-              <span data-i18n="cloudMode.confirmLabel">Type ENABLE CLOUD to enable Cloud mode</span>
-              <input id="cloudModeConfirmInput" type="text" autocomplete="off" placeholder="ENABLE CLOUD">
-            </label>
-            <div class="backup-actions">
-              <button id="cloudModeEnableButton" class="button secondary" type="button" disabled data-i18n="cloudMode.enableButton">Enable Cloud mode</button>
-              <button id="cloudModeLocalButton" class="button secondary" type="button" hidden data-i18n="cloudMode.localButton">Return to Local mode</button>
-            </div>
-            <p id="cloudModeStatus" class="update-note" data-i18n="cloudMode.notReady">Log in, assign an active stable, and type ENABLE CLOUD to enable Cloud mode.</p>
           </article>
 
           <article class="panel cloud-panel danger-zone">
