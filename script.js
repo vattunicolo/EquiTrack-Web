@@ -128,26 +128,31 @@ const translations = {
     'cloudRead.noStable': 'Assign a stable before reading cloud data.',
     'cloudRead.permissionBlocked': 'Cloud data access is blocked by database permissions.',
     'cloudRead.failed': 'Cloud read failed: {error}',
-    'cloudMode.title': 'Cloud mode preview',
-    'cloudMode.text': 'Preview cloud data in the app without replacing local browser data.',
-    'cloudMode.currentMode': 'Current mode',
-    'cloudMode.targetStable': 'Preview stable',
-    'cloudMode.localStatus': 'Local data mode',
+    'cloudMode.title': 'Cloud mode',
+    'cloudMode.text': 'Choose whether EquiTrack uses local browser data or saves app data to the active Supabase stable.',
+    'cloudMode.currentMode': 'Current data mode',
+    'cloudMode.targetStable': 'Active stable',
+    'cloudMode.email': 'Logged-in email',
+    'cloudMode.localStatus': 'Local',
+    'cloudMode.cloudStatus': 'Cloud',
     'cloudMode.previewStatus': 'Cloud preview mode, read-only',
-    'cloudMode.warningLocalDefault': 'Local data is still the default.',
-    'cloudMode.warningViewCloud': 'Cloud mode preview lets you view cloud data in the app.',
-    'cloudMode.warningLocalSafe': 'This does not delete local data.',
-    'cloudMode.warningNoSync': 'This does not enable automatic sync yet.',
+    'cloudMode.warningLocalDefault': 'Local mode keeps data in this browser.',
+    'cloudMode.warningViewCloud': 'Cloud mode saves data to the active stable in Supabase.',
+    'cloudMode.warningLocalSafe': 'Local data is kept as a fallback.',
+    'cloudMode.warningNoSync': 'You can return to local mode at any time.',
     'cloudMode.warningReadOnly': 'Cloud preview is read-only.',
-    'cloudMode.previewButton': 'Preview cloud data',
-    'cloudMode.localButton': 'Return to local data',
-    'cloudMode.notReady': 'Log in and assign an active stable before previewing cloud data.',
-    'cloudMode.ready': 'Ready to load a read-only cloud snapshot.',
-    'cloudMode.loading': 'Loading cloud preview...',
-    'cloudMode.enabled': 'Cloud preview loaded. Editing is read-only.',
-    'cloudMode.returnedLocal': 'Returned to local data mode.',
-    'cloudMode.failed': 'Cloud preview failed: {error}',
+    'cloudMode.confirmLabel': 'Type ENABLE CLOUD to enable Cloud mode',
+    'cloudMode.enableButton': 'Enable Cloud mode',
+    'cloudMode.previewButton': 'Enable Cloud mode',
+    'cloudMode.localButton': 'Return to Local mode',
+    'cloudMode.notReady': 'Log in, assign an active stable, and type ENABLE CLOUD to enable Cloud mode.',
+    'cloudMode.ready': 'Ready to load cloud data and enable Cloud mode.',
+    'cloudMode.loading': 'Loading cloud data...',
+    'cloudMode.enabled': 'Cloud mode enabled. App changes now save to Supabase.',
+    'cloudMode.returnedLocal': 'Returned to Local mode.',
+    'cloudMode.failed': 'Cloud mode failed: {error}',
     'cloudMode.readOnlyMessage': 'Cloud preview is read-only. Return to local data to make changes.',
+    'cloudMode.localFallbackMessage': 'Cloud mode is active. Local browser data was kept unchanged.',
     'horseCloud.title': 'Cloud write mode - Horses',
     'horseCloud.text': 'Experimental phase: only horse profiles are saved to the cloud.',
     'horseCloud.currentMode': 'Horse data mode',
@@ -663,6 +668,28 @@ const translations = {
     'cloudMode.returnedLocal': 'Palattu paikallisen datan tilaan.',
     'cloudMode.failed': 'Pilviesikatselu epäonnistui: {error}',
     'cloudMode.readOnlyMessage': 'Pilviesikatselu on vain lukutilassa. Palaa paikalliseen dataan tehdäksesi muutoksia.',
+    'cloudMode.title': 'Pilvitila',
+    'cloudMode.text': 'Valitse, käyttääkö EquiTrack selaimen paikallista dataa vai tallentaako se tiedot aktiiviseen Supabase-talliin.',
+    'cloudMode.currentMode': 'Nykyinen datatila',
+    'cloudMode.targetStable': 'Aktiivinen talli',
+    'cloudMode.email': 'Kirjautunut sähköposti',
+    'cloudMode.localStatus': 'Paikallinen',
+    'cloudMode.cloudStatus': 'Pilvi',
+    'cloudMode.warningLocalDefault': 'Paikallinen tila säilyttää datan tässä selaimessa.',
+    'cloudMode.warningViewCloud': 'Pilvitila tallentaa datan aktiiviseen Supabase-talliin.',
+    'cloudMode.warningLocalSafe': 'Paikallinen data säilytetään varalla.',
+    'cloudMode.warningNoSync': 'Voit palata paikalliseen tilaan milloin tahansa.',
+    'cloudMode.confirmLabel': 'Kirjoita ENABLE CLOUD ottaaksesi pilvitilan käyttöön',
+    'cloudMode.enableButton': 'Ota pilvitila käyttöön',
+    'cloudMode.previewButton': 'Ota pilvitila käyttöön',
+    'cloudMode.localButton': 'Palaa paikalliseen tilaan',
+    'cloudMode.notReady': 'Kirjaudu sisään, varmista aktiivinen talli ja kirjoita ENABLE CLOUD ottaaksesi pilvitilan käyttöön.',
+    'cloudMode.ready': 'Valmis lataamaan pilvidata ja ottamaan pilvitila käyttöön.',
+    'cloudMode.loading': 'Ladataan pilvidataa...',
+    'cloudMode.enabled': 'Pilvitila käytössä. Sovelluksen muutokset tallennetaan nyt Supabaseen.',
+    'cloudMode.returnedLocal': 'Palattu paikalliseen tilaan.',
+    'cloudMode.failed': 'Pilvitila epäonnistui: {error}',
+    'cloudMode.localFallbackMessage': 'Pilvitila on käytössä. Paikallinen selaindata säilyi muuttumattomana.',
     'horseCloud.title': 'Pilvikirjoitustila - Hevoset',
     'horseCloud.text': 'Kokeellinen vaihe: vain hevosprofiilit tallennetaan pilveen.',
     'horseCloud.currentMode': 'Hevosdatan tila',
@@ -1178,6 +1205,28 @@ const translations = {
     'cloudMode.returnedLocal': 'Ritorno alla modalità dati locali.',
     'cloudMode.failed': 'Anteprima cloud non riuscita: {error}',
     'cloudMode.readOnlyMessage': "L'anteprima cloud è in sola lettura. Torna ai dati locali per apportare modifiche.",
+    'cloudMode.title': 'Modalità cloud',
+    'cloudMode.text': 'Scegli se EquiTrack usa i dati locali del browser o salva i dati nella scuderia Supabase attiva.',
+    'cloudMode.currentMode': 'Modalità dati attuale',
+    'cloudMode.targetStable': 'Scuderia attiva',
+    'cloudMode.email': 'Email connessa',
+    'cloudMode.localStatus': 'Locale',
+    'cloudMode.cloudStatus': 'Cloud',
+    'cloudMode.warningLocalDefault': 'La modalità locale conserva i dati in questo browser.',
+    'cloudMode.warningViewCloud': 'La modalità cloud salva i dati nella scuderia attiva in Supabase.',
+    'cloudMode.warningLocalSafe': 'I dati locali restano disponibili come fallback.',
+    'cloudMode.warningNoSync': 'Puoi tornare alla modalità locale in qualsiasi momento.',
+    'cloudMode.confirmLabel': 'Digita ENABLE CLOUD per abilitare la modalità cloud',
+    'cloudMode.enableButton': 'Abilita modalità cloud',
+    'cloudMode.previewButton': 'Abilita modalità cloud',
+    'cloudMode.localButton': 'Torna alla modalità locale',
+    'cloudMode.notReady': 'Accedi, assegna una scuderia attiva e digita ENABLE CLOUD per abilitare la modalità cloud.',
+    'cloudMode.ready': 'Pronto a caricare i dati cloud e abilitare la modalità cloud.',
+    'cloudMode.loading': 'Caricamento dati cloud...',
+    'cloudMode.enabled': 'Modalità cloud attiva. Le modifiche ora vengono salvate in Supabase.',
+    'cloudMode.returnedLocal': 'Ritorno alla modalità locale.',
+    'cloudMode.failed': 'Modalità cloud non riuscita: {error}',
+    'cloudMode.localFallbackMessage': 'La modalità cloud è attiva. I dati locali del browser sono rimasti invariati.',
     'horseCloud.title': 'Modalità scrittura cloud - Cavalli',
     'horseCloud.text': 'Fase sperimentale: solo i profili cavallo vengono salvati nel cloud.',
     'horseCloud.currentMode': 'Modalità dati cavalli',
@@ -1608,6 +1657,7 @@ let cloudReadCounts = null;
 let cloudCleanupStatusText = '';
 let isCloudCleaning = false;
 let cloudPreviewMode = false;
+let cloudWriteMode = false;
 let cloudModeStatusText = '';
 let horseCloudWriteMode = false;
 let horseCloudStatusText = '';
@@ -1704,6 +1754,9 @@ const els = {
   cloudReadStatus: document.querySelector('#cloudReadStatus'),
   cloudModeCurrent: document.querySelector('#cloudModeCurrent'),
   cloudModeStableName: document.querySelector('#cloudModeStableName'),
+  cloudModeEmail: document.querySelector('#cloudModeEmail'),
+  cloudModeConfirmInput: document.querySelector('#cloudModeConfirmInput'),
+  cloudModeEnableButton: document.querySelector('#cloudModeEnableButton'),
   cloudModePreviewButton: document.querySelector('#cloudModePreviewButton'),
   cloudModeLocalButton: document.querySelector('#cloudModeLocalButton'),
   cloudModeStatus: document.querySelector('#cloudModeStatus'),
@@ -1892,6 +1945,10 @@ function loadData() {
 function saveData() {
   if (cloudPreviewMode) {
     showMessage(t('cloudMode.readOnlyMessage'));
+    return;
+  }
+  if (cloudWriteMode) {
+    showMessage(t('cloudMode.localFallbackMessage'));
     return;
   }
   const localData = loadData();
@@ -2220,28 +2277,26 @@ async function checkCloudDataPreview() {
 
 function renderCloudMode() {
   const activeStable = getActiveStable();
-  const canPreview = Boolean(getCurrentUser() && activeStable.id && !cloudPreviewMode);
-  const writeModes = [];
-  if (horseCloudWriteMode) writeModes.push(t('tabs.horses'));
-  if (taskCloudWriteMode) writeModes.push(t('tabs.tasks'));
-  if (workCloudWriteMode) writeModes.push(t('tabs.hours'));
-  if (feedCloudWriteMode) writeModes.push(t('tabs.inventory'));
-  if (calendarCloudWriteMode) writeModes.push(t('nav.calendar'));
+  const currentUser = getCurrentUser();
+  const confirmationValue = els.cloudModeConfirmInput?.value || '';
+  const canEnable = Boolean(currentUser && activeStable.id && confirmationValue === 'ENABLE CLOUD' && !cloudWriteMode && !cloudPreviewMode);
   const modeText = cloudPreviewMode
     ? t('cloudMode.previewStatus')
-    : writeModes.length
-      ? `${t('cloudMode.localStatus')} / ${writeModes.join(', ')} ${t('horseCloud.cloudMode')}`
+    : cloudWriteMode
+      ? t('cloudMode.cloudStatus')
       : t('cloudMode.localStatus');
   if (els.dataModeStatus) {
     els.dataModeStatus.textContent = modeText;
-    els.dataModeStatus.classList.toggle('cloud-preview-active', cloudPreviewMode);
+    els.dataModeStatus.classList.toggle('cloud-preview-active', cloudPreviewMode || cloudWriteMode);
   }
   if (els.cloudModeCurrent) els.cloudModeCurrent.textContent = modeText;
   if (els.cloudModeStableName) els.cloudModeStableName.textContent = activeStable.name || t('cloudRead.noStable');
-  if (els.cloudModePreviewButton) els.cloudModePreviewButton.disabled = !canPreview;
-  if (els.cloudModeLocalButton) els.cloudModeLocalButton.hidden = !cloudPreviewMode;
+  if (els.cloudModeEmail) els.cloudModeEmail.textContent = currentUser?.email || t('auth.signedOut');
+  if (els.cloudModeEnableButton) els.cloudModeEnableButton.disabled = !canEnable;
+  if (els.cloudModePreviewButton) els.cloudModePreviewButton.disabled = !canEnable;
+  if (els.cloudModeLocalButton) els.cloudModeLocalButton.hidden = !cloudWriteMode && !cloudPreviewMode;
   if (els.cloudModeStatus) {
-    els.cloudModeStatus.textContent = cloudModeStatusText || (canPreview ? t('cloudMode.ready') : t('cloudMode.notReady'));
+    els.cloudModeStatus.textContent = cloudModeStatusText || (canEnable ? t('cloudMode.ready') : t('cloudMode.notReady'));
   }
 }
 
@@ -2409,12 +2464,60 @@ async function enableCloudModePreview() {
   }
 }
 
-function returnToLocalDataMode() {
+function handleCloudModeConfirmationChange() {
+  cloudModeStatusText = '';
+  renderCloudMode();
+}
+
+async function enableCloudMode() {
+  const activeStable = getActiveStable();
+  const confirmationValue = els.cloudModeConfirmInput?.value || '';
+  if (!getCurrentUser() || !activeStable.id || confirmationValue !== 'ENABLE CLOUD') {
+    cloudModeStatusText = t('cloudMode.notReady');
+    renderCloudMode();
+    showMessage(cloudModeStatusText);
+    return;
+  }
+  cloudModeStatusText = t('cloudMode.loading');
+  renderCloudMode();
+  try {
+    state = await loadCloudSnapshot(activeStable.id);
+    cloudWriteMode = true;
+    cloudPreviewMode = false;
+    horseCloudWriteMode = false;
+    taskCloudWriteMode = false;
+    workCloudWriteMode = false;
+    feedCloudWriteMode = false;
+    calendarCloudWriteMode = false;
+    if (els.cloudModeConfirmInput) els.cloudModeConfirmInput.value = '';
+    cloudModeStatusText = t('cloudMode.enabled');
+    cloudReadCounts = getCounts(state);
+    render();
+    showView('stable');
+    showMessage(cloudModeStatusText);
+  } catch (error) {
+    console.error('[EquiTrack cloud] Cloud mode failed', error);
+    state = loadData();
+    cloudWriteMode = false;
+    cloudPreviewMode = false;
+    const errorMessage = isPermissionError(error) ? t('cloudRead.permissionBlocked') : getAuthErrorMessage(error);
+    cloudModeStatusText = t('cloudMode.failed', { error: errorMessage });
+    render();
+    showMessage(cloudModeStatusText);
+  }
+}
+
+function disableCloudMode() {
   state = loadData();
   cloudPreviewMode = false;
+  cloudWriteMode = false;
   cloudModeStatusText = t('cloudMode.returnedLocal');
   render();
   showMessage(cloudModeStatusText);
+}
+
+function returnToLocalDataMode() {
+  disableCloudMode();
 }
 
 function getHorseCloudGate() {
@@ -3396,9 +3499,14 @@ async function cleanupCloudDataForStable() {
     const message = t('cloudCleanup.success', counts);
     cloudCleanupStatusText = message;
     cloudReadCounts = null;
+    if (cloudWriteMode) {
+      state = loadData();
+      cloudWriteMode = false;
+      cloudModeStatusText = t('cloudMode.returnedLocal');
+    }
     await checkCloudDataPreview();
     cloudCleanupStatusText = message;
-    renderCloudCleanup();
+    render();
     showMessage(message);
   } catch (error) {
     console.error('[EquiTrack cloud] Cleanup failed', error);
@@ -3568,6 +3676,11 @@ async function refreshCloudConnection() {
     if (cloudPreviewMode) {
       state = loadData();
       cloudPreviewMode = false;
+      cloudModeStatusText = '';
+    }
+    if (cloudWriteMode) {
+      state = loadData();
+      cloudWriteMode = false;
       cloudModeStatusText = '';
     }
     if (horseCloudWriteMode) {
@@ -4317,7 +4430,7 @@ function handleHorseSubmit(event) {
     vetNotes: form.elements.vetNotes.value.trim(),
     notes: form.elements.notes.value.trim()
   };
-  if (horseCloudWriteMode) {
+  if (cloudWriteMode) {
     if (!horse.id) horse.id = createId();
     const existingHorse = state.horses.find((entry) => entry.id === horse.id);
     if (existingHorse?.cloudId) horse.cloudId = existingHorse.cloudId;
@@ -4343,7 +4456,7 @@ function handleTaskSubmit(event) {
     notes: form.elements.notes.value.trim(),
     done: state.tasks.find((task) => task.id === form.elements.id.value)?.done || false
   };
-  if (taskCloudWriteMode) {
+  if (cloudWriteMode) {
     if (!task.id) task.id = createId();
     const existingTask = state.tasks.find((entry) => entry.id === task.id);
     if (existingTask?.cloudId) task.cloudId = existingTask.cloudId;
@@ -4372,7 +4485,7 @@ function handleHoursSubmit(event) {
     hours: Number(form.elements.hours.value),
     notes: form.elements.notes.value.trim()
   };
-  if (workCloudWriteMode) {
+  if (cloudWriteMode) {
     if (!entry.id) entry.id = createId();
     const existingEntry = state.hours.find((item) => item.id === entry.id);
     if (existingEntry?.cloudId) entry.cloudId = existingEntry.cloudId;
@@ -4423,7 +4536,7 @@ function handleInventorySubmit(event) {
     lastUpdated: todayValue,
     history
   };
-  if (feedCloudWriteMode) {
+  if (cloudWriteMode) {
     if (!feedItem.id) feedItem.id = createId();
     const existingItem = state.inventory.find((item) => item.id === feedItem.id);
     if (existingItem?.cloudId) feedItem.cloudId = existingItem.cloudId;
@@ -4459,7 +4572,7 @@ function handleEventSubmit(event) {
     postRaceNotes: form.elements.postRaceNotes.value.trim(),
     notes: form.elements.notes.value.trim()
   };
-  if (calendarCloudWriteMode) {
+  if (cloudWriteMode) {
     if (!calendarEvent.id) calendarEvent.id = createId();
     const existingEvent = state.calendarEvents.find((entry) => entry.id === calendarEvent.id);
     if (existingEvent?.cloudId) calendarEvent.cloudId = existingEvent.cloudId;
@@ -4489,29 +4602,29 @@ function handleListClick(event) {
   }
   if (action === 'edit-horse') fillHorseForm(id);
   if (action === 'delete-horse') {
-    if (horseCloudWriteMode) handleCloudHorseDelete(id);
+    if (cloudWriteMode) handleCloudHorseDelete(id);
     else deleteItem('horses', id, t('delete.horse'), t('message.horseDeleted'));
   }
   if (action === 'toggle-task') toggleTask(id);
   if (action === 'edit-task') fillTaskForm(id);
   if (action === 'delete-task') {
-    if (taskCloudWriteMode) handleCloudTaskDelete(id);
+    if (cloudWriteMode) handleCloudTaskDelete(id);
     else deleteItem('tasks', id, t('delete.task'), t('message.taskDeleted'));
   }
   if (action === 'edit-hours') fillHoursForm(id);
   if (action === 'delete-hours') {
-    if (workCloudWriteMode) handleCloudWorkLogDelete(id);
+    if (cloudWriteMode) handleCloudWorkLogDelete(id);
     else deleteItem('hours', id, t('delete.hours'), t('message.hoursDeleted'));
   }
   if (action === 'edit-inventory') fillInventoryForm(id);
   if (action === 'delete-inventory') {
-    if (feedCloudWriteMode) handleCloudFeedItemDelete(id);
+    if (cloudWriteMode) handleCloudFeedItemDelete(id);
     else deleteItem('inventory', id, t('delete.inventory'), t('message.inventoryDeleted'));
   }
   if (action === 'toggle-shopping') toggleShoppingStatus(id);
   if (action === 'edit-event') fillEventForm(id);
   if (action === 'delete-event') {
-    if (calendarCloudWriteMode) handleCloudCalendarEventDelete(id);
+    if (cloudWriteMode) handleCloudCalendarEventDelete(id);
     else deleteItem('calendarEvents', id, t('delete.event'), t('message.eventDeleted'));
   }
 }
@@ -4530,7 +4643,7 @@ function toggleShoppingStatus(id) {
   const found = state.inventory.find((item) => item.id === id);
   if (!found) return;
   const nextItem = { ...normalizeFeedItem(found), shoppingListed: !normalizeFeedItem(found).shoppingListed };
-  if (feedCloudWriteMode) {
+  if (cloudWriteMode) {
     handleCloudFeedItemSave(nextItem, t('feedCloud.shoppingUpdated'));
     return;
   }
@@ -4667,7 +4780,7 @@ function toggleTask(id) {
   const task = state.tasks.find((item) => item.id === id);
   if (!task) return;
   const nextTask = { ...task, done: !task.done };
-  if (taskCloudWriteMode) {
+  if (cloudWriteMode) {
     handleCloudTaskSave(nextTask, t('taskCloud.toggled'));
     return;
   }
@@ -4756,6 +4869,8 @@ async function importBackup(file) {
     els.importPreview.textContent = t('backup.preview', counts);
     if (!window.confirm(t('backup.confirmImport'))) return;
     localStorage.setItem(EMERGENCY_BACKUP_KEY, JSON.stringify(createBackupPayload(new Date().toISOString(), state)));
+    cloudWriteMode = false;
+    cloudPreviewMode = false;
     state = nextState;
     saveData();
     render();
@@ -4777,6 +4892,8 @@ function restoreEmergencyBackup() {
   if (!window.confirm(t('backup.confirmRestore'))) return;
   try {
     const parsed = JSON.parse(stored);
+    cloudWriteMode = false;
+    cloudPreviewMode = false;
     state = normalizeImportedData(parsed);
     saveData();
     render();
@@ -4793,6 +4910,8 @@ function resetLocalData() {
     showMessage(t('message.resetCancelled'));
     return;
   }
+  cloudWriteMode = false;
+  cloudPreviewMode = false;
   state = { horses: [], tasks: [], hours: [], inventory: [], calendarEvents: [] };
   saveData();
   render();
@@ -4858,6 +4977,7 @@ async function handleLogout() {
     authUser = null;
     state = loadData();
     cloudPreviewMode = false;
+    cloudWriteMode = false;
     cloudModeStatusText = '';
     horseCloudWriteMode = false;
     horseCloudStatusText = '';
@@ -4887,6 +5007,7 @@ async function handleLogout() {
     authUser = null;
     state = loadData();
     cloudPreviewMode = false;
+    cloudWriteMode = false;
     cloudModeStatusText = '';
     horseCloudWriteMode = false;
     horseCloudStatusText = '';
@@ -4979,7 +5100,9 @@ els.logoutButton?.addEventListener('click', handleLogout);
 els.migrationConfirmInput?.addEventListener('input', handleMigrationConfirmationChange);
 els.migrationUploadButton?.addEventListener('click', uploadLocalDataToCloud);
 els.cloudReadButton?.addEventListener('click', checkCloudDataPreview);
-els.cloudModePreviewButton?.addEventListener('click', enableCloudModePreview);
+els.cloudModeConfirmInput?.addEventListener('input', handleCloudModeConfirmationChange);
+els.cloudModeEnableButton?.addEventListener('click', enableCloudMode);
+els.cloudModePreviewButton?.addEventListener('click', enableCloudMode);
 els.cloudModeLocalButton?.addEventListener('click', returnToLocalDataMode);
 els.horseCloudConfirmInput?.addEventListener('input', handleHorseCloudConfirmationChange);
 els.horseCloudEnableButton?.addEventListener('click', enableHorseCloudWrites);

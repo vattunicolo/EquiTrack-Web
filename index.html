@@ -454,149 +454,28 @@
           </article>
 
           <article class="panel cloud-panel">
-            <h3 data-i18n="cloudMode.title">Cloud mode preview</h3>
-            <p data-i18n="cloudMode.text">Preview cloud data in the app without replacing local browser data.</p>
+            <h3 data-i18n="cloudMode.title">Cloud mode</h3>
+            <p data-i18n="cloudMode.text">Choose whether EquiTrack uses local browser data or saves app data to the active Supabase stable.</p>
             <div class="cloud-status-list">
-              <p><span data-i18n="cloudMode.currentMode">Current mode</span>: <strong id="cloudModeCurrent">Local data mode</strong></p>
-              <p><span data-i18n="cloudMode.targetStable">Preview stable</span>: <strong id="cloudModeStableName">-</strong></p>
+              <p><span data-i18n="cloudMode.currentMode">Current data mode</span>: <strong id="cloudModeCurrent">Local</strong></p>
+              <p><span data-i18n="cloudMode.targetStable">Active stable</span>: <strong id="cloudModeStableName">-</strong></p>
+              <p><span data-i18n="cloudMode.email">Logged-in email</span>: <strong id="cloudModeEmail">-</strong></p>
             </div>
             <ul class="migration-warnings">
-              <li data-i18n="cloudMode.warningLocalDefault">Local data is still the default.</li>
-              <li data-i18n="cloudMode.warningViewCloud">Cloud mode preview lets you view cloud data in the app.</li>
-              <li data-i18n="cloudMode.warningLocalSafe">This does not delete local data.</li>
-              <li data-i18n="cloudMode.warningNoSync">This does not enable automatic sync yet.</li>
-              <li data-i18n="cloudMode.warningReadOnly">Cloud preview is read-only.</li>
-            </ul>
-            <div class="backup-actions">
-              <button id="cloudModePreviewButton" class="button secondary" type="button" disabled data-i18n="cloudMode.previewButton">Preview cloud data</button>
-              <button id="cloudModeLocalButton" class="button secondary" type="button" hidden data-i18n="cloudMode.localButton">Return to local data</button>
-            </div>
-            <p id="cloudModeStatus" class="update-note" data-i18n="cloudMode.notReady">Log in and assign an active stable before previewing cloud data.</p>
-          </article>
-
-          <article class="panel cloud-panel">
-            <h3 data-i18n="horseCloud.title">Cloud write mode - Horses</h3>
-            <p data-i18n="horseCloud.text">Experimental phase: only horse profiles are saved to the cloud.</p>
-            <div class="cloud-status-list">
-              <p><span data-i18n="horseCloud.currentMode">Horse data mode</span>: <strong id="horseCloudCurrent">Local</strong></p>
-              <p><span data-i18n="horseCloud.targetStable">Horse cloud stable</span>: <strong id="horseCloudStableName">-</strong></p>
-            </div>
-            <ul class="migration-warnings">
-              <li data-i18n="horseCloud.warningExperimental">This is an experimental phase.</li>
-              <li data-i18n="horseCloud.warningHorsesOnly">Only horse profiles will be saved to the cloud.</li>
-              <li data-i18n="horseCloud.warningOthersLocal">Tasks, work hours, feed inventory, and calendar still stay local for now.</li>
-              <li data-i18n="horseCloud.warningLocalSafe">Local horse data will not be deleted.</li>
-              <li data-i18n="horseCloud.warningReturn">You can return horse writes to local mode.</li>
+              <li data-i18n="cloudMode.warningLocalDefault">Local mode keeps data in this browser.</li>
+              <li data-i18n="cloudMode.warningViewCloud">Cloud mode saves data to the active stable in Supabase.</li>
+              <li data-i18n="cloudMode.warningLocalSafe">Local data is kept as a fallback.</li>
+              <li data-i18n="cloudMode.warningNoSync">You can return to local mode at any time.</li>
             </ul>
             <label class="full-width">
-              <span data-i18n="horseCloud.confirmLabel">Type HORSES CLOUD to enable cloud horse writes</span>
-              <input id="horseCloudConfirmInput" type="text" autocomplete="off" placeholder="HORSES CLOUD">
+              <span data-i18n="cloudMode.confirmLabel">Type ENABLE CLOUD to enable Cloud mode</span>
+              <input id="cloudModeConfirmInput" type="text" autocomplete="off" placeholder="ENABLE CLOUD">
             </label>
             <div class="backup-actions">
-              <button id="horseCloudEnableButton" class="button secondary" type="button" disabled data-i18n="horseCloud.enableButton">Enable cloud horse writes</button>
-              <button id="horseCloudLocalButton" class="button secondary" type="button" hidden data-i18n="horseCloud.localButton">Return horse writes to local mode</button>
+              <button id="cloudModeEnableButton" class="button secondary" type="button" disabled data-i18n="cloudMode.enableButton">Enable Cloud mode</button>
+              <button id="cloudModeLocalButton" class="button secondary" type="button" hidden data-i18n="cloudMode.localButton">Return to Local mode</button>
             </div>
-            <p id="horseCloudStatus" class="update-note" data-i18n="horseCloud.notReady">Horse cloud writes are disabled until you are logged in, have an active stable, and type HORSES CLOUD.</p>
-          </article>
-
-          <article class="panel cloud-panel">
-            <h3 data-i18n="taskCloud.title">Cloud write mode - Tasks</h3>
-            <p data-i18n="taskCloud.text">Experimental phase: only task data is saved to the cloud.</p>
-            <div class="cloud-status-list">
-              <p><span data-i18n="taskCloud.currentMode">Task data mode</span>: <strong id="taskCloudCurrent">Local</strong></p>
-              <p><span data-i18n="taskCloud.targetStable">Task cloud stable</span>: <strong id="taskCloudStableName">-</strong></p>
-            </div>
-            <ul class="migration-warnings">
-              <li data-i18n="taskCloud.warningExperimental">This is an experimental phase.</li>
-              <li data-i18n="taskCloud.warningTasksOnly">Only task data will be saved to the cloud.</li>
-              <li data-i18n="taskCloud.warningOthersLocal">Work hours, feed inventory, and calendar still stay local for now.</li>
-              <li data-i18n="taskCloud.warningLocalSafe">Local task data will not be deleted.</li>
-              <li data-i18n="taskCloud.warningReturn">You can return task writes to local mode.</li>
-            </ul>
-            <label class="full-width">
-              <span data-i18n="taskCloud.confirmLabel">Type TASKS CLOUD to enable cloud task writes</span>
-              <input id="taskCloudConfirmInput" type="text" autocomplete="off" placeholder="TASKS CLOUD">
-            </label>
-            <div class="backup-actions">
-              <button id="taskCloudEnableButton" class="button secondary" type="button" disabled data-i18n="taskCloud.enableButton">Enable cloud task writes</button>
-              <button id="taskCloudLocalButton" class="button secondary" type="button" hidden data-i18n="taskCloud.localButton">Return task writes to local mode</button>
-            </div>
-            <p id="taskCloudStatus" class="update-note" data-i18n="taskCloud.notReady">Task cloud writes are disabled until you are logged in, have an active stable, and type TASKS CLOUD.</p>
-          </article>
-
-          <article class="panel cloud-panel">
-            <h3 data-i18n="workCloud.title">Cloud write mode - Work logs</h3>
-            <p data-i18n="workCloud.text">Experimental phase: only work hour and work log data is saved to the cloud.</p>
-            <div class="cloud-status-list">
-              <p><span data-i18n="workCloud.currentMode">Work log data mode</span>: <strong id="workCloudCurrent">Local</strong></p>
-              <p><span data-i18n="workCloud.targetStable">Work log cloud stable</span>: <strong id="workCloudStableName">-</strong></p>
-            </div>
-            <ul class="migration-warnings">
-              <li data-i18n="workCloud.warningExperimental">This is an experimental phase.</li>
-              <li data-i18n="workCloud.warningWorkOnly">Only work hour and work log data will be saved to the cloud.</li>
-              <li data-i18n="workCloud.warningOthersLocal">Feed inventory and calendar still stay local for now.</li>
-              <li data-i18n="workCloud.warningLocalSafe">Local work log data will not be deleted.</li>
-              <li data-i18n="workCloud.warningReturn">You can return work logs to local mode.</li>
-            </ul>
-            <label class="full-width">
-              <span data-i18n="workCloud.confirmLabel">Type WORK CLOUD to enable cloud work log writes</span>
-              <input id="workCloudConfirmInput" type="text" autocomplete="off" placeholder="WORK CLOUD">
-            </label>
-            <div class="backup-actions">
-              <button id="workCloudEnableButton" class="button secondary" type="button" disabled data-i18n="workCloud.enableButton">Enable cloud work log writes</button>
-              <button id="workCloudLocalButton" class="button secondary" type="button" hidden data-i18n="workCloud.localButton">Return work logs to local mode</button>
-            </div>
-            <p id="workCloudStatus" class="update-note" data-i18n="workCloud.notReady">Work log cloud writes are disabled until you are logged in, have an active stable, and type WORK CLOUD.</p>
-          </article>
-
-          <article class="panel cloud-panel">
-            <h3 data-i18n="feedCloud.title">Cloud write mode - Feed Inventory</h3>
-            <p data-i18n="feedCloud.text">Experimental phase: only feed inventory data is saved to the cloud.</p>
-            <div class="cloud-status-list">
-              <p><span data-i18n="feedCloud.currentMode">Feed inventory data mode</span>: <strong id="feedCloudCurrent">Local</strong></p>
-              <p><span data-i18n="feedCloud.targetStable">Feed cloud stable</span>: <strong id="feedCloudStableName">-</strong></p>
-            </div>
-            <ul class="migration-warnings">
-              <li data-i18n="feedCloud.warningExperimental">This is an experimental phase.</li>
-              <li data-i18n="feedCloud.warningFeedOnly">Only feed inventory data will be saved to the cloud.</li>
-              <li data-i18n="feedCloud.warningOthersLocal">Calendar still stays local for now.</li>
-              <li data-i18n="feedCloud.warningLocalSafe">Local feed inventory data will not be deleted.</li>
-              <li data-i18n="feedCloud.warningReturn">You can return feed inventory to local mode.</li>
-            </ul>
-            <label class="full-width">
-              <span data-i18n="feedCloud.confirmLabel">Type FEED CLOUD to enable cloud feed inventory writes</span>
-              <input id="feedCloudConfirmInput" type="text" autocomplete="off" placeholder="FEED CLOUD">
-            </label>
-            <div class="backup-actions">
-              <button id="feedCloudEnableButton" class="button secondary" type="button" disabled data-i18n="feedCloud.enableButton">Enable cloud feed inventory writes</button>
-              <button id="feedCloudLocalButton" class="button secondary" type="button" hidden data-i18n="feedCloud.localButton">Return feed inventory to local mode</button>
-            </div>
-            <p id="feedCloudStatus" class="update-note" data-i18n="feedCloud.notReady">Feed inventory cloud writes are disabled until you are logged in, have an active stable, and type FEED CLOUD.</p>
-          </article>
-
-          <article class="panel cloud-panel">
-            <h3 data-i18n="calendarCloud.title">Cloud write mode - Calendar</h3>
-            <p data-i18n="calendarCloud.text">Experimental phase: only calendar event data is saved to the cloud.</p>
-            <div class="cloud-status-list">
-              <p><span data-i18n="calendarCloud.currentMode">Calendar data mode</span>: <strong id="calendarCloudCurrent">Local</strong></p>
-              <p><span data-i18n="calendarCloud.targetStable">Calendar cloud stable</span>: <strong id="calendarCloudStableName">-</strong></p>
-            </div>
-            <ul class="migration-warnings">
-              <li data-i18n="calendarCloud.warningExperimental">This is an experimental phase.</li>
-              <li data-i18n="calendarCloud.warningCalendarOnly">Only calendar event data will be saved to the cloud.</li>
-              <li data-i18n="calendarCloud.warningSeparateModes">Other sections keep their own separate cloud or local modes.</li>
-              <li data-i18n="calendarCloud.warningLocalSafe">Local calendar data will not be deleted.</li>
-              <li data-i18n="calendarCloud.warningReturn">You can return calendar to local mode.</li>
-            </ul>
-            <label class="full-width">
-              <span data-i18n="calendarCloud.confirmLabel">Type CALENDAR CLOUD to enable cloud calendar writes</span>
-              <input id="calendarCloudConfirmInput" type="text" autocomplete="off" placeholder="CALENDAR CLOUD">
-            </label>
-            <div class="backup-actions">
-              <button id="calendarCloudEnableButton" class="button secondary" type="button" disabled data-i18n="calendarCloud.enableButton">Enable cloud calendar writes</button>
-              <button id="calendarCloudLocalButton" class="button secondary" type="button" hidden data-i18n="calendarCloud.localButton">Return calendar to local mode</button>
-            </div>
-            <p id="calendarCloudStatus" class="update-note" data-i18n="calendarCloud.notReady">Calendar cloud writes are disabled until you are logged in, have an active stable, and type CALENDAR CLOUD.</p>
+            <p id="cloudModeStatus" class="update-note" data-i18n="cloudMode.notReady">Log in, assign an active stable, and type ENABLE CLOUD to enable Cloud mode.</p>
           </article>
 
           <article class="panel cloud-panel danger-zone">
