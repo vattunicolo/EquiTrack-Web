@@ -250,6 +250,31 @@ const translations = {
     'feedCloud.saved': 'Feed item saved to cloud.',
     'feedCloud.deleted': 'Feed item deleted from cloud.',
     'feedCloud.shoppingUpdated': 'Shopping list status saved to cloud.',
+    'calendarCloud.title': 'Cloud write mode - Calendar',
+    'calendarCloud.text': 'Experimental phase: only calendar event data is saved to the cloud.',
+    'calendarCloud.currentMode': 'Calendar data mode',
+    'calendarCloud.targetStable': 'Calendar cloud stable',
+    'calendarCloud.localMode': 'Local',
+    'calendarCloud.cloudMode': 'Cloud writes enabled',
+    'calendarCloud.warningExperimental': 'This is an experimental phase.',
+    'calendarCloud.warningCalendarOnly': 'Only calendar event data will be saved to the cloud.',
+    'calendarCloud.warningSeparateModes': 'Other sections keep their own separate cloud or local modes.',
+    'calendarCloud.warningLocalSafe': 'Local calendar data will not be deleted.',
+    'calendarCloud.warningReturn': 'You can return calendar to local mode.',
+    'calendarCloud.confirmLabel': 'Type CALENDAR CLOUD to enable cloud calendar writes',
+    'calendarCloud.enableButton': 'Enable cloud calendar writes',
+    'calendarCloud.localButton': 'Return calendar to local mode',
+    'calendarCloud.notReady': 'Calendar cloud writes are disabled until you are logged in, have an active stable, and type CALENDAR CLOUD.',
+    'calendarCloud.ready': 'Ready to enable cloud writes for calendar only.',
+    'calendarCloud.loading': 'Loading cloud calendar events...',
+    'calendarCloud.enabled': 'Cloud calendar writes enabled. Other sections keep their own modes.',
+    'calendarCloud.returnedLocal': 'Calendar writes returned to local mode.',
+    'calendarCloud.saveFailed': 'Cloud calendar save failed: {error}',
+    'calendarCloud.deleteFailed': 'Cloud calendar delete failed: {error}',
+    'calendarCloud.loadFailed': 'Cloud calendar mode failed: {error}',
+    'calendarCloud.permissionBlocked': 'Cloud calendar writes are blocked by database permissions.',
+    'calendarCloud.saved': 'Calendar event saved to cloud.',
+    'calendarCloud.deleted': 'Calendar event deleted from cloud.',
     'cloudCleanup.title': 'Cloud cleanup',
     'cloudCleanup.text': 'Delete cloud rows for the active stable when cloud preview counts are duplicated or wrong.',
     'cloudCleanup.targetStable': 'Cleanup target stable',
@@ -740,6 +765,31 @@ const translations = {
     'feedCloud.saved': 'Ruokatuote tallennettu pilveen.',
     'feedCloud.deleted': 'Ruokatuote poistettu pilvestä.',
     'feedCloud.shoppingUpdated': 'Ostoslistan tila tallennettu pilveen.',
+    'calendarCloud.title': 'Pilvikirjoitustila - Kalenteri',
+    'calendarCloud.text': 'Kokeellinen vaihe: vain kalenteritapahtumat tallennetaan pilveen.',
+    'calendarCloud.currentMode': 'Kalenteridatan tila',
+    'calendarCloud.targetStable': 'Kalenterin pilvitalli',
+    'calendarCloud.localMode': 'Paikallinen',
+    'calendarCloud.cloudMode': 'Pilvikirjoitus käytössä',
+    'calendarCloud.warningExperimental': 'Tämä on kokeellinen vaihe.',
+    'calendarCloud.warningCalendarOnly': 'Vain kalenteritapahtumat tallennetaan pilveen.',
+    'calendarCloud.warningSeparateModes': 'Muut osiot säilyttävät omat pilvi- tai paikalliset tilansa.',
+    'calendarCloud.warningLocalSafe': 'Paikallista kalenteridataa ei poisteta.',
+    'calendarCloud.warningReturn': 'Voit palauttaa kalenterin paikalliseen tilaan.',
+    'calendarCloud.confirmLabel': 'Kirjoita CALENDAR CLOUD ottaaksesi kalenterin pilvikirjoituksen käyttöön',
+    'calendarCloud.enableButton': 'Ota kalenterin pilvikirjoitus käyttöön',
+    'calendarCloud.localButton': 'Palauta kalenteri paikalliseen tilaan',
+    'calendarCloud.notReady': 'Kalenterin pilvikirjoitus on pois käytöstä, kunnes olet kirjautunut sisään, aktiivinen talli on valittu ja kirjoitat CALENDAR CLOUD.',
+    'calendarCloud.ready': 'Valmis ottamaan käyttöön kalenterin pilvikirjoituksen.',
+    'calendarCloud.loading': 'Ladataan pilvikalenterin tapahtumia...',
+    'calendarCloud.enabled': 'Kalenterin pilvikirjoitus käytössä. Muut osiot säilyttävät omat tilansa.',
+    'calendarCloud.returnedLocal': 'Kalenterin tallennus palautettu paikalliseen tilaan.',
+    'calendarCloud.saveFailed': 'Kalenteritapahtuman pilvitallennus epäonnistui: {error}',
+    'calendarCloud.deleteFailed': 'Kalenteritapahtuman pilvipoisto epäonnistui: {error}',
+    'calendarCloud.loadFailed': 'Kalenterin pilvitila epäonnistui: {error}',
+    'calendarCloud.permissionBlocked': 'Tietokannan käyttöoikeudet estävät kalenterin pilvikirjoituksen.',
+    'calendarCloud.saved': 'Kalenteritapahtuma tallennettu pilveen.',
+    'calendarCloud.deleted': 'Kalenteritapahtuma poistettu pilvestä.',
     'cloudCleanup.title': 'Pilvidatan siivous',
     'cloudCleanup.text': 'Poista aktiivisen tallin pilvirivit, jos pilviesikatselun määrät ovat kahdentuneet tai virheelliset.',
     'cloudCleanup.targetStable': 'Siivottava talli',
@@ -1230,6 +1280,31 @@ const translations = {
     'feedCloud.saved': 'Mangime salvato nel cloud.',
     'feedCloud.deleted': 'Mangime eliminato dal cloud.',
     'feedCloud.shoppingUpdated': 'Stato lista acquisti salvato nel cloud.',
+    'calendarCloud.title': 'Modalità scrittura cloud - Calendario',
+    'calendarCloud.text': 'Fase sperimentale: solo gli eventi del calendario vengono salvati nel cloud.',
+    'calendarCloud.currentMode': 'Modalità dati calendario',
+    'calendarCloud.targetStable': 'Scuderia cloud calendario',
+    'calendarCloud.localMode': 'Locale',
+    'calendarCloud.cloudMode': 'Scrittura cloud attiva',
+    'calendarCloud.warningExperimental': 'Questa è una fase sperimentale.',
+    'calendarCloud.warningCalendarOnly': 'Solo gli eventi del calendario verranno salvati nel cloud.',
+    'calendarCloud.warningSeparateModes': 'Le altre sezioni mantengono le proprie modalità cloud o locali.',
+    'calendarCloud.warningLocalSafe': 'I dati locali del calendario non verranno eliminati.',
+    'calendarCloud.warningReturn': 'Puoi riportare il calendario in modalità locale.',
+    'calendarCloud.confirmLabel': 'Digita CALENDAR CLOUD per abilitare la scrittura cloud del calendario',
+    'calendarCloud.enableButton': 'Abilita scrittura cloud calendario',
+    'calendarCloud.localButton': 'Riporta calendario in modalità locale',
+    'calendarCloud.notReady': 'La scrittura cloud del calendario è disabilitata finché non hai effettuato l accesso, hai una scuderia attiva e digiti CALENDAR CLOUD.',
+    'calendarCloud.ready': 'Pronto ad abilitare la scrittura cloud solo per il calendario.',
+    'calendarCloud.loading': 'Caricamento eventi calendario cloud...',
+    'calendarCloud.enabled': 'Scrittura cloud calendario attiva. Le altre sezioni mantengono le proprie modalità.',
+    'calendarCloud.returnedLocal': 'Scrittura calendario tornata in modalità locale.',
+    'calendarCloud.saveFailed': 'Salvataggio evento calendario cloud non riuscito: {error}',
+    'calendarCloud.deleteFailed': 'Eliminazione evento calendario cloud non riuscita: {error}',
+    'calendarCloud.loadFailed': 'Modalità calendario cloud non riuscita: {error}',
+    'calendarCloud.permissionBlocked': 'La scrittura cloud del calendario è bloccata dai permessi del database.',
+    'calendarCloud.saved': 'Evento calendario salvato nel cloud.',
+    'calendarCloud.deleted': 'Evento calendario eliminato dal cloud.',
     'cloudCleanup.title': 'Pulizia cloud',
     'cloudCleanup.text': 'Elimina le righe cloud della scuderia attiva quando i conteggi sono duplicati o errati.',
     'cloudCleanup.targetStable': 'Scuderia da pulire',
@@ -1542,6 +1617,8 @@ let workCloudWriteMode = false;
 let workCloudStatusText = '';
 let feedCloudWriteMode = false;
 let feedCloudStatusText = '';
+let calendarCloudWriteMode = false;
+let calendarCloudStatusText = '';
 let cloudState = {
   status: 'notConnected',
   email: '',
@@ -1654,6 +1731,12 @@ const els = {
   feedCloudEnableButton: document.querySelector('#feedCloudEnableButton'),
   feedCloudLocalButton: document.querySelector('#feedCloudLocalButton'),
   feedCloudStatus: document.querySelector('#feedCloudStatus'),
+  calendarCloudCurrent: document.querySelector('#calendarCloudCurrent'),
+  calendarCloudStableName: document.querySelector('#calendarCloudStableName'),
+  calendarCloudConfirmInput: document.querySelector('#calendarCloudConfirmInput'),
+  calendarCloudEnableButton: document.querySelector('#calendarCloudEnableButton'),
+  calendarCloudLocalButton: document.querySelector('#calendarCloudLocalButton'),
+  calendarCloudStatus: document.querySelector('#calendarCloudStatus'),
   cloudCleanupStableName: document.querySelector('#cloudCleanupStableName'),
   cloudCleanupConfirmInput: document.querySelector('#cloudCleanupConfirmInput'),
   cloudCleanupButton: document.querySelector('#cloudCleanupButton'),
@@ -1746,6 +1829,7 @@ function normalizeCalendarEvent(item) {
   const type = String(item.type || item.eventType || 'other').toLowerCase();
   return {
     id: item.id || createId(),
+    cloudId: item.cloudId || item.cloud_id || '',
     date: item.date || today(),
     time: item.time || '',
     name: item.name || item.title || '',
@@ -1816,7 +1900,8 @@ function saveData() {
     horses: horseCloudWriteMode ? localData.horses : state.horses,
     tasks: taskCloudWriteMode ? localData.tasks : state.tasks,
     hours: workCloudWriteMode ? localData.hours : state.hours,
-    inventory: feedCloudWriteMode ? localData.inventory : state.inventory
+    inventory: feedCloudWriteMode ? localData.inventory : state.inventory,
+    calendarEvents: calendarCloudWriteMode ? localData.calendarEvents : state.calendarEvents
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(nextState));
 }
@@ -1959,6 +2044,7 @@ function updateAuthUi() {
   renderTaskCloudMode();
   renderWorkCloudMode();
   renderFeedCloudMode();
+  renderCalendarCloudMode();
   renderCloudCleanup();
 }
 
@@ -1986,6 +2072,7 @@ function setCloudStatus(nextState = {}) {
   renderTaskCloudMode();
   renderWorkCloudMode();
   renderFeedCloudMode();
+  renderCalendarCloudMode();
   renderCloudCleanup();
 }
 
@@ -2139,6 +2226,7 @@ function renderCloudMode() {
   if (taskCloudWriteMode) writeModes.push(t('tabs.tasks'));
   if (workCloudWriteMode) writeModes.push(t('tabs.hours'));
   if (feedCloudWriteMode) writeModes.push(t('tabs.inventory'));
+  if (calendarCloudWriteMode) writeModes.push(t('nav.calendar'));
   const modeText = cloudPreviewMode
     ? t('cloudMode.previewStatus')
     : writeModes.length
@@ -2249,6 +2337,7 @@ function mapCloudFeedItem(row) {
 function mapCloudCalendarEvent(row, horseIdMap) {
   return normalizeCalendarEvent({
     id: row.local_id || row.id,
+    cloudId: row.id,
     date: row.date,
     time: row.time,
     name: row.name,
@@ -2261,7 +2350,7 @@ function mapCloudCalendarEvent(row, horseIdMap) {
     startNumber: row.start_number,
     driver: row.driver,
     placement: row.placement,
-    raceResult: row.race_result,
+    result: row.race_result,
     prize: row.prize,
     postRaceNotes: row.post_race_notes
   });
@@ -2291,6 +2380,7 @@ async function enableCloudModePreview() {
   if (taskCloudWriteMode) returnTaskWritesToLocalMode();
   if (workCloudWriteMode) returnWorkWritesToLocalMode();
   if (feedCloudWriteMode) returnFeedWritesToLocalMode();
+  if (calendarCloudWriteMode) returnCalendarWritesToLocalMode();
   const activeStable = getActiveStable();
   if (!getCurrentUser() || !activeStable.id) {
     cloudModeStatusText = t('cloudMode.notReady');
@@ -2410,7 +2500,8 @@ async function enableHorseCloudWrites() {
       horses: await loadCloudHorses(gate.activeStable.id),
       tasks: taskCloudWriteMode ? state.tasks : localData.tasks,
       hours: workCloudWriteMode ? state.hours : localData.hours,
-      inventory: feedCloudWriteMode ? state.inventory : localData.inventory
+      inventory: feedCloudWriteMode ? state.inventory : localData.inventory,
+      calendarEvents: calendarCloudWriteMode ? state.calendarEvents : localData.calendarEvents
     };
     horseCloudWriteMode = true;
     if (els.horseCloudConfirmInput) els.horseCloudConfirmInput.value = '';
@@ -2429,7 +2520,8 @@ async function enableHorseCloudWrites() {
       ...localData,
       tasks: taskCloudWriteMode ? state.tasks : localData.tasks,
       hours: workCloudWriteMode ? state.hours : localData.hours,
-      inventory: feedCloudWriteMode ? state.inventory : localData.inventory
+      inventory: feedCloudWriteMode ? state.inventory : localData.inventory,
+      calendarEvents: calendarCloudWriteMode ? state.calendarEvents : localData.calendarEvents
     };
     render();
     showMessage(horseCloudStatusText);
@@ -2580,7 +2672,8 @@ async function enableTaskCloudWrites() {
       horses: horseCloudWriteMode ? state.horses : localData.horses,
       tasks: await loadCloudTasks(gate.activeStable.id),
       hours: workCloudWriteMode ? state.hours : localData.hours,
-      inventory: feedCloudWriteMode ? state.inventory : localData.inventory
+      inventory: feedCloudWriteMode ? state.inventory : localData.inventory,
+      calendarEvents: calendarCloudWriteMode ? state.calendarEvents : localData.calendarEvents
     };
     taskCloudWriteMode = true;
     if (els.taskCloudConfirmInput) els.taskCloudConfirmInput.value = '';
@@ -2599,7 +2692,8 @@ async function enableTaskCloudWrites() {
       ...localData,
       horses: horseCloudWriteMode ? state.horses : localData.horses,
       hours: workCloudWriteMode ? state.hours : localData.hours,
-      inventory: feedCloudWriteMode ? state.inventory : localData.inventory
+      inventory: feedCloudWriteMode ? state.inventory : localData.inventory,
+      calendarEvents: calendarCloudWriteMode ? state.calendarEvents : localData.calendarEvents
     };
     render();
     showMessage(taskCloudStatusText);
@@ -2751,7 +2845,8 @@ async function enableWorkCloudWrites() {
       horses: horseCloudWriteMode ? state.horses : localData.horses,
       tasks: taskCloudWriteMode ? state.tasks : localData.tasks,
       hours: await loadCloudWorkLogs(gate.activeStable.id),
-      inventory: feedCloudWriteMode ? state.inventory : localData.inventory
+      inventory: feedCloudWriteMode ? state.inventory : localData.inventory,
+      calendarEvents: calendarCloudWriteMode ? state.calendarEvents : localData.calendarEvents
     };
     workCloudWriteMode = true;
     if (els.workCloudConfirmInput) els.workCloudConfirmInput.value = '';
@@ -2770,7 +2865,8 @@ async function enableWorkCloudWrites() {
       ...localData,
       horses: horseCloudWriteMode ? state.horses : localData.horses,
       tasks: taskCloudWriteMode ? state.tasks : localData.tasks,
-      inventory: feedCloudWriteMode ? state.inventory : localData.inventory
+      inventory: feedCloudWriteMode ? state.inventory : localData.inventory,
+      calendarEvents: calendarCloudWriteMode ? state.calendarEvents : localData.calendarEvents
     };
     render();
     showMessage(workCloudStatusText);
@@ -2928,7 +3024,8 @@ async function enableFeedCloudWrites() {
       horses: horseCloudWriteMode ? state.horses : localData.horses,
       tasks: taskCloudWriteMode ? state.tasks : localData.tasks,
       hours: workCloudWriteMode ? state.hours : localData.hours,
-      inventory: await loadCloudFeedItems(gate.activeStable.id)
+      inventory: await loadCloudFeedItems(gate.activeStable.id),
+      calendarEvents: calendarCloudWriteMode ? state.calendarEvents : localData.calendarEvents
     };
     feedCloudWriteMode = true;
     if (els.feedCloudConfirmInput) els.feedCloudConfirmInput.value = '';
@@ -2947,7 +3044,8 @@ async function enableFeedCloudWrites() {
       ...localData,
       horses: horseCloudWriteMode ? state.horses : localData.horses,
       tasks: taskCloudWriteMode ? state.tasks : localData.tasks,
-      hours: workCloudWriteMode ? state.hours : localData.hours
+      hours: workCloudWriteMode ? state.hours : localData.hours,
+      calendarEvents: calendarCloudWriteMode ? state.calendarEvents : localData.calendarEvents
     };
     render();
     showMessage(feedCloudStatusText);
@@ -3031,6 +3129,197 @@ async function handleCloudFeedItemDelete(id) {
     console.error('[EquiTrack cloud] Feed inventory delete failed', error);
     const errorMessage = isPermissionError(error) ? t('feedCloud.permissionBlocked') : getAuthErrorMessage(error);
     showMessage(t('feedCloud.deleteFailed', { error: errorMessage }));
+  }
+}
+
+function getCalendarCloudGate() {
+  const currentUser = getCurrentUser();
+  const activeStable = getActiveStable();
+  const confirmationValue = els.calendarCloudConfirmInput?.value || '';
+  const confirmationReady = confirmationValue === 'CALENDAR CLOUD';
+  const reasons = [];
+  if (!currentUser) reasons.push('missing auth user');
+  if (!activeStable.id) reasons.push('missing active stable id');
+  if (!confirmationReady) reasons.push('confirmation is not exactly CALENDAR CLOUD');
+  if (cloudPreviewMode) reasons.push('cloud preview is read-only');
+  if (calendarCloudWriteMode) reasons.push('calendar cloud writes already enabled');
+  return {
+    currentUserExists: Boolean(currentUser),
+    activeStable,
+    confirmationValue,
+    canEnable: reasons.length === 0,
+    reason: reasons.length ? reasons.join('; ') : 'enabled'
+  };
+}
+
+function renderCalendarCloudMode() {
+  const activeStable = getActiveStable();
+  const gate = getCalendarCloudGate();
+  const modeText = calendarCloudWriteMode ? t('calendarCloud.cloudMode') : t('calendarCloud.localMode');
+  if (els.calendarCloudCurrent) els.calendarCloudCurrent.textContent = modeText;
+  if (els.calendarCloudStableName) els.calendarCloudStableName.textContent = activeStable.name || t('cloudRead.noStable');
+  if (els.calendarCloudEnableButton) els.calendarCloudEnableButton.disabled = !gate.canEnable;
+  if (els.calendarCloudLocalButton) els.calendarCloudLocalButton.hidden = !calendarCloudWriteMode;
+  if (els.calendarCloudStatus) {
+    els.calendarCloudStatus.textContent = calendarCloudStatusText || (gate.canEnable ? t('calendarCloud.ready') : t('calendarCloud.notReady'));
+  }
+}
+
+function handleCalendarCloudConfirmationChange() {
+  calendarCloudStatusText = '';
+  renderCalendarCloudMode();
+}
+
+function getCloudHorseIdsForCalendarEvent(event) {
+  return event.horseIds
+    .map((horseId) => state.horses.find((horse) => horse.id === horseId)?.cloudId)
+    .filter(Boolean);
+}
+
+function calendarEventToCloudRow(stableId, rawEvent, horseIdMap = null) {
+  const event = normalizeCalendarEvent(rawEvent);
+  const horseIds = horseIdMap
+    ? event.horseIds.map((horseId) => horseIdMap.get(horseId)).filter(Boolean)
+    : getCloudHorseIdsForCalendarEvent(event);
+  return {
+    stable_id: stableId,
+    local_id: event.id || createId(),
+    date: isValidDate(event.date) || today(),
+    time: cleanText(event.time),
+    name: cleanText(event.name) || 'Untitled event',
+    event_type: event.type,
+    location: cleanText(event.location),
+    horse_ids: horseIds,
+    handler: cleanText(event.handler),
+    notes: cleanText(event.notes),
+    race_number: cleanText(event.raceNumber),
+    start_number: cleanText(event.startNumber),
+    driver: cleanText(event.driver),
+    placement: cleanText(event.placement),
+    race_result: cleanText(event.result),
+    prize: cleanText(event.prize),
+    post_race_notes: cleanText(event.postRaceNotes)
+  };
+}
+
+async function loadCloudCalendarEvents(stableId) {
+  const rows = await fetchCloudRows('calendar_events', stableId, 'date');
+  const horseIdMap = new Map(state.horses.filter((horse) => horse.cloudId).map((horse) => [horse.cloudId, horse.id]));
+  return rows.map((row) => mapCloudCalendarEvent(row, horseIdMap));
+}
+
+async function enableCalendarCloudWrites() {
+  const gate = getCalendarCloudGate();
+  if (!gate.canEnable) {
+    showMessage(t('calendarCloud.notReady'));
+    renderCalendarCloudMode();
+    return;
+  }
+  calendarCloudStatusText = t('calendarCloud.loading');
+  renderCalendarCloudMode();
+  try {
+    const localData = loadData();
+    state = {
+      ...localData,
+      horses: horseCloudWriteMode ? state.horses : localData.horses,
+      tasks: taskCloudWriteMode ? state.tasks : localData.tasks,
+      hours: workCloudWriteMode ? state.hours : localData.hours,
+      inventory: feedCloudWriteMode ? state.inventory : localData.inventory,
+      calendarEvents: await loadCloudCalendarEvents(gate.activeStable.id)
+    };
+    calendarCloudWriteMode = true;
+    if (els.calendarCloudConfirmInput) els.calendarCloudConfirmInput.value = '';
+    calendarCloudStatusText = t('calendarCloud.enabled');
+    render();
+    showView('calendar');
+    showMessage(calendarCloudStatusText);
+  } catch (error) {
+    console.error('[EquiTrack cloud] Calendar cloud mode failed', error);
+    const errorMessage = isPermissionError(error) ? t('calendarCloud.permissionBlocked') : getAuthErrorMessage(error);
+    calendarCloudStatusText = t('calendarCloud.loadFailed', { error: errorMessage });
+    calendarCloudWriteMode = false;
+    const localData = loadData();
+    state = {
+      ...localData,
+      horses: horseCloudWriteMode ? state.horses : localData.horses,
+      tasks: taskCloudWriteMode ? state.tasks : localData.tasks,
+      hours: workCloudWriteMode ? state.hours : localData.hours,
+      inventory: feedCloudWriteMode ? state.inventory : localData.inventory
+    };
+    render();
+    showMessage(calendarCloudStatusText);
+  }
+}
+
+function returnCalendarWritesToLocalMode() {
+  state = { ...state, calendarEvents: loadData().calendarEvents };
+  calendarCloudWriteMode = false;
+  calendarCloudStatusText = t('calendarCloud.returnedLocal');
+  render();
+  showMessage(calendarCloudStatusText);
+}
+
+async function saveCalendarEventToCloud(rawEvent) {
+  const activeStable = getActiveStable();
+  if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
+  const row = calendarEventToCloudRow(activeStable.id, rawEvent);
+  const request = rawEvent.cloudId
+    ? supabaseClient
+      .from('calendar_events')
+      .update(row)
+      .eq('stable_id', activeStable.id)
+      .eq('id', rawEvent.cloudId)
+    : supabaseClient
+      .from('calendar_events')
+      .upsert(row, { onConflict: 'stable_id,local_id' });
+  const { data, error } = await request.select('*').single();
+  if (error) throw error;
+  const horseIdMap = new Map(state.horses.filter((horse) => horse.cloudId).map((horse) => [horse.cloudId, horse.id]));
+  return mapCloudCalendarEvent(data, horseIdMap);
+}
+
+async function handleCloudCalendarEventSave(rawEvent) {
+  try {
+    const savedEvent = await saveCalendarEventToCloud(rawEvent);
+    const existingIndex = state.calendarEvents.findIndex((entry) => entry.id === savedEvent.id);
+    if (existingIndex >= 0) state.calendarEvents[existingIndex] = savedEvent;
+    else state.calendarEvents.push(savedEvent);
+    render();
+    showMessage(t('calendarCloud.saved'));
+    return true;
+  } catch (error) {
+    console.error('[EquiTrack cloud] Calendar event save failed', error);
+    const errorMessage = isPermissionError(error) ? t('calendarCloud.permissionBlocked') : getAuthErrorMessage(error);
+    showMessage(t('calendarCloud.saveFailed', { error: errorMessage }));
+    return false;
+  }
+}
+
+async function deleteCalendarEventFromCloud(id) {
+  const activeStable = getActiveStable();
+  if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
+  const calendarEvent = state.calendarEvents.find((entry) => entry.id === id);
+  if (!calendarEvent) return;
+  let query = supabaseClient.from('calendar_events').delete().eq('stable_id', activeStable.id);
+  query = calendarEvent.cloudId ? query.eq('id', calendarEvent.cloudId) : query.eq('local_id', calendarEvent.id);
+  const { error } = await query.select('id');
+  if (error) throw error;
+}
+
+async function handleCloudCalendarEventDelete(id) {
+  if (!confirmDelete(t('delete.event'))) {
+    showMessage(t('message.deleteCancelled'));
+    return;
+  }
+  try {
+    await deleteCalendarEventFromCloud(id);
+    state.calendarEvents = state.calendarEvents.filter((entry) => entry.id !== id);
+    render();
+    showMessage(t('calendarCloud.deleted'));
+  } catch (error) {
+    console.error('[EquiTrack cloud] Calendar event delete failed', error);
+    const errorMessage = isPermissionError(error) ? t('calendarCloud.permissionBlocked') : getAuthErrorMessage(error);
+    showMessage(t('calendarCloud.deleteFailed', { error: errorMessage }));
   }
 }
 
@@ -3175,26 +3464,7 @@ function buildFeedRows(stableId, sourceData = state) {
 
 function buildCalendarRows(stableId, horseIdMap, sourceData = state) {
   return sourceData.calendarEvents.map((rawEvent) => {
-    const event = normalizeCalendarEvent(rawEvent);
-    return {
-      stable_id: stableId,
-      local_id: event.id,
-      date: isValidDate(event.date) || today(),
-      time: cleanText(event.time),
-      name: cleanText(event.name) || 'Untitled event',
-      event_type: event.type,
-      location: cleanText(event.location),
-      horse_ids: event.horseIds.map((horseId) => horseIdMap.get(horseId)).filter(Boolean),
-      handler: cleanText(event.handler),
-      notes: cleanText(event.notes),
-      race_number: cleanText(event.raceNumber),
-      start_number: cleanText(event.startNumber),
-      driver: cleanText(event.driver),
-      placement: cleanText(event.placement),
-      race_result: cleanText(event.raceResult),
-      prize: cleanText(event.prize),
-      post_race_notes: cleanText(event.postRaceNotes)
-    };
+    return calendarEventToCloudRow(stableId, rawEvent, horseIdMap);
   });
 }
 
@@ -3319,6 +3589,11 @@ async function refreshCloudConnection() {
       state = loadData();
       feedCloudWriteMode = false;
       feedCloudStatusText = '';
+    }
+    if (calendarCloudWriteMode) {
+      state = loadData();
+      calendarCloudWriteMode = false;
+      calendarCloudStatusText = '';
     }
     setCloudStatus({
       status: 'notConnected',
@@ -3553,6 +3828,7 @@ function render() {
   renderTaskCloudMode();
   renderWorkCloudMode();
   renderFeedCloudMode();
+  renderCalendarCloudMode();
   renderCloudCleanup();
 }
 
@@ -4165,7 +4441,7 @@ function handleEventSubmit(event) {
   event.preventDefault();
   if (blockCloudPreviewEdit()) return;
   const form = event.currentTarget;
-  upsert('calendarEvents', {
+  const calendarEvent = {
     id: form.elements.id.value,
     date: form.elements.date.value,
     time: form.elements.time.value,
@@ -4182,7 +4458,20 @@ function handleEventSubmit(event) {
     prize: form.elements.prize.value.trim(),
     postRaceNotes: form.elements.postRaceNotes.value.trim(),
     notes: form.elements.notes.value.trim()
-  });
+  };
+  if (calendarCloudWriteMode) {
+    if (!calendarEvent.id) calendarEvent.id = createId();
+    const existingEvent = state.calendarEvents.find((entry) => entry.id === calendarEvent.id);
+    if (existingEvent?.cloudId) calendarEvent.cloudId = existingEvent.cloudId;
+    handleCloudCalendarEventSave(calendarEvent).then((saved) => {
+      if (saved) {
+        resetForm(form);
+        form.elements.date.value = today();
+      }
+    });
+    return;
+  }
+  upsert('calendarEvents', calendarEvent);
   resetForm(form);
   form.elements.date.value = today();
   showMessage(t('message.eventSaved'));
@@ -4221,7 +4510,10 @@ function handleListClick(event) {
   }
   if (action === 'toggle-shopping') toggleShoppingStatus(id);
   if (action === 'edit-event') fillEventForm(id);
-  if (action === 'delete-event') deleteItem('calendarEvents', id, t('delete.event'), t('message.eventDeleted'));
+  if (action === 'delete-event') {
+    if (calendarCloudWriteMode) handleCloudCalendarEventDelete(id);
+    else deleteItem('calendarEvents', id, t('delete.event'), t('message.eventDeleted'));
+  }
 }
 
 function handleCalendarFilterChange() {
@@ -4575,6 +4867,8 @@ async function handleLogout() {
     workCloudStatusText = '';
     feedCloudWriteMode = false;
     feedCloudStatusText = '';
+    calendarCloudWriteMode = false;
+    calendarCloudStatusText = '';
     setCloudStatus({
       status: 'notConnected',
       email: '',
@@ -4602,6 +4896,8 @@ async function handleLogout() {
     workCloudStatusText = '';
     feedCloudWriteMode = false;
     feedCloudStatusText = '';
+    calendarCloudWriteMode = false;
+    calendarCloudStatusText = '';
     setCloudStatus({
       status: 'notConnected',
       email: '',
@@ -4697,6 +4993,9 @@ els.workCloudLocalButton?.addEventListener('click', returnWorkWritesToLocalMode)
 els.feedCloudConfirmInput?.addEventListener('input', handleFeedCloudConfirmationChange);
 els.feedCloudEnableButton?.addEventListener('click', enableFeedCloudWrites);
 els.feedCloudLocalButton?.addEventListener('click', returnFeedWritesToLocalMode);
+els.calendarCloudConfirmInput?.addEventListener('input', handleCalendarCloudConfirmationChange);
+els.calendarCloudEnableButton?.addEventListener('click', enableCalendarCloudWrites);
+els.calendarCloudLocalButton?.addEventListener('click', returnCalendarWritesToLocalMode);
 els.cloudCleanupConfirmInput?.addEventListener('input', handleCloudCleanupConfirmationChange);
 els.cloudCleanupButton?.addEventListener('click', cleanupCloudDataForStable);
 els.calendarScopeFilter?.addEventListener('change', handleCalendarFilterChange);

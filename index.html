@@ -574,6 +574,31 @@
             <p id="feedCloudStatus" class="update-note" data-i18n="feedCloud.notReady">Feed inventory cloud writes are disabled until you are logged in, have an active stable, and type FEED CLOUD.</p>
           </article>
 
+          <article class="panel cloud-panel">
+            <h3 data-i18n="calendarCloud.title">Cloud write mode - Calendar</h3>
+            <p data-i18n="calendarCloud.text">Experimental phase: only calendar event data is saved to the cloud.</p>
+            <div class="cloud-status-list">
+              <p><span data-i18n="calendarCloud.currentMode">Calendar data mode</span>: <strong id="calendarCloudCurrent">Local</strong></p>
+              <p><span data-i18n="calendarCloud.targetStable">Calendar cloud stable</span>: <strong id="calendarCloudStableName">-</strong></p>
+            </div>
+            <ul class="migration-warnings">
+              <li data-i18n="calendarCloud.warningExperimental">This is an experimental phase.</li>
+              <li data-i18n="calendarCloud.warningCalendarOnly">Only calendar event data will be saved to the cloud.</li>
+              <li data-i18n="calendarCloud.warningSeparateModes">Other sections keep their own separate cloud or local modes.</li>
+              <li data-i18n="calendarCloud.warningLocalSafe">Local calendar data will not be deleted.</li>
+              <li data-i18n="calendarCloud.warningReturn">You can return calendar to local mode.</li>
+            </ul>
+            <label class="full-width">
+              <span data-i18n="calendarCloud.confirmLabel">Type CALENDAR CLOUD to enable cloud calendar writes</span>
+              <input id="calendarCloudConfirmInput" type="text" autocomplete="off" placeholder="CALENDAR CLOUD">
+            </label>
+            <div class="backup-actions">
+              <button id="calendarCloudEnableButton" class="button secondary" type="button" disabled data-i18n="calendarCloud.enableButton">Enable cloud calendar writes</button>
+              <button id="calendarCloudLocalButton" class="button secondary" type="button" hidden data-i18n="calendarCloud.localButton">Return calendar to local mode</button>
+            </div>
+            <p id="calendarCloudStatus" class="update-note" data-i18n="calendarCloud.notReady">Calendar cloud writes are disabled until you are logged in, have an active stable, and type CALENDAR CLOUD.</p>
+          </article>
+
           <article class="panel cloud-panel danger-zone">
             <h3 data-i18n="cloudCleanup.title">Cloud cleanup</h3>
             <p data-i18n="cloudCleanup.text">Delete cloud rows for the active stable when cloud preview counts are duplicated or wrong.</p>
