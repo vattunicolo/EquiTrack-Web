@@ -224,6 +224,32 @@ const translations = {
     'workCloud.permissionBlocked': 'Cloud work log writes are blocked by database permissions.',
     'workCloud.saved': 'Work log saved to cloud.',
     'workCloud.deleted': 'Work log deleted from cloud.',
+    'feedCloud.title': 'Cloud write mode - Feed Inventory',
+    'feedCloud.text': 'Experimental phase: only feed inventory data is saved to the cloud.',
+    'feedCloud.currentMode': 'Feed inventory data mode',
+    'feedCloud.targetStable': 'Feed cloud stable',
+    'feedCloud.localMode': 'Local',
+    'feedCloud.cloudMode': 'Cloud writes enabled',
+    'feedCloud.warningExperimental': 'This is an experimental phase.',
+    'feedCloud.warningFeedOnly': 'Only feed inventory data will be saved to the cloud.',
+    'feedCloud.warningOthersLocal': 'Calendar still stays local for now.',
+    'feedCloud.warningLocalSafe': 'Local feed inventory data will not be deleted.',
+    'feedCloud.warningReturn': 'You can return feed inventory to local mode.',
+    'feedCloud.confirmLabel': 'Type FEED CLOUD to enable cloud feed inventory writes',
+    'feedCloud.enableButton': 'Enable cloud feed inventory writes',
+    'feedCloud.localButton': 'Return feed inventory to local mode',
+    'feedCloud.notReady': 'Feed inventory cloud writes are disabled until you are logged in, have an active stable, and type FEED CLOUD.',
+    'feedCloud.ready': 'Ready to enable cloud writes for feed inventory only.',
+    'feedCloud.loading': 'Loading cloud feed inventory...',
+    'feedCloud.enabled': 'Cloud feed inventory writes enabled. Calendar remains local.',
+    'feedCloud.returnedLocal': 'Feed inventory writes returned to local mode.',
+    'feedCloud.saveFailed': 'Cloud feed inventory save failed: {error}',
+    'feedCloud.deleteFailed': 'Cloud feed inventory delete failed: {error}',
+    'feedCloud.loadFailed': 'Cloud feed inventory mode failed: {error}',
+    'feedCloud.permissionBlocked': 'Cloud feed inventory writes are blocked by database permissions.',
+    'feedCloud.saved': 'Feed item saved to cloud.',
+    'feedCloud.deleted': 'Feed item deleted from cloud.',
+    'feedCloud.shoppingUpdated': 'Shopping list status saved to cloud.',
     'cloudCleanup.title': 'Cloud cleanup',
     'cloudCleanup.text': 'Delete cloud rows for the active stable when cloud preview counts are duplicated or wrong.',
     'cloudCleanup.targetStable': 'Cleanup target stable',
@@ -688,6 +714,32 @@ const translations = {
     'workCloud.permissionBlocked': 'Tietokannan käyttöoikeudet estävät työkirjausten pilvikirjoituksen.',
     'workCloud.saved': 'Työkirjaus tallennettu pilveen.',
     'workCloud.deleted': 'Työkirjaus poistettu pilvestä.',
+    'feedCloud.title': 'Pilvikirjoitustila - Ruokavarasto',
+    'feedCloud.text': 'Kokeellinen vaihe: vain ruokavaraston data tallennetaan pilveen.',
+    'feedCloud.currentMode': 'Ruokavaraston tila',
+    'feedCloud.targetStable': 'Ruokavaraston pilvitalli',
+    'feedCloud.localMode': 'Paikallinen',
+    'feedCloud.cloudMode': 'Pilvikirjoitus käytössä',
+    'feedCloud.warningExperimental': 'Tämä on kokeellinen vaihe.',
+    'feedCloud.warningFeedOnly': 'Vain ruokavaraston data tallennetaan pilveen.',
+    'feedCloud.warningOthersLocal': 'Kalenteri pysyy toistaiseksi paikallisena.',
+    'feedCloud.warningLocalSafe': 'Paikallista ruokavaraston dataa ei poisteta.',
+    'feedCloud.warningReturn': 'Voit palauttaa ruokavaraston paikalliseen tilaan.',
+    'feedCloud.confirmLabel': 'Kirjoita FEED CLOUD ottaaksesi ruokavaraston pilvikirjoituksen käyttöön',
+    'feedCloud.enableButton': 'Ota ruokavaraston pilvikirjoitus käyttöön',
+    'feedCloud.localButton': 'Palauta ruokavarasto paikalliseen tilaan',
+    'feedCloud.notReady': 'Ruokavaraston pilvikirjoitus on pois käytöstä, kunnes olet kirjautunut sisään, aktiivinen talli on valittu ja kirjoitat FEED CLOUD.',
+    'feedCloud.ready': 'Valmis ottamaan käyttöön ruokavaraston pilvikirjoituksen.',
+    'feedCloud.loading': 'Ladataan pilviruokavarastoa...',
+    'feedCloud.enabled': 'Ruokavaraston pilvikirjoitus käytössä. Kalenteri pysyy paikallisena.',
+    'feedCloud.returnedLocal': 'Ruokavaraston tallennus palautettu paikalliseen tilaan.',
+    'feedCloud.saveFailed': 'Ruokavaraston pilvitallennus epäonnistui: {error}',
+    'feedCloud.deleteFailed': 'Ruokavaraston pilvipoisto epäonnistui: {error}',
+    'feedCloud.loadFailed': 'Ruokavaraston pilvitila epäonnistui: {error}',
+    'feedCloud.permissionBlocked': 'Tietokannan käyttöoikeudet estävät ruokavaraston pilvikirjoituksen.',
+    'feedCloud.saved': 'Ruokatuote tallennettu pilveen.',
+    'feedCloud.deleted': 'Ruokatuote poistettu pilvestä.',
+    'feedCloud.shoppingUpdated': 'Ostoslistan tila tallennettu pilveen.',
     'cloudCleanup.title': 'Pilvidatan siivous',
     'cloudCleanup.text': 'Poista aktiivisen tallin pilvirivit, jos pilviesikatselun määrät ovat kahdentuneet tai virheelliset.',
     'cloudCleanup.targetStable': 'Siivottava talli',
@@ -1152,6 +1204,32 @@ const translations = {
     'workCloud.permissionBlocked': 'La scrittura cloud dei registri lavoro è bloccata dai permessi del database.',
     'workCloud.saved': 'Registro lavoro salvato nel cloud.',
     'workCloud.deleted': 'Registro lavoro eliminato dal cloud.',
+    'feedCloud.title': 'Modalità scrittura cloud - Scorte di mangime',
+    'feedCloud.text': 'Fase sperimentale: solo le scorte di mangime vengono salvate nel cloud.',
+    'feedCloud.currentMode': 'Modalità dati mangime',
+    'feedCloud.targetStable': 'Scuderia cloud mangime',
+    'feedCloud.localMode': 'Locale',
+    'feedCloud.cloudMode': 'Scrittura cloud attiva',
+    'feedCloud.warningExperimental': 'Questa è una fase sperimentale.',
+    'feedCloud.warningFeedOnly': 'Solo le scorte di mangime verranno salvate nel cloud.',
+    'feedCloud.warningOthersLocal': 'Il calendario resta locale per ora.',
+    'feedCloud.warningLocalSafe': 'I dati locali delle scorte di mangime non verranno eliminati.',
+    'feedCloud.warningReturn': 'Puoi riportare le scorte di mangime in modalità locale.',
+    'feedCloud.confirmLabel': 'Digita FEED CLOUD per abilitare la scrittura cloud delle scorte di mangime',
+    'feedCloud.enableButton': 'Abilita scrittura cloud scorte di mangime',
+    'feedCloud.localButton': 'Riporta scorte di mangime in modalità locale',
+    'feedCloud.notReady': 'La scrittura cloud delle scorte di mangime è disabilitata finché non hai effettuato l accesso, hai una scuderia attiva e digiti FEED CLOUD.',
+    'feedCloud.ready': 'Pronto ad abilitare la scrittura cloud solo per le scorte di mangime.',
+    'feedCloud.loading': 'Caricamento scorte di mangime cloud...',
+    'feedCloud.enabled': 'Scrittura cloud scorte di mangime attiva. Il calendario resta locale.',
+    'feedCloud.returnedLocal': 'Scrittura scorte di mangime tornata in modalità locale.',
+    'feedCloud.saveFailed': 'Salvataggio scorte di mangime cloud non riuscito: {error}',
+    'feedCloud.deleteFailed': 'Eliminazione scorte di mangime cloud non riuscita: {error}',
+    'feedCloud.loadFailed': 'Modalità scorte di mangime cloud non riuscita: {error}',
+    'feedCloud.permissionBlocked': 'La scrittura cloud delle scorte di mangime è bloccata dai permessi del database.',
+    'feedCloud.saved': 'Mangime salvato nel cloud.',
+    'feedCloud.deleted': 'Mangime eliminato dal cloud.',
+    'feedCloud.shoppingUpdated': 'Stato lista acquisti salvato nel cloud.',
     'cloudCleanup.title': 'Pulizia cloud',
     'cloudCleanup.text': 'Elimina le righe cloud della scuderia attiva quando i conteggi sono duplicati o errati.',
     'cloudCleanup.targetStable': 'Scuderia da pulire',
@@ -1462,6 +1540,8 @@ let taskCloudWriteMode = false;
 let taskCloudStatusText = '';
 let workCloudWriteMode = false;
 let workCloudStatusText = '';
+let feedCloudWriteMode = false;
+let feedCloudStatusText = '';
 let cloudState = {
   status: 'notConnected',
   email: '',
@@ -1568,6 +1648,12 @@ const els = {
   workCloudEnableButton: document.querySelector('#workCloudEnableButton'),
   workCloudLocalButton: document.querySelector('#workCloudLocalButton'),
   workCloudStatus: document.querySelector('#workCloudStatus'),
+  feedCloudCurrent: document.querySelector('#feedCloudCurrent'),
+  feedCloudStableName: document.querySelector('#feedCloudStableName'),
+  feedCloudConfirmInput: document.querySelector('#feedCloudConfirmInput'),
+  feedCloudEnableButton: document.querySelector('#feedCloudEnableButton'),
+  feedCloudLocalButton: document.querySelector('#feedCloudLocalButton'),
+  feedCloudStatus: document.querySelector('#feedCloudStatus'),
   cloudCleanupStableName: document.querySelector('#cloudCleanupStableName'),
   cloudCleanupConfirmInput: document.querySelector('#cloudCleanupConfirmInput'),
   cloudCleanupButton: document.querySelector('#cloudCleanupButton'),
@@ -1613,6 +1699,7 @@ function normalizeFeedItem(item) {
   const history = Array.isArray(item.history) ? item.history : [];
   return {
     id: item.id || createId(),
+    cloudId: item.cloudId || item.cloud_id || '',
     name: item.name || 'Unnamed feed',
     category: item.category || item.type || 'General',
     quantity,
@@ -1728,7 +1815,8 @@ function saveData() {
     ...state,
     horses: horseCloudWriteMode ? localData.horses : state.horses,
     tasks: taskCloudWriteMode ? localData.tasks : state.tasks,
-    hours: workCloudWriteMode ? localData.hours : state.hours
+    hours: workCloudWriteMode ? localData.hours : state.hours,
+    inventory: feedCloudWriteMode ? localData.inventory : state.inventory
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(nextState));
 }
@@ -1870,6 +1958,7 @@ function updateAuthUi() {
   renderHorseCloudMode();
   renderTaskCloudMode();
   renderWorkCloudMode();
+  renderFeedCloudMode();
   renderCloudCleanup();
 }
 
@@ -1896,6 +1985,7 @@ function setCloudStatus(nextState = {}) {
   renderHorseCloudMode();
   renderTaskCloudMode();
   renderWorkCloudMode();
+  renderFeedCloudMode();
   renderCloudCleanup();
 }
 
@@ -2048,6 +2138,7 @@ function renderCloudMode() {
   if (horseCloudWriteMode) writeModes.push(t('tabs.horses'));
   if (taskCloudWriteMode) writeModes.push(t('tabs.tasks'));
   if (workCloudWriteMode) writeModes.push(t('tabs.hours'));
+  if (feedCloudWriteMode) writeModes.push(t('tabs.inventory'));
   const modeText = cloudPreviewMode
     ? t('cloudMode.previewStatus')
     : writeModes.length
@@ -2139,6 +2230,7 @@ function mapCloudWorkLog(row, horseIdMap) {
 function mapCloudFeedItem(row) {
   return normalizeFeedItem({
     id: row.local_id || row.id,
+    cloudId: row.id,
     name: row.name,
     category: row.category,
     quantity: row.current_amount,
@@ -2198,6 +2290,7 @@ async function enableCloudModePreview() {
   if (horseCloudWriteMode) returnHorseWritesToLocalMode();
   if (taskCloudWriteMode) returnTaskWritesToLocalMode();
   if (workCloudWriteMode) returnWorkWritesToLocalMode();
+  if (feedCloudWriteMode) returnFeedWritesToLocalMode();
   const activeStable = getActiveStable();
   if (!getCurrentUser() || !activeStable.id) {
     cloudModeStatusText = t('cloudMode.notReady');
@@ -2316,7 +2409,8 @@ async function enableHorseCloudWrites() {
       ...localData,
       horses: await loadCloudHorses(gate.activeStable.id),
       tasks: taskCloudWriteMode ? state.tasks : localData.tasks,
-      hours: workCloudWriteMode ? state.hours : localData.hours
+      hours: workCloudWriteMode ? state.hours : localData.hours,
+      inventory: feedCloudWriteMode ? state.inventory : localData.inventory
     };
     horseCloudWriteMode = true;
     if (els.horseCloudConfirmInput) els.horseCloudConfirmInput.value = '';
@@ -2334,7 +2428,8 @@ async function enableHorseCloudWrites() {
     state = {
       ...localData,
       tasks: taskCloudWriteMode ? state.tasks : localData.tasks,
-      hours: workCloudWriteMode ? state.hours : localData.hours
+      hours: workCloudWriteMode ? state.hours : localData.hours,
+      inventory: feedCloudWriteMode ? state.inventory : localData.inventory
     };
     render();
     showMessage(horseCloudStatusText);
@@ -2484,7 +2579,8 @@ async function enableTaskCloudWrites() {
       ...localData,
       horses: horseCloudWriteMode ? state.horses : localData.horses,
       tasks: await loadCloudTasks(gate.activeStable.id),
-      hours: workCloudWriteMode ? state.hours : localData.hours
+      hours: workCloudWriteMode ? state.hours : localData.hours,
+      inventory: feedCloudWriteMode ? state.inventory : localData.inventory
     };
     taskCloudWriteMode = true;
     if (els.taskCloudConfirmInput) els.taskCloudConfirmInput.value = '';
@@ -2502,7 +2598,8 @@ async function enableTaskCloudWrites() {
     state = {
       ...localData,
       horses: horseCloudWriteMode ? state.horses : localData.horses,
-      hours: workCloudWriteMode ? state.hours : localData.hours
+      hours: workCloudWriteMode ? state.hours : localData.hours,
+      inventory: feedCloudWriteMode ? state.inventory : localData.inventory
     };
     render();
     showMessage(taskCloudStatusText);
@@ -2653,7 +2750,8 @@ async function enableWorkCloudWrites() {
       ...localData,
       horses: horseCloudWriteMode ? state.horses : localData.horses,
       tasks: taskCloudWriteMode ? state.tasks : localData.tasks,
-      hours: await loadCloudWorkLogs(gate.activeStable.id)
+      hours: await loadCloudWorkLogs(gate.activeStable.id),
+      inventory: feedCloudWriteMode ? state.inventory : localData.inventory
     };
     workCloudWriteMode = true;
     if (els.workCloudConfirmInput) els.workCloudConfirmInput.value = '';
@@ -2671,7 +2769,8 @@ async function enableWorkCloudWrites() {
     state = {
       ...localData,
       horses: horseCloudWriteMode ? state.horses : localData.horses,
-      tasks: taskCloudWriteMode ? state.tasks : localData.tasks
+      tasks: taskCloudWriteMode ? state.tasks : localData.tasks,
+      inventory: feedCloudWriteMode ? state.inventory : localData.inventory
     };
     render();
     showMessage(workCloudStatusText);
@@ -2747,6 +2846,191 @@ async function handleCloudWorkLogDelete(id) {
     console.error('[EquiTrack cloud] Work log delete failed', error);
     const errorMessage = isPermissionError(error) ? t('workCloud.permissionBlocked') : getAuthErrorMessage(error);
     showMessage(t('workCloud.deleteFailed', { error: errorMessage }));
+  }
+}
+
+function getFeedCloudGate() {
+  const currentUser = getCurrentUser();
+  const activeStable = getActiveStable();
+  const confirmationValue = els.feedCloudConfirmInput?.value || '';
+  const confirmationReady = confirmationValue === 'FEED CLOUD';
+  const reasons = [];
+  if (!currentUser) reasons.push('missing auth user');
+  if (!activeStable.id) reasons.push('missing active stable id');
+  if (!confirmationReady) reasons.push('confirmation is not exactly FEED CLOUD');
+  if (cloudPreviewMode) reasons.push('cloud preview is read-only');
+  if (feedCloudWriteMode) reasons.push('feed cloud writes already enabled');
+  return {
+    currentUserExists: Boolean(currentUser),
+    activeStable,
+    confirmationValue,
+    canEnable: reasons.length === 0,
+    reason: reasons.length ? reasons.join('; ') : 'enabled'
+  };
+}
+
+function renderFeedCloudMode() {
+  const activeStable = getActiveStable();
+  const gate = getFeedCloudGate();
+  const modeText = feedCloudWriteMode ? t('feedCloud.cloudMode') : t('feedCloud.localMode');
+  if (els.feedCloudCurrent) els.feedCloudCurrent.textContent = modeText;
+  if (els.feedCloudStableName) els.feedCloudStableName.textContent = activeStable.name || t('cloudRead.noStable');
+  if (els.feedCloudEnableButton) els.feedCloudEnableButton.disabled = !gate.canEnable;
+  if (els.feedCloudLocalButton) els.feedCloudLocalButton.hidden = !feedCloudWriteMode;
+  if (els.feedCloudStatus) {
+    els.feedCloudStatus.textContent = feedCloudStatusText || (gate.canEnable ? t('feedCloud.ready') : t('feedCloud.notReady'));
+  }
+}
+
+function handleFeedCloudConfirmationChange() {
+  feedCloudStatusText = '';
+  renderFeedCloudMode();
+}
+
+function feedItemToCloudRow(stableId, rawItem) {
+  const item = normalizeFeedItem(rawItem);
+  return {
+    stable_id: stableId,
+    local_id: item.id || createId(),
+    name: cleanText(item.name) || 'Unnamed feed',
+    category: cleanText(item.category),
+    current_amount: toSafeNumber(item.quantity),
+    unit: cleanText(item.unit),
+    daily_usage: toSafeNumber(item.dailyUsage),
+    low_stock_threshold: toSafeNumber(item.minimum),
+    supplier: cleanText(item.supplier),
+    purchase_date: isValidDate(item.purchaseDate),
+    expiry_date: isValidDate(item.expiryDate),
+    storage_location: cleanText(item.storageLocation),
+    cost: nullableNumber(item.cost),
+    notes: cleanText(item.notes)
+  };
+}
+
+async function loadCloudFeedItems(stableId) {
+  const rows = await fetchCloudRows('feed_items', stableId);
+  return rows.map(mapCloudFeedItem);
+}
+
+async function enableFeedCloudWrites() {
+  const gate = getFeedCloudGate();
+  if (!gate.canEnable) {
+    showMessage(t('feedCloud.notReady'));
+    renderFeedCloudMode();
+    return;
+  }
+  feedCloudStatusText = t('feedCloud.loading');
+  renderFeedCloudMode();
+  try {
+    const localData = loadData();
+    state = {
+      ...localData,
+      horses: horseCloudWriteMode ? state.horses : localData.horses,
+      tasks: taskCloudWriteMode ? state.tasks : localData.tasks,
+      hours: workCloudWriteMode ? state.hours : localData.hours,
+      inventory: await loadCloudFeedItems(gate.activeStable.id)
+    };
+    feedCloudWriteMode = true;
+    if (els.feedCloudConfirmInput) els.feedCloudConfirmInput.value = '';
+    feedCloudStatusText = t('feedCloud.enabled');
+    render();
+    showView('stable');
+    activateTab('inventory');
+    showMessage(feedCloudStatusText);
+  } catch (error) {
+    console.error('[EquiTrack cloud] Feed inventory cloud mode failed', error);
+    const errorMessage = isPermissionError(error) ? t('feedCloud.permissionBlocked') : getAuthErrorMessage(error);
+    feedCloudStatusText = t('feedCloud.loadFailed', { error: errorMessage });
+    feedCloudWriteMode = false;
+    const localData = loadData();
+    state = {
+      ...localData,
+      horses: horseCloudWriteMode ? state.horses : localData.horses,
+      tasks: taskCloudWriteMode ? state.tasks : localData.tasks,
+      hours: workCloudWriteMode ? state.hours : localData.hours
+    };
+    render();
+    showMessage(feedCloudStatusText);
+  }
+}
+
+function returnFeedWritesToLocalMode() {
+  state = { ...state, inventory: loadData().inventory };
+  feedCloudWriteMode = false;
+  feedCloudStatusText = t('feedCloud.returnedLocal');
+  render();
+  showMessage(feedCloudStatusText);
+}
+
+async function saveFeedItemToCloud(rawItem) {
+  const activeStable = getActiveStable();
+  if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
+  const row = feedItemToCloudRow(activeStable.id, rawItem);
+  const request = rawItem.cloudId
+    ? supabaseClient
+      .from('feed_items')
+      .update(row)
+      .eq('stable_id', activeStable.id)
+      .eq('id', rawItem.cloudId)
+    : supabaseClient
+      .from('feed_items')
+      .upsert(row, { onConflict: 'stable_id,local_id' });
+  const { data, error } = await request.select('*').single();
+  if (error) throw error;
+  return mapCloudFeedItem(data);
+}
+
+async function handleCloudFeedItemSave(rawItem, successMessage = t('feedCloud.saved')) {
+  try {
+    const savedItem = await saveFeedItemToCloud(rawItem);
+    const normalizedInput = normalizeFeedItem(rawItem);
+    const mergedItem = {
+      ...savedItem,
+      horseIds: normalizedInput.horseIds,
+      perHorseUsage: normalizedInput.perHorseUsage,
+      shoppingListed: normalizedInput.shoppingListed,
+      lastUpdated: normalizedInput.lastUpdated,
+      history: normalizedInput.history
+    };
+    const existingIndex = state.inventory.findIndex((item) => item.id === mergedItem.id);
+    if (existingIndex >= 0) state.inventory[existingIndex] = mergedItem;
+    else state.inventory.push(mergedItem);
+    render();
+    showMessage(successMessage);
+    return true;
+  } catch (error) {
+    console.error('[EquiTrack cloud] Feed inventory save failed', error);
+    const errorMessage = isPermissionError(error) ? t('feedCloud.permissionBlocked') : getAuthErrorMessage(error);
+    showMessage(t('feedCloud.saveFailed', { error: errorMessage }));
+    return false;
+  }
+}
+
+async function deleteFeedItemFromCloud(id) {
+  const activeStable = getActiveStable();
+  if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
+  const item = state.inventory.find((entry) => entry.id === id);
+  if (!item) return;
+  let query = supabaseClient.from('feed_items').delete().eq('stable_id', activeStable.id);
+  query = item.cloudId ? query.eq('id', item.cloudId) : query.eq('local_id', item.id);
+  const { error } = await query.select('id');
+  if (error) throw error;
+}
+
+async function handleCloudFeedItemDelete(id) {
+  if (!confirmDelete(t('delete.inventory'))) {
+    showMessage(t('message.deleteCancelled'));
+    return;
+  }
+  try {
+    await deleteFeedItemFromCloud(id);
+    state.inventory = state.inventory.filter((item) => item.id !== id);
+    render();
+    showMessage(t('feedCloud.deleted'));
+  } catch (error) {
+    console.error('[EquiTrack cloud] Feed inventory delete failed', error);
+    const errorMessage = isPermissionError(error) ? t('feedCloud.permissionBlocked') : getAuthErrorMessage(error);
+    showMessage(t('feedCloud.deleteFailed', { error: errorMessage }));
   }
 }
 
@@ -2885,23 +3169,7 @@ function buildWorkLogRows(stableId, horseIdMap, sourceData = state) {
 
 function buildFeedRows(stableId, sourceData = state) {
   return sourceData.inventory.map((rawItem) => {
-    const item = normalizeFeedItem(rawItem);
-    return {
-      stable_id: stableId,
-      local_id: item.id,
-      name: item.name,
-      category: cleanText(item.category),
-      current_amount: toSafeNumber(item.quantity),
-      unit: cleanText(item.unit),
-      daily_usage: toSafeNumber(item.dailyUsage),
-      low_stock_threshold: toSafeNumber(item.minimum),
-      supplier: cleanText(item.supplier),
-      purchase_date: isValidDate(item.purchaseDate),
-      expiry_date: isValidDate(item.expiryDate),
-      storage_location: cleanText(item.storageLocation),
-      cost: nullableNumber(item.cost),
-      notes: cleanText(item.notes)
-    };
+    return feedItemToCloudRow(stableId, rawItem);
   });
 }
 
@@ -3046,6 +3314,11 @@ async function refreshCloudConnection() {
       state = loadData();
       workCloudWriteMode = false;
       workCloudStatusText = '';
+    }
+    if (feedCloudWriteMode) {
+      state = loadData();
+      feedCloudWriteMode = false;
+      feedCloudStatusText = '';
     }
     setCloudStatus({
       status: 'notConnected',
@@ -3279,6 +3552,7 @@ function render() {
   renderHorseCloudMode();
   renderTaskCloudMode();
   renderWorkCloudMode();
+  renderFeedCloudMode();
   renderCloudCleanup();
 }
 
@@ -3853,7 +4127,7 @@ function handleInventorySubmit(event) {
   if (!existingNormalized || Number(existingNormalized.quantity) !== quantity) {
     history.push({ date: todayValue, quantity });
   }
-  upsert('inventory', {
+  const feedItem = {
     id: form.elements.id.value,
     name: form.elements.name.value.trim(),
     category: form.elements.category.value.trim(),
@@ -3872,7 +4146,17 @@ function handleInventorySubmit(event) {
     shoppingListed: existingNormalized?.shoppingListed || false,
     lastUpdated: todayValue,
     history
-  });
+  };
+  if (feedCloudWriteMode) {
+    if (!feedItem.id) feedItem.id = createId();
+    const existingItem = state.inventory.find((item) => item.id === feedItem.id);
+    if (existingItem?.cloudId) feedItem.cloudId = existingItem.cloudId;
+    handleCloudFeedItemSave(feedItem).then((saved) => {
+      if (saved) resetForm(form);
+    });
+    return;
+  }
+  upsert('inventory', feedItem);
   resetForm(form);
   showMessage(t('message.inventorySaved'));
 }
@@ -3931,7 +4215,10 @@ function handleListClick(event) {
     else deleteItem('hours', id, t('delete.hours'), t('message.hoursDeleted'));
   }
   if (action === 'edit-inventory') fillInventoryForm(id);
-  if (action === 'delete-inventory') deleteItem('inventory', id, t('delete.inventory'), t('message.inventoryDeleted'));
+  if (action === 'delete-inventory') {
+    if (feedCloudWriteMode) handleCloudFeedItemDelete(id);
+    else deleteItem('inventory', id, t('delete.inventory'), t('message.inventoryDeleted'));
+  }
   if (action === 'toggle-shopping') toggleShoppingStatus(id);
   if (action === 'edit-event') fillEventForm(id);
   if (action === 'delete-event') deleteItem('calendarEvents', id, t('delete.event'), t('message.eventDeleted'));
@@ -3948,11 +4235,14 @@ function handleCalendarFilterChange() {
 
 function toggleShoppingStatus(id) {
   if (blockCloudPreviewEdit()) return;
-  state.inventory = state.inventory.map((item) => {
-    if (item.id !== id) return item;
-    const normalized = normalizeFeedItem(item);
-    return { ...normalized, shoppingListed: !normalized.shoppingListed };
-  });
+  const found = state.inventory.find((item) => item.id === id);
+  if (!found) return;
+  const nextItem = { ...normalizeFeedItem(found), shoppingListed: !normalizeFeedItem(found).shoppingListed };
+  if (feedCloudWriteMode) {
+    handleCloudFeedItemSave(nextItem, t('feedCloud.shoppingUpdated'));
+    return;
+  }
+  state.inventory = state.inventory.map((item) => (item.id === id ? nextItem : item));
   saveData();
   render();
   showMessage(t('message.shoppingUpdated'));
@@ -4283,6 +4573,8 @@ async function handleLogout() {
     taskCloudStatusText = '';
     workCloudWriteMode = false;
     workCloudStatusText = '';
+    feedCloudWriteMode = false;
+    feedCloudStatusText = '';
     setCloudStatus({
       status: 'notConnected',
       email: '',
@@ -4308,6 +4600,8 @@ async function handleLogout() {
     taskCloudStatusText = '';
     workCloudWriteMode = false;
     workCloudStatusText = '';
+    feedCloudWriteMode = false;
+    feedCloudStatusText = '';
     setCloudStatus({
       status: 'notConnected',
       email: '',
@@ -4400,6 +4694,9 @@ els.taskCloudLocalButton?.addEventListener('click', returnTaskWritesToLocalMode)
 els.workCloudConfirmInput?.addEventListener('input', handleWorkCloudConfirmationChange);
 els.workCloudEnableButton?.addEventListener('click', enableWorkCloudWrites);
 els.workCloudLocalButton?.addEventListener('click', returnWorkWritesToLocalMode);
+els.feedCloudConfirmInput?.addEventListener('input', handleFeedCloudConfirmationChange);
+els.feedCloudEnableButton?.addEventListener('click', enableFeedCloudWrites);
+els.feedCloudLocalButton?.addEventListener('click', returnFeedWritesToLocalMode);
 els.cloudCleanupConfirmInput?.addEventListener('input', handleCloudCleanupConfirmationChange);
 els.cloudCleanupButton?.addEventListener('click', cleanupCloudDataForStable);
 els.calendarScopeFilter?.addEventListener('change', handleCalendarFilterChange);
