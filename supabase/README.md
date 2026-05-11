@@ -58,6 +58,15 @@ Never put the Supabase `service_role` key in browser code.
 
 The EquiTrack-Web browser app should only use the Supabase publishable key. The `service_role` key bypasses RLS and must stay only in trusted server-side code, such as Supabase Edge Functions or a private backend.
 
+## Admin User Management
+
+Admin and stable-owner preparation lives in:
+
+- `supabase/migrations/admin_user_management.sql`
+- `supabase/admin-users.md`
+
+This prepares role checks and safe read policies for future admin/member screens. It does not create Auth users from the browser. Future user creation must use a trusted server flow such as a Supabase Edge Function.
+
 ## Manual Upload Preparation
 
 The app can prepare and manually upload local browser data to Supabase after login, but it does not enable automatic sync yet.

@@ -97,6 +97,13 @@ const translations = {
     'cloudAdvanced.eyebrow': 'Advanced cloud tools',
     'cloudAdvanced.title': 'Migration and troubleshooting',
     'cloudAdvanced.text': 'These tools are for migration, checking cloud counts, and cleanup. Normal signed-in use does not need them.',
+    'admin.eyebrow': 'Admin',
+    'admin.title': 'Admin user management coming soon',
+    'admin.text': 'User creation will be handled later through a trusted server flow. No browser admin actions are available yet.',
+    'admin.currentAccess': 'Current access',
+    'admin.accessAdmin': 'App admin',
+    'admin.accessOwner': 'Stable owner',
+    'admin.accessNone': 'Standard user',
     'migration.title': 'Move local data to cloud',
     'migration.text': 'Review the local browser data that will be copied to the active cloud stable after confirmation.',
     'migration.targetStable': 'Upload target stable',
@@ -1640,6 +1647,13 @@ Object.assign(translations.en, {
   'cloudAdvanced.eyebrow': 'Advanced cloud tools',
   'cloudAdvanced.title': 'Migration and troubleshooting',
   'cloudAdvanced.text': 'These tools are for migration, checking cloud counts, and cleanup. Normal signed-in use does not need them.',
+  'admin.eyebrow': 'Admin',
+  'admin.title': 'Admin user management coming soon',
+  'admin.text': 'User creation will be handled later through a trusted server flow. No browser admin actions are available yet.',
+  'admin.currentAccess': 'Current access',
+  'admin.accessAdmin': 'App admin',
+  'admin.accessOwner': 'Stable owner',
+  'admin.accessNone': 'Standard user',
   'cloudRead.warningLocalActive': 'Local browser data remains available for comparison.',
   'cloudMode.text': 'Signed-in users use cloud storage automatically when an active stable is assigned. Local data stays available as a fallback.',
   'cloudMode.localStatus': 'Local mode active',
@@ -1673,6 +1687,13 @@ Object.assign(translations.fi, {
   'cloudAdvanced.eyebrow': 'Pilven lisätyökalut',
   'cloudAdvanced.title': 'Siirto ja vianetsintä',
   'cloudAdvanced.text': 'Nämä työkalut ovat siirtoa, pilvimäärien tarkistusta ja siivousta varten. Tavallinen käyttö ei tarvitse niitä.',
+  'admin.eyebrow': 'Ylläpito',
+  'admin.title': 'Käyttäjien hallinta tulossa',
+  'admin.text': 'Käyttäjien luonti hoidetaan myöhemmin luotetun palvelinratkaisun kautta. Selaimessa ei ole vielä ylläpitotoimintoja.',
+  'admin.currentAccess': 'Nykyinen käyttöoikeus',
+  'admin.accessAdmin': 'Sovelluksen ylläpitäjä',
+  'admin.accessOwner': 'Tallin omistaja',
+  'admin.accessNone': 'Tavallinen käyttäjä',
   'cloudRead.warningLocalActive': 'Paikallinen selaindata säilyy vertailua varten.',
   'cloudMode.text': 'Kirjautuneet käyttäjät käyttävät pilvitallennusta automaattisesti, kun aktiivinen talli on määritetty. Paikallinen data säilyy varalla.',
   'cloudMode.localStatus': 'Paikallinen tila käytössä',
@@ -1706,6 +1727,13 @@ Object.assign(translations.it, {
   'cloudAdvanced.eyebrow': 'Strumenti cloud avanzati',
   'cloudAdvanced.title': 'Migrazione e risoluzione problemi',
   'cloudAdvanced.text': 'Questi strumenti servono per migrazione, controllo dei conteggi cloud e pulizia. L’uso normale non ne ha bisogno.',
+  'admin.eyebrow': 'Admin',
+  'admin.title': 'Gestione utenti admin in arrivo',
+  'admin.text': 'La creazione degli utenti sarà gestita più avanti tramite un flusso server affidabile. Nel browser non sono ancora disponibili azioni admin.',
+  'admin.currentAccess': 'Accesso attuale',
+  'admin.accessAdmin': 'Admin app',
+  'admin.accessOwner': 'Proprietario scuderia',
+  'admin.accessNone': 'Utente standard',
   'cloudRead.warningLocalActive': 'I dati locali del browser restano disponibili per il confronto.',
   'cloudMode.text': "Gli utenti connessi usano automaticamente l'archiviazione cloud quando è assegnata una scuderia attiva. I dati locali restano disponibili come fallback.",
   'cloudMode.localStatus': 'Modalità locale attiva',
@@ -1787,6 +1815,8 @@ let cloudState = {
   email: '',
   stableId: '',
   stableName: '',
+  membershipRole: '',
+  profileRole: '',
   messageKey: 'cloud.notConnected'
 };
 
@@ -1842,6 +1872,8 @@ const els = {
   cloudStableName: document.querySelector('#cloudStableName'),
   cloudConnectionStatus: document.querySelector('#cloudConnectionStatus'),
   cloudLocalNotice: document.querySelector('#cloudLocalNotice'),
+  adminPlaceholderPanel: document.querySelector('#adminPlaceholderPanel'),
+  adminAccessStatus: document.querySelector('#adminAccessStatus'),
   migrationStableName: document.querySelector('#migrationStableName'),
   migrationHorseCount: document.querySelector('#migrationHorseCount'),
   migrationTaskCount: document.querySelector('#migrationTaskCount'),
@@ -2209,6 +2241,7 @@ function updateAuthUi() {
   renderMigrationPreview();
   renderCloudReadPreview();
   renderCloudMode();
+  renderAdminPlaceholder();
   renderHorseCloudMode();
   renderTaskCloudMode();
   renderWorkCloudMode();
@@ -2237,6 +2270,7 @@ function setCloudStatus(nextState = {}) {
   renderMigrationPreview();
   renderCloudReadPreview();
   renderCloudMode();
+  renderAdminPlaceholder();
   renderHorseCloudMode();
   renderTaskCloudMode();
   renderWorkCloudMode();
@@ -2269,6 +2303,23 @@ function renderCloudStatus() {
   if (els.cloudConnectionStatus) els.cloudConnectionStatus.textContent = statusText;
   if (els.cloudLocalNotice) els.cloudLocalNotice.textContent = t('cloud.syncLocal');
   if (els.migrationStableName) els.migrationStableName.textContent = migrationStableText;
+}
+
+function isAdminUser() {
+  return cloudState.profileRole === 'admin' || cloudState.membershipRole === 'owner';
+}
+
+function renderAdminPlaceholder() {
+  const canViewAdmin = Boolean(getCurrentUser() && isAdminUser());
+  if (els.adminPlaceholderPanel) els.adminPlaceholderPanel.hidden = !canViewAdmin;
+  if (!els.adminAccessStatus) return;
+  if (cloudState.profileRole === 'admin') {
+    els.adminAccessStatus.textContent = t('admin.accessAdmin');
+  } else if (cloudState.membershipRole === 'owner') {
+    els.adminAccessStatus.textContent = t('admin.accessOwner');
+  } else {
+    els.adminAccessStatus.textContent = t('admin.accessNone');
+  }
 }
 
 function renderMigrationPreview() {
@@ -3796,6 +3847,23 @@ async function getUserStable(user = getCurrentUser()) {
   };
 }
 
+async function getUserProfileRole(user = getCurrentUser()) {
+  if (!supabaseClient || !user) return '';
+  const { data: profiles, error } = await withTimeout(
+    supabaseClient
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .limit(1),
+    10000,
+    'profiles query'
+  );
+  console.info('[EquiTrack cloud] profiles query result', { profiles, error });
+  if (error) throw error;
+  const profile = Array.isArray(profiles) ? profiles[0] : null;
+  return profile?.role || 'user';
+}
+
 async function refreshCloudConnection() {
   const user = getCurrentUser();
   if (!user) {
@@ -3840,6 +3908,8 @@ async function refreshCloudConnection() {
       email: '',
       stableId: '',
       stableName: '',
+      membershipRole: '',
+      profileRole: '',
       messageKey: 'cloud.notConnected'
     });
     return cloudState.status;
@@ -3849,9 +3919,12 @@ async function refreshCloudConnection() {
     email: user.email || '',
     stableId: '',
     stableName: '',
+    membershipRole: '',
+    profileRole: '',
     messageKey: 'cloud.loadingStable'
   });
   try {
+    const profileRole = await getUserProfileRole(user);
     const stable = await getUserStable(user);
     if (!stable) {
       if (cloudWriteMode || cloudPreviewMode) {
@@ -3866,6 +3939,8 @@ async function refreshCloudConnection() {
         email: user.email || '',
         stableId: '',
         stableName: '',
+        membershipRole: '',
+        profileRole,
         messageKey: 'cloud.noStable'
       });
       showMessage(t('cloudMode.noStable'));
@@ -3876,6 +3951,8 @@ async function refreshCloudConnection() {
       email: user.email || '',
       stableId: stable.stableId,
       stableName: stable.stableName,
+      membershipRole: stable.membershipRole || 'member',
+      profileRole,
       messageKey: 'cloud.connectedAs'
     });
     if (cloudLocalOverride) {
@@ -3906,6 +3983,8 @@ async function refreshCloudConnection() {
         email: user.email || '',
         stableId: '',
         stableName: '',
+        membershipRole: '',
+        profileRole: '',
         messageKey: 'cloud.permissionBlocked'
       });
       showMessage(t('cloud.permissionBlocked'));
@@ -3917,6 +3996,8 @@ async function refreshCloudConnection() {
       email: user.email || '',
       stableId: '',
       stableName: '',
+      membershipRole: '',
+      profileRole: '',
       messageKey: 'cloud.loadError'
     });
     showMessage(getAuthErrorMessage(error) || t('cloud.loadError'));
@@ -5149,6 +5230,8 @@ async function handleLogout() {
       email: '',
       stableId: '',
       stableName: '',
+      membershipRole: '',
+      profileRole: '',
       messageKey: 'cloud.notConnected'
     });
     updateAuthUi();
@@ -5180,6 +5263,8 @@ async function handleLogout() {
       email: '',
       stableId: '',
       stableName: '',
+      membershipRole: '',
+      profileRole: '',
       messageKey: 'cloud.notConnected'
     });
     updateAuthUi();
