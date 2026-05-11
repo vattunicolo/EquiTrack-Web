@@ -63,9 +63,10 @@ The EquiTrack-Web browser app should only use the Supabase publishable key. The 
 Admin and stable-owner preparation lives in:
 
 - `supabase/migrations/admin_user_management.sql`
+- `supabase/migrations/role_permissions.sql`
 - `supabase/admin-users.md`
 
-This prepares role checks and safe read policies for future admin/member screens. It does not create Auth users from the browser. Future user creation must use a trusted server flow such as a Supabase Edge Function.
+This prepares role checks, stable-scoped permission columns, and safe policies for future admin/member screens. It does not create Auth users from the browser. Future user creation must use a trusted server flow such as a Supabase Edge Function.
 
 ## Manual Upload Preparation
 

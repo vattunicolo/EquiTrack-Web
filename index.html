@@ -408,7 +408,12 @@
           <article id="adminPlaceholderPanel" class="panel admin-panel" hidden>
             <p class="eyebrow" data-i18n="admin.eyebrow">Admin</p>
             <h3 data-i18n="admin.title">Admin user management coming soon</h3>
-            <p data-i18n="admin.text">User creation will be handled later through a trusted server flow. No browser admin actions are available yet.</p>
+            <p data-i18n="admin.text">Future user creation will be handled through a trusted server flow. No browser admin actions are available yet.</p>
+            <ul class="migration-warnings">
+              <li data-i18n="admin.modelSuper">Super Admin creates stable owners and manages the full system.</li>
+              <li data-i18n="admin.modelOwner">Stable Owners manage their own stable and helper permissions.</li>
+              <li data-i18n="admin.modelMember">Helper Users only access the features they are allowed to use.</li>
+            </ul>
             <p class="update-note"><span data-i18n="admin.currentAccess">Current access</span>: <strong id="adminAccessStatus">-</strong></p>
           </article>
 

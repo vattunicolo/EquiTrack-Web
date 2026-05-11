@@ -99,8 +99,12 @@ const translations = {
     'cloudAdvanced.text': 'These tools are for migration, checking cloud counts, and cleanup. Normal signed-in use does not need them.',
     'admin.eyebrow': 'Admin',
     'admin.title': 'Admin user management coming soon',
-    'admin.text': 'User creation will be handled later through a trusted server flow. No browser admin actions are available yet.',
+    'admin.text': 'Future user creation will be handled through a trusted server flow. No browser admin actions are available yet.',
+    'admin.modelSuper': 'Super Admin creates stable owners and manages the full system.',
+    'admin.modelOwner': 'Stable Owners manage their own stable and helper permissions.',
+    'admin.modelMember': 'Helper Users only access the features they are allowed to use.',
     'admin.currentAccess': 'Current access',
+    'admin.accessSuper': 'Super Admin',
     'admin.accessAdmin': 'App admin',
     'admin.accessOwner': 'Stable owner',
     'admin.accessNone': 'Standard user',
@@ -1649,8 +1653,12 @@ Object.assign(translations.en, {
   'cloudAdvanced.text': 'These tools are for migration, checking cloud counts, and cleanup. Normal signed-in use does not need them.',
   'admin.eyebrow': 'Admin',
   'admin.title': 'Admin user management coming soon',
-  'admin.text': 'User creation will be handled later through a trusted server flow. No browser admin actions are available yet.',
+  'admin.text': 'Future user creation will be handled through a trusted server flow. No browser admin actions are available yet.',
+  'admin.modelSuper': 'Super Admin creates stable owners and manages the full system.',
+  'admin.modelOwner': 'Stable Owners manage their own stable and helper permissions.',
+  'admin.modelMember': 'Helper Users only access the features they are allowed to use.',
   'admin.currentAccess': 'Current access',
+  'admin.accessSuper': 'Super Admin',
   'admin.accessAdmin': 'App admin',
   'admin.accessOwner': 'Stable owner',
   'admin.accessNone': 'Standard user',
@@ -1689,8 +1697,12 @@ Object.assign(translations.fi, {
   'cloudAdvanced.text': 'Nämä työkalut ovat siirtoa, pilvimäärien tarkistusta ja siivousta varten. Tavallinen käyttö ei tarvitse niitä.',
   'admin.eyebrow': 'Ylläpito',
   'admin.title': 'Käyttäjien hallinta tulossa',
-  'admin.text': 'Käyttäjien luonti hoidetaan myöhemmin luotetun palvelinratkaisun kautta. Selaimessa ei ole vielä ylläpitotoimintoja.',
+  'admin.text': 'Käyttäjien luonti hoidetaan jatkossa luotetun palvelinratkaisun kautta. Selaimessa ei ole vielä ylläpitotoimintoja.',
+  'admin.modelSuper': 'Super Admin luo tallien omistajat ja hallitsee koko järjestelmää.',
+  'admin.modelOwner': 'Tallin omistajat hallitsevat omaa talliaan ja apukäyttäjien oikeuksia.',
+  'admin.modelMember': 'Apukäyttäjät pääsevät vain niihin toimintoihin, joihin heillä on lupa.',
   'admin.currentAccess': 'Nykyinen käyttöoikeus',
+  'admin.accessSuper': 'Super Admin',
   'admin.accessAdmin': 'Sovelluksen ylläpitäjä',
   'admin.accessOwner': 'Tallin omistaja',
   'admin.accessNone': 'Tavallinen käyttäjä',
@@ -1729,8 +1741,12 @@ Object.assign(translations.it, {
   'cloudAdvanced.text': 'Questi strumenti servono per migrazione, controllo dei conteggi cloud e pulizia. L’uso normale non ne ha bisogno.',
   'admin.eyebrow': 'Admin',
   'admin.title': 'Gestione utenti admin in arrivo',
-  'admin.text': 'La creazione degli utenti sarà gestita più avanti tramite un flusso server affidabile. Nel browser non sono ancora disponibili azioni admin.',
+  'admin.text': 'La creazione futura degli utenti sarà gestita tramite un flusso server affidabile. Nel browser non sono ancora disponibili azioni admin.',
+  'admin.modelSuper': 'Il Super Admin crea i proprietari delle scuderie e gestisce tutto il sistema.',
+  'admin.modelOwner': 'I proprietari gestiscono la propria scuderia e i permessi degli aiutanti.',
+  'admin.modelMember': 'Gli aiutanti accedono solo alle funzioni consentite.',
   'admin.currentAccess': 'Accesso attuale',
+  'admin.accessSuper': 'Super Admin',
   'admin.accessAdmin': 'Admin app',
   'admin.accessOwner': 'Proprietario scuderia',
   'admin.accessNone': 'Utente standard',
@@ -2306,14 +2322,16 @@ function renderCloudStatus() {
 }
 
 function isAdminUser() {
-  return cloudState.profileRole === 'admin' || cloudState.membershipRole === 'owner';
+  return ['admin', 'super_admin'].includes(cloudState.profileRole) || cloudState.membershipRole === 'owner';
 }
 
 function renderAdminPlaceholder() {
   const canViewAdmin = Boolean(getCurrentUser() && isAdminUser());
   if (els.adminPlaceholderPanel) els.adminPlaceholderPanel.hidden = !canViewAdmin;
   if (!els.adminAccessStatus) return;
-  if (cloudState.profileRole === 'admin') {
+  if (cloudState.profileRole === 'super_admin') {
+    els.adminAccessStatus.textContent = t('admin.accessSuper');
+  } else if (cloudState.profileRole === 'admin') {
     els.adminAccessStatus.textContent = t('admin.accessAdmin');
   } else if (cloudState.membershipRole === 'owner') {
     els.adminAccessStatus.textContent = t('admin.accessOwner');
