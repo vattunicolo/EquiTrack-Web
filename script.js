@@ -8,11 +8,25 @@ const CLOUD_LOCAL_OVERRIDE_KEY = 'equitrack-web-cloud-local-override';
 const DEFAULT_LANGUAGE = 'en';
 const EVENT_TYPES = ['race', 'training', 'shoeing', 'vaccination', 'vet', 'feeding', 'other'];
 const PROTECTED_VIEWS = ['stable', 'calendar', 'settings'];
+const ADMIN_PERMISSION_FIELDS = [
+  'can_view_horses',
+  'can_edit_horses',
+  'can_view_tasks',
+  'can_edit_tasks',
+  'can_view_calendar',
+  'can_edit_calendar',
+  'can_view_feed',
+  'can_edit_feed',
+  'can_view_work_logs',
+  'can_edit_work_logs',
+  'can_manage_users'
+];
 
 const SUPABASE_CONFIG = {
   SUPABASE_URL: 'https://fuojlxcexpnszepgipbv.supabase.co',
   SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_6_byc2-epHvcZw1g5LlFOg_wAGSYMkU'
 };
+const CREATE_USER_FUNCTION_URL = 'https://fuojlxcexpnszepgipbv.functions.supabase.co/create-user';
 
 // Never put service_role key in browser code.
 // Admin user creation must happen later via a Supabase Edge Function or trusted server.
@@ -98,8 +112,8 @@ const translations = {
     'cloudAdvanced.title': 'Migration and troubleshooting',
     'cloudAdvanced.text': 'These tools are for migration, checking cloud counts, and cleanup. Normal signed-in use does not need them.',
     'admin.eyebrow': 'Admin',
-    'admin.title': 'Admin user management coming soon',
-    'admin.text': 'Future user creation will be handled through a trusted server flow. No browser admin actions are available yet.',
+    'admin.title': 'Admin User Management',
+    'admin.text': 'Create stable users through the secure Supabase Edge Function. No service role key is stored in the browser.',
     'admin.modelSuper': 'Super Admin creates stable owners and manages the full system.',
     'admin.modelOwner': 'Stable Owners manage their own stable and helper permissions.',
     'admin.modelMember': 'Helper Users only access the features they are allowed to use.',
@@ -108,7 +122,35 @@ const translations = {
     'admin.accessSuper': 'Super Admin',
     'admin.accessAdmin': 'App admin',
     'admin.accessOwner': 'Stable owner',
+    'admin.accessManager': 'User manager',
     'admin.accessNone': 'Standard user',
+    'admin.email': 'Email',
+    'admin.password': 'Temporary password',
+    'admin.fullName': 'Full name',
+    'admin.stableRole': 'Stable role',
+    'admin.roleOwner': 'Owner',
+    'admin.roleMember': 'Member',
+    'admin.roleViewer': 'Viewer',
+    'admin.permissions': 'Permissions',
+    'admin.canViewHorses': 'View horses',
+    'admin.canEditHorses': 'Edit horses',
+    'admin.canViewTasks': 'View tasks',
+    'admin.canEditTasks': 'Edit tasks',
+    'admin.canViewCalendar': 'View calendar',
+    'admin.canEditCalendar': 'Edit calendar',
+    'admin.canViewFeed': 'View feed inventory',
+    'admin.canEditFeed': 'Edit feed inventory',
+    'admin.canViewWorkLogs': 'View work logs',
+    'admin.canEditWorkLogs': 'Edit work logs',
+    'admin.canManageUsers': 'Manage users',
+    'admin.createButton': 'Create user',
+    'admin.ready': 'Ready to create a user through the secure Edge Function.',
+    'admin.notAllowed': 'You do not have permission to manage users.',
+    'admin.noStable': 'An active stable is required before creating a stable user.',
+    'admin.ownerOnlySuper': 'Only a Super Admin can create stable owners.',
+    'admin.creating': 'Creating user...',
+    'admin.created': 'Created {email} as {role}.',
+    'admin.failed': 'User creation failed: {error}',
     'migration.title': 'Move local data to cloud',
     'migration.text': 'Review the local browser data that will be copied to the active cloud stable after confirmation.',
     'migration.targetStable': 'Upload target stable',
@@ -1653,8 +1695,8 @@ Object.assign(translations.en, {
   'cloudAdvanced.title': 'Migration and troubleshooting',
   'cloudAdvanced.text': 'These tools are for migration, checking cloud counts, and cleanup. Normal signed-in use does not need them.',
   'admin.eyebrow': 'Admin',
-  'admin.title': 'Admin user management coming soon',
-  'admin.text': 'Future user creation will be handled through a trusted server flow. No browser admin actions are available yet.',
+  'admin.title': 'Admin User Management',
+  'admin.text': 'Create stable users through the secure Supabase Edge Function. No service role key is stored in the browser.',
   'admin.modelSuper': 'Super Admin creates stable owners and manages the full system.',
   'admin.modelOwner': 'Stable Owners manage their own stable and helper permissions.',
   'admin.modelMember': 'Helper Users only access the features they are allowed to use.',
@@ -1663,7 +1705,35 @@ Object.assign(translations.en, {
   'admin.accessSuper': 'Super Admin',
   'admin.accessAdmin': 'App admin',
   'admin.accessOwner': 'Stable owner',
+  'admin.accessManager': 'User manager',
   'admin.accessNone': 'Standard user',
+  'admin.email': 'Email',
+  'admin.password': 'Temporary password',
+  'admin.fullName': 'Full name',
+  'admin.stableRole': 'Stable role',
+  'admin.roleOwner': 'Owner',
+  'admin.roleMember': 'Member',
+  'admin.roleViewer': 'Viewer',
+  'admin.permissions': 'Permissions',
+  'admin.canViewHorses': 'View horses',
+  'admin.canEditHorses': 'Edit horses',
+  'admin.canViewTasks': 'View tasks',
+  'admin.canEditTasks': 'Edit tasks',
+  'admin.canViewCalendar': 'View calendar',
+  'admin.canEditCalendar': 'Edit calendar',
+  'admin.canViewFeed': 'View feed inventory',
+  'admin.canEditFeed': 'Edit feed inventory',
+  'admin.canViewWorkLogs': 'View work logs',
+  'admin.canEditWorkLogs': 'Edit work logs',
+  'admin.canManageUsers': 'Manage users',
+  'admin.createButton': 'Create user',
+  'admin.ready': 'Ready to create a user through the secure Edge Function.',
+  'admin.notAllowed': 'You do not have permission to manage users.',
+  'admin.noStable': 'An active stable is required before creating a stable user.',
+  'admin.ownerOnlySuper': 'Only a Super Admin can create stable owners.',
+  'admin.creating': 'Creating user...',
+  'admin.created': 'Created {email} as {role}.',
+  'admin.failed': 'User creation failed: {error}',
   'cloudRead.warningLocalActive': 'Local browser data remains available for comparison.',
   'cloudMode.text': 'Signed-in users use cloud storage automatically when an active stable is assigned. Local data stays available as a fallback.',
   'cloudMode.localStatus': 'Local mode active',
@@ -1698,8 +1768,8 @@ Object.assign(translations.fi, {
   'cloudAdvanced.title': 'Siirto ja vianetsintä',
   'cloudAdvanced.text': 'Nämä työkalut ovat siirtoa, pilvimäärien tarkistusta ja siivousta varten. Tavallinen käyttö ei tarvitse niitä.',
   'admin.eyebrow': 'Ylläpito',
-  'admin.title': 'Käyttäjien hallinta tulossa',
-  'admin.text': 'Käyttäjien luonti hoidetaan jatkossa luotetun palvelinratkaisun kautta. Selaimessa ei ole vielä ylläpitotoimintoja.',
+  'admin.title': 'Käyttäjien hallinta',
+  'admin.text': 'Luo tallin käyttäjiä turvallisen Supabase Edge Functionin kautta. Service role -avainta ei tallenneta selaimeen.',
   'admin.modelSuper': 'Super Admin luo tallien omistajat ja hallitsee koko järjestelmää.',
   'admin.modelOwner': 'Tallin omistajat hallitsevat omaa talliaan ja apukäyttäjien oikeuksia.',
   'admin.modelMember': 'Apukäyttäjät pääsevät vain niihin toimintoihin, joihin heillä on lupa.',
@@ -1708,7 +1778,35 @@ Object.assign(translations.fi, {
   'admin.accessSuper': 'Super Admin',
   'admin.accessAdmin': 'Sovelluksen ylläpitäjä',
   'admin.accessOwner': 'Tallin omistaja',
+  'admin.accessManager': 'Käyttäjähallinta',
   'admin.accessNone': 'Tavallinen käyttäjä',
+  'admin.email': 'Sähköposti',
+  'admin.password': 'Väliaikainen salasana',
+  'admin.fullName': 'Koko nimi',
+  'admin.stableRole': 'Tallirooli',
+  'admin.roleOwner': 'Omistaja',
+  'admin.roleMember': 'Jäsen',
+  'admin.roleViewer': 'Katselija',
+  'admin.permissions': 'Oikeudet',
+  'admin.canViewHorses': 'Näytä hevoset',
+  'admin.canEditHorses': 'Muokkaa hevosia',
+  'admin.canViewTasks': 'Näytä tehtävät',
+  'admin.canEditTasks': 'Muokkaa tehtäviä',
+  'admin.canViewCalendar': 'Näytä kalenteri',
+  'admin.canEditCalendar': 'Muokkaa kalenteria',
+  'admin.canViewFeed': 'Näytä ruokavarasto',
+  'admin.canEditFeed': 'Muokkaa ruokavarastoa',
+  'admin.canViewWorkLogs': 'Näytä työtunnit',
+  'admin.canEditWorkLogs': 'Muokkaa työtunteja',
+  'admin.canManageUsers': 'Hallitse käyttäjiä',
+  'admin.createButton': 'Luo käyttäjä',
+  'admin.ready': 'Valmis luomaan käyttäjän turvallisen Edge Functionin kautta.',
+  'admin.notAllowed': 'Sinulla ei ole oikeutta hallita käyttäjiä.',
+  'admin.noStable': 'Aktiivinen talli tarvitaan ennen tallikäyttäjän luontia.',
+  'admin.ownerOnlySuper': 'Vain Super Admin voi luoda tallin omistajia.',
+  'admin.creating': 'Luodaan käyttäjää...',
+  'admin.created': 'Luotu {email} roolilla {role}.',
+  'admin.failed': 'Käyttäjän luonti epäonnistui: {error}',
   'cloudRead.warningLocalActive': 'Paikallinen selaindata säilyy vertailua varten.',
   'cloudMode.text': 'Kirjautuneet käyttäjät käyttävät pilvitallennusta automaattisesti, kun aktiivinen talli on määritetty. Paikallinen data säilyy varalla.',
   'cloudMode.localStatus': 'Paikallinen tila käytössä',
@@ -1743,8 +1841,8 @@ Object.assign(translations.it, {
   'cloudAdvanced.title': 'Migrazione e risoluzione problemi',
   'cloudAdvanced.text': 'Questi strumenti servono per migrazione, controllo dei conteggi cloud e pulizia. L’uso normale non ne ha bisogno.',
   'admin.eyebrow': 'Admin',
-  'admin.title': 'Gestione utenti admin in arrivo',
-  'admin.text': 'La creazione futura degli utenti sarà gestita tramite un flusso server affidabile. Nel browser non sono ancora disponibili azioni admin.',
+  'admin.title': 'Gestione utenti admin',
+  'admin.text': 'Crea utenti della scuderia tramite una Supabase Edge Function sicura. Nessuna service role key viene salvata nel browser.',
   'admin.modelSuper': 'Il Super Admin crea i proprietari delle scuderie e gestisce tutto il sistema.',
   'admin.modelOwner': 'I proprietari gestiscono la propria scuderia e i permessi degli aiutanti.',
   'admin.modelMember': 'Gli aiutanti accedono solo alle funzioni consentite.',
@@ -1753,7 +1851,35 @@ Object.assign(translations.it, {
   'admin.accessSuper': 'Super Admin',
   'admin.accessAdmin': 'Admin app',
   'admin.accessOwner': 'Proprietario scuderia',
+  'admin.accessManager': 'Gestore utenti',
   'admin.accessNone': 'Utente standard',
+  'admin.email': 'Email',
+  'admin.password': 'Password temporanea',
+  'admin.fullName': 'Nome completo',
+  'admin.stableRole': 'Ruolo scuderia',
+  'admin.roleOwner': 'Proprietario',
+  'admin.roleMember': 'Membro',
+  'admin.roleViewer': 'Visualizzatore',
+  'admin.permissions': 'Permessi',
+  'admin.canViewHorses': 'Vedi cavalli',
+  'admin.canEditHorses': 'Modifica cavalli',
+  'admin.canViewTasks': 'Vedi attività',
+  'admin.canEditTasks': 'Modifica attività',
+  'admin.canViewCalendar': 'Vedi calendario',
+  'admin.canEditCalendar': 'Modifica calendario',
+  'admin.canViewFeed': 'Vedi scorte di mangime',
+  'admin.canEditFeed': 'Modifica scorte di mangime',
+  'admin.canViewWorkLogs': 'Vedi ore di lavoro',
+  'admin.canEditWorkLogs': 'Modifica ore di lavoro',
+  'admin.canManageUsers': 'Gestisci utenti',
+  'admin.createButton': 'Crea utente',
+  'admin.ready': "Pronto a creare un utente tramite l'Edge Function sicura.",
+  'admin.notAllowed': 'Non hai il permesso di gestire utenti.',
+  'admin.noStable': 'Serve una scuderia attiva prima di creare un utente della scuderia.',
+  'admin.ownerOnlySuper': 'Solo un Super Admin può creare proprietari della scuderia.',
+  'admin.creating': 'Creazione utente...',
+  'admin.created': 'Creato {email} con ruolo {role}.',
+  'admin.failed': 'Creazione utente non riuscita: {error}',
   'cloudRead.warningLocalActive': 'I dati locali del browser restano disponibili per il confronto.',
   'cloudMode.text': "Gli utenti connessi usano automaticamente l'archiviazione cloud quando è assegnata una scuderia attiva. I dati locali restano disponibili come fallback.",
   'cloudMode.localStatus': 'Modalità locale attiva',
@@ -1837,6 +1963,7 @@ let cloudState = {
   stableName: '',
   membershipRole: '',
   profileRole: '',
+  canManageUsers: false,
   messageKey: 'cloud.notConnected'
 };
 
@@ -1893,6 +2020,9 @@ const els = {
   cloudConnectionStatus: document.querySelector('#cloudConnectionStatus'),
   cloudLocalNotice: document.querySelector('#cloudLocalNotice'),
   adminPlaceholderPanel: document.querySelector('#adminPlaceholderPanel'),
+  adminUserForm: document.querySelector('#adminUserForm'),
+  adminCreateUserButton: document.querySelector('#adminCreateUserButton'),
+  adminUserStatus: document.querySelector('#adminUserStatus'),
   adminAccessStatus: document.querySelector('#adminAccessStatus'),
   migrationStableName: document.querySelector('#migrationStableName'),
   migrationHorseCount: document.querySelector('#migrationHorseCount'),
@@ -2326,7 +2456,11 @@ function renderCloudStatus() {
 }
 
 function isAdminUser() {
-  return ['admin', 'super_admin'].includes(cloudState.profileRole) || cloudState.membershipRole === 'owner';
+  return ['admin', 'super_admin'].includes(cloudState.profileRole) || cloudState.membershipRole === 'owner' || cloudState.canManageUsers === true;
+}
+
+function isSuperAdmin() {
+  return cloudState.profileRole === 'super_admin';
 }
 
 function renderAdminPlaceholder() {
@@ -2339,8 +2473,132 @@ function renderAdminPlaceholder() {
     els.adminAccessStatus.textContent = t('admin.accessAdmin');
   } else if (cloudState.membershipRole === 'owner') {
     els.adminAccessStatus.textContent = t('admin.accessOwner');
+  } else if (cloudState.canManageUsers === true) {
+    els.adminAccessStatus.textContent = t('admin.accessManager');
   } else {
     els.adminAccessStatus.textContent = t('admin.accessNone');
+  }
+  renderAdminUserForm();
+}
+
+function getAdminPermissionInputs() {
+  if (!els.adminUserForm) return [];
+  return ADMIN_PERMISSION_FIELDS
+    .map((field) => els.adminUserForm.elements[field])
+    .filter(Boolean);
+}
+
+function setAdminPermissionValues(role) {
+  if (!els.adminUserForm) return;
+  const values = {
+    viewer: ['can_view_horses', 'can_view_tasks', 'can_view_calendar'],
+    member: ['can_view_horses', 'can_view_tasks', 'can_view_calendar'],
+    owner: ADMIN_PERMISSION_FIELDS
+  };
+  const active = new Set(values[role] || values.member);
+  getAdminPermissionInputs().forEach((input) => {
+    input.checked = active.has(input.name);
+    input.disabled = role === 'owner';
+  });
+}
+
+function renderAdminUserForm() {
+  if (!els.adminUserForm) return;
+  const canViewAdmin = Boolean(getCurrentUser() && isAdminUser());
+  const activeStable = getActiveStable();
+  const roleSelect = els.adminUserForm.elements.stableRole;
+  const ownerOption = roleSelect?.querySelector('option[value="owner"]');
+  if (ownerOption) ownerOption.disabled = !isSuperAdmin();
+  if (!isSuperAdmin() && roleSelect?.value === 'owner') {
+    roleSelect.value = 'member';
+    setAdminPermissionValues('member');
+  }
+  const canSubmit = canViewAdmin && Boolean(activeStable.id) && Boolean(supabaseClient);
+  if (els.adminCreateUserButton) els.adminCreateUserButton.disabled = !canSubmit;
+  if (els.adminUserStatus && !els.adminUserStatus.dataset.busy) {
+    els.adminUserStatus.textContent = canSubmit ? t('admin.ready') : t(canViewAdmin ? 'admin.noStable' : 'admin.notAllowed');
+  }
+}
+
+function getSelectedAdminPermissions() {
+  const permissions = {};
+  getAdminPermissionInputs().forEach((input) => {
+    permissions[input.name] = input.checked === true;
+  });
+  return permissions;
+}
+
+async function handleAdminUserSubmit(event) {
+  event.preventDefault();
+  if (!getCurrentUser() || !isAdminUser()) {
+    showMessage(t('admin.notAllowed'));
+    return;
+  }
+  const activeStable = getActiveStable();
+  if (!activeStable.id) {
+    showMessage(t('admin.noStable'));
+    renderAdminUserForm();
+    return;
+  }
+  const form = event.currentTarget;
+  const stableRole = form.elements.stableRole.value;
+  if (stableRole === 'owner' && !isSuperAdmin()) {
+    showMessage(t('admin.ownerOnlySuper'));
+    renderAdminUserForm();
+    return;
+  }
+  if (!supabaseClient) {
+    showMessage(t('message.authConfigMissing'));
+    return;
+  }
+  const { data, error: sessionError } = await supabaseClient.auth.getSession();
+  const accessToken = data?.session?.access_token;
+  if (sessionError || !accessToken) {
+    showMessage(t('message.authProtected'));
+    return;
+  }
+
+  const body = {
+    email: form.elements.email.value.trim(),
+    password: form.elements.password.value,
+    full_name: form.elements.fullName.value.trim(),
+    stable_id: activeStable.id,
+    stable_role: stableRole,
+    permissions: getSelectedAdminPermissions()
+  };
+
+  if (els.adminCreateUserButton) els.adminCreateUserButton.disabled = true;
+  if (els.adminUserStatus) {
+    els.adminUserStatus.dataset.busy = 'true';
+    els.adminUserStatus.textContent = t('admin.creating');
+  }
+  let finalStatus = '';
+  try {
+    const response = await fetch(CREATE_USER_FUNCTION_URL, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || result.error) {
+      throw new Error(result.error || `HTTP ${response.status}`);
+    }
+    form.elements.password.value = '';
+    const message = t('admin.created', { email: body.email, role: t(`admin.role${stableRole[0].toUpperCase()}${stableRole.slice(1)}`) });
+    finalStatus = message;
+    showMessage(message);
+  } catch (error) {
+    console.error('[EquiTrack admin] Create user failed', error);
+    const message = t('admin.failed', { error: error.message || 'Unknown error' });
+    finalStatus = message;
+    showMessage(message);
+  } finally {
+    if (els.adminUserStatus) delete els.adminUserStatus.dataset.busy;
+    renderAdminUserForm();
+    if (els.adminUserStatus && finalStatus) els.adminUserStatus.textContent = finalStatus;
   }
 }
 
@@ -3839,7 +4097,7 @@ async function getUserStable(user = getCurrentUser()) {
   const { data: memberships, error: membershipError } = await withTimeout(
     supabaseClient
       .from('stable_members')
-      .select('stable_id, role')
+      .select('stable_id, role, can_manage_users')
       .eq('user_id', user.id)
       .limit(1),
     10000,
@@ -3865,7 +4123,8 @@ async function getUserStable(user = getCurrentUser()) {
   return {
     stableId: stable.id,
     stableName: stable.name,
-    membershipRole: membership.role || 'member'
+    membershipRole: membership.role || 'member',
+    canManageUsers: membership.can_manage_users === true
   };
 }
 
@@ -3932,6 +4191,7 @@ async function refreshCloudConnection() {
       stableName: '',
       membershipRole: '',
       profileRole: '',
+      canManageUsers: false,
       messageKey: 'cloud.notConnected'
     });
     return cloudState.status;
@@ -3943,6 +4203,7 @@ async function refreshCloudConnection() {
     stableName: '',
     membershipRole: '',
     profileRole: '',
+    canManageUsers: false,
     messageKey: 'cloud.loadingStable'
   });
   try {
@@ -3963,6 +4224,7 @@ async function refreshCloudConnection() {
         stableName: '',
         membershipRole: '',
         profileRole,
+        canManageUsers: false,
         messageKey: 'cloud.noStable'
       });
       showMessage(t('cloudMode.noStable'));
@@ -3975,6 +4237,7 @@ async function refreshCloudConnection() {
       stableName: stable.stableName,
       membershipRole: stable.membershipRole || 'member',
       profileRole,
+      canManageUsers: stable.canManageUsers === true,
       messageKey: 'cloud.connectedAs'
     });
     if (cloudLocalOverride) {
@@ -4007,6 +4270,7 @@ async function refreshCloudConnection() {
         stableName: '',
         membershipRole: '',
         profileRole: '',
+        canManageUsers: false,
         messageKey: 'cloud.permissionBlocked'
       });
       showMessage(t('cloud.permissionBlocked'));
@@ -4020,6 +4284,7 @@ async function refreshCloudConnection() {
       stableName: '',
       membershipRole: '',
       profileRole: '',
+      canManageUsers: false,
       messageKey: 'cloud.loadError'
     });
     showMessage(getAuthErrorMessage(error) || t('cloud.loadError'));
@@ -5254,6 +5519,7 @@ async function handleLogout() {
       stableName: '',
       membershipRole: '',
       profileRole: '',
+      canManageUsers: false,
       messageKey: 'cloud.notConnected'
     });
     updateAuthUi();
@@ -5287,6 +5553,7 @@ async function handleLogout() {
       stableName: '',
       membershipRole: '',
       profileRole: '',
+      canManageUsers: false,
       messageKey: 'cloud.notConnected'
     });
     updateAuthUi();
@@ -5360,6 +5627,11 @@ els.resetDataButton.addEventListener('click', resetLocalData);
 els.languageSelect.addEventListener('change', handleLanguageChange);
 els.loginForm?.addEventListener('submit', handleLoginSubmit);
 els.logoutButton?.addEventListener('click', handleLogout);
+els.adminUserForm?.addEventListener('submit', handleAdminUserSubmit);
+els.adminUserForm?.elements.stableRole?.addEventListener('change', (event) => {
+  setAdminPermissionValues(event.target.value);
+  renderAdminUserForm();
+});
 els.migrationConfirmInput?.addEventListener('input', handleMigrationConfirmationChange);
 els.migrationUploadButton?.addEventListener('click', uploadLocalDataToCloud);
 els.cloudReadButton?.addEventListener('click', checkCloudDataPreview);
@@ -5389,6 +5661,7 @@ els.calendarHorseFilter?.addEventListener('change', handleCalendarFilterChange);
 els.taskForm.elements.date.value = today();
 els.hoursForm.elements.date.value = today();
 els.eventForm.elements.date.value = today();
+setAdminPermissionValues(els.adminUserForm?.elements.stableRole?.value || 'viewer');
 
 applyTranslations();
 setupViewNav();

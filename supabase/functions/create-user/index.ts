@@ -125,9 +125,9 @@ function getBearerToken(request: Request) {
 
 function serviceConfig() {
   const supabaseUrl = Deno.env.get('SUPABASE_URL');
-  const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+  const serviceRoleKey = Deno.env.get('SERVICE_ROLE_KEY') ?? Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
   if (!supabaseUrl || !serviceRoleKey) {
-    throw new Error('Function is missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY.');
+    throw new Error('Function is missing SUPABASE_URL or SERVICE_ROLE_KEY.');
   }
   return { supabaseUrl, serviceRoleKey };
 }
@@ -201,7 +201,7 @@ serve(async (request: Request) => {
       if (!callerCanManageStable) {
         return jsonResponse(request, 403, { error: 'You do not have permission to create users for this stable.' });
       }
-      if (stableRole === 'owner' || profileRole !== 'user' || permissions.can_manage_users) {
+      if (stableRole === 'owner' || profileRole !== 'user') {
         return jsonResponse(request, 403, { error: 'Stable owners can create helper users only.' });
       }
     }

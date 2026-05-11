@@ -82,16 +82,14 @@ Set the required function secrets:
 
 ```bash
 supabase secrets set SUPABASE_URL="https://fuojlxcexpnszepgipbv.supabase.co"
-supabase secrets set SUPABASE_SERVICE_ROLE_KEY="PASTE_SERVICE_ROLE_KEY_HERE"
-```
-
-If you prefer the shorter secret name from your deployment notes, you can also store it as:
-
-```bash
 supabase secrets set SERVICE_ROLE_KEY="PASTE_SERVICE_ROLE_KEY_HERE"
 ```
 
-Important: the current function reads `SUPABASE_SERVICE_ROLE_KEY`. If you only set `SERVICE_ROLE_KEY`, update the function first or also set `SUPABASE_SERVICE_ROLE_KEY`.
+The function also accepts the older `SUPABASE_SERVICE_ROLE_KEY` name for compatibility:
+
+```bash
+supabase secrets set SUPABASE_SERVICE_ROLE_KEY="PASTE_SERVICE_ROLE_KEY_HERE"
+```
 
 The service role key must be stored only as a Supabase function secret. Do not place it in:
 
@@ -185,6 +183,7 @@ Stable Owner / permitted manager:
 - Can create helper users only for their own stable.
 - Cannot create `owner`, `admin`, or `super_admin` users.
 - Cannot assign users to another stable.
+- Can grant stable-scoped helper permissions, including `can_manage_users`.
 
 Helper users:
 

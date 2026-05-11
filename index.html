@@ -407,8 +407,8 @@
 
           <article id="adminPlaceholderPanel" class="panel admin-panel" hidden>
             <p class="eyebrow" data-i18n="admin.eyebrow">Admin</p>
-            <h3 data-i18n="admin.title">Admin user management coming soon</h3>
-            <p data-i18n="admin.text">Future user creation will be handled through a trusted server flow. No browser admin actions are available yet.</p>
+            <h3 data-i18n="admin.title">Admin User Management</h3>
+            <p data-i18n="admin.text">Create stable users through the secure Supabase Edge Function. No service role key is stored in the browser.</p>
             <ul class="migration-warnings">
               <li data-i18n="admin.modelSuper">Super Admin creates stable owners and manages the full system.</li>
               <li data-i18n="admin.modelOwner">Stable Owners manage their own stable and helper permissions.</li>
@@ -416,6 +416,37 @@
               <li data-i18n="admin.edgeFunction">User creation will use a secure Supabase Edge Function.</li>
             </ul>
             <p class="update-note"><span data-i18n="admin.currentAccess">Current access</span>: <strong id="adminAccessStatus">-</strong></p>
+            <form id="adminUserForm" class="admin-user-form">
+              <div class="form-grid">
+                <label><span data-i18n="admin.email">Email</span><input name="email" type="email" autocomplete="off" required placeholder="helper@example.com"></label>
+                <label><span data-i18n="admin.password">Temporary password</span><input name="password" type="password" autocomplete="new-password" required></label>
+                <label><span data-i18n="admin.fullName">Full name</span><input name="fullName" autocomplete="off"></label>
+                <label>
+                  <span data-i18n="admin.stableRole">Stable role</span>
+                  <select name="stableRole">
+                    <option value="viewer" data-i18n="admin.roleViewer">Viewer</option>
+                    <option value="member" data-i18n="admin.roleMember">Member</option>
+                    <option value="owner" data-i18n="admin.roleOwner">Owner</option>
+                  </select>
+                </label>
+              </div>
+              <fieldset class="permission-grid">
+                <legend data-i18n="admin.permissions">Permissions</legend>
+                <label><input name="can_view_horses" type="checkbox"><span data-i18n="admin.canViewHorses">View horses</span></label>
+                <label><input name="can_edit_horses" type="checkbox"><span data-i18n="admin.canEditHorses">Edit horses</span></label>
+                <label><input name="can_view_tasks" type="checkbox"><span data-i18n="admin.canViewTasks">View tasks</span></label>
+                <label><input name="can_edit_tasks" type="checkbox"><span data-i18n="admin.canEditTasks">Edit tasks</span></label>
+                <label><input name="can_view_calendar" type="checkbox"><span data-i18n="admin.canViewCalendar">View calendar</span></label>
+                <label><input name="can_edit_calendar" type="checkbox"><span data-i18n="admin.canEditCalendar">Edit calendar</span></label>
+                <label><input name="can_view_feed" type="checkbox"><span data-i18n="admin.canViewFeed">View feed inventory</span></label>
+                <label><input name="can_edit_feed" type="checkbox"><span data-i18n="admin.canEditFeed">Edit feed inventory</span></label>
+                <label><input name="can_view_work_logs" type="checkbox"><span data-i18n="admin.canViewWorkLogs">View work logs</span></label>
+                <label><input name="can_edit_work_logs" type="checkbox"><span data-i18n="admin.canEditWorkLogs">Edit work logs</span></label>
+                <label><input name="can_manage_users" type="checkbox"><span data-i18n="admin.canManageUsers">Manage users</span></label>
+              </fieldset>
+              <button id="adminCreateUserButton" class="button primary" type="submit" data-i18n="admin.createButton">Create user</button>
+              <p id="adminUserStatus" class="update-note" data-i18n="admin.ready">Ready to create a user through the secure Edge Function.</p>
+            </form>
           </article>
 
           <article class="panel cloud-panel">

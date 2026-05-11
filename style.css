@@ -481,6 +481,38 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
   border-color: rgba(20, 51, 90, 0.16);
   background: #ffffff;
 }
+.admin-user-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 16px;
+}
+.permission-grid {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  padding: 14px;
+}
+.permission-grid legend {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 850;
+  padding: 0 6px;
+}
+.permission-grid label {
+  align-items: center;
+  display: flex;
+  font-size: 13px;
+  font-weight: 750;
+  gap: 8px;
+  min-width: 0;
+}
+.permission-grid input {
+  min-height: 18px;
+  width: 18px;
+}
 .calendar-tools {
   align-items: end;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1003,7 +1035,7 @@ textarea { resize: vertical; }
     text-align: left;
   }
   .button { min-height: 50px; padding: 0 14px; }
-  .summary-grid, .feature-grid, .side-tabs, .entry-form, .item-card, .feed-stats, .quick-actions, .form-group, .horse-detail-grid, .calendar-tools { grid-template-columns: minmax(0, 1fr); }
+  .summary-grid, .feature-grid, .side-tabs, .entry-form, .item-card, .feed-stats, .quick-actions, .form-group, .horse-detail-grid, .calendar-tools, .permission-grid { grid-template-columns: minmax(0, 1fr); }
   .summary-card strong { font-size: 36px; }
   .feature-card, .panel, .summary-card { padding: 18px; }
   .update-notice { align-items: stretch; display: grid; }
