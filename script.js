@@ -4104,7 +4104,18 @@ async function getUserStable(user = getCurrentUser()) {
     'stable_members query'
   );
   console.info('[EquiTrack cloud] stable_members query result', { memberships, membershipError });
-  if (membershipError) throw membershipError;
+  if (membershipError) {
+    console.error('[EquiTrack cloud] stable_members lookup failed', {
+      userId: user.id,
+      code: membershipError.code,
+      status: membershipError.status,
+      message: membershipError.message,
+      details: membershipError.details,
+      hint: membershipError.hint,
+      error: membershipError
+    });
+    throw membershipError;
+  }
   const membership = Array.isArray(memberships) ? memberships[0] : null;
   if (!membership?.stable_id) return null;
   const { data: stables, error: stableError } = await withTimeout(
@@ -4117,7 +4128,19 @@ async function getUserStable(user = getCurrentUser()) {
     'stables query'
   );
   console.info('[EquiTrack cloud] stables query result', { stables, stableError });
-  if (stableError) throw stableError;
+  if (stableError) {
+    console.error('[EquiTrack cloud] stable lookup failed', {
+      userId: user.id,
+      stableId: membership.stable_id,
+      code: stableError.code,
+      status: stableError.status,
+      message: stableError.message,
+      details: stableError.details,
+      hint: stableError.hint,
+      error: stableError
+    });
+    throw stableError;
+  }
   const stable = Array.isArray(stables) ? stables[0] : null;
   if (!stable) return null;
   return {
@@ -4140,7 +4163,18 @@ async function getUserProfileRole(user = getCurrentUser()) {
     'profiles query'
   );
   console.info('[EquiTrack cloud] profiles query result', { profiles, error });
-  if (error) throw error;
+  if (error) {
+    console.error('[EquiTrack cloud] profile role lookup failed', {
+      userId: user.id,
+      code: error.code,
+      status: error.status,
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+      error
+    });
+    throw error;
+  }
   const profile = Array.isArray(profiles) ? profiles[0] : null;
   return profile?.role || 'user';
 }
