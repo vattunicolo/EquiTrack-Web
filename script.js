@@ -482,6 +482,22 @@ const translations = {
     'shopping.markNeeded': 'Mark needed',
     'calendar.eyebrow': 'Calendar PRO',
     'calendar.title': 'Plan race days and stable events.',
+    'calendar.subtitle': 'Plan races, training, vet visits, feeding routines, and stable events in one calm calendar.',
+    'calendar.addEvent': 'Add event',
+    'calendar.monthView': 'Month view',
+    'calendar.listView': 'List view',
+    'calendar.listSubtitle': 'All matching events remain available for detailed review and editing.',
+    'calendar.prevMonth': 'Previous month',
+    'calendar.nextMonth': 'Next month',
+    'calendar.todayButton': 'Today',
+    'calendar.selectedDay': 'Selected day',
+    'calendar.noEventsDay': 'No events for this day.',
+    'calendar.addForDay': 'Add event for this day',
+    'calendar.eventsTodayMetric': 'Events today',
+    'calendar.upcomingRaces': 'Upcoming races',
+    'calendar.monthMore': '+{count} more',
+    'calendar.localMode': 'Local mode',
+    'calendar.cloudMode': 'Cloud mode',
     'calendar.eventName': 'Event name',
     'calendar.eventPlaceholder': 'Spring race day',
     'calendar.type': 'Event type',
@@ -1018,8 +1034,24 @@ const translations = {
     'shopping.markAdded': 'Merkitse lisätyksi',
     'shopping.markNeeded': 'Merkitse tarvittavaksi',
     'calendar.eyebrow': 'Calendar PRO',
-    'calendar.title': 'Suunnittele kilpailupäivät ja tallitapahtumat.',
-    'calendar.eventName': 'Tapahtuman nimi',
+  'calendar.title': 'Suunnittele kilpailupäivät ja tallitapahtumat.',
+  'calendar.subtitle': 'Suunnittele kilpailut, harjoitukset, eläinlääkärikäynnit, ruokinnat ja tallitapahtumat yhdessä rauhallisessa kalenterissa.',
+  'calendar.addEvent': 'Lisää tapahtuma',
+  'calendar.monthView': 'Kuukausinäkymä',
+  'calendar.listView': 'Listanäkymä',
+  'calendar.listSubtitle': 'Kaikki suodatetut tapahtumat ovat edelleen tarkistettavissa ja muokattavissa listana.',
+  'calendar.prevMonth': 'Edellinen kuukausi',
+  'calendar.nextMonth': 'Seuraava kuukausi',
+  'calendar.todayButton': 'Tänään',
+  'calendar.selectedDay': 'Valittu päivä',
+  'calendar.noEventsDay': 'Tälle päivälle ei ole tapahtumia.',
+  'calendar.addForDay': 'Lisää tapahtuma tälle päivälle',
+  'calendar.eventsTodayMetric': 'Tapahtumat tänään',
+  'calendar.upcomingRaces': 'Tulevat kilpailut',
+  'calendar.monthMore': '+{count} lisää',
+  'calendar.localMode': 'Paikallinen tila',
+  'calendar.cloudMode': 'Pilvitila',
+  'calendar.eventName': 'Tapahtuman nimi',
     'calendar.eventPlaceholder': 'Kevään kilpailupäivä',
     'calendar.type': 'Tapahtumatyyppi',
     'calendar.location': 'Sijainti',
@@ -1555,8 +1587,24 @@ const translations = {
     'shopping.markAdded': 'Segna aggiunto',
     'shopping.markNeeded': 'Segna necessario',
     'calendar.eyebrow': 'Calendar PRO',
-    'calendar.title': 'Pianifica giornate di gara ed eventi.',
-    'calendar.eventName': 'Nome evento',
+  'calendar.title': 'Pianifica giornate di gara ed eventi.',
+  'calendar.subtitle': 'Pianifica gare, allenamenti, visite veterinarie, alimentazione ed eventi della scuderia in un calendario ordinato.',
+  'calendar.addEvent': 'Aggiungi evento',
+  'calendar.monthView': 'Vista mese',
+  'calendar.listView': 'Vista lista',
+  'calendar.listSubtitle': 'Tutti gli eventi filtrati restano disponibili per controllo e modifica.',
+  'calendar.prevMonth': 'Mese precedente',
+  'calendar.nextMonth': 'Mese successivo',
+  'calendar.todayButton': 'Oggi',
+  'calendar.selectedDay': 'Giorno selezionato',
+  'calendar.noEventsDay': 'Nessun evento per questo giorno.',
+  'calendar.addForDay': 'Aggiungi evento per questo giorno',
+  'calendar.eventsTodayMetric': 'Eventi oggi',
+  'calendar.upcomingRaces': 'Gare in arrivo',
+  'calendar.monthMore': '+{count} altri',
+  'calendar.localMode': 'Modalità locale',
+  'calendar.cloudMode': 'Modalità cloud',
+  'calendar.eventName': 'Nome evento',
     'calendar.eventPlaceholder': 'Giornata gare primavera',
     'calendar.type': 'Tipo evento',
     'calendar.location': 'Luogo',
@@ -1997,6 +2045,9 @@ const defaultData = {
 let state = loadData();
 let activeView = 'home';
 let calendarFilters = { scope: 'all', type: 'all', horse: 'all' };
+let calendarCursor = new Date(`${today()}T00:00:00`);
+let selectedCalendarDate = today();
+let calendarViewMode = 'month';
 let pendingServiceWorker = null;
 let supabaseClient = null;
 let authUser = null;
@@ -2049,8 +2100,22 @@ const els = {
   eventsList: document.querySelector('#eventsList'),
   eventsTodayCount: document.querySelector('#eventsTodayCount'),
   eventsWeekCount: document.querySelector('#eventsWeekCount'),
+  upcomingRaceCount: document.querySelector('#upcomingRaceCount'),
   scheduledHorseCount: document.querySelector('#scheduledHorseCount'),
   calendarPlannerList: document.querySelector('#calendarPlannerList'),
+  calendarStableBadge: document.querySelector('#calendarStableBadge'),
+  calendarModeBadge: document.querySelector('#calendarModeBadge'),
+  calendarAddEventButton: document.querySelector('#calendarAddEventButton'),
+  calendarPrevMonth: document.querySelector('#calendarPrevMonth'),
+  calendarNextMonth: document.querySelector('#calendarNextMonth'),
+  calendarTodayButton: document.querySelector('#calendarTodayButton'),
+  calendarMonthLabel: document.querySelector('#calendarMonthLabel'),
+  calendarWeekdays: document.querySelector('#calendarWeekdays'),
+  calendarMonthGrid: document.querySelector('#calendarMonthGrid'),
+  calendarSelectedDayLabel: document.querySelector('#calendarSelectedDayLabel'),
+  calendarSelectedDayAgenda: document.querySelector('#calendarSelectedDayAgenda'),
+  calendarAddSelectedDayButton: document.querySelector('#calendarAddSelectedDayButton'),
+  calendarListSection: document.querySelector('#calendarListSection'),
   calendarScopeFilter: document.querySelector('#calendarScopeFilter'),
   calendarTypeFilter: document.querySelector('#calendarTypeFilter'),
   calendarHorseFilter: document.querySelector('#calendarHorseFilter'),
@@ -4638,6 +4703,7 @@ function render() {
   renderInventory();
   renderShoppingList();
   renderEvents();
+  renderCalendarMonth();
   renderCalendarPlanner();
   renderBackupStatus();
   renderMigrationPreview();
@@ -4671,6 +4737,12 @@ function renderSummary() {
       const eventDate = new Date(`${event.date}T00:00:00`);
       return eventDate >= now && eventDate <= weekEnd;
     }).length;
+    if (els.upcomingRaceCount) {
+      els.upcomingRaceCount.textContent = state.calendarEvents
+        .map(normalizeCalendarEvent)
+        .filter((event) => event.type === 'race' && event.date >= todayValue)
+        .length;
+    }
     if (els.scheduledHorseCount) {
       const scheduledHorseIds = new Set(
         state.calendarEvents
@@ -4945,6 +5017,116 @@ function renderActionEmpty(messageKey, actionKey, action) {
   `;
 }
 
+function formatCalendarMonthLabel(date) {
+  return new Intl.DateTimeFormat(currentLanguage, { month: 'long', year: 'numeric' }).format(date);
+}
+
+function formatSelectedDayLabel(dateString) {
+  const date = new Date(`${dateString}T00:00:00`);
+  return new Intl.DateTimeFormat(currentLanguage, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }).format(date);
+}
+
+function toCalendarDateString(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function getEventsForDate(dateString) {
+  return state.calendarEvents
+    .map(normalizeCalendarEvent)
+    .filter((event) => event.date === dateString)
+    .sort((a, b) => `${a.time || '00:00'} ${a.name}`.localeCompare(`${b.time || '00:00'} ${b.name}`));
+}
+
+function renderCalendarEventMeta(event) {
+  const horses = event.horseIds
+    .map((id) => state.horses.find((horse) => horse.id === id)?.name)
+    .filter(Boolean);
+  return [
+    event.time && escapeHtml(event.time),
+    `<span class="event-type-pill event-type-${event.type}">${t(`eventType.${event.type}`)}</span>`,
+    horses.length && escapeHtml(horses.join(', ')),
+    event.location && escapeHtml(event.location)
+  ].filter(Boolean).join('');
+}
+
+function renderSelectedDayAgenda() {
+  if (!els.calendarSelectedDayLabel || !els.calendarSelectedDayAgenda) return;
+  els.calendarSelectedDayLabel.textContent = formatSelectedDayLabel(selectedCalendarDate);
+  const dayEvents = getEventsForDate(selectedCalendarDate);
+  if (!dayEvents.length) {
+    els.calendarSelectedDayAgenda.innerHTML = `<p class="empty-state">${t('calendar.noEventsDay')}</p>`;
+    return;
+  }
+  els.calendarSelectedDayAgenda.innerHTML = dayEvents.map((event) => {
+    const horses = event.horseIds
+      .map((id) => state.horses.find((horse) => horse.id === id)?.name)
+      .filter(Boolean);
+    return `
+      <article class="selected-event-card">
+        <div>
+          <span class="event-type-pill event-type-${event.type}">${t(`eventType.${event.type}`)}</span>
+          <h4>${escapeHtml(event.name)}</h4>
+          <p>${escapeHtml([event.time, event.location].filter(Boolean).join(' - ') || t('common.notSet'))}</p>
+          <p>${horses.length ? escapeHtml(horses.join(', ')) : t('tasks.noHorse')}</p>
+        </div>
+        <div class="item-actions">
+          <button class="button ghost" type="button" data-action="edit-event" data-id="${event.id}">${t('common.edit')}</button>
+          <button class="button ghost danger" type="button" data-action="delete-event" data-id="${event.id}">${t('common.delete')}</button>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+function renderCalendarMonth() {
+  if (!els.calendarMonthGrid || !els.calendarWeekdays) return;
+  const activeStable = getActiveStable();
+  if (els.calendarStableBadge) els.calendarStableBadge.textContent = activeStable.name || t('cloudRead.noStable');
+  if (els.calendarModeBadge) els.calendarModeBadge.textContent = cloudWriteMode ? t('calendar.cloudMode') : t('calendar.localMode');
+  if (els.calendarListSection) els.calendarListSection.hidden = calendarViewMode !== 'list';
+  document.querySelectorAll('[data-calendar-view-mode]').forEach((button) => {
+    button.classList.toggle('active', button.dataset.calendarViewMode === calendarViewMode);
+  });
+
+  const monthStart = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth(), 1);
+  const gridStart = new Date(monthStart);
+  const mondayOffset = (gridStart.getDay() + 6) % 7;
+  gridStart.setDate(gridStart.getDate() - mondayOffset);
+  if (els.calendarMonthLabel) els.calendarMonthLabel.textContent = formatCalendarMonthLabel(monthStart);
+
+  const weekdayBase = new Date(2026, 0, 5);
+  els.calendarWeekdays.innerHTML = Array.from({ length: 7 }, (_, index) => {
+    const date = new Date(weekdayBase);
+    date.setDate(weekdayBase.getDate() + index);
+    return `<span>${new Intl.DateTimeFormat(currentLanguage, { weekday: 'short' }).format(date)}</span>`;
+  }).join('');
+
+  const todayValue = today();
+  els.calendarMonthGrid.innerHTML = Array.from({ length: 42 }, (_, index) => {
+    const date = new Date(gridStart);
+    date.setDate(gridStart.getDate() + index);
+    const dateString = toCalendarDateString(date);
+    const dayEvents = getEventsForDate(dateString);
+    const outside = date.getMonth() !== monthStart.getMonth();
+    const selected = dateString === selectedCalendarDate;
+    const isToday = dateString === todayValue;
+    const visibleEvents = dayEvents.slice(0, 3);
+    return `
+      <button class="calendar-day ${outside ? 'outside-month' : ''} ${selected ? 'selected' : ''} ${isToday ? 'today' : ''}" type="button" data-calendar-date="${dateString}">
+        <span class="calendar-day-number">${date.getDate()}</span>
+        <span class="calendar-day-events">
+          ${visibleEvents.map((event) => `<span class="calendar-event-pill event-type-${event.type}" data-action="edit-event" data-id="${event.id}">${escapeHtml(event.time ? `${event.time} ${event.name}` : event.name)}</span>`).join('')}
+          ${dayEvents.length > visibleEvents.length ? `<span class="calendar-event-more">${t('calendar.monthMore', { count: dayEvents.length - visibleEvents.length })}</span>` : ''}
+        </span>
+      </button>
+    `;
+  }).join('');
+  renderSelectedDayAgenda();
+}
+
 function renderEvents() {
   if (state.calendarEvents.length === 0) {
     els.eventsList.innerHTML = `<p class="empty-state">${t('calendar.empty')}</p>`;
@@ -4980,7 +5162,7 @@ function renderEvents() {
             <span class="pill">${escapeHtml(event.date)}</span>
             <span class="pill">${escapeHtml(event.time || t('common.notSet'))}</span>
             <span class="pill ${isPast ? '' : 'good'}">${isPast ? t('calendar.past') : t('calendar.upcoming')}</span>
-            <span class="pill event-type-pill">${t(`eventType.${event.type}`)}</span>
+            <span class="pill event-type-pill event-type-${event.type}">${t(`eventType.${event.type}`)}</span>
             <span class="pill">${escapeHtml(event.location || t('common.notSet'))}</span>
             <span class="pill">${horses.length ? escapeHtml(horses.join(', ')) : t('tasks.noHorse')}</span>
             ${event.handler ? `<span class="pill">${t('calendar.handler')}: ${escapeHtml(event.handler)}</span>` : ''}
@@ -5284,15 +5466,19 @@ function handleEventSubmit(event) {
     if (existingEvent?.cloudId) calendarEvent.cloudId = existingEvent.cloudId;
     handleCloudCalendarEventSave(calendarEvent).then((saved) => {
       if (saved) {
+        selectedCalendarDate = calendarEvent.date || selectedCalendarDate;
+        calendarCursor = new Date(`${selectedCalendarDate}T00:00:00`);
         resetForm(form);
-        form.elements.date.value = today();
+        form.elements.date.value = selectedCalendarDate;
       }
     });
     return;
   }
   upsert('calendarEvents', calendarEvent);
+  selectedCalendarDate = calendarEvent.date || selectedCalendarDate;
+  calendarCursor = new Date(`${selectedCalendarDate}T00:00:00`);
   resetForm(form);
-  form.elements.date.value = today();
+  form.elements.date.value = selectedCalendarDate;
   showMessage(t('message.eventSaved'));
 }
 
@@ -5342,6 +5528,52 @@ function handleCalendarFilterChange() {
     horse: els.calendarHorseFilter?.value || 'all'
   };
   renderEvents();
+  renderCalendarMonth();
+}
+
+function selectCalendarDate(dateString, fillForm = true) {
+  selectedCalendarDate = dateString;
+  if (fillForm && els.eventForm) els.eventForm.elements.date.value = dateString;
+  renderCalendarMonth();
+}
+
+function changeCalendarMonth(delta) {
+  calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() + delta, 1);
+  renderCalendarMonth();
+}
+
+function goToCalendarToday() {
+  selectedCalendarDate = today();
+  calendarCursor = new Date(`${selectedCalendarDate}T00:00:00`);
+  if (els.eventForm) els.eventForm.elements.date.value = selectedCalendarDate;
+  renderCalendarMonth();
+}
+
+function handleCalendarMonthClick(event) {
+  const actionTarget = event.target.closest('[data-action="edit-event"]');
+  if (actionTarget) {
+    event.preventDefault();
+    event.stopPropagation();
+    fillEventForm(actionTarget.dataset.id);
+    return;
+  }
+  const dayButton = event.target.closest('[data-calendar-date]');
+  if (!dayButton) return;
+  selectCalendarDate(dayButton.dataset.calendarDate);
+}
+
+function addEventForSelectedDay() {
+  if (!els.eventForm) return;
+  els.eventForm.elements.id.value = '';
+  els.eventForm.elements.date.value = selectedCalendarDate;
+  els.eventForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function handleCalendarViewModeClick(event) {
+  const button = event.target.closest('[data-calendar-view-mode]');
+  if (!button) return;
+  calendarViewMode = button.dataset.calendarViewMode === 'list' ? 'list' : 'month';
+  renderCalendarMonth();
 }
 
 function toggleShoppingStatus(id) {
@@ -5450,6 +5682,8 @@ function fillEventForm(id) {
   const found = state.calendarEvents.find((entry) => entry.id === id);
   if (!found) return;
   const item = normalizeCalendarEvent(found);
+  selectedCalendarDate = item.date || selectedCalendarDate;
+  calendarCursor = new Date(`${selectedCalendarDate}T00:00:00`);
   els.eventForm.elements.id.value = item.id;
   els.eventForm.elements.date.value = item.date;
   els.eventForm.elements.time.value = item.time;
@@ -5797,6 +6031,7 @@ function refreshForUpdate() {
 }
 
 document.querySelectorAll('.item-list').forEach((list) => list.addEventListener('click', handleListClick));
+els.calendarSelectedDayAgenda?.addEventListener('click', handleListClick);
 document.querySelector('#stableView').addEventListener('click', handleQuickAction);
 els.horseForm.addEventListener('submit', handleHorseSubmit);
 els.taskForm.addEventListener('submit', handleTaskSubmit);
@@ -5843,6 +6078,13 @@ els.cloudCleanupButton?.addEventListener('click', cleanupCloudDataForStable);
 els.calendarScopeFilter?.addEventListener('change', handleCalendarFilterChange);
 els.calendarTypeFilter?.addEventListener('change', handleCalendarFilterChange);
 els.calendarHorseFilter?.addEventListener('change', handleCalendarFilterChange);
+els.calendarPrevMonth?.addEventListener('click', () => changeCalendarMonth(-1));
+els.calendarNextMonth?.addEventListener('click', () => changeCalendarMonth(1));
+els.calendarTodayButton?.addEventListener('click', goToCalendarToday);
+els.calendarMonthGrid?.addEventListener('click', handleCalendarMonthClick);
+els.calendarAddSelectedDayButton?.addEventListener('click', addEventForSelectedDay);
+els.calendarAddEventButton?.addEventListener('click', addEventForSelectedDay);
+document.querySelectorAll('[data-calendar-view-mode]').forEach((button) => button.addEventListener('click', handleCalendarViewModeClick));
 els.taskForm.elements.date.value = today();
 els.hoursForm.elements.date.value = today();
 els.eventForm.elements.date.value = today();

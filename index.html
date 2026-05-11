@@ -315,8 +315,50 @@
       </section>
 
       <section id="calendarView" class="view">
-        <div class="section-heading">
-          <div><p class="eyebrow" data-i18n="calendar.eyebrow">Calendar PRO</p><h2 data-i18n="calendar.title">Plan race days and stable events.</h2></div>
+        <div class="section-heading calendar-hero">
+          <div>
+            <p class="eyebrow" data-i18n="calendar.eyebrow">Calendar PRO</p>
+            <h2 data-i18n="calendar.title">Plan race days and stable events.</h2>
+            <p data-i18n="calendar.subtitle">Plan races, training, vet visits, feeding routines, and stable events in one calm calendar.</p>
+            <div class="calendar-hero-meta">
+              <span class="pill" id="calendarStableBadge">-</span>
+              <span class="pill good" id="calendarModeBadge">-</span>
+            </div>
+          </div>
+          <button class="button primary" type="button" id="calendarAddEventButton" data-i18n="calendar.addEvent">Add event</button>
+        </div>
+        <div class="summary-grid calendar-summary" aria-label="Calendar summary">
+          <article class="summary-card"><span data-i18n="calendar.eventsTodayMetric">Events today</span><strong id="eventsTodayCount">0</strong></article>
+          <article class="summary-card"><span data-i18n="calendar.nextSeven">Next 7 days</span><strong id="eventsWeekCount">0</strong></article>
+          <article class="summary-card"><span data-i18n="calendar.upcomingRaces">Upcoming races</span><strong id="upcomingRaceCount">0</strong></article>
+          <article class="summary-card"><span data-i18n="calendar.scheduledHorses">Scheduled horses</span><strong id="scheduledHorseCount">0</strong></article>
+        </div>
+        <section class="calendar-dashboard" aria-label="Calendar month view">
+          <article class="calendar-month-card">
+            <div class="calendar-card-header">
+              <div>
+                <p class="eyebrow" data-i18n="calendar.monthView">Month view</p>
+                <h3 id="calendarMonthLabel">-</h3>
+              </div>
+              <div class="calendar-actions">
+                <button class="button ghost" type="button" id="calendarPrevMonth" data-i18n="calendar.prevMonth">Previous month</button>
+                <button class="button secondary" type="button" id="calendarTodayButton" data-i18n="calendar.todayButton">Today</button>
+                <button class="button ghost" type="button" id="calendarNextMonth" data-i18n="calendar.nextMonth">Next month</button>
+              </div>
+            </div>
+            <div id="calendarWeekdays" class="calendar-weekdays"></div>
+            <div id="calendarMonthGrid" class="calendar-month-grid"></div>
+          </article>
+          <aside class="selected-day-card">
+            <p class="eyebrow" data-i18n="calendar.selectedDay">Selected day</p>
+            <h3 id="calendarSelectedDayLabel">-</h3>
+            <button class="button secondary" type="button" id="calendarAddSelectedDayButton" data-i18n="calendar.addForDay">Add event for this day</button>
+            <div id="calendarSelectedDayAgenda" class="selected-day-agenda"></div>
+          </aside>
+        </section>
+        <div class="calendar-view-toggle" role="group" aria-label="Calendar view options">
+          <button class="button secondary active" type="button" data-calendar-view-mode="month" data-i18n="calendar.monthView">Month view</button>
+          <button class="button secondary" type="button" data-calendar-view-mode="list" data-i18n="calendar.listView">List view</button>
         </div>
         <form id="eventForm" class="entry-form">
           <input type="hidden" name="id">
@@ -349,11 +391,6 @@
           <label><span data-i18n="calendar.filterType">Event type</span><select id="calendarTypeFilter"></select></label>
           <label><span data-i18n="calendar.filterHorse">Horse</span><select id="calendarHorseFilter"></select></label>
         </section>
-        <div class="summary-grid calendar-summary" aria-label="Calendar summary">
-          <article class="summary-card"><span data-i18n="calendar.today">Today</span><strong id="eventsTodayCount">0</strong></article>
-          <article class="summary-card"><span data-i18n="calendar.nextSeven">Next 7 days</span><strong id="eventsWeekCount">0</strong></article>
-          <article class="summary-card"><span data-i18n="calendar.scheduledHorses">Scheduled horses</span><strong id="scheduledHorseCount">0</strong></article>
-        </div>
         <section class="calendar-planner" aria-labelledby="calendarPlannerTitle">
           <div class="module-header">
             <div>
@@ -363,7 +400,15 @@
           </div>
           <div id="calendarPlannerList" class="today-list"></div>
         </section>
-        <div id="eventsList" class="item-list"></div>
+        <section id="calendarListSection" class="calendar-list-section">
+          <div class="module-header">
+            <div>
+              <h3 data-i18n="calendar.listView">List view</h3>
+              <p data-i18n="calendar.listSubtitle">All matching events remain available for detailed review and editing.</p>
+            </div>
+          </div>
+          <div id="eventsList" class="item-list"></div>
+        </section>
       </section>
 
       <section id="settingsView" class="view">

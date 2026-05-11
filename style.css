@@ -547,6 +547,177 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
   font-size: 13px;
   font-weight: 850;
 }
+.calendar-hero {
+  align-items: center;
+  border: 1px solid rgba(78, 205, 196, 0.28);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fcfc 100%);
+  box-shadow: 0 16px 40px rgba(20, 51, 90, 0.08);
+  padding: 24px;
+}
+.calendar-hero p:not(.eyebrow) {
+  color: var(--muted);
+  max-width: 760px;
+}
+.calendar-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.calendar-dashboard {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(0, 1.75fr) minmax(280px, 0.85fr);
+  margin: 24px 0;
+}
+.calendar-month-card, .selected-day-card, .calendar-list-section {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 14px 36px rgba(20, 51, 90, 0.07);
+  padding: 18px;
+}
+.calendar-card-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.calendar-card-header h3, .selected-day-card h3 { margin: 0; }
+.calendar-actions, .calendar-view-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.calendar-actions .button, .calendar-view-toggle .button {
+  min-height: 40px;
+  padding: 0 12px;
+}
+.calendar-view-toggle { margin: 0 0 14px; }
+.calendar-view-toggle .button.active {
+  background: #14335a;
+  border-color: #14335a;
+  color: #ffffff;
+}
+.calendar-weekdays, .calendar-month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+.calendar-weekdays {
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.calendar-month-grid { gap: 8px; }
+.calendar-day {
+  appearance: none;
+  border: 1px solid #dfe9ee;
+  border-radius: 10px;
+  background: #fbfdfe;
+  color: var(--text);
+  cursor: pointer;
+  display: grid;
+  gap: 6px;
+  min-height: 118px;
+  min-width: 0;
+  padding: 9px;
+  text-align: left;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease, background-color 160ms ease;
+}
+.calendar-day:hover {
+  border-color: rgba(78, 205, 196, 0.75);
+  box-shadow: 0 10px 24px rgba(20, 51, 90, 0.08);
+  transform: translateY(-1px);
+}
+.calendar-day.outside-month {
+  background: #f4f7f9;
+  color: #91a1ad;
+}
+.calendar-day.today {
+  border-color: #4ecdc4;
+  box-shadow: inset 0 0 0 1px rgba(78, 205, 196, 0.55);
+}
+.calendar-day.selected {
+  background: #eefbf9;
+  border-color: #14335a;
+}
+.calendar-day-number {
+  align-items: center;
+  display: inline-flex;
+  font-weight: 950;
+  height: 26px;
+  justify-content: center;
+  width: 26px;
+}
+.calendar-day.today .calendar-day-number {
+  background: #14335a;
+  border-radius: 999px;
+  color: #ffffff;
+}
+.calendar-day-events {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+.calendar-event-pill, .event-type-pill {
+  border: 1px solid rgba(78, 205, 196, 0.34);
+  border-radius: 999px;
+  background: #e9faf8;
+  color: #14335a;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 850;
+  line-height: 1.25;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 4px 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.calendar-event-more {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+.event-type-race { background: #eef4ff; border-color: #bcd0ff; color: #14335a; }
+.event-type-training { background: #e9faf8; border-color: rgba(78, 205, 196, 0.45); color: #0b6964; }
+.event-type-shoeing { background: #fff8e9; border-color: #f3d08b; color: #7b5200; }
+.event-type-vaccination, .event-type-vet { background: #f2f7ff; border-color: #bfd7f7; color: #215684; }
+.event-type-feeding { background: #eefbea; border-color: #b7e7a8; color: #2f6b23; }
+.event-type-other { background: #f4f7f9; border-color: #d8e3ea; color: #51606b; }
+.selected-day-card {
+  align-self: start;
+  display: grid;
+  gap: 12px;
+}
+.selected-day-agenda {
+  display: grid;
+  gap: 10px;
+}
+.selected-event-card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr);
+  padding: 12px;
+}
+.selected-event-card h4 {
+  color: #14335a;
+  margin: 8px 0 4px;
+}
+.selected-event-card p {
+  color: var(--muted);
+  margin: 0;
+}
 .quick-actions {
   grid-template-columns: repeat(5, minmax(0, 1fr));
   margin: 0 0 18px;
@@ -830,9 +1001,14 @@ textarea { resize: vertical; }
 }
 .event-type-pill {
   border-color: rgba(78, 205, 196, 0.38);
-  background: #e9faf8;
   color: #14335a;
 }
+.event-type-pill.event-type-race, .calendar-event-pill.event-type-race { background: #eef4ff; border-color: #bcd0ff; color: #14335a; }
+.event-type-pill.event-type-training, .calendar-event-pill.event-type-training { background: #e9faf8; border-color: rgba(78, 205, 196, 0.45); color: #0b6964; }
+.event-type-pill.event-type-shoeing, .calendar-event-pill.event-type-shoeing { background: #fff8e9; border-color: #f3d08b; color: #7b5200; }
+.event-type-pill.event-type-vaccination, .event-type-pill.event-type-vet, .calendar-event-pill.event-type-vaccination, .calendar-event-pill.event-type-vet { background: #f2f7ff; border-color: #bfd7f7; color: #215684; }
+.event-type-pill.event-type-feeding, .calendar-event-pill.event-type-feeding { background: #eefbea; border-color: #b7e7a8; color: #2f6b23; }
+.event-type-pill.event-type-other, .calendar-event-pill.event-type-other { background: #f4f7f9; border-color: #d8e3ea; color: #51606b; }
 .feed-extra {
   grid-column: 1 / -1;
 }
@@ -1007,6 +1183,8 @@ textarea { resize: vertical; }
   .hero-copy { max-width: none; }
   .feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .calendar-dashboard { grid-template-columns: minmax(0, 1fr); }
+  .calendar-card-header { align-items: stretch; flex-direction: column; }
   .calendar-tools { grid-template-columns: minmax(0, 1fr); }
   .quick-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .today-list { grid-template-columns: minmax(0, 1fr); }
@@ -1058,6 +1236,13 @@ textarea { resize: vertical; }
   }
   .button { min-height: 50px; padding: 0 14px; }
   .summary-grid, .feature-grid, .side-tabs, .entry-form, .item-card, .feed-stats, .quick-actions, .form-group, .horse-detail-grid, .calendar-tools, .permission-grid { grid-template-columns: minmax(0, 1fr); }
+  .calendar-hero { padding: 18px; }
+  .calendar-actions, .calendar-view-toggle { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .calendar-month-card, .selected-day-card, .calendar-list-section { padding: 14px; }
+  .calendar-month-grid { gap: 5px; }
+  .calendar-day { min-height: 86px; padding: 6px; border-radius: 8px; }
+  .calendar-event-pill { font-size: 10px; padding: 3px 5px; }
+  .calendar-weekdays { font-size: 10px; }
   .summary-card strong { font-size: 36px; }
   .feature-card, .panel, .summary-card { padding: 18px; }
   .update-notice { align-items: stretch; display: grid; }
@@ -1101,6 +1286,10 @@ textarea { resize: vertical; }
   .feature-card, .panel, .summary-card, .item-card { padding: 16px; }
   .section-heading { margin-bottom: 18px; padding-bottom: 16px; }
   .summary-grid, .home-lower, .settings-grid { gap: 12px; }
+  .calendar-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .calendar-day { min-height: 72px; }
+  .calendar-day-number { height: 22px; width: 22px; font-size: 12px; }
+  .calendar-event-pill:nth-child(n+3), .calendar-event-more { display: none; }
   .side-tabs { gap: 7px; padding: 8px; }
   .tab-button { min-height: 46px; }
   .module-panel { padding: 12px; }
@@ -1119,4 +1308,8 @@ textarea { resize: vertical; }
   h2 { font-size: clamp(24px, 8vw, 30px); }
   .feature-card, .panel, .summary-card, .item-card { padding: 14px; }
   .entry-form { padding: 12px; }
+  .calendar-month-card, .selected-day-card, .calendar-list-section { padding: 12px; }
+  .calendar-month-grid { gap: 4px; }
+  .calendar-day { min-height: 64px; padding: 5px; }
+  .calendar-event-pill { font-size: 0; height: 8px; padding: 0; width: 100%; }
 }
