@@ -68,6 +68,13 @@ Admin and stable-owner preparation lives in:
 
 This prepares role checks, stable-scoped permission columns, and safe policies for future admin/member screens. It does not create Auth users from the browser. Future user creation must use a trusted server flow such as a Supabase Edge Function.
 
+The first Edge Function foundation is documented in:
+
+- `supabase/functions/README.md`
+- `supabase/functions/create-user/index.ts`
+
+Deploy it only after setting `SUPABASE_SERVICE_ROLE_KEY` as a Supabase function secret. Never commit that key to this repository.
+
 ## Manual Upload Preparation
 
 The app can prepare and manually upload local browser data to Supabase after login, but it does not enable automatic sync yet.
