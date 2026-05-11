@@ -486,6 +486,28 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
   gap: 14px;
   margin-top: 16px;
 }
+.admin-subsection {
+  border: 1px solid rgba(78, 205, 196, 0.28);
+  border-radius: 10px;
+  margin-top: 16px;
+  padding: 16px;
+  background: #f7fdfc;
+}
+.admin-subsection h4 {
+  margin-bottom: 6px;
+}
+.checkbox-row {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 750;
+}
+.checkbox-row input {
+  min-height: 18px;
+  width: 18px;
+}
 .permission-grid {
   border: 1px solid var(--line);
   border-radius: 8px;

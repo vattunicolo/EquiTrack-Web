@@ -27,6 +27,7 @@ const SUPABASE_CONFIG = {
   SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_6_byc2-epHvcZw1g5LlFOg_wAGSYMkU'
 };
 const CREATE_USER_FUNCTION_URL = 'https://fuojlxcexpnszepgipbv.functions.supabase.co/create-user';
+const CREATE_STABLE_FUNCTION_URL = 'https://fuojlxcexpnszepgipbv.functions.supabase.co/create-stable';
 
 // Never put service_role key in browser code.
 // Admin user creation must happen later via a Supabase Edge Function or trusted server.
@@ -151,6 +152,22 @@ const translations = {
     'admin.creating': 'Creating user...',
     'admin.created': 'Created {email} as {role}.',
     'admin.failed': 'User creation failed: {error}',
+    'admin.stableTitle': 'Create new stable',
+    'admin.stableText': 'Super Admins can create a stable and optionally create the first owner account through the secure Edge Function.',
+    'admin.stableName': 'Stable name',
+    'admin.ownerEmail': 'Owner email',
+    'admin.ownerFullName': 'Owner full name',
+    'admin.ownerPassword': 'Temporary password',
+    'admin.createOwnerAccount': 'Create owner account and assign it to this stable',
+    'admin.createStableButton': 'Create stable',
+    'admin.stableReady': 'Ready to create a stable through the secure Edge Function.',
+    'admin.stableOnlyNote': 'Owner email and password are optional when creating a stable only.',
+    'admin.stableNotAllowed': 'Only a Super Admin can create stables.',
+    'admin.stableCreating': 'Creating stable...',
+    'admin.stableCreated': 'Created stable {stable} for {owner}. Current active stable remains unchanged.',
+    'admin.stableCreatedNoOwner': 'Created stable {stable}. Current active stable remains unchanged.',
+    'admin.stableFailed': 'Stable creation failed: {error}',
+    'admin.ownerRequired': 'Owner email and temporary password are required when creating an owner account.',
     'migration.title': 'Move local data to cloud',
     'migration.text': 'Review the local browser data that will be copied to the active cloud stable after confirmation.',
     'migration.targetStable': 'Upload target stable',
@@ -1734,6 +1751,22 @@ Object.assign(translations.en, {
   'admin.creating': 'Creating user...',
   'admin.created': 'Created {email} as {role}.',
   'admin.failed': 'User creation failed: {error}',
+  'admin.stableTitle': 'Create new stable',
+  'admin.stableText': 'Super Admins can create a stable and optionally create the first owner account through the secure Edge Function.',
+  'admin.stableName': 'Stable name',
+  'admin.ownerEmail': 'Owner email',
+  'admin.ownerFullName': 'Owner full name',
+  'admin.ownerPassword': 'Temporary password',
+  'admin.createOwnerAccount': 'Create owner account and assign it to this stable',
+  'admin.createStableButton': 'Create stable',
+  'admin.stableReady': 'Ready to create a stable through the secure Edge Function.',
+  'admin.stableOnlyNote': 'Owner email and password are optional when creating a stable only.',
+  'admin.stableNotAllowed': 'Only a Super Admin can create stables.',
+  'admin.stableCreating': 'Creating stable...',
+  'admin.stableCreated': 'Created stable {stable} for {owner}. Current active stable remains unchanged.',
+  'admin.stableCreatedNoOwner': 'Created stable {stable}. Current active stable remains unchanged.',
+  'admin.stableFailed': 'Stable creation failed: {error}',
+  'admin.ownerRequired': 'Owner email and temporary password are required when creating an owner account.',
   'cloudRead.warningLocalActive': 'Local browser data remains available for comparison.',
   'cloudMode.text': 'Signed-in users use cloud storage automatically when an active stable is assigned. Local data stays available as a fallback.',
   'cloudMode.localStatus': 'Local mode active',
@@ -1807,6 +1840,22 @@ Object.assign(translations.fi, {
   'admin.creating': 'Luodaan käyttäjää...',
   'admin.created': 'Luotu {email} roolilla {role}.',
   'admin.failed': 'Käyttäjän luonti epäonnistui: {error}',
+  'admin.stableTitle': 'Luo uusi talli',
+  'admin.stableText': 'Super Admin voi luoda tallin ja halutessaan ensimmäisen omistajatilin turvallisen Edge Functionin kautta.',
+  'admin.stableName': 'Tallin nimi',
+  'admin.ownerEmail': 'Omistajan sähköposti',
+  'admin.ownerFullName': 'Omistajan koko nimi',
+  'admin.ownerPassword': 'Väliaikainen salasana',
+  'admin.createOwnerAccount': 'Luo omistajatili ja liitä se tähän talliin',
+  'admin.createStableButton': 'Luo talli',
+  'admin.stableReady': 'Valmis luomaan tallin turvallisen Edge Functionin kautta.',
+  'admin.stableOnlyNote': 'Omistajan sähköposti ja salasana ovat valinnaisia, kun luodaan vain talli.',
+  'admin.stableNotAllowed': 'Vain Super Admin voi luoda talleja.',
+  'admin.stableCreating': 'Luodaan tallia...',
+  'admin.stableCreated': 'Talli {stable} luotu omistajalle {owner}. Nykyinen aktiivinen talli ei vaihdu.',
+  'admin.stableCreatedNoOwner': 'Talli {stable} luotu. Nykyinen aktiivinen talli ei vaihdu.',
+  'admin.stableFailed': 'Tallin luonti epäonnistui: {error}',
+  'admin.ownerRequired': 'Omistajan sähköposti ja väliaikainen salasana vaaditaan, kun omistajatili luodaan.',
   'cloudRead.warningLocalActive': 'Paikallinen selaindata säilyy vertailua varten.',
   'cloudMode.text': 'Kirjautuneet käyttäjät käyttävät pilvitallennusta automaattisesti, kun aktiivinen talli on määritetty. Paikallinen data säilyy varalla.',
   'cloudMode.localStatus': 'Paikallinen tila käytössä',
@@ -1880,6 +1929,22 @@ Object.assign(translations.it, {
   'admin.creating': 'Creazione utente...',
   'admin.created': 'Creato {email} con ruolo {role}.',
   'admin.failed': 'Creazione utente non riuscita: {error}',
+  'admin.stableTitle': 'Crea nuova scuderia',
+  'admin.stableText': 'I Super Admin possono creare una scuderia e, se necessario, il primo account proprietario tramite la Edge Function sicura.',
+  'admin.stableName': 'Nome scuderia',
+  'admin.ownerEmail': 'Email proprietario',
+  'admin.ownerFullName': 'Nome completo proprietario',
+  'admin.ownerPassword': 'Password temporanea',
+  'admin.createOwnerAccount': 'Crea account proprietario e assegnalo a questa scuderia',
+  'admin.createStableButton': 'Crea scuderia',
+  'admin.stableReady': 'Pronto a creare una scuderia tramite la Edge Function sicura.',
+  'admin.stableOnlyNote': "Email e password del proprietario sono facoltative quando crei solo la scuderia.",
+  'admin.stableNotAllowed': 'Solo un Super Admin può creare scuderie.',
+  'admin.stableCreating': 'Creazione scuderia...',
+  'admin.stableCreated': 'Scuderia {stable} creata per {owner}. La scuderia attiva attuale non cambia.',
+  'admin.stableCreatedNoOwner': 'Scuderia {stable} creata. La scuderia attiva attuale non cambia.',
+  'admin.stableFailed': 'Creazione scuderia non riuscita: {error}',
+  'admin.ownerRequired': "Email e password temporanea del proprietario sono obbligatorie quando crei un account proprietario.",
   'cloudRead.warningLocalActive': 'I dati locali del browser restano disponibili per il confronto.',
   'cloudMode.text': "Gli utenti connessi usano automaticamente l'archiviazione cloud quando è assegnata una scuderia attiva. I dati locali restano disponibili come fallback.",
   'cloudMode.localStatus': 'Modalità locale attiva',
@@ -2020,6 +2085,10 @@ const els = {
   cloudConnectionStatus: document.querySelector('#cloudConnectionStatus'),
   cloudLocalNotice: document.querySelector('#cloudLocalNotice'),
   adminPlaceholderPanel: document.querySelector('#adminPlaceholderPanel'),
+  adminStableSection: document.querySelector('#adminStableSection'),
+  adminStableForm: document.querySelector('#adminStableForm'),
+  adminCreateStableButton: document.querySelector('#adminCreateStableButton'),
+  adminStableStatus: document.querySelector('#adminStableStatus'),
   adminUserForm: document.querySelector('#adminUserForm'),
   adminCreateUserButton: document.querySelector('#adminCreateUserButton'),
   adminUserStatus: document.querySelector('#adminUserStatus'),
@@ -2478,7 +2547,18 @@ function renderAdminPlaceholder() {
   } else {
     els.adminAccessStatus.textContent = t('admin.accessNone');
   }
+  renderAdminStableForm();
   renderAdminUserForm();
+}
+
+function renderAdminStableForm() {
+  if (!els.adminStableSection || !els.adminStableForm) return;
+  const canCreateStable = Boolean(getCurrentUser() && isSuperAdmin());
+  els.adminStableSection.hidden = !canCreateStable;
+  if (els.adminCreateStableButton) els.adminCreateStableButton.disabled = !canCreateStable || !supabaseClient;
+  if (els.adminStableStatus && !els.adminStableStatus.dataset.busy) {
+    els.adminStableStatus.textContent = canCreateStable ? t('admin.stableReady') : t('admin.stableNotAllowed');
+  }
 }
 
 function getAdminPermissionInputs() {
@@ -2599,6 +2679,76 @@ async function handleAdminUserSubmit(event) {
     if (els.adminUserStatus) delete els.adminUserStatus.dataset.busy;
     renderAdminUserForm();
     if (els.adminUserStatus && finalStatus) els.adminUserStatus.textContent = finalStatus;
+  }
+}
+
+async function handleAdminStableSubmit(event) {
+  event.preventDefault();
+  if (!getCurrentUser() || !isSuperAdmin()) {
+    showMessage(t('admin.stableNotAllowed'));
+    return;
+  }
+  if (!supabaseClient) {
+    showMessage(t('message.authConfigMissing'));
+    return;
+  }
+  const form = event.currentTarget;
+  const createOwner = form.elements.createOwner.checked === true;
+  const stableName = form.elements.stableName.value.trim();
+  const ownerEmail = form.elements.ownerEmail.value.trim();
+  const ownerPassword = form.elements.ownerPassword.value;
+  if (createOwner && (!ownerEmail || !ownerPassword)) {
+    showMessage(t('admin.ownerRequired'));
+    if (els.adminStableStatus) els.adminStableStatus.textContent = t('admin.ownerRequired');
+    return;
+  }
+
+  const { data, error: sessionError } = await supabaseClient.auth.getSession();
+  const accessToken = data?.session?.access_token;
+  if (sessionError || !accessToken) {
+    showMessage(t('message.authProtected'));
+    return;
+  }
+
+  const body = {
+    stable_name: stableName,
+    owner_email: createOwner ? ownerEmail : '',
+    owner_full_name: createOwner ? form.elements.ownerFullName.value.trim() : '',
+    owner_password: createOwner ? ownerPassword : ''
+  };
+
+  if (els.adminCreateStableButton) els.adminCreateStableButton.disabled = true;
+  if (els.adminStableStatus) {
+    els.adminStableStatus.dataset.busy = 'true';
+    els.adminStableStatus.textContent = t('admin.stableCreating');
+  }
+  let finalStatus = '';
+  try {
+    const response = await fetch(CREATE_STABLE_FUNCTION_URL, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || result.error) {
+      throw new Error(result.error || `HTTP ${response.status}`);
+    }
+    form.elements.ownerPassword.value = '';
+    finalStatus = result.owner_email
+      ? t('admin.stableCreated', { stable: result.stable_name || body.stable_name, owner: result.owner_email })
+      : t('admin.stableCreatedNoOwner', { stable: result.stable_name || body.stable_name });
+    showMessage(finalStatus);
+  } catch (error) {
+    console.error('[EquiTrack admin] Create stable failed', error);
+    finalStatus = t('admin.stableFailed', { error: error.message || 'Unknown error' });
+    showMessage(finalStatus);
+  } finally {
+    if (els.adminStableStatus) delete els.adminStableStatus.dataset.busy;
+    renderAdminStableForm();
+    if (els.adminStableStatus && finalStatus) els.adminStableStatus.textContent = finalStatus;
   }
 }
 
@@ -5661,6 +5811,7 @@ els.resetDataButton.addEventListener('click', resetLocalData);
 els.languageSelect.addEventListener('change', handleLanguageChange);
 els.loginForm?.addEventListener('submit', handleLoginSubmit);
 els.logoutButton?.addEventListener('click', handleLogout);
+els.adminStableForm?.addEventListener('submit', handleAdminStableSubmit);
 els.adminUserForm?.addEventListener('submit', handleAdminUserSubmit);
 els.adminUserForm?.elements.stableRole?.addEventListener('change', (event) => {
   setAdminPermissionValues(event.target.value);

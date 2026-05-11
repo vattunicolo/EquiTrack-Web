@@ -81,8 +81,8 @@ The browser may later call a trusted Edge Function, but the browser must never r
 
 ## Planned User Management Flow
 
-1. Super Admin creates the stable owner Auth account through a trusted Edge Function or manually in Supabase.
-2. Super Admin creates a stable and assigns the owner to that stable.
+1. Super Admin creates a stable through the `create-stable` Edge Function.
+2. Super Admin optionally creates the stable owner Auth account during stable creation.
 3. Stable Owner creates limited helper users for their own stable through a trusted Edge Function.
 4. Stable Owner chooses helper permissions in `stable_members`.
 5. Helper Users can only access the stable features allowed by those permissions.
@@ -183,7 +183,7 @@ Super Admins can:
 - Profile metadata.
 - Stable metadata.
 - Stable membership metadata.
-- Create stables and assign owners through SQL or future trusted server tools.
+- Create stables and assign owners through the `create-stable` Edge Function.
 - Manage the full system.
 
 Stable owners and limited members cannot access other stables.
@@ -193,3 +193,12 @@ Stable owners and limited members cannot access other stables.
 Run `supabase/migrations/admin_user_management.sql` in the Supabase SQL Editor to add the helper functions, role constraints, indexes, and RLS policies.
 
 Then run `supabase/migrations/role_permissions.sql` to add permission columns and permission-aware RLS policies.
+
+Deploy trusted functions from the repository root:
+
+```bash
+supabase functions deploy create-user
+supabase functions deploy create-stable
+```
+
+Both functions require `SUPABASE_URL` and `SERVICE_ROLE_KEY` Supabase function secrets. The service role key must stay only in Supabase secrets, never in frontend code.

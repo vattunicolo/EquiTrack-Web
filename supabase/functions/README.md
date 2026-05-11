@@ -2,7 +2,7 @@
 
 This folder contains trusted server-side functions for EquiTrack-Web.
 
-The browser app must never contain the Supabase `service_role` key. User creation uses Supabase Admin APIs, so it must happen here or in another trusted server environment.
+The browser app must never contain the Supabase `service_role` key. User and stable creation use Supabase Admin APIs, so they must happen here or in another trusted server environment.
 
 ## `create-user`
 
@@ -19,6 +19,22 @@ Purpose:
 - Add the user to a stable through `stable_members`.
 - Apply stable role and permission columns.
 - Assign `stables.owner_id` when a Super Admin creates a stable owner.
+
+## `create-stable`
+
+Path:
+
+```text
+supabase/functions/create-stable/index.ts
+```
+
+Purpose:
+
+- Allow only `profiles.role = 'super_admin'` callers to create new stables.
+- Optionally create a new owner Auth account for the stable.
+- Create/update the owner `profiles` row.
+- Add the owner to `stable_members` with full owner permissions.
+- Set `stables.owner_id` to the new owner user id.
 
 ## Deploy `create-user`
 
@@ -107,10 +123,22 @@ Never commit the service role key to this repository.
 supabase functions deploy create-user
 ```
 
+Deploy the Super Admin stable creation function too:
+
+```bash
+supabase functions deploy create-stable
+```
+
 After deployment, the function URL is:
 
 ```text
 https://fuojlxcexpnszepgipbv.functions.supabase.co/create-user
+```
+
+The stable creation function URL is:
+
+```text
+https://fuojlxcexpnszepgipbv.functions.supabase.co/create-stable
 ```
 
 ### 6. Test With curl
@@ -158,6 +186,45 @@ Expected success shape:
 
 If you get `401`, the bearer token is missing or invalid. If you get `403`, the logged-in caller does not have permission to create that kind of user.
 
+### Test `create-stable`
+
+Use a logged-in Super Admin access token. This example creates a new stable and a new owner account:
+
+```bash
+curl -X POST "https://fuojlxcexpnszepgipbv.functions.supabase.co/create-stable" \
+  -H "Authorization: Bearer SUPER_ADMIN_ACCESS_TOKEN_HERE" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "stable_name": "New Stable",
+    "owner_email": "owner@example.com",
+    "owner_full_name": "Stable Owner",
+    "owner_password": "temporary-secure-password"
+  }'
+```
+
+Expected success shape:
+
+```json
+{
+  "ok": true,
+  "stable_id": "new-stable-id",
+  "stable_name": "New Stable",
+  "owner_id": "new-owner-user-id",
+  "owner_email": "owner@example.com"
+}
+```
+
+To create a stable without an owner account yet, omit the owner fields:
+
+```bash
+curl -X POST "https://fuojlxcexpnszepgipbv.functions.supabase.co/create-stable" \
+  -H "Authorization: Bearer SUPER_ADMIN_ACCESS_TOKEN_HERE" \
+  -H "Content-Type: application/json" \
+  -d '{ "stable_name": "Stable Without Owner Yet" }'
+```
+
+Only `profiles.role = 'super_admin'` can use `create-stable`. Stable owners and helper users are rejected.
+
 ## Caller Authentication
 
 The function requires:
@@ -174,6 +241,8 @@ Super Admin:
 
 - `profiles.role = 'super_admin'`
 - Can create stable owners and helper users.
+- Can create new stables through the `create-stable` Edge Function.
+- Can create an owner account while creating a stable.
 - Can create system-level `admin` or `super_admin` accounts when no `stable_id` is supplied.
 
 Stable Owner / permitted manager:
@@ -235,4 +304,4 @@ The function allows:
 
 ## Frontend Status
 
-The current frontend only shows an Admin/User Management placeholder. It does not call this function yet and does not create users from browser code.
+The frontend calls `create-user` for Admin User Management and `create-stable` for the Super Admin stable creation form. The browser sends only the logged-in user's access token. It never receives or stores the service role key.

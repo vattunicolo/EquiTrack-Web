@@ -416,6 +416,22 @@
               <li data-i18n="admin.edgeFunction">User creation will use a secure Supabase Edge Function.</li>
             </ul>
             <p class="update-note"><span data-i18n="admin.currentAccess">Current access</span>: <strong id="adminAccessStatus">-</strong></p>
+            <section id="adminStableSection" class="admin-subsection" hidden>
+              <h4 data-i18n="admin.stableTitle">Create new stable</h4>
+              <p data-i18n="admin.stableText">Super Admins can create a stable and optionally create the first owner account through the secure Edge Function.</p>
+              <form id="adminStableForm" class="admin-user-form">
+                <div class="form-grid">
+                  <label><span data-i18n="admin.stableName">Stable name</span><input name="stableName" required autocomplete="off"></label>
+                  <label><span data-i18n="admin.ownerEmail">Owner email</span><input name="ownerEmail" type="email" autocomplete="off" placeholder="owner@example.com"></label>
+                  <label><span data-i18n="admin.ownerFullName">Owner full name</span><input name="ownerFullName" autocomplete="off"></label>
+                  <label><span data-i18n="admin.ownerPassword">Temporary password</span><input name="ownerPassword" type="password" autocomplete="new-password"></label>
+                </div>
+                <label class="checkbox-row"><input name="createOwner" type="checkbox" checked><span data-i18n="admin.createOwnerAccount">Create owner account and assign it to this stable</span></label>
+                <p class="update-note" data-i18n="admin.stableOnlyNote">Owner email and password are optional when creating a stable only.</p>
+                <button id="adminCreateStableButton" class="button primary" type="submit" data-i18n="admin.createStableButton">Create stable</button>
+                <p id="adminStableStatus" class="update-note" data-i18n="admin.stableReady">Ready to create a stable through the secure Edge Function.</p>
+              </form>
+            </section>
             <form id="adminUserForm" class="admin-user-form">
               <div class="form-grid">
                 <label><span data-i18n="admin.email">Email</span><input name="email" type="email" autocomplete="off" required placeholder="helper@example.com"></label>
