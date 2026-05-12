@@ -164,14 +164,25 @@
       </section>
 
       <section id="stableView" class="view">
-        <div class="section-heading">
+        <div class="section-heading stable-hero">
           <div>
             <p class="eyebrow" data-i18n="stable.eyebrow">My Stable</p>
             <h2 data-i18n="stable.title">Your daily stable workspace.</h2>
+            <p data-i18n="stable.subtitle">Manage horses, tasks, work logs, and feed stock from one clear daily dashboard.</p>
+            <div class="calendar-hero-meta">
+              <span class="pill" id="stableStableBadge">-</span>
+              <span class="pill good" id="stableModeBadge">-</span>
+            </div>
+          </div>
+          <div class="stable-hero-actions" aria-label="Quick actions">
+            <button class="button primary" type="button" data-quick-action="horse" data-i18n="quick.addHorse">Add horse</button>
+            <button class="button secondary" type="button" data-quick-action="task" data-i18n="quick.addTask">Add task</button>
+            <button class="button secondary" type="button" data-quick-action="hours" data-i18n="quick.addHours">Add work hours</button>
+            <button class="button secondary" type="button" data-quick-action="feed" data-i18n="quick.addFeed">Add feed item</button>
           </div>
         </div>
 
-        <section class="summary-grid" aria-label="Stable summary">
+        <section class="summary-grid stable-summary" aria-label="Stable summary">
           <article class="summary-card"><span data-i18n="summary.horses">Horses</span><strong id="horseCount">0</strong></article>
           <article class="summary-card"><span data-i18n="summary.openTasks">Open tasks</span><strong id="openTaskCount">0</strong></article>
           <article class="summary-card"><span data-i18n="summary.todayTasks">Today's tasks</span><strong id="todayTaskCount">0</strong></article>
@@ -190,7 +201,7 @@
           <div id="todayList" class="today-list"></div>
         </section>
 
-        <section class="quick-actions" aria-label="Quick actions">
+        <section class="quick-actions stable-secondary-actions" aria-label="Quick actions">
           <button class="button secondary" type="button" data-quick-action="horse" data-i18n="quick.addHorse">Add horse</button>
           <button class="button secondary" type="button" data-quick-action="task" data-i18n="quick.addTask">Add task</button>
           <button class="button secondary" type="button" data-quick-action="hours" data-i18n="quick.addHours">Add work hours</button>

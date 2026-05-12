@@ -387,6 +387,7 @@ const translations = {
     'message.authLoginFailed': 'Login failed: {error}',
     'stable.eyebrow': 'My Stable',
     'stable.title': 'Your daily stable workspace.',
+    'stable.subtitle': 'Manage horses, tasks, work logs, and feed stock from one clear daily dashboard.',
     'summary.horses': 'Horses',
     'summary.openTasks': 'Open tasks',
     'summary.todayTasks': "Today's tasks",
@@ -399,6 +400,7 @@ const translations = {
     'today.tasksDue': 'Tasks due today',
     'today.eventsToday': 'Calendar events today',
     'today.feedWarnings': 'Feed warnings',
+    'today.recentWork': 'Work logged today',
     'quick.addHorse': 'Add horse',
     'quick.addTask': 'Add task',
     'quick.addHours': 'Add work hours',
@@ -940,6 +942,7 @@ const translations = {
     'message.authLoginFailed': 'Kirjautuminen epäonnistui: {error}',
     'stable.eyebrow': 'Oma talli',
     'stable.title': 'Tallin päivittäinen työtila.',
+    'stable.subtitle': 'Hallitse hevoset, tehtävät, työtunnit ja ruokavarasto yhdestä selkeästä päivänäkymästä.',
     'summary.horses': 'Hevoset',
     'summary.openTasks': 'Avoimet tehtävät',
     'summary.todayTasks': 'Tämän päivän tehtävät',
@@ -952,6 +955,7 @@ const translations = {
     'today.tasksDue': 'Tämän päivän tehtävät',
     'today.eventsToday': 'Tämän päivän tapahtumat',
     'today.feedWarnings': 'Ruokavaroitukset',
+    'today.recentWork': 'Tänään kirjatut työt',
     'quick.addHorse': 'Lisää hevonen',
     'quick.addTask': 'Lisää tehtävä',
     'quick.addHours': 'Lisää työtunnit',
@@ -1493,6 +1497,7 @@ const translations = {
     'message.authLoginFailed': 'Accesso non riuscito: {error}',
     'stable.eyebrow': 'La mia scuderia',
     'stable.title': 'Il tuo spazio di lavoro quotidiano.',
+    'stable.subtitle': 'Gestisci cavalli, attività, ore di lavoro e scorte di mangime da un dashboard giornaliero chiaro.',
     'summary.horses': 'Cavalli',
     'summary.openTasks': 'Attività aperte',
     'summary.todayTasks': 'Attività di oggi',
@@ -1505,6 +1510,7 @@ const translations = {
     'today.tasksDue': 'Attività di oggi',
     'today.eventsToday': 'Eventi di oggi',
     'today.feedWarnings': 'Avvisi mangime',
+    'today.recentWork': 'Lavoro registrato oggi',
     'quick.addHorse': 'Aggiungi cavallo',
     'quick.addTask': 'Aggiungi attività',
     'quick.addHours': 'Aggiungi ore lavoro',
@@ -2145,6 +2151,8 @@ const els = {
   authSetupNotice: document.querySelector('#authSetupNotice'),
   headerStableName: document.querySelector('#headerStableName'),
   dataModeStatus: document.querySelector('#dataModeStatus'),
+  stableStableBadge: document.querySelector('#stableStableBadge'),
+  stableModeBadge: document.querySelector('#stableModeBadge'),
   cloudUserEmail: document.querySelector('#cloudUserEmail'),
   cloudStableName: document.querySelector('#cloudStableName'),
   cloudConnectionStatus: document.querySelector('#cloudConnectionStatus'),
@@ -4696,6 +4704,7 @@ function renderHorseOptions() {
 function render() {
   renderSummary();
   renderHorseOptions();
+  renderStableHeader();
   renderToday();
   renderHorses();
   renderTasks();
@@ -4715,6 +4724,12 @@ function render() {
   renderFeedCloudMode();
   renderCalendarCloudMode();
   renderCloudCleanup();
+}
+
+function renderStableHeader() {
+  const activeStable = getActiveStable();
+  if (els.stableStableBadge) els.stableStableBadge.textContent = activeStable.name || t('cloudRead.noStable');
+  if (els.stableModeBadge) els.stableModeBadge.textContent = cloudWriteMode ? t('calendar.cloudMode') : t('calendar.localMode');
 }
 
 function renderSummary() {
@@ -4761,11 +4776,12 @@ function renderToday() {
   const todayValue = today();
   const tasksToday = state.tasks.filter((task) => task.date === todayValue && !task.done);
   const eventsToday = state.calendarEvents.filter((event) => event.date === todayValue);
+  const workToday = state.hours.map(normalizeWorkLog).filter((entry) => entry.date === todayValue);
   const feedWarnings = state.inventory
     .map(normalizeFeedItem)
     .filter((item) => ['low', 'critical', 'empty'].includes(getFeedStatus(item).key));
 
-  if (!tasksToday.length && !eventsToday.length && !feedWarnings.length) {
+  if (!tasksToday.length && !eventsToday.length && !feedWarnings.length && !workToday.length) {
     els.todayList.innerHTML = `<p class="empty-state today-empty">${t('today.empty')}</p>`;
     return;
   }
@@ -4798,6 +4814,14 @@ function renderToday() {
       </article>
     `);
   }
+  if (workToday.length) {
+    sections.push(`
+      <article class="today-card">
+        <h4>${t('today.recentWork')}</h4>
+        ${workToday.slice(0, 3).map((entry) => `<p>${escapeHtml(`${entry.worker} - ${Number(entry.hours || 0).toFixed(2)} ${t('common.hours')}`)}</p>`).join('')}
+      </article>
+    `);
+  }
   els.todayList.innerHTML = sections.join('');
 }
 
@@ -4815,7 +4839,7 @@ function renderHorses() {
       horse.registration && `${t('horses.registration')}: ${horse.registration}`
     ].filter(Boolean);
     return `
-      <article class="item-card horse-card horse-profile-card">
+      <article class="item-card horse-card horse-profile-card premium-stable-card">
         <div class="horse-profile-main">
           <div class="horse-profile-head">
             <div>
@@ -4887,7 +4911,7 @@ function renderTasks() {
   els.tasksList.innerHTML = sortedTasks.map((task) => {
     const horse = state.horses.find((item) => item.id === task.horseId);
     return `
-      <article class="item-card">
+      <article class="item-card task-card premium-stable-card ${task.done ? 'task-done' : 'task-open'}">
         <div>
           <h4>${escapeHtml(task.title)}</h4>
           <p>${escapeHtml(task.notes || t('common.noNotes'))}</p>
@@ -4913,7 +4937,7 @@ function renderHours() {
     return;
   }
   els.hoursList.innerHTML = state.hours.map(normalizeWorkLog).map((entry) => `
-    <article class="item-card">
+    <article class="item-card work-card premium-stable-card">
       <div>
         <h4>${escapeHtml(entry.worker)}</h4>
         <p>${escapeHtml(entry.notes || t('common.noNotes'))}</p>
@@ -4950,7 +4974,7 @@ function renderInventory() {
       normalized.lastUpdated && `${t('feed.lastUpdated')}: ${normalized.lastUpdated}`
     ].filter(Boolean);
     return `
-      <article class="item-card feed-card">
+      <article class="item-card feed-card premium-stable-card">
         <div class="feed-main">
           <div>
             <h4>${escapeHtml(normalized.name)}</h4>
