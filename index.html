@@ -212,6 +212,7 @@
             <h2 data-i18n="home.socialHeading">Follow EquiTrack</h2>
             <p data-i18n="home.socialText">Social and contact channels can be connected here when they are ready.</p>
             <div class="social-links">
+              <a href="https://www.facebook.com/profile.php?id=61589467918120&amp;locale=fi_FI" target="_blank" rel="noopener noreferrer" data-i18n="home.facebook">Facebook</a>
               <span data-i18n="home.instagram">Instagram</span>
               <span data-i18n="home.linkedin">LinkedIn</span>
               <span data-i18n="home.email">Email or contact</span>
@@ -503,244 +504,288 @@
       </section>
 
       <section id="settingsView" class="view">
-        <div class="section-heading">
-          <div><p class="eyebrow" data-i18n="settings.eyebrow">Settings / Backup</p><h2 data-i18n="settings.title">Manage language, backups, and local data.</h2></div>
+        <div class="section-heading settings-hero">
+          <div>
+            <p class="eyebrow" data-i18n="settings.eyebrow">Settings / Backup</p>
+            <h2 data-i18n="settings.title">Manage language, backups, and local data.</h2>
+            <p data-i18n="settings.subtitle">Keep account, cloud storage, backups, and admin tools organized in one place.</p>
+          </div>
         </div>
 
-        <div class="settings-grid">
-          <article class="panel about-panel">
-            <span class="settings-emblem" aria-hidden="true">
-              ET
-            </span>
-            <div>
-              <h3>EquiTrack</h3>
-              <p data-i18n="brand.subtitle">Web stable manager</p>
+        <div class="settings-page">
+          <section class="settings-section">
+            <div class="settings-section-header">
+              <p class="eyebrow" data-i18n="settings.accountEyebrow">Account & stable</p>
+              <h3 data-i18n="settings.accountTitle">Session and storage status</h3>
+              <p data-i18n="settings.accountText">See who is signed in, which stable is active, and where app changes are being saved.</p>
             </div>
-          </article>
-
-          <article class="panel">
-            <h3 data-i18n="language.label">Language</h3>
-            <label class="language-picker wide">
-              <span data-i18n="settings.languageHelp">Choose interface language</span>
-              <select id="languageSelect" aria-label="Language">
-                <option value="en">English</option>
-                <option value="fi">Suomi</option>
-                <option value="it">Italiano</option>
-              </select>
-            </label>
-          </article>
-
-          <article class="panel cloud-panel">
-            <h3 data-i18n="cloud.prepTitle">Cloud storage</h3>
-            <p data-i18n="cloud.prepText">Signed-in users use cloud storage automatically when an active stable is assigned.</p>
-            <div class="cloud-status-list">
-              <p><span data-i18n="cloud.email">Logged-in email</span>: <strong id="cloudUserEmail">-</strong></p>
-              <p><span data-i18n="cloud.stable">Active stable</span>: <strong id="cloudStableName">-</strong></p>
-              <p><span data-i18n="cloud.status">Cloud status</span>: <strong id="cloudConnectionStatus">Not connected</strong></p>
-            </div>
-            <p class="update-note" id="cloudLocalNotice" data-i18n="cloud.syncLocal">Local browser data remains available as fallback. Export backups regularly.</p>
-          </article>
-
-          <article id="adminPlaceholderPanel" class="panel admin-panel" hidden>
-            <p class="eyebrow" data-i18n="admin.eyebrow">Admin</p>
-            <h3 data-i18n="admin.title">Admin User Management</h3>
-            <p data-i18n="admin.text">Create stable users through the secure Supabase Edge Function. No service role key is stored in the browser.</p>
-            <ul class="migration-warnings">
-              <li data-i18n="admin.modelSuper">Super Admin creates stable owners and manages the full system.</li>
-              <li data-i18n="admin.modelOwner">Stable Owners manage their own stable and helper permissions.</li>
-              <li data-i18n="admin.modelMember">Helper Users only access the features they are allowed to use.</li>
-              <li data-i18n="admin.edgeFunction">User creation will use a secure Supabase Edge Function.</li>
-            </ul>
-            <p class="update-note"><span data-i18n="admin.currentAccess">Current access</span>: <strong id="adminAccessStatus">-</strong></p>
-            <section id="adminStableSection" class="admin-subsection" hidden>
-              <h4 data-i18n="admin.stableTitle">Create new stable</h4>
-              <p data-i18n="admin.stableText">Super Admins can create a stable and optionally create the first owner account through the secure Edge Function.</p>
-              <form id="adminStableForm" class="admin-user-form">
-                <div class="form-grid">
-                  <label><span data-i18n="admin.stableName">Stable name</span><input name="stableName" required autocomplete="off"></label>
-                  <label><span data-i18n="admin.ownerEmail">Owner email</span><input name="ownerEmail" type="email" autocomplete="off" placeholder="owner@example.com"></label>
-                  <label><span data-i18n="admin.ownerFullName">Owner full name</span><input name="ownerFullName" autocomplete="off"></label>
-                  <label><span data-i18n="admin.ownerPassword">Temporary password</span><input name="ownerPassword" type="password" autocomplete="new-password"></label>
+            <div class="settings-card-grid">
+              <article class="panel about-panel">
+                <span class="settings-emblem" aria-hidden="true">ET</span>
+                <div>
+                  <h3>EquiTrack</h3>
+                  <p data-i18n="brand.subtitle">Web stable manager</p>
                 </div>
-                <label class="checkbox-row"><input name="createOwner" type="checkbox" checked><span data-i18n="admin.createOwnerAccount">Create owner account and assign it to this stable</span></label>
-                <p class="update-note" data-i18n="admin.stableOnlyNote">Owner email and password are optional when creating a stable only.</p>
-                <button id="adminCreateStableButton" class="button primary" type="submit" data-i18n="admin.createStableButton">Create stable</button>
-                <p id="adminStableStatus" class="update-note" data-i18n="admin.stableReady">Ready to create a stable through the secure Edge Function.</p>
-              </form>
-            </section>
-            <form id="adminUserForm" class="admin-user-form">
-              <div class="form-grid">
-                <label><span data-i18n="admin.email">Email</span><input name="email" type="email" autocomplete="off" required placeholder="helper@example.com"></label>
-                <label><span data-i18n="admin.password">Temporary password</span><input name="password" type="password" autocomplete="new-password" required></label>
-                <label><span data-i18n="admin.fullName">Full name</span><input name="fullName" autocomplete="off"></label>
-                <label>
-                  <span data-i18n="admin.stableRole">Stable role</span>
-                  <select name="stableRole">
-                    <option value="viewer" data-i18n="admin.roleViewer">Viewer</option>
-                    <option value="member" data-i18n="admin.roleMember">Member</option>
-                    <option value="owner" data-i18n="admin.roleOwner">Owner</option>
+              </article>
+              <article class="panel cloud-panel">
+                <h3 data-i18n="cloud.prepTitle">Cloud storage</h3>
+                <p data-i18n="cloud.prepText">Signed-in users use cloud storage automatically when an active stable is assigned.</p>
+                <div class="cloud-status-list">
+                  <p><span data-i18n="cloud.email">Logged-in email</span>: <strong id="cloudUserEmail">-</strong></p>
+                  <p><span data-i18n="cloud.stable">Active stable</span>: <strong id="cloudStableName">-</strong></p>
+                  <p><span data-i18n="cloud.status">Cloud status</span>: <strong id="cloudConnectionStatus">Not connected</strong></p>
+                </div>
+                <div class="backup-actions">
+                  <button id="settingsLogoutButton" class="button secondary" type="button" hidden data-i18n="auth.logout">Log out</button>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="settings-section">
+            <div class="settings-section-header">
+              <p class="eyebrow" data-i18n="settings.appEyebrow">App settings</p>
+              <h3 data-i18n="settings.appTitle">Language and install</h3>
+              <p data-i18n="settings.appText">Choose your interface language and install EquiTrack on a phone or computer.</p>
+            </div>
+            <div class="settings-card-grid">
+              <article class="panel">
+                <h3 data-i18n="language.label">Language</h3>
+                <label class="language-picker wide">
+                  <span data-i18n="settings.languageHelp">Choose interface language</span>
+                  <select id="languageSelect" aria-label="Language">
+                    <option value="en">English</option>
+                    <option value="fi">Suomi</option>
+                    <option value="it">Italiano</option>
                   </select>
                 </label>
+              </article>
+              <article class="panel install-panel">
+                <h3 data-i18n="pwa.installTitle">Install EquiTrack</h3>
+                <p data-i18n="pwa.installText">Use EquiTrack like an app from your phone or computer.</p>
+                <ul class="install-list">
+                  <li data-i18n="pwa.installIos">iPhone / Safari: Share -> Add to Home Screen.</li>
+                  <li data-i18n="pwa.installAndroid">Android / Chrome: menu -> Install app or Add to Home screen.</li>
+                  <li data-i18n="pwa.installDesktop">Desktop Chrome / Edge: use the install icon in the address bar if available.</li>
+                </ul>
+                <p id="offlineStatus" class="offline-status" hidden data-i18n="pwa.offlineText">You are offline. EquiTrack still works with saved local data in this browser.</p>
+                <div id="updateNotice" class="update-notice" hidden>
+                  <span data-i18n="pwa.updateText">A new version is available. Refresh to update.</span>
+                  <button id="refreshAppButton" class="button secondary" type="button" data-i18n="pwa.refresh">Refresh</button>
+                </div>
+              </article>
+              <article class="panel">
+                <h3 data-i18n="onboarding.restartTitle">Onboarding</h3>
+                <p data-i18n="onboarding.restartText">Show the first-use setup guide again.</p>
+                <button id="restartOnboardingButton" class="button secondary" type="button" data-i18n="onboarding.restart">Restart onboarding</button>
+              </article>
+            </div>
+          </section>
+
+          <section class="settings-section">
+            <div class="settings-section-header">
+              <p class="eyebrow" data-i18n="settings.backupEyebrow">Backup & restore</p>
+              <h3 data-i18n="settings.backupSectionTitle">Protect your stable data</h3>
+              <p data-i18n="settings.backupSectionText">Export backups regularly and preview imported files before replacing local data.</p>
+            </div>
+            <div class="settings-card-grid">
+              <article class="panel">
+                <h3 data-i18n="settings.backupTitle">Backup PRO</h3>
+                <p data-i18n="settings.backupText">Export a dated JSON backup or safely preview and restore one you saved earlier.</p>
+                <div class="backup-actions">
+                  <button id="exportButton" class="button secondary" type="button" data-i18n="backup.export">Download backup</button>
+                  <label class="button secondary file-button"><span data-i18n="backup.import">Restore backup</span><input id="importInput" type="file" accept="application/json,.json"></label>
+                </div>
+                <p class="update-note"><span data-i18n="backup.lastExport">Last export</span>: <strong id="lastBackupAt">-</strong></p>
+                <p class="update-note" data-i18n="backup.storageHelp">Data is stored locally in this browser. Export backups regularly.</p>
+              </article>
+              <article class="panel">
+                <h3 data-i18n="settings.backupPreviewTitle">Import preview</h3>
+                <p data-i18n="settings.backupPreviewText">When you choose a backup file, EquiTrack shows counts before replacing local data.</p>
+                <div id="importPreview" class="backup-preview" data-i18n="backup.noPreview">No backup selected.</div>
+                <button id="restoreEmergencyButton" class="button secondary" type="button" data-i18n="backup.restorePrevious">Restore previous data</button>
+                <p class="update-note" id="restoreEmergencyHelp" data-i18n="backup.restoreHelp">Available after an import. Restores the local data saved just before the last import.</p>
+              </article>
+              <article class="panel danger-panel">
+                <p class="eyebrow" data-i18n="settings.dangerEyebrow">Danger zone</p>
+                <h3 data-i18n="settings.resetTitle">Reset local data</h3>
+                <p data-i18n="settings.resetText">This removes horses, tasks, work logs, feed inventory, and calendar events from this browser.</p>
+                <button id="resetDataButton" class="button secondary danger" type="button" data-i18n="settings.resetButton">Reset local data</button>
+              </article>
+            </div>
+          </section>
+
+          <section class="settings-section">
+            <div class="settings-section-header">
+              <p class="eyebrow" data-i18n="settings.cloudEyebrow">Cloud storage</p>
+              <h3 data-i18n="settings.cloudTitle">Automatic cloud mode</h3>
+              <p data-i18n="settings.cloudText">Signed-in users use cloud storage automatically. Local browser data stays available as a fallback.</p>
+            </div>
+            <div class="settings-card-grid">
+              <article class="panel cloud-panel">
+                <h3 data-i18n="cloudMode.title">Cloud mode</h3>
+                <p data-i18n="cloudMode.text">Signed-in users use cloud storage automatically when an active stable is assigned. Local data stays available as a fallback.</p>
+                <div class="cloud-status-list">
+                  <p><span data-i18n="cloudMode.currentMode">Current data mode</span>: <strong id="cloudModeCurrent">Local</strong></p>
+                  <p><span data-i18n="cloudMode.targetStable">Active stable</span>: <strong id="cloudModeStableName">-</strong></p>
+                  <p><span data-i18n="cloudMode.email">Logged-in email</span>: <strong id="cloudModeEmail">-</strong></p>
+                </div>
+                <p class="update-note" id="cloudLocalNotice" data-i18n="cloud.syncLocal">Local browser data remains available as fallback. Export backups regularly.</p>
+                <div class="backup-actions">
+                  <button id="cloudModeLocalButton" class="button secondary" type="button" hidden data-i18n="cloudMode.useLocalButton">Use local mode on this device</button>
+                  <button id="cloudModeReturnButton" class="button secondary" type="button" hidden data-i18n="cloudMode.returnCloudButton">Return to cloud mode</button>
+                </div>
+                <p id="cloudModeStatus" class="update-note" data-i18n="cloudMode.notReady">Sign in and make sure an active stable is assigned to use Cloud mode.</p>
+              </article>
+            </div>
+
+            <details class="settings-details">
+              <summary>
+                <span data-i18n="settings.cloudMigrationSummary">Migration and cloud checks</span>
+                <small data-i18n="settings.cloudMigrationHelp">Use these when moving old browser data or comparing cloud counts.</small>
+              </summary>
+              <div class="settings-card-grid">
+                <article class="panel cloud-panel">
+                  <h3 data-i18n="migration.title">Move local data to cloud</h3>
+                  <p data-i18n="migration.text">Review the local browser data that will be copied to the active cloud stable after confirmation.</p>
+                  <div class="cloud-status-list">
+                    <p><span data-i18n="migration.targetStable">Upload target stable</span>: <strong id="migrationStableName">-</strong></p>
+                    <p><span data-i18n="summary.horses">Horses</span>: <strong id="migrationHorseCount">0</strong></p>
+                    <p><span data-i18n="tabs.tasks">Tasks</span>: <strong id="migrationTaskCount">0</strong></p>
+                    <p><span data-i18n="tabs.hours">Work hours</span>: <strong id="migrationHoursCount">0</strong></p>
+                    <p><span data-i18n="tabs.inventory">Feed Inventory</span>: <strong id="migrationFeedCount">0</strong></p>
+                    <p><span data-i18n="nav.calendar">Calendar</span>: <strong id="migrationEventCount">0</strong></p>
+                  </div>
+                  <ul class="migration-warnings">
+                    <li data-i18n="migration.warningLocal">This will copy your current local browser data to the cloud.</li>
+                    <li data-i18n="migration.warningConfirm">Your local data will stay in this browser.</li>
+                    <li data-i18n="migration.warningOverwrite">This does not enable automatic sync yet.</li>
+                    <li data-i18n="migration.warningCloudRows">Rows from earlier manual uploads may be updated, but cloud rows are not deleted.</li>
+                  </ul>
+                  <p class="update-note"><span data-i18n="migration.lastUpload">Last cloud upload</span>: <strong id="migrationLastUpload">-</strong></p>
+                  <label class="full-width">
+                    <span data-i18n="migration.confirmLabel">Type CLOUD to enable manual upload</span>
+                    <input id="migrationConfirmInput" type="text" autocomplete="off" placeholder="CLOUD">
+                  </label>
+                  <button id="migrationUploadButton" class="button secondary" type="button" disabled data-i18n="migration.uploadButton">Upload local data to cloud</button>
+                  <p id="migrationUploadStatus" class="update-note" data-i18n="migration.uploadNotReady">Manual upload is disabled until you are logged in, have an active stable, and type CLOUD.</p>
+                </article>
+
+                <article class="panel cloud-panel">
+                  <h3 data-i18n="cloudRead.title">Cloud read preview</h3>
+                  <p data-i18n="cloudRead.text">Check cloud counts for the active stable without changing local data.</p>
+                  <div class="cloud-status-list">
+                    <p><span data-i18n="cloudRead.targetStable">Read target stable</span>: <strong id="cloudReadStableName">-</strong></p>
+                    <p class="update-note" data-i18n="cloudRead.compareHelp">Each row shows local count / cloud count.</p>
+                    <p><span data-i18n="summary.horses">Horses</span>: <strong><span id="cloudReadLocalHorses">0</span> / <span id="cloudReadCloudHorses">-</span></strong></p>
+                    <p><span data-i18n="tabs.tasks">Tasks</span>: <strong><span id="cloudReadLocalTasks">0</span> / <span id="cloudReadCloudTasks">-</span></strong></p>
+                    <p><span data-i18n="tabs.hours">Work hours</span>: <strong><span id="cloudReadLocalHours">0</span> / <span id="cloudReadCloudHours">-</span></strong></p>
+                    <p><span data-i18n="tabs.inventory">Feed Inventory</span>: <strong><span id="cloudReadLocalFeed">0</span> / <span id="cloudReadCloudFeed">-</span></strong></p>
+                    <p><span data-i18n="nav.calendar">Calendar</span>: <strong><span id="cloudReadLocalEvents">0</span> / <span id="cloudReadCloudEvents">-</span></strong></p>
+                  </div>
+                  <ul class="migration-warnings">
+                    <li data-i18n="cloudRead.warningReadOnly">This preview is read-only.</li>
+                    <li data-i18n="cloudRead.warningLocalActive">Local browser data remains available for comparison.</li>
+                    <li data-i18n="cloudRead.warningNoSync">Cloud sync is not enabled yet.</li>
+                    <li data-i18n="cloudRead.warningNoLocalChange">No local data will be changed.</li>
+                  </ul>
+                  <button id="cloudReadButton" class="button secondary" type="button" disabled data-i18n="cloudRead.button">Check cloud data</button>
+                  <p id="cloudReadStatus" class="update-note" data-i18n="cloudRead.notReady">Log in and assign an active stable before reading cloud data.</p>
+                </article>
               </div>
-              <fieldset class="permission-grid">
-                <legend data-i18n="admin.permissions">Permissions</legend>
-                <label><input name="can_view_horses" type="checkbox"><span data-i18n="admin.canViewHorses">View horses</span></label>
-                <label><input name="can_edit_horses" type="checkbox"><span data-i18n="admin.canEditHorses">Edit horses</span></label>
-                <label><input name="can_view_tasks" type="checkbox"><span data-i18n="admin.canViewTasks">View tasks</span></label>
-                <label><input name="can_edit_tasks" type="checkbox"><span data-i18n="admin.canEditTasks">Edit tasks</span></label>
-                <label><input name="can_view_calendar" type="checkbox"><span data-i18n="admin.canViewCalendar">View calendar</span></label>
-                <label><input name="can_edit_calendar" type="checkbox"><span data-i18n="admin.canEditCalendar">Edit calendar</span></label>
-                <label><input name="can_view_feed" type="checkbox"><span data-i18n="admin.canViewFeed">View feed inventory</span></label>
-                <label><input name="can_edit_feed" type="checkbox"><span data-i18n="admin.canEditFeed">Edit feed inventory</span></label>
-                <label><input name="can_view_work_logs" type="checkbox"><span data-i18n="admin.canViewWorkLogs">View work logs</span></label>
-                <label><input name="can_edit_work_logs" type="checkbox"><span data-i18n="admin.canEditWorkLogs">Edit work logs</span></label>
-                <label><input name="can_manage_users" type="checkbox"><span data-i18n="admin.canManageUsers">Manage users</span></label>
-              </fieldset>
-              <button id="adminCreateUserButton" class="button primary" type="submit" data-i18n="admin.createButton">Create user</button>
-              <p id="adminUserStatus" class="update-note" data-i18n="admin.ready">Ready to create a user through the secure Edge Function.</p>
-            </form>
-          </article>
+            </details>
+          </section>
 
-          <article class="panel cloud-panel">
-            <h3 data-i18n="cloudMode.title">Cloud mode</h3>
-            <p data-i18n="cloudMode.text">Signed-in users use cloud storage automatically when an active stable is assigned. Local data stays available as a fallback.</p>
-            <div class="cloud-status-list">
-              <p><span data-i18n="cloudMode.currentMode">Current data mode</span>: <strong id="cloudModeCurrent">Local</strong></p>
-              <p><span data-i18n="cloudMode.targetStable">Active stable</span>: <strong id="cloudModeStableName">-</strong></p>
-              <p><span data-i18n="cloudMode.email">Logged-in email</span>: <strong id="cloudModeEmail">-</strong></p>
-            </div>
-            <ul class="migration-warnings">
-              <li data-i18n="cloudMode.warningLocalDefault">Signed-in users use cloud storage automatically.</li>
-              <li data-i18n="cloudMode.warningViewCloud">App changes save to the active stable in Supabase when cloud is available.</li>
-              <li data-i18n="cloudMode.warningLocalSafe">Local browser data is kept as fallback and is not deleted.</li>
-              <li data-i18n="cloudMode.warningNoSync">Use local mode on this device only if you need a fallback.</li>
-            </ul>
-            <div class="backup-actions">
-              <button id="cloudModeLocalButton" class="button secondary" type="button" hidden data-i18n="cloudMode.useLocalButton">Use local mode on this device</button>
-              <button id="cloudModeReturnButton" class="button secondary" type="button" hidden data-i18n="cloudMode.returnCloudButton">Return to cloud mode</button>
-            </div>
-            <p id="cloudModeStatus" class="update-note" data-i18n="cloudMode.notReady">Sign in and make sure an active stable is assigned to use Cloud mode.</p>
-          </article>
+          <section class="settings-section advanced-tools-section">
+            <details class="settings-details danger-details">
+              <summary>
+                <span data-i18n="cloudAdvanced.title">Migration and troubleshooting</span>
+                <small data-i18n="settings.advancedHelp">Advanced cloud cleanup is for troubleshooting duplicated or incorrect cloud counts only.</small>
+              </summary>
+              <article class="panel cloud-panel danger-zone">
+                <p class="eyebrow" data-i18n="cloudAdvanced.eyebrow">Advanced cloud tools</p>
+                <h3 data-i18n="cloudCleanup.title">Cloud cleanup</h3>
+                <p data-i18n="cloudCleanup.text">Delete cloud rows for the active stable when cloud preview counts are duplicated or wrong.</p>
+                <div class="cloud-status-list">
+                  <p><span data-i18n="cloudCleanup.targetStable">Cleanup target stable</span>: <strong id="cloudCleanupStableName">-</strong></p>
+                </div>
+                <ul class="migration-warnings">
+                  <li data-i18n="cloudCleanup.warningDeletesCloud">This can delete cloud rows for the active stable.</li>
+                  <li data-i18n="cloudCleanup.warningLocalSafe">Local browser data will not be deleted.</li>
+                  <li data-i18n="cloudCleanup.warningUseCase">Use this only if cloud preview counts are duplicated or wrong.</li>
+                  <li data-i18n="cloudCleanup.warningReupload">After cleanup, run manual upload again to copy local data back to cloud.</li>
+                </ul>
+                <label class="full-width">
+                  <span data-i18n="cloudCleanup.confirmLabel">Type RESET CLOUD to enable cleanup</span>
+                  <input id="cloudCleanupConfirmInput" type="text" autocomplete="off" placeholder="RESET CLOUD">
+                </label>
+                <button id="cloudCleanupButton" class="button secondary danger" type="button" disabled data-i18n="cloudCleanup.button">Delete cloud data for this stable</button>
+                <p id="cloudCleanupStatus" class="update-note" data-i18n="cloudCleanup.notReady">Cleanup is disabled until you are logged in, have an active stable, and type RESET CLOUD.</p>
+              </article>
+            </details>
+          </section>
 
-          <article class="panel cloud-panel advanced-cloud-heading">
-            <p class="eyebrow" data-i18n="cloudAdvanced.eyebrow">Advanced cloud tools</p>
-            <h3 data-i18n="cloudAdvanced.title">Migration and troubleshooting</h3>
-            <p data-i18n="cloudAdvanced.text">These tools are for migration, checking cloud counts, and cleanup. Normal signed-in use does not need them.</p>
-          </article>
-
-          <article class="panel cloud-panel">
-            <h3 data-i18n="migration.title">Move local data to cloud</h3>
-            <p data-i18n="migration.text">Review the local browser data that will be copied to the active cloud stable after confirmation.</p>
-            <div class="cloud-status-list">
-              <p><span data-i18n="migration.targetStable">Upload target stable</span>: <strong id="migrationStableName">-</strong></p>
-              <p><span data-i18n="summary.horses">Horses</span>: <strong id="migrationHorseCount">0</strong></p>
-              <p><span data-i18n="tabs.tasks">Tasks</span>: <strong id="migrationTaskCount">0</strong></p>
-              <p><span data-i18n="tabs.hours">Work hours</span>: <strong id="migrationHoursCount">0</strong></p>
-              <p><span data-i18n="tabs.inventory">Feed Inventory</span>: <strong id="migrationFeedCount">0</strong></p>
-              <p><span data-i18n="nav.calendar">Calendar</span>: <strong id="migrationEventCount">0</strong></p>
-            </div>
-            <ul class="migration-warnings">
-              <li data-i18n="migration.warningLocal">This will copy your current local browser data to the cloud.</li>
-              <li data-i18n="migration.warningConfirm">Your local data will stay in this browser.</li>
-              <li data-i18n="migration.warningOverwrite">This does not enable automatic sync yet.</li>
-              <li data-i18n="migration.warningCloudRows">Rows from earlier manual uploads may be updated, but cloud rows are not deleted.</li>
-            </ul>
-            <p class="update-note"><span data-i18n="migration.lastUpload">Last cloud upload</span>: <strong id="migrationLastUpload">-</strong></p>
-            <label class="full-width">
-              <span data-i18n="migration.confirmLabel">Type CLOUD to enable manual upload</span>
-              <input id="migrationConfirmInput" type="text" autocomplete="off" placeholder="CLOUD">
-            </label>
-            <button id="migrationUploadButton" class="button secondary" type="button" disabled data-i18n="migration.uploadButton">Upload local data to cloud</button>
-            <p id="migrationUploadStatus" class="update-note" data-i18n="migration.uploadNotReady">Manual upload is disabled until you are logged in, have an active stable, and type CLOUD.</p>
-          </article>
-
-          <article class="panel cloud-panel">
-            <h3 data-i18n="cloudRead.title">Cloud read preview</h3>
-            <p data-i18n="cloudRead.text">Check cloud counts for the active stable without changing local data.</p>
-            <div class="cloud-status-list">
-              <p><span data-i18n="cloudRead.targetStable">Read target stable</span>: <strong id="cloudReadStableName">-</strong></p>
-              <p class="update-note" data-i18n="cloudRead.compareHelp">Each row shows local count / cloud count.</p>
-              <p><span data-i18n="summary.horses">Horses</span>: <strong><span id="cloudReadLocalHorses">0</span> / <span id="cloudReadCloudHorses">-</span></strong></p>
-              <p><span data-i18n="tabs.tasks">Tasks</span>: <strong><span id="cloudReadLocalTasks">0</span> / <span id="cloudReadCloudTasks">-</span></strong></p>
-              <p><span data-i18n="tabs.hours">Work hours</span>: <strong><span id="cloudReadLocalHours">0</span> / <span id="cloudReadCloudHours">-</span></strong></p>
-              <p><span data-i18n="tabs.inventory">Feed Inventory</span>: <strong><span id="cloudReadLocalFeed">0</span> / <span id="cloudReadCloudFeed">-</span></strong></p>
-              <p><span data-i18n="nav.calendar">Calendar</span>: <strong><span id="cloudReadLocalEvents">0</span> / <span id="cloudReadCloudEvents">-</span></strong></p>
-            </div>
-            <ul class="migration-warnings">
-              <li data-i18n="cloudRead.warningReadOnly">This preview is read-only.</li>
-              <li data-i18n="cloudRead.warningLocalActive">Local browser data remains available for comparison.</li>
-              <li data-i18n="cloudRead.warningNoSync">Cloud sync is not enabled yet.</li>
-              <li data-i18n="cloudRead.warningNoLocalChange">No local data will be changed.</li>
-            </ul>
-            <button id="cloudReadButton" class="button secondary" type="button" disabled data-i18n="cloudRead.button">Check cloud data</button>
-            <p id="cloudReadStatus" class="update-note" data-i18n="cloudRead.notReady">Log in and assign an active stable before reading cloud data.</p>
-          </article>
-
-          <article class="panel cloud-panel danger-zone">
-            <h3 data-i18n="cloudCleanup.title">Cloud cleanup</h3>
-            <p data-i18n="cloudCleanup.text">Delete cloud rows for the active stable when cloud preview counts are duplicated or wrong.</p>
-            <div class="cloud-status-list">
-              <p><span data-i18n="cloudCleanup.targetStable">Cleanup target stable</span>: <strong id="cloudCleanupStableName">-</strong></p>
-            </div>
-            <ul class="migration-warnings">
-              <li data-i18n="cloudCleanup.warningDeletesCloud">This can delete cloud rows for the active stable.</li>
-              <li data-i18n="cloudCleanup.warningLocalSafe">Local browser data will not be deleted.</li>
-              <li data-i18n="cloudCleanup.warningUseCase">Use this only if cloud preview counts are duplicated or wrong.</li>
-              <li data-i18n="cloudCleanup.warningReupload">After cleanup, run manual upload again to copy local data back to cloud.</li>
-            </ul>
-            <label class="full-width">
-              <span data-i18n="cloudCleanup.confirmLabel">Type RESET CLOUD to enable cleanup</span>
-              <input id="cloudCleanupConfirmInput" type="text" autocomplete="off" placeholder="RESET CLOUD">
-            </label>
-            <button id="cloudCleanupButton" class="button secondary danger" type="button" disabled data-i18n="cloudCleanup.button">Delete cloud data for this stable</button>
-            <p id="cloudCleanupStatus" class="update-note" data-i18n="cloudCleanup.notReady">Cleanup is disabled until you are logged in, have an active stable, and type RESET CLOUD.</p>
-          </article>
-
-          <article class="panel install-panel">
-            <h3 data-i18n="pwa.installTitle">Install EquiTrack</h3>
-            <p data-i18n="pwa.installText">Use EquiTrack like an app from your phone or computer.</p>
-            <ul class="install-list">
-              <li data-i18n="pwa.installIos">iPhone / Safari: Share -> Add to Home Screen.</li>
-              <li data-i18n="pwa.installAndroid">Android / Chrome: menu -> Install app or Add to Home screen.</li>
-              <li data-i18n="pwa.installDesktop">Desktop Chrome / Edge: use the install icon in the address bar if available.</li>
-            </ul>
-            <p id="offlineStatus" class="offline-status" hidden data-i18n="pwa.offlineText">You are offline. EquiTrack still works with saved local data in this browser.</p>
-            <div id="updateNotice" class="update-notice" hidden>
-              <span data-i18n="pwa.updateText">A new version is available. Refresh to update.</span>
-              <button id="refreshAppButton" class="button secondary" type="button" data-i18n="pwa.refresh">Refresh</button>
-            </div>
-          </article>
-
-          <article class="panel">
-            <h3 data-i18n="settings.backupTitle">Backup PRO</h3>
-            <p data-i18n="settings.backupText">Export a dated JSON backup or safely preview and restore one you saved earlier.</p>
-            <div class="backup-actions">
-              <button id="exportButton" class="button secondary" type="button" data-i18n="backup.export">Download backup</button>
-              <label class="button secondary file-button"><span data-i18n="backup.import">Restore backup</span><input id="importInput" type="file" accept="application/json,.json"></label>
-            </div>
-          </article>
-
-          <article class="panel">
-            <h3 data-i18n="settings.backupPreviewTitle">Import preview</h3>
-            <p data-i18n="settings.backupPreviewText">When you choose a backup file, EquiTrack shows counts before replacing local data.</p>
-            <div id="importPreview" class="backup-preview" data-i18n="backup.noPreview">No backup selected.</div>
-            <p class="update-note"><span data-i18n="backup.lastExport">Last export</span>: <strong id="lastBackupAt">-</strong></p>
-            <p class="update-note" data-i18n="backup.storageHelp">Data is stored locally in this browser. Export backups regularly.</p>
-            <button id="restoreEmergencyButton" class="button secondary" type="button" data-i18n="backup.restorePrevious">Restore previous data</button>
-            <p class="update-note" id="restoreEmergencyHelp" data-i18n="backup.restoreHelp">Available after an import. Restores the local data saved just before the last import.</p>
-          </article>
-
-          <article class="panel">
-            <h3 data-i18n="onboarding.restartTitle">Onboarding</h3>
-            <p data-i18n="onboarding.restartText">Show the first-use setup guide again.</p>
-            <button id="restartOnboardingButton" class="button secondary" type="button" data-i18n="onboarding.restart">Restart onboarding</button>
-          </article>
-
-          <article class="panel danger-panel">
-            <h3 data-i18n="settings.resetTitle">Reset local data</h3>
-            <p data-i18n="settings.resetText">This removes horses, tasks, work logs, feed inventory, and calendar events from this browser.</p>
-            <button id="resetDataButton" class="button secondary danger" type="button" data-i18n="settings.resetButton">Reset local data</button>
-          </article>
+          <section class="settings-section admin-settings-section">
+            <article id="adminPlaceholderPanel" class="panel admin-panel" hidden>
+              <p class="eyebrow" data-i18n="admin.eyebrow">Admin</p>
+              <h3 data-i18n="admin.title">Admin User Management</h3>
+              <p data-i18n="admin.text">Create stable users through the secure Supabase Edge Function. No service role key is stored in the browser.</p>
+              <ul class="migration-warnings">
+                <li data-i18n="admin.modelSuper">Super Admin creates stable owners and manages the full system.</li>
+                <li data-i18n="admin.modelOwner">Stable Owners manage their own stable and helper permissions.</li>
+                <li data-i18n="admin.modelMember">Helper Users only access the features they are allowed to use.</li>
+                <li data-i18n="admin.edgeFunction">User creation will use a secure Supabase Edge Function.</li>
+              </ul>
+              <p class="update-note"><span data-i18n="admin.currentAccess">Current access</span>: <strong id="adminAccessStatus">-</strong></p>
+              <section id="adminStableSection" class="admin-subsection" hidden>
+                <h4 data-i18n="admin.stableTitle">Create new stable</h4>
+                <p data-i18n="admin.stableText">Super Admins can create a stable and optionally create the first owner account through the secure Edge Function.</p>
+                <form id="adminStableForm" class="admin-user-form">
+                  <div class="form-grid">
+                    <label><span data-i18n="admin.stableName">Stable name</span><input name="stableName" required autocomplete="off"></label>
+                    <label><span data-i18n="admin.ownerEmail">Owner email</span><input name="ownerEmail" type="email" autocomplete="off" placeholder="owner@example.com"></label>
+                    <label><span data-i18n="admin.ownerFullName">Owner full name</span><input name="ownerFullName" autocomplete="off"></label>
+                    <label><span data-i18n="admin.ownerPassword">Temporary password</span><input name="ownerPassword" type="password" autocomplete="new-password"></label>
+                  </div>
+                  <label class="checkbox-row"><input name="createOwner" type="checkbox" checked><span data-i18n="admin.createOwnerAccount">Create owner account and assign it to this stable</span></label>
+                  <p class="update-note" data-i18n="admin.stableOnlyNote">Owner email and password are optional when creating a stable only.</p>
+                  <button id="adminCreateStableButton" class="button primary" type="submit" data-i18n="admin.createStableButton">Create stable</button>
+                  <p id="adminStableStatus" class="update-note" data-i18n="admin.stableReady">Ready to create a stable through the secure Edge Function.</p>
+                </form>
+              </section>
+              <form id="adminUserForm" class="admin-user-form">
+                <div class="form-grid">
+                  <label><span data-i18n="admin.email">Email</span><input name="email" type="email" autocomplete="off" required placeholder="helper@example.com"></label>
+                  <label><span data-i18n="admin.password">Temporary password</span><input name="password" type="password" autocomplete="new-password" required></label>
+                  <label><span data-i18n="admin.fullName">Full name</span><input name="fullName" autocomplete="off"></label>
+                  <label>
+                    <span data-i18n="admin.stableRole">Stable role</span>
+                    <select name="stableRole">
+                      <option value="viewer" data-i18n="admin.roleViewer">Viewer</option>
+                      <option value="member" data-i18n="admin.roleMember">Member</option>
+                      <option value="owner" data-i18n="admin.roleOwner">Owner</option>
+                    </select>
+                  </label>
+                </div>
+                <fieldset class="permission-grid">
+                  <legend data-i18n="admin.permissions">Permissions</legend>
+                  <label><input name="can_view_horses" type="checkbox"><span data-i18n="admin.canViewHorses">View horses</span></label>
+                  <label><input name="can_edit_horses" type="checkbox"><span data-i18n="admin.canEditHorses">Edit horses</span></label>
+                  <label><input name="can_view_tasks" type="checkbox"><span data-i18n="admin.canViewTasks">View tasks</span></label>
+                  <label><input name="can_edit_tasks" type="checkbox"><span data-i18n="admin.canEditTasks">Edit tasks</span></label>
+                  <label><input name="can_view_calendar" type="checkbox"><span data-i18n="admin.canViewCalendar">View calendar</span></label>
+                  <label><input name="can_edit_calendar" type="checkbox"><span data-i18n="admin.canEditCalendar">Edit calendar</span></label>
+                  <label><input name="can_view_feed" type="checkbox"><span data-i18n="admin.canViewFeed">View feed inventory</span></label>
+                  <label><input name="can_edit_feed" type="checkbox"><span data-i18n="admin.canEditFeed">Edit feed inventory</span></label>
+                  <label><input name="can_view_work_logs" type="checkbox"><span data-i18n="admin.canViewWorkLogs">View work logs</span></label>
+                  <label><input name="can_edit_work_logs" type="checkbox"><span data-i18n="admin.canEditWorkLogs">Edit work logs</span></label>
+                  <label><input name="can_manage_users" type="checkbox"><span data-i18n="admin.canManageUsers">Manage users</span></label>
+                </fieldset>
+                <button id="adminCreateUserButton" class="button primary" type="submit" data-i18n="admin.createButton">Create user</button>
+                <p id="adminUserStatus" class="update-note" data-i18n="admin.ready">Ready to create a user through the secure Edge Function.</p>
+              </form>
+            </article>
+          </section>
         </div>
       </section>
     </main>
