@@ -129,6 +129,34 @@
           </aside>
         </div>
 
+        <section id="homeOverviewSection" class="home-overview-section" hidden>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="home.overviewEyebrow">Welcome back</p>
+              <h2 data-i18n="home.overviewTitle">Home overview</h2>
+              <p data-i18n="home.overviewText">A quick look at the stable data currently active in EquiTrack.</p>
+            </div>
+          </div>
+          <div class="summary-grid home-overview-grid">
+            <article class="summary-card"><span data-i18n="home.overviewStable">Active stable</span><strong id="homeOverviewStable">-</strong></article>
+            <article class="summary-card"><span data-i18n="summary.horses">Horses</span><strong id="homeOverviewHorses">0</strong></article>
+            <article class="summary-card"><span data-i18n="summary.openTasks">Open tasks</span><strong id="homeOverviewOpenTasks">0</strong></article>
+            <article class="summary-card"><span data-i18n="summary.todayTasks">Today's tasks</span><strong id="homeOverviewTodayTasks">0</strong></article>
+            <article class="summary-card"><span data-i18n="home.eventsToday">Events today</span><strong id="homeOverviewEventsToday">0</strong></article>
+            <article class="summary-card"><span data-i18n="home.nextSevenDays">Next 7 days</span><strong id="homeOverviewEventsWeek">0</strong></article>
+            <article class="summary-card"><span data-i18n="home.lowFeedItems">Low feed items</span><strong id="homeOverviewLowFeed">0</strong></article>
+            <article class="summary-card"><span data-i18n="home.workHoursTotal">Work hours total</span><strong id="homeOverviewHours">0</strong></article>
+          </div>
+          <div class="home-quick-links">
+            <span class="meta-label" data-i18n="home.quickLinks">Quick links</span>
+            <div class="hero-actions">
+              <button class="button primary" type="button" data-view-link="stable" data-i18n="home.ctaStable">Open My Stable</button>
+              <button class="button secondary" type="button" data-view-link="calendar" data-i18n="home.ctaCalendar">Open Calendar</button>
+              <button class="button secondary" type="button" data-view-link="settings" data-i18n="home.ctaSettings">Open Settings</button>
+            </div>
+          </div>
+        </section>
+
         <section class="feature-grid home-feature-grid" aria-label="Feature highlights">
           <article class="feature-card">
             <span>01</span>
@@ -162,13 +190,14 @@
           </article>
         </section>
 
-        <section class="home-process">
+        <section id="homeTipsSection" class="home-process">
           <div class="section-heading">
             <div>
               <p class="eyebrow" data-i18n="home.howEyebrow">How it works</p>
               <h2 data-i18n="home.howTitle">Start simple, then run the stable from one place.</h2>
               <p data-i18n="home.howText">EquiTrack keeps the daily workflow clear whether you are at the office, in the barn aisle, or on the road.</p>
             </div>
+            <button id="dismissHomeTipsButton" class="button secondary" type="button" data-i18n="home.gotIt">Got it</button>
           </div>
           <div class="home-process-grid">
             <article class="home-step-card">

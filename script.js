@@ -3,6 +3,7 @@ const LANGUAGE_KEY = 'equitrack-web-language';
 const LAST_BACKUP_KEY = 'equitrack-web-last-backup';
 const EMERGENCY_BACKUP_KEY = 'equitrack-web-emergency-backup';
 const ONBOARDING_KEY = 'equitrack-web-onboarding-complete';
+const HOME_TIPS_KEY = 'equitrack-web-home-tips-dismissed';
 const LAST_CLOUD_UPLOAD_KEY = 'equitrack-web-last-cloud-upload';
 const CLOUD_LOCAL_OVERRIDE_KEY = 'equitrack-web-cloud-local-override';
 const DEFAULT_LANGUAGE = 'en';
@@ -57,6 +58,17 @@ const translations = {
     'home.ctaCalendar': 'Open Calendar',
     'home.ctaLogin': 'Log in',
     'home.ctaApp': 'Go to app',
+    'home.ctaSettings': 'Open Settings',
+    'home.gotIt': 'Got it',
+    'home.overviewEyebrow': 'Welcome back',
+    'home.overviewTitle': 'Home overview',
+    'home.overviewText': 'A quick look at the stable data currently active in EquiTrack.',
+    'home.overviewStable': 'Active stable',
+    'home.eventsToday': 'Events today',
+    'home.nextSevenDays': 'Next 7 days',
+    'home.lowFeedItems': 'Low feed items',
+    'home.workHoursTotal': 'Work hours total',
+    'home.quickLinks': 'Quick links',
     'home.badgeBrowser': 'Browser-based',
     'home.badgeCloud': 'Cloud sync',
     'home.badgeMobile': 'Mobile friendly',
@@ -736,6 +748,17 @@ const translations = {
     'home.ctaCalendar': 'Avaa kalenteri',
     'home.ctaLogin': 'Kirjaudu sisään',
     'home.ctaApp': 'Siirry sovellukseen',
+    'home.ctaSettings': 'Avaa asetukset',
+    'home.gotIt': 'Ymmärsin',
+    'home.overviewEyebrow': 'Tervetuloa takaisin',
+    'home.overviewTitle': 'Kotinäkymän yhteenveto',
+    'home.overviewText': 'Nopea katsaus EquiTrackissa tällä hetkellä aktiiviseen tallidataan.',
+    'home.overviewStable': 'Aktiivinen talli',
+    'home.eventsToday': 'Tapahtumat tänään',
+    'home.nextSevenDays': 'Seuraavat 7 päivää',
+    'home.lowFeedItems': 'Vähissä olevat ruoat',
+    'home.workHoursTotal': 'Työtunnit yhteensä',
+    'home.quickLinks': 'Pikalinkit',
     'home.badgeBrowser': 'Selainpohjainen',
     'home.badgeCloud': 'Pilvitallennus',
     'home.badgeMobile': 'Mobiiliystävällinen',
@@ -1365,6 +1388,17 @@ const translations = {
     'home.ctaCalendar': 'Apri Calendario',
     'home.ctaLogin': 'Accedi',
     'home.ctaApp': 'Vai all’app',
+    'home.ctaSettings': 'Apri Impostazioni',
+    'home.gotIt': 'Ho capito',
+    'home.overviewEyebrow': 'Bentornato',
+    'home.overviewTitle': 'Panoramica Home',
+    'home.overviewText': 'Uno sguardo rapido ai dati della scuderia attivi in EquiTrack.',
+    'home.overviewStable': 'Scuderia attiva',
+    'home.eventsToday': 'Eventi oggi',
+    'home.nextSevenDays': 'Prossimi 7 giorni',
+    'home.lowFeedItems': 'Mangimi bassi',
+    'home.workHoursTotal': 'Ore di lavoro totali',
+    'home.quickLinks': 'Link rapidi',
     'home.badgeBrowser': 'Nel browser',
     'home.badgeCloud': 'Sincronizzazione cloud',
     'home.badgeMobile': 'Ottimizzata per mobile',
@@ -2323,6 +2357,17 @@ const els = {
   homeAuthCta: document.querySelector('#homeAuthCta'),
   homeAccountBadge: document.querySelector('#homeAccountBadge'),
   homeStableBadge: document.querySelector('#homeStableBadge'),
+  homeOverviewSection: document.querySelector('#homeOverviewSection'),
+  homeOverviewStable: document.querySelector('#homeOverviewStable'),
+  homeOverviewHorses: document.querySelector('#homeOverviewHorses'),
+  homeOverviewOpenTasks: document.querySelector('#homeOverviewOpenTasks'),
+  homeOverviewTodayTasks: document.querySelector('#homeOverviewTodayTasks'),
+  homeOverviewEventsToday: document.querySelector('#homeOverviewEventsToday'),
+  homeOverviewEventsWeek: document.querySelector('#homeOverviewEventsWeek'),
+  homeOverviewLowFeed: document.querySelector('#homeOverviewLowFeed'),
+  homeOverviewHours: document.querySelector('#homeOverviewHours'),
+  homeTipsSection: document.querySelector('#homeTipsSection'),
+  dismissHomeTipsButton: document.querySelector('#dismissHomeTipsButton'),
   todayList: document.querySelector('#todayList'),
   horsesList: document.querySelector('#horsesList'),
   tasksList: document.querySelector('#tasksList'),
@@ -4891,6 +4936,11 @@ function hideOnboarding(showFeedback = true) {
   if (showFeedback) showMessage(t('message.onboardingDone'));
 }
 
+function dismissHomeTips() {
+  localStorage.setItem(HOME_TIPS_KEY, 'true');
+  renderHome();
+}
+
 function restartOnboarding() {
   localStorage.removeItem(ONBOARDING_KEY);
   showOnboarding();
@@ -4955,6 +5005,12 @@ function renderHorseOptions() {
 function renderHome() {
   const user = getCurrentUser();
   const activeStable = getActiveStable();
+  const todayValue = today();
+  const now = new Date(`${todayValue}T00:00:00`);
+  const weekEnd = new Date(now);
+  weekEnd.setDate(weekEnd.getDate() + 7);
+  const isReturningStableUser = Boolean(user && activeStable.id);
+  const tipsDismissed = localStorage.getItem(HOME_TIPS_KEY) === 'true';
   if (els.homeAuthCta) {
     els.homeAuthCta.dataset.viewLink = user ? 'stable' : 'login';
     els.homeAuthCta.textContent = user ? t('home.ctaApp') : t('home.ctaLogin');
@@ -4972,6 +5028,28 @@ function renderHome() {
     } else {
       els.homeStableBadge.textContent = cloudWriteMode ? t('calendar.cloudMode') : t('calendar.localMode');
     }
+  }
+  if (els.homeOverviewSection) els.homeOverviewSection.hidden = !isReturningStableUser;
+  if (els.homeTipsSection) els.homeTipsSection.hidden = tipsDismissed || isReturningStableUser;
+  if (els.homeOverviewStable) els.homeOverviewStable.textContent = activeStable.name || t('cloudRead.noStable');
+  if (els.homeOverviewHorses) els.homeOverviewHorses.textContent = state.horses.length;
+  if (els.homeOverviewOpenTasks) els.homeOverviewOpenTasks.textContent = state.tasks.filter((task) => !task.done).length;
+  if (els.homeOverviewTodayTasks) els.homeOverviewTodayTasks.textContent = state.tasks.filter((task) => task.date === todayValue && !task.done).length;
+  if (els.homeOverviewEventsToday) els.homeOverviewEventsToday.textContent = state.calendarEvents.filter((event) => event.date === todayValue).length;
+  if (els.homeOverviewEventsWeek) {
+    els.homeOverviewEventsWeek.textContent = state.calendarEvents.filter((event) => {
+      const eventDate = new Date(`${event.date}T00:00:00`);
+      return eventDate >= now && eventDate <= weekEnd;
+    }).length;
+  }
+  if (els.homeOverviewLowFeed) {
+    els.homeOverviewLowFeed.textContent = state.inventory.filter((item) => {
+      const status = getFeedStatus(item).key;
+      return status === 'low' || status === 'critical' || status === 'empty';
+    }).length;
+  }
+  if (els.homeOverviewHours) {
+    els.homeOverviewHours.textContent = state.hours.reduce((total, entry) => total + Number(entry.hours || 0), 0).toFixed(1);
   }
 }
 
@@ -6346,6 +6424,7 @@ els.languageSelect.addEventListener('change', handleLanguageChange);
 els.loginForm?.addEventListener('submit', handleLoginSubmit);
 els.logoutButton?.addEventListener('click', handleLogout);
 els.settingsLogoutButton?.addEventListener('click', handleLogout);
+els.dismissHomeTipsButton?.addEventListener('click', dismissHomeTips);
 els.adminStableForm?.addEventListener('submit', handleAdminStableSubmit);
 els.adminUserForm?.addEventListener('submit', handleAdminUserSubmit);
 els.adminUserForm?.elements.stableRole?.addEventListener('change', (event) => {
