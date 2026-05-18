@@ -136,6 +136,7 @@ const translations = {
     'auth.login': 'Log in',
     'auth.logout': 'Log out',
     'auth.signedOut': 'Signed out',
+    'auth.restoring': 'Restoring session...',
     'auth.setupNeeded': 'Supabase is not configured yet. Add your Supabase URL and publishable key in script.js to enable login.',
     'auth.setupReady': 'Login is ready for existing Supabase users.',
     'auth.networkError': 'Supabase could not be reached. Check the project URL, publishable key, allowed site URL, and network connection.',
@@ -611,6 +612,17 @@ const translations = {
     'settings.resetTitle': 'Reset local data',
     'settings.resetText': 'This removes horses, tasks, work logs, feed inventory, and calendar events from this browser.',
     'settings.resetButton': 'Reset local data',
+    'privacy.eyebrow': 'Privacy',
+    'privacy.title': 'Privacy',
+    'privacy.intro': 'A simple overview of where EquiTrack stores data and how accounts are managed.',
+    'privacy.accountData': 'EquiTrack stores user account data in Supabase.',
+    'privacy.cloudData': 'Stable data is stored in Supabase cloud when you are logged in and Cloud mode is active.',
+    'privacy.localData': 'Local browser data may also be stored as fallback or local backup.',
+    'privacy.noSale': 'EquiTrack does not sell user data.',
+    'privacy.noSignup': 'EquiTrack does not use public sign-up.',
+    'privacy.adminUsers': 'Users are created by authorized admins or stable owners.',
+    'privacy.backups': 'Export backups regularly if you use local fallback data.',
+    'privacy.contact': 'For privacy questions, contact the EquiTrack administrator.',
     'language.label': 'Language',
     'backup.export': 'Download backup',
     'backup.import': 'Restore backup',
@@ -803,6 +815,7 @@ const translations = {
     'auth.login': 'Kirjaudu',
     'auth.logout': 'Kirjaudu ulos',
     'auth.signedOut': 'Ei kirjautunut',
+    'auth.restoring': 'Palautetaan kirjautumista...',
     'auth.setupNeeded': 'Supabasea ei ole vielä määritetty. Lisää Supabase URL ja publishable key script.js-tiedostoon kirjautumisen käyttöön ottamiseksi.',
     'auth.setupReady': 'Kirjautuminen on valmis olemassa oleville Supabase-käyttäjille.',
     'auth.networkError': 'Supabaseen ei saada yhteyttä. Tarkista projektin URL, publishable key, sallittu sivuston URL ja verkkoyhteys.',
@@ -1228,6 +1241,17 @@ const translations = {
     'settings.resetTitle': 'Nollaa paikalliset tiedot',
     'settings.resetText': 'Tämä poistaa hevoset, tehtävät, työkirjaukset, ruokavaraston ja kalenteritapahtumat tästä selaimesta.',
     'settings.resetButton': 'Nollaa paikalliset tiedot',
+    'privacy.eyebrow': 'Tietosuoja',
+    'privacy.title': 'Tietosuoja',
+    'privacy.intro': 'Selkeä yhteenveto siitä, mihin EquiTrack tallentaa tietoja ja miten käyttäjätilejä hallitaan.',
+    'privacy.accountData': 'EquiTrack tallentaa käyttäjätilin tiedot Supabaseen.',
+    'privacy.cloudData': 'Tallin tiedot tallennetaan Supabase-pilveen, kun olet kirjautunut sisään ja pilvitila on käytössä.',
+    'privacy.localData': 'Paikallista selaindataa voidaan tallentaa myös varatilaa tai paikallista varmuuskopiota varten.',
+    'privacy.noSale': 'EquiTrack ei myy käyttäjätietoja.',
+    'privacy.noSignup': 'EquiTrackissa ei ole julkista rekisteröitymistä.',
+    'privacy.adminUsers': 'Valtuutetut ylläpitäjät tai tallin omistajat luovat käyttäjät.',
+    'privacy.backups': 'Vie varmuuskopioita säännöllisesti, jos käytät paikallista varatilaa.',
+    'privacy.contact': 'Tietosuojakysymyksissä ota yhteyttä EquiTrack-ylläpitäjään.',
     'language.label': 'Kieli',
     'backup.export': 'Lataa varmuuskopio',
     'backup.import': 'Palauta varmuuskopio',
@@ -1420,6 +1444,7 @@ const translations = {
     'auth.login': 'Accedi',
     'auth.logout': 'Esci',
     'auth.signedOut': 'Non connesso',
+    'auth.restoring': 'Ripristino dell’accesso...',
     'auth.setupNeeded': "Supabase non è ancora configurato. Aggiungi l'URL Supabase e la publishable key in script.js per abilitare l'accesso.",
     'auth.setupReady': 'Accesso pronto per gli utenti Supabase esistenti.',
     'auth.networkError': "Supabase non è raggiungibile. Controlla l'URL del progetto, la publishable key, l'URL del sito consentito e la connessione.",
@@ -1845,6 +1870,17 @@ const translations = {
     'settings.resetTitle': 'Reimposta dati locali',
     'settings.resetText': 'Rimuove cavalli, attività, registri ore, scorte di mangime ed eventi da questo browser.',
     'settings.resetButton': 'Reimposta dati locali',
+    'privacy.eyebrow': 'Privacy',
+    'privacy.title': 'Privacy',
+    'privacy.intro': 'Una panoramica semplice di dove EquiTrack salva i dati e di come vengono gestiti gli account.',
+    'privacy.accountData': 'EquiTrack salva i dati degli account utente in Supabase.',
+    'privacy.cloudData': 'I dati della scuderia vengono salvati nel cloud Supabase quando hai effettuato l’accesso e la modalità cloud è attiva.',
+    'privacy.localData': 'I dati locali del browser possono essere salvati anche come fallback o backup locale.',
+    'privacy.noSale': 'EquiTrack non vende i dati degli utenti.',
+    'privacy.noSignup': 'EquiTrack non usa registrazione pubblica.',
+    'privacy.adminUsers': 'Gli utenti vengono creati da amministratori o proprietari autorizzati.',
+    'privacy.backups': 'Esporta backup regolarmente se usi i dati locali come fallback.',
+    'privacy.contact': 'Per domande sulla privacy, contatta l’amministratore EquiTrack.',
     'language.label': 'Lingua',
     'backup.export': 'Scarica backup',
     'backup.import': 'Ripristina backup',
@@ -2243,6 +2279,7 @@ let calendarViewMode = 'month';
 let pendingServiceWorker = null;
 let supabaseClient = null;
 let authUser = null;
+let authRestoring = false;
 let isCloudUploading = false;
 let migrationUploadStatusText = '';
 let cloudReadStatusText = '';
@@ -2709,15 +2746,15 @@ function updateAuthUi() {
   const configured = isSupabaseConfigured();
   const loginReady = configured && Boolean(supabaseClient);
   if (els.authUserEmail) {
-    els.authUserEmail.textContent = authUser?.email || t('auth.signedOut');
+    els.authUserEmail.textContent = authRestoring ? t('auth.restoring') : (authUser?.email || t('auth.signedOut'));
     els.authUserEmail.title = authUser?.email || '';
   }
-  if (els.loginNavButton) els.loginNavButton.hidden = Boolean(authUser);
-  if (els.logoutButton) els.logoutButton.hidden = !authUser;
-  if (els.settingsLogoutButton) els.settingsLogoutButton.hidden = !authUser;
-  if (els.loginButton) els.loginButton.disabled = !loginReady;
+  if (els.loginNavButton) els.loginNavButton.hidden = Boolean(authUser) || authRestoring;
+  if (els.logoutButton) els.logoutButton.hidden = !authUser || authRestoring;
+  if (els.settingsLogoutButton) els.settingsLogoutButton.hidden = !authUser || authRestoring;
+  if (els.loginButton) els.loginButton.disabled = !loginReady || authRestoring;
   if (els.authSetupNotice) {
-    els.authSetupNotice.textContent = configured ? (loginReady ? t('auth.setupReady') : t('message.authLoading')) : t('auth.setupNeeded');
+    els.authSetupNotice.textContent = authRestoring ? t('auth.restoring') : (configured ? (loginReady ? t('auth.setupReady') : t('message.authLoading')) : t('auth.setupNeeded'));
     els.authSetupNotice.classList.toggle('ready', loginReady);
   }
   renderCloudStatus();
@@ -4762,36 +4799,57 @@ function loadSupabaseScript() {
 }
 
 async function setupAuth() {
+  authRestoring = true;
   updateAuthUi();
   if (!isSupabaseConfigured()) {
+    authRestoring = false;
+    updateAuthUi();
     return;
   }
-  showMessage(t('message.authLoading'));
+  showMessage(t('auth.restoring'));
   try {
     await loadSupabaseScript();
     if (!window.supabase?.createClient) throw new Error('Could not load Supabase client.');
-    supabaseClient = window.supabase.createClient(SUPABASE_CONFIG.SUPABASE_URL, SUPABASE_CONFIG.SUPABASE_PUBLISHABLE_KEY);
+    supabaseClient = window.supabase.createClient(SUPABASE_CONFIG.SUPABASE_URL, SUPABASE_CONFIG.SUPABASE_PUBLISHABLE_KEY, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+      }
+    });
     console.info('[EquiTrack auth] Supabase client initialized', getAuthDiagnostics());
+    supabaseClient.auth.onAuthStateChange(async (event, session) => {
+      console.info('[EquiTrack auth] Auth state changed', { event, hasSession: Boolean(session) });
+      authUser = session?.user || null;
+      if (event === 'SIGNED_OUT') {
+        disableCloudMode('cloudMode.returnedLocal');
+      } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        await refreshCloudConnection();
+      }
+      authRestoring = false;
+      updateAuthUi();
+      if (!authUser && isProtectedView(activeView)) showView('login');
+    });
     const { data, error } = await supabaseClient.auth.getSession();
     if (error) throw error;
     authUser = data.session?.user || null;
+    console.info('[EquiTrack auth] Session restore complete', { hasSession: Boolean(data.session), email: authUser?.email || '' });
     await refreshCloudConnection();
-    supabaseClient.auth.onAuthStateChange(async (_event, session) => {
-      authUser = session?.user || null;
-      updateAuthUi();
-      await refreshCloudConnection();
-      if (!authUser && isProtectedView(activeView)) showView('login');
-    });
   } catch (error) {
     logAuthError('Session initialization failed', error);
     showMessage(getAuthErrorMessage(error));
   } finally {
+    authRestoring = false;
     updateAuthUi();
   }
 }
 
 function showView(viewName) {
   if (isProtectedView(viewName) && !authUser) {
+    if (authRestoring) {
+      showMessage(t('auth.restoring'));
+      return;
+    }
     activeView = 'login';
     document.querySelectorAll('.view').forEach((view) => view.classList.remove('active'));
     document.querySelector('#loginView').classList.add('active');
@@ -4900,9 +4958,10 @@ function renderHome() {
   if (els.homeAuthCta) {
     els.homeAuthCta.dataset.viewLink = user ? 'stable' : 'login';
     els.homeAuthCta.textContent = user ? t('home.ctaApp') : t('home.ctaLogin');
+    els.homeAuthCta.disabled = authRestoring;
   }
   if (els.homeAccountBadge) {
-    els.homeAccountBadge.textContent = user?.email ? t('home.accountSignedIn', { email: user.email }) : t('home.accountSignedOut');
+    els.homeAccountBadge.textContent = authRestoring ? t('auth.restoring') : (user?.email ? t('home.accountSignedIn', { email: user.email }) : t('home.accountSignedOut'));
     els.homeAccountBadge.title = user?.email || '';
   }
   if (els.homeStableBadge) {

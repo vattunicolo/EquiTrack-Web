@@ -1,4 +1,4 @@
-const CACHE_NAME = 'equitrack-web-static-v29';
+const CACHE_NAME = 'equitrack-web-static-v30';
 const APP_ASSETS = [
   './',
   './index.html',
@@ -31,6 +31,7 @@ self.addEventListener('message', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) {
+    // Supabase auth/API requests are cross-origin and must never be cached or replaced by an offline fallback.
     event.respondWith(fetch(event.request));
     return;
   }
