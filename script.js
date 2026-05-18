@@ -94,6 +94,12 @@ const translations = {
     'stable.country': 'Stable country',
     'stable.location': 'Stable location',
     'stable.locationNotSet': 'Location not set',
+    'stable.saveLocation': 'Save location',
+    'stable.locationSaved': 'Location saved',
+    'stable.locationPermissionDenied': 'You do not have permission to edit stable location.',
+    'stable.locationReady': 'Update the city and country used for stable weather.',
+    'stable.locationSaving': 'Saving location...',
+    'stable.locationSaveFailed': 'Could not save stable location: {error}',
     'home.badgeBrowser': 'Browser-based',
     'home.badgeCloud': 'Cloud sync',
     'home.badgeMobile': 'Mobile friendly',
@@ -803,6 +809,12 @@ const translations = {
     'stable.country': 'Tallin maa',
     'stable.location': 'Tallin sijainti',
     'stable.locationNotSet': 'Sijaintia ei ole asetettu',
+    'stable.saveLocation': 'Tallenna sijainti',
+    'stable.locationSaved': 'Sijainti tallennettu',
+    'stable.locationPermissionDenied': 'Sinulla ei ole oikeutta muokata tallin sijaintia.',
+    'stable.locationReady': 'Päivitä kaupunki ja maa tallin säätä varten.',
+    'stable.locationSaving': 'Tallennetaan sijaintia...',
+    'stable.locationSaveFailed': 'Tallin sijaintia ei voitu tallentaa: {error}',
     'home.badgeBrowser': 'Selainpohjainen',
     'home.badgeCloud': 'Pilvitallennus',
     'home.badgeMobile': 'Mobiiliystävällinen',
@@ -1462,6 +1474,12 @@ const translations = {
     'stable.country': 'Paese della scuderia',
     'stable.location': 'Posizione della scuderia',
     'stable.locationNotSet': 'Posizione non impostata',
+    'stable.saveLocation': 'Salva posizione',
+    'stable.locationSaved': 'Posizione salvata',
+    'stable.locationPermissionDenied': 'Non hai il permesso di modificare la posizione della scuderia.',
+    'stable.locationReady': 'Aggiorna città e paese usati per il meteo della scuderia.',
+    'stable.locationSaving': 'Salvataggio posizione...',
+    'stable.locationSaveFailed': 'Impossibile salvare la posizione della scuderia: {error}',
     'home.badgeBrowser': 'Nel browser',
     'home.badgeCloud': 'Sincronizzazione cloud',
     'home.badgeMobile': 'Ottimizzata per mobile',
@@ -2389,6 +2407,8 @@ let migrationUploadStatusText = '';
 let cloudReadStatusText = '';
 let cloudReadCounts = null;
 let cloudCleanupStatusText = '';
+let stableLocationStatusText = '';
+let isStableLocationSaving = false;
 let isCloudCleaning = false;
 let cloudPreviewMode = false;
 let cloudWriteMode = false;
@@ -2506,6 +2526,10 @@ const els = {
   cloudStableName: document.querySelector('#cloudStableName'),
   cloudStableLocation: document.querySelector('#cloudStableLocation'),
   cloudConnectionStatus: document.querySelector('#cloudConnectionStatus'),
+  stableLocationSummary: document.querySelector('#stableLocationSummary'),
+  stableLocationForm: document.querySelector('#stableLocationForm'),
+  stableLocationSaveButton: document.querySelector('#stableLocationSaveButton'),
+  stableLocationStatus: document.querySelector('#stableLocationStatus'),
   cloudLocalNotice: document.querySelector('#cloudLocalNotice'),
   adminPlaceholderPanel: document.querySelector('#adminPlaceholderPanel'),
   adminStableSection: document.querySelector('#adminStableSection'),
@@ -2885,6 +2909,7 @@ function updateAuthUi() {
   renderCloudReadPreview();
   renderCloudMode();
   renderAdminPlaceholder();
+  renderStableLocationSettings();
   renderHorseCloudMode();
   renderTaskCloudMode();
   renderWorkCloudMode();
@@ -2920,6 +2945,7 @@ function setCloudStatus(nextState = {}) {
   renderCloudReadPreview();
   renderCloudMode();
   renderAdminPlaceholder();
+  renderStableLocationSettings();
   renderHorseCloudMode();
   renderTaskCloudMode();
   renderWorkCloudMode();
@@ -2978,6 +3004,90 @@ function isAdminUser() {
 
 function isSuperAdmin() {
   return cloudState.profileRole === 'super_admin';
+}
+
+function canEditStableLocation() {
+  return Boolean(getCurrentUser() && (
+    isSuperAdmin()
+    || cloudState.membershipRole === 'owner'
+    || cloudState.canManageUsers === true
+  ));
+}
+
+function renderStableLocationSettings() {
+  if (!els.stableLocationForm) return;
+  const activeStable = getActiveStable();
+  const locationText = formatStableLocation(activeStable) || t('stable.locationNotSet');
+  const canEdit = canEditStableLocation();
+  const formHasFocus = els.stableLocationForm.contains(document.activeElement);
+  if (els.stableLocationSummary) els.stableLocationSummary.textContent = locationText;
+  if (!formHasFocus) {
+    els.stableLocationForm.elements.stableCity.value = activeStable.locationCity || '';
+    els.stableLocationForm.elements.stableCountry.value = activeStable.locationCountry || '';
+  }
+  Array.from(els.stableLocationForm.elements).forEach((element) => {
+    if (element.tagName === 'BUTTON') return;
+    element.disabled = !canEdit || !activeStable.id || isStableLocationSaving;
+  });
+  if (els.stableLocationSaveButton) {
+    els.stableLocationSaveButton.disabled = !canEdit || !activeStable.id || isStableLocationSaving || !supabaseClient;
+  }
+  if (els.stableLocationStatus) {
+    els.stableLocationStatus.textContent = stableLocationStatusText
+      || (canEdit && activeStable.id ? t('stable.locationReady') : t('stable.locationPermissionDenied'));
+  }
+}
+
+async function handleStableLocationSubmit(event) {
+  event.preventDefault();
+  const activeStable = getActiveStable();
+  if (!canEditStableLocation()) {
+    stableLocationStatusText = t('stable.locationPermissionDenied');
+    renderStableLocationSettings();
+    showMessage(stableLocationStatusText);
+    return;
+  }
+  if (!supabaseClient || !activeStable.id) {
+    stableLocationStatusText = t('cloudRead.noStable');
+    renderStableLocationSettings();
+    showMessage(stableLocationStatusText);
+    return;
+  }
+  const form = event.currentTarget;
+  const locationCity = form.elements.stableCity.value.trim();
+  const locationCountry = form.elements.stableCountry.value.trim();
+  isStableLocationSaving = true;
+  stableLocationStatusText = t('stable.locationSaving');
+  renderStableLocationSettings();
+  try {
+    const { data, error } = await supabaseClient
+      .from('stables')
+      .update({
+        location_city: locationCity || null,
+        location_country: locationCountry || null,
+        latitude: null,
+        longitude: null
+      })
+      .eq('id', activeStable.id)
+      .select('id, location_city, location_country, latitude, longitude')
+      .single();
+    if (error) throw error;
+    stableLocationStatusText = t('stable.locationSaved');
+    setCloudStatus({
+      locationCity: data?.location_city || '',
+      locationCountry: data?.location_country || '',
+      latitude: data?.latitude == null ? null : Number(data.latitude),
+      longitude: data?.longitude == null ? null : Number(data.longitude)
+    });
+    showMessage(stableLocationStatusText);
+  } catch (error) {
+    console.error('[EquiTrack stable] Location save failed', error);
+    stableLocationStatusText = t('stable.locationSaveFailed', { error: error.message || 'Unknown error' });
+    showMessage(stableLocationStatusText);
+  } finally {
+    isStableLocationSaving = false;
+    renderStableLocationSettings();
+  }
 }
 
 function renderAdminPlaceholder() {
@@ -6714,6 +6824,7 @@ els.logoutButton?.addEventListener('click', handleLogout);
 els.settingsLogoutButton?.addEventListener('click', handleLogout);
 els.dismissHomeTipsButton?.addEventListener('click', dismissHomeTips);
 els.adminStableForm?.addEventListener('submit', handleAdminStableSubmit);
+els.stableLocationForm?.addEventListener('submit', handleStableLocationSubmit);
 els.adminUserForm?.addEventListener('submit', handleAdminUserSubmit);
 els.adminUserForm?.elements.stableRole?.addEventListener('change', (event) => {
   setAdminPermissionValues(event.target.value);

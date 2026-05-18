@@ -609,6 +609,20 @@
                   <button id="settingsLogoutButton" class="button secondary" type="button" hidden data-i18n="auth.logout">Log out</button>
                 </div>
               </article>
+              <article class="panel stable-location-panel">
+                <h3 data-i18n="stable.location">Stable location</h3>
+                <p id="stableLocationSummary" class="update-note" data-i18n="stable.locationNotSet">Location not set</p>
+                <form id="stableLocationForm" class="admin-user-form">
+                  <div class="form-grid">
+                    <label><span data-i18n="stable.city">Stable city</span><input name="stableCity" autocomplete="address-level2"></label>
+                    <label><span data-i18n="stable.country">Stable country</span><input name="stableCountry" autocomplete="country-name"></label>
+                  </div>
+                  <div class="backup-actions">
+                    <button id="stableLocationSaveButton" class="button primary" type="submit" data-i18n="stable.saveLocation">Save location</button>
+                  </div>
+                  <p id="stableLocationStatus" class="update-note" data-i18n="stable.locationPermissionDenied">You do not have permission to edit stable location.</p>
+                </form>
+              </article>
             </div>
           </section>
 

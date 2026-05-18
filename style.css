@@ -821,6 +821,12 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
 .settings-section .panel {
   border-radius: 14px;
 }
+.stable-location-panel {
+  grid-column: 1 / -1;
+}
+.stable-location-panel .admin-user-form {
+  margin-top: 12px;
+}
 .settings-details {
   border: 1px solid var(--line);
   border-radius: 14px;
