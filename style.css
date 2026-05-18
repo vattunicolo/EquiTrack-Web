@@ -586,6 +586,11 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
   min-width: 0;
   padding: 20px 22px;
 }
+.home-overview-grid .turnout-weather-card {
+  grid-column: span 2;
+  margin-bottom: 0;
+  min-height: 120px;
+}
 .turnout-weather-card strong {
   color: #14335a;
   display: block;
@@ -1737,6 +1742,7 @@ textarea { resize: vertical; }
   }
   .home-process-grid { grid-template-columns: minmax(0, 1fr); }
   .home-overview-grid { grid-template-columns: minmax(0, 1fr); }
+  .home-overview-grid .turnout-weather-card { grid-column: auto; }
   .turnout-weather-card {
     align-items: flex-start;
     display: grid;

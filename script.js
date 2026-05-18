@@ -780,7 +780,7 @@ const translations = {
     'home.openHours': 'Avaa työtunnit',
     'home.openSettings': 'Avaa asetukset',
     'weather.title': 'Tämän päivän tarhaus',
-    'weather.loading': 'Tarkistetaan tämän päivän säätä...',
+    'weather.loading': 'Tarkistetaan päivän säätä...',
     'weather.location': 'Sijainnin sää: Turku, Suomi',
     'weather.rain': 'Tänään sataa — hevoset sisälle.',
     'weather.noRain': 'Ei sadetta tänään — hevoset ulos.',
