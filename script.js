@@ -6,6 +6,7 @@ const ONBOARDING_KEY = 'equitrack-web-onboarding-complete';
 const HOME_TIPS_KEY = 'equitrack-web-home-tips-dismissed';
 const LAST_CLOUD_UPLOAD_KEY = 'equitrack-web-last-cloud-upload';
 const CLOUD_LOCAL_OVERRIDE_KEY = 'equitrack-web-cloud-local-override';
+const WEATHER_API_URL = 'https://api.open-meteo.com/v1/forecast?latitude=60.4518&longitude=22.2666&daily=precipitation_sum,rain_sum&timezone=Europe%2FHelsinki&forecast_days=1';
 const DEFAULT_LANGUAGE = 'en';
 const EVENT_TYPES = ['race', 'training', 'shoeing', 'vaccination', 'vet', 'feeding', 'other'];
 const PROTECTED_VIEWS = ['stable', 'calendar', 'settings'];
@@ -75,6 +76,13 @@ const translations = {
     'home.openFeed': 'Open feed inventory',
     'home.openHours': 'Open work hours',
     'home.openSettings': 'Open settings',
+    'weather.title': "Today's turnout suggestion",
+    'weather.loading': "Checking today's weather...",
+    'weather.location': 'Weather location: Turku, Finland',
+    'weather.rain': 'Rain today — keep horses inside.',
+    'weather.noRain': 'No rain today — horses can go outside.',
+    'weather.unavailable': 'Weather unavailable — check conditions manually.',
+    'weather.disclaimer': 'Always use your own judgement for horse safety.',
     'home.badgeBrowser': 'Browser-based',
     'home.badgeCloud': 'Cloud sync',
     'home.badgeMobile': 'Mobile friendly',
@@ -771,6 +779,13 @@ const translations = {
     'home.openFeed': 'Avaa ruokavarasto',
     'home.openHours': 'Avaa työtunnit',
     'home.openSettings': 'Avaa asetukset',
+    'weather.title': 'Tämän päivän tarhaus',
+    'weather.loading': 'Tarkistetaan tämän päivän säätä...',
+    'weather.location': 'Sijainnin sää: Turku, Suomi',
+    'weather.rain': 'Tänään sataa — hevoset sisälle.',
+    'weather.noRain': 'Ei sadetta tänään — hevoset ulos.',
+    'weather.unavailable': 'Säätietoa ei saatu — tarkista keli itse.',
+    'weather.disclaimer': 'Käytä aina omaa harkintaa hevosten turvallisuuden takia.',
     'home.badgeBrowser': 'Selainpohjainen',
     'home.badgeCloud': 'Pilvitallennus',
     'home.badgeMobile': 'Mobiiliystävällinen',
@@ -1417,6 +1432,13 @@ const translations = {
     'home.openFeed': 'Apri scorte di mangime',
     'home.openHours': 'Apri ore di lavoro',
     'home.openSettings': 'Apri impostazioni',
+    'weather.title': 'Suggerimento uscita di oggi',
+    'weather.loading': 'Controllo del meteo di oggi...',
+    'weather.location': 'Località meteo: Turku, Finlandia',
+    'weather.rain': 'Oggi piove — tieni i cavalli dentro.',
+    'weather.noRain': 'Niente pioggia oggi — i cavalli possono uscire.',
+    'weather.unavailable': 'Meteo non disponibile — controlla le condizioni manualmente.',
+    'weather.disclaimer': 'Usa sempre il tuo giudizio per la sicurezza dei cavalli.',
     'home.badgeBrowser': 'Nel browser',
     'home.badgeCloud': 'Sincronizzazione cloud',
     'home.badgeMobile': 'Ottimizzata per mobile',
@@ -2328,6 +2350,7 @@ let calendarFilters = { scope: 'all', type: 'all', horse: 'all' };
 let calendarCursor = new Date(`${today()}T00:00:00`);
 let selectedCalendarDate = today();
 let calendarViewMode = 'month';
+let turnoutWeather = { status: 'loading', hasRain: null };
 let pendingServiceWorker = null;
 let supabaseClient = null;
 let authUser = null;
@@ -2384,6 +2407,8 @@ const els = {
   homeOverviewEventsWeek: document.querySelector('#homeOverviewEventsWeek'),
   homeOverviewLowFeed: document.querySelector('#homeOverviewLowFeed'),
   homeOverviewHours: document.querySelector('#homeOverviewHours'),
+  turnoutWeatherCard: document.querySelector('#turnoutWeatherCard'),
+  turnoutWeatherMessage: document.querySelector('#turnoutWeatherMessage'),
   homeTipsSection: document.querySelector('#homeTipsSection'),
   dismissHomeTipsButton: document.querySelector('#dismissHomeTipsButton'),
   todayList: document.querySelector('#todayList'),
@@ -5069,6 +5094,39 @@ function renderHome() {
   if (els.homeOverviewHours) {
     els.homeOverviewHours.textContent = state.hours.reduce((total, entry) => total + Number(entry.hours || 0), 0).toFixed(1);
   }
+  renderTurnoutSuggestion();
+}
+
+function renderTurnoutSuggestion() {
+  if (!els.turnoutWeatherCard || !els.turnoutWeatherMessage) return;
+  const statusClass = turnoutWeather.status === 'ready'
+    ? (turnoutWeather.hasRain ? 'rain' : 'ok')
+    : turnoutWeather.status;
+  els.turnoutWeatherCard.classList.remove('turnout-weather-card--loading', 'turnout-weather-card--ok', 'turnout-weather-card--rain', 'turnout-weather-card--error');
+  els.turnoutWeatherCard.classList.add(`turnout-weather-card--${statusClass}`);
+  if (turnoutWeather.status === 'ready') {
+    els.turnoutWeatherMessage.textContent = t(turnoutWeather.hasRain ? 'weather.rain' : 'weather.noRain');
+    return;
+  }
+  els.turnoutWeatherMessage.textContent = t(turnoutWeather.status === 'error' ? 'weather.unavailable' : 'weather.loading');
+}
+
+async function loadTurnoutWeather() {
+  try {
+    turnoutWeather = { status: 'loading', hasRain: null };
+    renderTurnoutSuggestion();
+    const response = await fetch(WEATHER_API_URL, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`Weather request failed with ${response.status}`);
+    const data = await response.json();
+    const precipitation = Number(data?.daily?.precipitation_sum?.[0] || 0);
+    const rain = Number(data?.daily?.rain_sum?.[0] || 0);
+    turnoutWeather = { status: 'ready', hasRain: precipitation > 0 || rain > 0 };
+  } catch (error) {
+    console.warn('[EquiTrack weather] Turnout weather unavailable', error);
+    turnoutWeather = { status: 'error', hasRain: null };
+  } finally {
+    renderTurnoutSuggestion();
+  }
 }
 
 function render() {
@@ -6522,6 +6580,7 @@ setupOnboarding();
 setupTabs();
 render();
 setupAuth();
+loadTurnoutWeather();
 updateOfflineStatus(false);
 window.addEventListener('online', () => updateOfflineStatus(true));
 window.addEventListener('offline', () => updateOfflineStatus(true));
