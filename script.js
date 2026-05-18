@@ -69,6 +69,12 @@ const translations = {
     'home.lowFeedItems': 'Low feed items',
     'home.workHoursTotal': 'Work hours total',
     'home.quickLinks': 'Quick links',
+    'home.openHorses': 'Open horses',
+    'home.openTasks': 'Open tasks',
+    'home.openCalendar': 'Open calendar',
+    'home.openFeed': 'Open feed inventory',
+    'home.openHours': 'Open work hours',
+    'home.openSettings': 'Open settings',
     'home.badgeBrowser': 'Browser-based',
     'home.badgeCloud': 'Cloud sync',
     'home.badgeMobile': 'Mobile friendly',
@@ -759,6 +765,12 @@ const translations = {
     'home.lowFeedItems': 'Vähissä olevat ruoat',
     'home.workHoursTotal': 'Työtunnit yhteensä',
     'home.quickLinks': 'Pikalinkit',
+    'home.openHorses': 'Avaa hevoset',
+    'home.openTasks': 'Avaa tehtävät',
+    'home.openCalendar': 'Avaa kalenteri',
+    'home.openFeed': 'Avaa ruokavarasto',
+    'home.openHours': 'Avaa työtunnit',
+    'home.openSettings': 'Avaa asetukset',
     'home.badgeBrowser': 'Selainpohjainen',
     'home.badgeCloud': 'Pilvitallennus',
     'home.badgeMobile': 'Mobiiliystävällinen',
@@ -1399,6 +1411,12 @@ const translations = {
     'home.lowFeedItems': 'Mangimi bassi',
     'home.workHoursTotal': 'Ore di lavoro totali',
     'home.quickLinks': 'Link rapidi',
+    'home.openHorses': 'Apri cavalli',
+    'home.openTasks': 'Apri attività',
+    'home.openCalendar': 'Apri calendario',
+    'home.openFeed': 'Apri scorte di mangime',
+    'home.openHours': 'Apri ore di lavoro',
+    'home.openSettings': 'Apri impostazioni',
     'home.badgeBrowser': 'Nel browser',
     'home.badgeCloud': 'Sincronizzazione cloud',
     'home.badgeMobile': 'Ottimizzata per mobile',
@@ -5986,6 +6004,34 @@ function handleQuickAction(event) {
   target.form?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
+function navigateToView(viewName, options = {}) {
+  showView(viewName);
+  window.setTimeout(() => {
+    if (options.tab) activateTab(options.tab);
+    const target = options.selector ? document.querySelector(options.selector) : null;
+    if (!target) return;
+    target.scrollIntoView({ behavior: 'smooth', block: options.block || 'start' });
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+  }, 80);
+}
+
+function handleHomeShortcut(event) {
+  const button = event.target.closest('[data-home-shortcut]');
+  if (!button) return;
+  const shortcutMap = {
+    settings: { view: 'settings', selector: '#settingsAccountSection' },
+    horses: { view: 'stable', tab: 'horses', selector: '#horsesPanel' },
+    tasks: { view: 'stable', tab: 'tasks', selector: '#tasksPanel' },
+    calendar: { view: 'calendar', selector: '#calendarView' },
+    inventory: { view: 'stable', tab: 'inventory', selector: '#inventoryPanel' },
+    hours: { view: 'stable', tab: 'hours', selector: '#hoursPanel' }
+  };
+  const target = shortcutMap[button.dataset.homeShortcut];
+  if (!target) return;
+  navigateToView(target.view, target);
+}
+
 function fillHorseForm(id) {
   const found = state.horses.find((item) => item.id === id);
   if (!found) return;
@@ -6410,6 +6456,7 @@ function refreshForUpdate() {
 document.querySelectorAll('.item-list').forEach((list) => list.addEventListener('click', handleListClick));
 els.calendarSelectedDayAgenda?.addEventListener('click', handleListClick);
 document.querySelector('#stableView').addEventListener('click', handleQuickAction);
+els.homeOverviewSection?.addEventListener('click', handleHomeShortcut);
 els.horseForm.addEventListener('submit', handleHorseSubmit);
 els.taskForm.addEventListener('submit', handleTaskSubmit);
 els.hoursForm.addEventListener('submit', handleHoursSubmit);

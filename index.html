@@ -138,14 +138,46 @@
             </div>
           </div>
           <div class="summary-grid home-overview-grid">
-            <article class="summary-card"><span data-i18n="home.overviewStable">Active stable</span><strong id="homeOverviewStable">-</strong></article>
-            <article class="summary-card"><span data-i18n="summary.horses">Horses</span><strong id="homeOverviewHorses">0</strong></article>
-            <article class="summary-card"><span data-i18n="summary.openTasks">Open tasks</span><strong id="homeOverviewOpenTasks">0</strong></article>
-            <article class="summary-card"><span data-i18n="summary.todayTasks">Today's tasks</span><strong id="homeOverviewTodayTasks">0</strong></article>
-            <article class="summary-card"><span data-i18n="home.eventsToday">Events today</span><strong id="homeOverviewEventsToday">0</strong></article>
-            <article class="summary-card"><span data-i18n="home.nextSevenDays">Next 7 days</span><strong id="homeOverviewEventsWeek">0</strong></article>
-            <article class="summary-card"><span data-i18n="home.lowFeedItems">Low feed items</span><strong id="homeOverviewLowFeed">0</strong></article>
-            <article class="summary-card"><span data-i18n="home.workHoursTotal">Work hours total</span><strong id="homeOverviewHours">0</strong></article>
+            <button class="summary-card home-overview-card" type="button" data-home-shortcut="settings">
+              <span data-i18n="home.overviewStable">Active stable</span>
+              <strong id="homeOverviewStable">-</strong>
+              <small data-i18n="home.openSettings">Open settings</small>
+            </button>
+            <button class="summary-card home-overview-card" type="button" data-home-shortcut="horses">
+              <span data-i18n="summary.horses">Horses</span>
+              <strong id="homeOverviewHorses">0</strong>
+              <small data-i18n="home.openHorses">Open horses</small>
+            </button>
+            <button class="summary-card home-overview-card" type="button" data-home-shortcut="tasks">
+              <span data-i18n="summary.openTasks">Open tasks</span>
+              <strong id="homeOverviewOpenTasks">0</strong>
+              <small data-i18n="home.openTasks">Open tasks</small>
+            </button>
+            <button class="summary-card home-overview-card" type="button" data-home-shortcut="tasks">
+              <span data-i18n="summary.todayTasks">Today's tasks</span>
+              <strong id="homeOverviewTodayTasks">0</strong>
+              <small data-i18n="home.openTasks">Open tasks</small>
+            </button>
+            <button class="summary-card home-overview-card" type="button" data-home-shortcut="calendar">
+              <span data-i18n="home.eventsToday">Events today</span>
+              <strong id="homeOverviewEventsToday">0</strong>
+              <small data-i18n="home.openCalendar">Open calendar</small>
+            </button>
+            <button class="summary-card home-overview-card" type="button" data-home-shortcut="calendar">
+              <span data-i18n="home.nextSevenDays">Next 7 days</span>
+              <strong id="homeOverviewEventsWeek">0</strong>
+              <small data-i18n="home.openCalendar">Open calendar</small>
+            </button>
+            <button class="summary-card home-overview-card" type="button" data-home-shortcut="inventory">
+              <span data-i18n="home.lowFeedItems">Low feed items</span>
+              <strong id="homeOverviewLowFeed">0</strong>
+              <small data-i18n="home.openFeed">Open feed inventory</small>
+            </button>
+            <button class="summary-card home-overview-card" type="button" data-home-shortcut="hours">
+              <span data-i18n="home.workHoursTotal">Work hours total</span>
+              <strong id="homeOverviewHours">0</strong>
+              <small data-i18n="home.openHours">Open work hours</small>
+            </button>
           </div>
           <div class="home-quick-links">
             <span class="meta-label" data-i18n="home.quickLinks">Quick links</span>
@@ -542,7 +574,7 @@
         </div>
 
         <div class="settings-page">
-          <section class="settings-section">
+          <section class="settings-section" id="settingsAccountSection">
             <div class="settings-section-header">
               <p class="eyebrow" data-i18n="settings.accountEyebrow">Account & stable</p>
               <h3 data-i18n="settings.accountTitle">Session and storage status</h3>
