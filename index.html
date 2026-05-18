@@ -138,47 +138,47 @@
             </div>
           </div>
           <div class="summary-grid home-overview-grid">
-            <button class="summary-card home-overview-card" type="button" data-home-shortcut="settings">
+            <button class="summary-card home-overview-card premium-icon-card icon-location" type="button" data-home-shortcut="settings">
               <span data-i18n="home.overviewStable">Active stable</span>
               <strong id="homeOverviewStable">-</strong>
               <small data-i18n="home.openSettings">Open settings</small>
             </button>
-            <button class="summary-card home-overview-card" type="button" data-home-shortcut="horses">
+            <button class="summary-card home-overview-card premium-icon-card icon-horse" type="button" data-home-shortcut="horses">
               <span data-i18n="summary.horses">Horses</span>
               <strong id="homeOverviewHorses">0</strong>
               <small data-i18n="home.openHorses">Open horses</small>
             </button>
-            <button class="summary-card home-overview-card" type="button" data-home-shortcut="tasks">
+            <button class="summary-card home-overview-card premium-icon-card icon-task" type="button" data-home-shortcut="tasks">
               <span data-i18n="summary.openTasks">Open tasks</span>
               <strong id="homeOverviewOpenTasks">0</strong>
               <small data-i18n="home.openTasks">Open tasks</small>
             </button>
-            <button class="summary-card home-overview-card" type="button" data-home-shortcut="tasks">
+            <button class="summary-card home-overview-card premium-icon-card icon-check" type="button" data-home-shortcut="tasks">
               <span data-i18n="summary.todayTasks">Today's tasks</span>
               <strong id="homeOverviewTodayTasks">0</strong>
               <small data-i18n="home.openTasks">Open tasks</small>
             </button>
-            <button class="summary-card home-overview-card" type="button" data-home-shortcut="calendar">
+            <button class="summary-card home-overview-card premium-icon-card icon-calendar" type="button" data-home-shortcut="calendar">
               <span data-i18n="home.eventsToday">Events today</span>
               <strong id="homeOverviewEventsToday">0</strong>
               <small data-i18n="home.openCalendar">Open calendar</small>
             </button>
-            <button class="summary-card home-overview-card" type="button" data-home-shortcut="calendar">
+            <button class="summary-card home-overview-card premium-icon-card icon-calendar" type="button" data-home-shortcut="calendar">
               <span data-i18n="home.nextSevenDays">Next 7 days</span>
               <strong id="homeOverviewEventsWeek">0</strong>
               <small data-i18n="home.openCalendar">Open calendar</small>
             </button>
-            <button class="summary-card home-overview-card" type="button" data-home-shortcut="inventory">
+            <button class="summary-card home-overview-card premium-icon-card icon-feed" type="button" data-home-shortcut="inventory">
               <span data-i18n="home.lowFeedItems">Low feed items</span>
               <strong id="homeOverviewLowFeed">0</strong>
               <small data-i18n="home.openFeed">Open feed inventory</small>
             </button>
-            <button class="summary-card home-overview-card" type="button" data-home-shortcut="hours">
+            <button class="summary-card home-overview-card premium-icon-card icon-clock" type="button" data-home-shortcut="hours">
               <span data-i18n="home.workHoursTotal">Work hours total</span>
               <strong id="homeOverviewHours">0</strong>
               <small data-i18n="home.openHours">Open work hours</small>
             </button>
-            <article id="turnoutWeatherCard" class="turnout-weather-card turnout-weather-card--loading">
+            <article id="turnoutWeatherCard" class="turnout-weather-card turnout-weather-card--loading premium-icon-card icon-weather">
               <div>
                 <span class="meta-label" data-i18n="weather.title">Today's turnout suggestion</span>
                 <strong id="turnoutWeatherMessage" data-i18n="weather.loading">Checking today's weather...</strong>
@@ -198,37 +198,50 @@
         </section>
 
         <section class="feature-grid home-feature-grid" aria-label="Feature highlights">
-          <article class="feature-card">
+          <article class="feature-card premium-icon-card icon-horse">
             <span>01</span>
             <h3 data-i18n="home.featureHorsesTitle">Horse management</h3>
             <p data-i18n="home.featureHorsesText">Keep profiles, care notes, ownership details, and health information in one calm view.</p>
           </article>
-          <article class="feature-card">
+          <article class="feature-card premium-icon-card icon-task">
             <span>02</span>
             <h3 data-i18n="home.featureTasksTitle">Tasks</h3>
             <p data-i18n="home.featureTasksText">Plan daily jobs, track open work, and keep stable routines visible.</p>
           </article>
-          <article class="feature-card">
+          <article class="feature-card premium-icon-card icon-clock">
             <span>03</span>
             <h3 data-i18n="home.featureHoursTitle">Work hours</h3>
             <p data-i18n="home.featureHoursText">Log stable work with dates, horses, descriptions, and total hours.</p>
           </article>
-          <article class="feature-card">
+          <article class="feature-card premium-icon-card icon-feed">
             <span>04</span>
             <h3 data-i18n="home.featureFeedTitle">Feed Inventory PRO</h3>
             <p data-i18n="home.featureFeedText">Track stock, daily usage, shopping needs, and low-feed warnings.</p>
           </article>
-          <article class="feature-card">
+          <article class="feature-card premium-icon-card icon-calendar">
             <span>05</span>
             <h3 data-i18n="home.featureCalendarTitle">Calendar PRO</h3>
             <p data-i18n="home.featureCalendarText">Plan races, training, shoeing, vet visits, feeding, and stable events.</p>
           </article>
-          <article class="feature-card">
+          <article class="feature-card premium-icon-card icon-shield">
             <span>06</span>
             <h3 data-i18n="home.featureBackupTitle">Backup & cloud sync</h3>
             <p data-i18n="home.featureBackupText">Signed-in users save to the cloud while local backup tools stay available.</p>
           </article>
         </section>
+
+        <div class="premium-icon-strip" aria-hidden="true">
+          <span class="premium-icon icon-cloud"></span>
+          <span class="premium-icon icon-location"></span>
+          <span class="premium-icon icon-weather"></span>
+          <span class="premium-icon icon-horse"></span>
+          <span class="premium-icon icon-task"></span>
+          <span class="premium-icon icon-clock"></span>
+          <span class="premium-icon icon-feed"></span>
+          <span class="premium-icon icon-calendar"></span>
+          <span class="premium-icon icon-shield"></span>
+          <span class="premium-icon icon-people"></span>
+        </div>
 
         <section id="homeTipsSection" class="home-process">
           <div class="section-heading">
@@ -264,7 +277,7 @@
         </section>
 
         <section class="home-lower">
-          <article class="panel home-daily-card">
+          <article class="panel home-daily-card premium-icon-card icon-chart">
             <p class="eyebrow" data-i18n="home.dailyEyebrow">Built for stable daily use</p>
             <h2 data-i18n="home.dailyTitle">Readable on the phone, useful at the stable.</h2>
             <p data-i18n="home.dailyText">EquiTrack is designed for the ordinary work that keeps horses cared for and schedules under control.</p>
@@ -276,7 +289,7 @@
             </div>
           </article>
 
-          <article class="panel home-contact-card">
+          <article class="panel home-contact-card premium-icon-card icon-people">
             <p class="eyebrow" data-i18n="home.socialTitle">Connect</p>
             <h2 data-i18n="home.socialHeading">Follow EquiTrack</h2>
             <p data-i18n="home.socialText">Social and contact channels can be connected here when they are ready.</p>
@@ -333,12 +346,12 @@
         </div>
 
         <section class="summary-grid stable-summary" aria-label="Stable summary">
-          <article class="summary-card"><span data-i18n="summary.horses">Horses</span><strong id="horseCount">0</strong></article>
-          <article class="summary-card"><span data-i18n="summary.openTasks">Open tasks</span><strong id="openTaskCount">0</strong></article>
-          <article class="summary-card"><span data-i18n="summary.todayTasks">Today's tasks</span><strong id="todayTaskCount">0</strong></article>
-          <article class="summary-card"><span data-i18n="summary.hoursLogged">Hours logged</span><strong id="hoursTotal">0</strong></article>
-          <article class="summary-card"><span data-i18n="summary.lowFeed">Low feed items</span><strong id="lowFeedCount">0</strong></article>
-          <article class="summary-card"><span data-i18n="summary.upcomingEvents">Upcoming events</span><strong id="upcomingEventCount">0</strong></article>
+          <article class="summary-card premium-icon-card icon-horse"><span data-i18n="summary.horses">Horses</span><strong id="horseCount">0</strong></article>
+          <article class="summary-card premium-icon-card icon-task"><span data-i18n="summary.openTasks">Open tasks</span><strong id="openTaskCount">0</strong></article>
+          <article class="summary-card premium-icon-card icon-check"><span data-i18n="summary.todayTasks">Today's tasks</span><strong id="todayTaskCount">0</strong></article>
+          <article class="summary-card premium-icon-card icon-clock"><span data-i18n="summary.hoursLogged">Hours logged</span><strong id="hoursTotal">0</strong></article>
+          <article class="summary-card premium-icon-card icon-feed"><span data-i18n="summary.lowFeed">Low feed items</span><strong id="lowFeedCount">0</strong></article>
+          <article class="summary-card premium-icon-card icon-calendar"><span data-i18n="summary.upcomingEvents">Upcoming events</span><strong id="upcomingEventCount">0</strong></article>
         </section>
 
         <section class="stable-today" aria-labelledby="todayTitle">
@@ -589,14 +602,14 @@
               <p data-i18n="settings.accountText">See who is signed in, which stable is active, and where app changes are being saved.</p>
             </div>
             <div class="settings-card-grid">
-              <article class="panel about-panel">
+              <article class="panel about-panel premium-icon-card icon-account">
                 <span class="settings-emblem" aria-hidden="true">ET</span>
                 <div>
                   <h3>EquiTrack</h3>
                   <p data-i18n="brand.subtitle">Web stable manager</p>
                 </div>
               </article>
-              <article class="panel cloud-panel">
+              <article class="panel cloud-panel premium-icon-card icon-cloud">
                 <h3 data-i18n="cloud.prepTitle">Cloud storage</h3>
                 <p data-i18n="cloud.prepText">Signed-in users use cloud storage automatically when an active stable is assigned.</p>
                 <div class="cloud-status-list">
@@ -609,7 +622,7 @@
                   <button id="settingsLogoutButton" class="button secondary" type="button" hidden data-i18n="auth.logout">Log out</button>
                 </div>
               </article>
-              <article class="panel stable-location-panel">
+              <article class="panel stable-location-panel premium-icon-card icon-location">
                 <h3 data-i18n="stable.location">Stable location</h3>
                 <p id="stableLocationSummary" class="update-note" data-i18n="stable.locationNotSet">Location not set</p>
                 <form id="stableLocationForm" class="admin-user-form">
@@ -633,7 +646,7 @@
               <p data-i18n="settings.appText">Choose your interface language and install EquiTrack on a phone or computer.</p>
             </div>
             <div class="settings-card-grid">
-              <article class="panel">
+              <article class="panel premium-icon-card icon-settings">
                 <h3 data-i18n="language.label">Language</h3>
                 <label class="language-picker wide">
                   <span data-i18n="settings.languageHelp">Choose interface language</span>
@@ -644,7 +657,7 @@
                   </select>
                 </label>
               </article>
-              <article class="panel install-panel">
+              <article class="panel install-panel premium-icon-card icon-mobile">
                 <h3 data-i18n="pwa.installTitle">Install EquiTrack</h3>
                 <p data-i18n="pwa.installText">Use EquiTrack like an app from your phone or computer.</p>
                 <ul class="install-list">
@@ -658,7 +671,7 @@
                   <button id="refreshAppButton" class="button secondary" type="button" data-i18n="pwa.refresh">Refresh</button>
                 </div>
               </article>
-              <article class="panel">
+              <article class="panel premium-icon-card icon-check">
                 <h3 data-i18n="onboarding.restartTitle">Onboarding</h3>
                 <p data-i18n="onboarding.restartText">Show the first-use setup guide again.</p>
                 <button id="restartOnboardingButton" class="button secondary" type="button" data-i18n="onboarding.restart">Restart onboarding</button>
@@ -672,7 +685,7 @@
               <h3 data-i18n="privacy.title">Privacy</h3>
               <p data-i18n="privacy.intro">A simple overview of where EquiTrack stores data and how accounts are managed.</p>
             </div>
-            <article class="panel privacy-panel">
+            <article class="panel privacy-panel premium-icon-card icon-shield">
               <ul class="privacy-list">
                 <li data-i18n="privacy.accountData">EquiTrack stores user account data in Supabase.</li>
                 <li data-i18n="privacy.cloudData">Stable data is stored in Supabase cloud when you are logged in and Cloud mode is active.</li>
@@ -693,7 +706,7 @@
               <p data-i18n="settings.backupSectionText">Export backups regularly and preview imported files before replacing local data.</p>
             </div>
             <div class="settings-card-grid">
-              <article class="panel">
+              <article class="panel premium-icon-card icon-backup">
                 <h3 data-i18n="settings.backupTitle">Backup PRO</h3>
                 <p data-i18n="settings.backupText">Export a dated JSON backup or safely preview and restore one you saved earlier.</p>
                 <div class="backup-actions">
@@ -703,14 +716,14 @@
                 <p class="update-note"><span data-i18n="backup.lastExport">Last export</span>: <strong id="lastBackupAt">-</strong></p>
                 <p class="update-note" data-i18n="backup.storageHelp">Data is stored locally in this browser. Export backups regularly.</p>
               </article>
-              <article class="panel">
+              <article class="panel premium-icon-card icon-chart">
                 <h3 data-i18n="settings.backupPreviewTitle">Import preview</h3>
                 <p data-i18n="settings.backupPreviewText">When you choose a backup file, EquiTrack shows counts before replacing local data.</p>
                 <div id="importPreview" class="backup-preview" data-i18n="backup.noPreview">No backup selected.</div>
                 <button id="restoreEmergencyButton" class="button secondary" type="button" data-i18n="backup.restorePrevious">Restore previous data</button>
                 <p class="update-note" id="restoreEmergencyHelp" data-i18n="backup.restoreHelp">Available after an import. Restores the local data saved just before the last import.</p>
               </article>
-              <article class="panel danger-panel">
+              <article class="panel danger-panel premium-icon-card icon-alert">
                 <p class="eyebrow" data-i18n="settings.dangerEyebrow">Danger zone</p>
                 <h3 data-i18n="settings.resetTitle">Reset local data</h3>
                 <p data-i18n="settings.resetText">This removes horses, tasks, work logs, feed inventory, and calendar events from this browser.</p>
@@ -726,7 +739,7 @@
               <p data-i18n="settings.cloudText">Signed-in users use cloud storage automatically. Local browser data stays available as a fallback.</p>
             </div>
             <div class="settings-card-grid">
-              <article class="panel cloud-panel">
+              <article class="panel cloud-panel premium-icon-card icon-cloud">
                 <h3 data-i18n="cloudMode.title">Cloud mode</h3>
                 <p data-i18n="cloudMode.text">Signed-in users use cloud storage automatically when an active stable is assigned. Local data stays available as a fallback.</p>
                 <div class="cloud-status-list">
@@ -749,7 +762,7 @@
                 <small data-i18n="settings.cloudMigrationHelp">Use these when moving old browser data or comparing cloud counts.</small>
               </summary>
               <div class="settings-card-grid">
-                <article class="panel cloud-panel">
+                <article class="panel cloud-panel premium-icon-card icon-cloud">
                   <h3 data-i18n="migration.title">Move local data to cloud</h3>
                   <p data-i18n="migration.text">Review the local browser data that will be copied to the active cloud stable after confirmation.</p>
                   <div class="cloud-status-list">
@@ -775,7 +788,7 @@
                   <p id="migrationUploadStatus" class="update-note" data-i18n="migration.uploadNotReady">Manual upload is disabled until you are logged in, have an active stable, and type CLOUD.</p>
                 </article>
 
-                <article class="panel cloud-panel">
+                <article class="panel cloud-panel premium-icon-card icon-chart">
                   <h3 data-i18n="cloudRead.title">Cloud read preview</h3>
                   <p data-i18n="cloudRead.text">Check cloud counts for the active stable without changing local data.</p>
                   <div class="cloud-status-list">
@@ -806,7 +819,7 @@
                 <span data-i18n="cloudAdvanced.title">Migration and troubleshooting</span>
                 <small data-i18n="settings.advancedHelp">Advanced cloud cleanup is for troubleshooting duplicated or incorrect cloud counts only.</small>
               </summary>
-              <article class="panel cloud-panel danger-zone">
+              <article class="panel cloud-panel danger-zone premium-icon-card icon-alert">
                 <p class="eyebrow" data-i18n="cloudAdvanced.eyebrow">Advanced cloud tools</p>
                 <h3 data-i18n="cloudCleanup.title">Cloud cleanup</h3>
                 <p data-i18n="cloudCleanup.text">Delete cloud rows for the active stable when cloud preview counts are duplicated or wrong.</p>
@@ -830,7 +843,7 @@
           </section>
 
           <section class="settings-section admin-settings-section">
-            <article id="adminPlaceholderPanel" class="panel admin-panel" hidden>
+            <article id="adminPlaceholderPanel" class="panel admin-panel premium-icon-card icon-people" hidden>
               <p class="eyebrow" data-i18n="admin.eyebrow">Admin</p>
               <h3 data-i18n="admin.title">Admin User Management</h3>
               <p data-i18n="admin.text">Create stable users through the secure Supabase Edge Function. No service role key is stored in the browser.</p>

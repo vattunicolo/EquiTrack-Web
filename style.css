@@ -539,6 +539,87 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
 .home-overview-grid .summary-card strong {
   font-size: clamp(24px, 3vw, 36px);
 }
+.premium-icon-card {
+  overflow: hidden;
+  padding-right: 86px;
+}
+.premium-icon-card::after,
+.premium-icon {
+  align-items: center;
+  background:
+    radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 42%),
+    linear-gradient(145deg, #e8f7f6 0%, #f8fbfd 100%);
+  border: 1px solid rgba(78, 205, 196, 0.32);
+  border-radius: 18px;
+  box-shadow: 0 12px 24px rgba(20, 51, 90, 0.1);
+  color: #14335a;
+  display: inline-flex;
+  font-family: "Segoe UI Symbol", "Arial", sans-serif;
+  font-size: 25px;
+  font-weight: 900;
+  height: 52px;
+  justify-content: center;
+  line-height: 1;
+  width: 52px;
+}
+.premium-icon-card::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  z-index: 1;
+}
+.premium-icon-card:hover::after,
+.home-overview-card:focus-visible::after {
+  border-color: rgba(78, 205, 196, 0.62);
+  box-shadow: 0 16px 30px rgba(20, 51, 90, 0.14);
+}
+.premium-icon-card.icon-cloud::after,
+.premium-icon.icon-cloud::before { content: "☁"; }
+.premium-icon-card.icon-shield::after,
+.premium-icon.icon-shield::before { content: "✓"; }
+.premium-icon-card.icon-people::after,
+.premium-icon.icon-people::before { content: "●●"; font-size: 18px; letter-spacing: -4px; }
+.premium-icon-card.icon-chart::after,
+.premium-icon.icon-chart::before { content: "↗"; }
+.premium-icon-card.icon-location::after,
+.premium-icon.icon-location::before { content: "⌖"; }
+.premium-icon-card.icon-weather::after,
+.premium-icon.icon-weather::before { content: "☔"; }
+.premium-icon-card.icon-horse::after,
+.premium-icon.icon-horse::before { content: "♞"; }
+.premium-icon-card.icon-task::after,
+.premium-icon.icon-task::before { content: "☑"; }
+.premium-icon-card.icon-check::after,
+.premium-icon.icon-check::before { content: "✓"; }
+.premium-icon-card.icon-clock::after,
+.premium-icon.icon-clock::before { content: "◷"; }
+.premium-icon-card.icon-feed::after,
+.premium-icon.icon-feed::before { content: "◫"; }
+.premium-icon-card.icon-calendar::after,
+.premium-icon.icon-calendar::before { content: "▦"; }
+.premium-icon-card.icon-account::after,
+.premium-icon.icon-account::before { content: "◎"; }
+.premium-icon-card.icon-settings::after,
+.premium-icon.icon-settings::before { content: "⚙"; }
+.premium-icon-card.icon-mobile::after,
+.premium-icon.icon-mobile::before { content: "▯"; }
+.premium-icon-card.icon-backup::after,
+.premium-icon.icon-backup::before { content: "↻"; }
+.premium-icon-card.icon-alert::after,
+.premium-icon.icon-alert::before { content: "!"; }
+.premium-icon-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin: 22px auto 8px;
+}
+.premium-icon-strip .premium-icon {
+  height: 48px;
+  width: 48px;
+}
 .home-overview-card {
   appearance: none;
   border-color: var(--line);
