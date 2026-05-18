@@ -602,6 +602,7 @@
                 <div class="cloud-status-list">
                   <p><span data-i18n="cloud.email">Logged-in email</span>: <strong id="cloudUserEmail">-</strong></p>
                   <p><span data-i18n="cloud.stable">Active stable</span>: <strong id="cloudStableName">-</strong></p>
+                  <p><span data-i18n="stable.location">Stable location</span>: <strong id="cloudStableLocation">-</strong></p>
                   <p><span data-i18n="cloud.status">Cloud status</span>: <strong id="cloudConnectionStatus">Not connected</strong></p>
                 </div>
                 <div class="backup-actions">
@@ -832,6 +833,8 @@
                 <form id="adminStableForm" class="admin-user-form">
                   <div class="form-grid">
                     <label><span data-i18n="admin.stableName">Stable name</span><input name="stableName" required autocomplete="off"></label>
+                    <label><span data-i18n="stable.city">Stable city</span><input name="stableCity" autocomplete="address-level2" placeholder="Turku"></label>
+                    <label><span data-i18n="stable.country">Stable country</span><input name="stableCountry" autocomplete="country-name" placeholder="Finland"></label>
                     <label><span data-i18n="admin.ownerEmail">Owner email</span><input name="ownerEmail" type="email" autocomplete="off" placeholder="owner@example.com"></label>
                     <label><span data-i18n="admin.ownerFullName">Owner full name</span><input name="ownerFullName" autocomplete="off"></label>
                     <label><span data-i18n="admin.ownerPassword">Temporary password</span><input name="ownerPassword" type="password" autocomplete="new-password"></label>

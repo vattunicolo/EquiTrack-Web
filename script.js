@@ -6,7 +6,12 @@ const ONBOARDING_KEY = 'equitrack-web-onboarding-complete';
 const HOME_TIPS_KEY = 'equitrack-web-home-tips-dismissed';
 const LAST_CLOUD_UPLOAD_KEY = 'equitrack-web-last-cloud-upload';
 const CLOUD_LOCAL_OVERRIDE_KEY = 'equitrack-web-cloud-local-override';
-const WEATHER_API_URL = 'https://api.open-meteo.com/v1/forecast?latitude=60.4518&longitude=22.2666&daily=precipitation_sum,rain_sum&timezone=Europe%2FHelsinki&forecast_days=1';
+const FALLBACK_WEATHER_LOCATION = {
+  city: 'Turku',
+  country: 'Finland',
+  latitude: 60.4518,
+  longitude: 22.2666
+};
 const DEFAULT_LANGUAGE = 'en';
 const EVENT_TYPES = ['race', 'training', 'shoeing', 'vaccination', 'vet', 'feeding', 'other'];
 const PROTECTED_VIEWS = ['stable', 'calendar', 'settings'];
@@ -83,6 +88,12 @@ const translations = {
     'weather.noRain': 'No rain today — horses can go outside.',
     'weather.unavailable': 'Weather unavailable — check conditions manually.',
     'weather.disclaimer': 'Always use your own judgement for horse safety.',
+    'weather.locationUsed': 'Weather location: {location}',
+    'weather.fallbackLocation': 'Using fallback weather location.',
+    'stable.city': 'Stable city',
+    'stable.country': 'Stable country',
+    'stable.location': 'Stable location',
+    'stable.locationNotSet': 'Location not set',
     'home.badgeBrowser': 'Browser-based',
     'home.badgeCloud': 'Cloud sync',
     'home.badgeMobile': 'Mobile friendly',
@@ -786,6 +797,12 @@ const translations = {
     'weather.noRain': 'Ei sadetta tänään — hevoset ulos.',
     'weather.unavailable': 'Säätietoa ei saatu — tarkista keli itse.',
     'weather.disclaimer': 'Käytä aina omaa harkintaa hevosten turvallisuuden takia.',
+    'weather.locationUsed': 'Sijainnin sää: {location}',
+    'weather.fallbackLocation': 'Käytetään varasijainnin säätä.',
+    'stable.city': 'Tallin kaupunki',
+    'stable.country': 'Tallin maa',
+    'stable.location': 'Tallin sijainti',
+    'stable.locationNotSet': 'Sijaintia ei ole asetettu',
     'home.badgeBrowser': 'Selainpohjainen',
     'home.badgeCloud': 'Pilvitallennus',
     'home.badgeMobile': 'Mobiiliystävällinen',
@@ -1439,6 +1456,12 @@ const translations = {
     'weather.noRain': 'Niente pioggia oggi — i cavalli possono uscire.',
     'weather.unavailable': 'Meteo non disponibile — controlla le condizioni manualmente.',
     'weather.disclaimer': 'Usa sempre il tuo giudizio per la sicurezza dei cavalli.',
+    'weather.locationUsed': 'Località meteo: {location}',
+    'weather.fallbackLocation': 'Uso della località meteo di fallback.',
+    'stable.city': 'Città della scuderia',
+    'stable.country': 'Paese della scuderia',
+    'stable.location': 'Posizione della scuderia',
+    'stable.locationNotSet': 'Posizione non impostata',
     'home.badgeBrowser': 'Nel browser',
     'home.badgeCloud': 'Sincronizzazione cloud',
     'home.badgeMobile': 'Ottimizzata per mobile',
@@ -2350,7 +2373,13 @@ let calendarFilters = { scope: 'all', type: 'all', horse: 'all' };
 let calendarCursor = new Date(`${today()}T00:00:00`);
 let selectedCalendarDate = today();
 let calendarViewMode = 'month';
-let turnoutWeather = { status: 'loading', hasRain: null };
+let turnoutWeather = {
+  status: 'loading',
+  hasRain: null,
+  locationLabel: `${FALLBACK_WEATHER_LOCATION.city}, ${FALLBACK_WEATHER_LOCATION.country}`,
+  usingFallback: true
+};
+let turnoutWeatherLocationKey = '';
 let pendingServiceWorker = null;
 let supabaseClient = null;
 let authUser = null;
@@ -2381,6 +2410,10 @@ let cloudState = {
   email: '',
   stableId: '',
   stableName: '',
+  locationCity: '',
+  locationCountry: '',
+  latitude: null,
+  longitude: null,
   membershipRole: '',
   profileRole: '',
   canManageUsers: false,
@@ -2409,6 +2442,7 @@ const els = {
   homeOverviewHours: document.querySelector('#homeOverviewHours'),
   turnoutWeatherCard: document.querySelector('#turnoutWeatherCard'),
   turnoutWeatherMessage: document.querySelector('#turnoutWeatherMessage'),
+  turnoutWeatherLocation: document.querySelector('#turnoutWeatherLocation'),
   homeTipsSection: document.querySelector('#homeTipsSection'),
   dismissHomeTipsButton: document.querySelector('#dismissHomeTipsButton'),
   todayList: document.querySelector('#todayList'),
@@ -2470,6 +2504,7 @@ const els = {
   stableModeBadge: document.querySelector('#stableModeBadge'),
   cloudUserEmail: document.querySelector('#cloudUserEmail'),
   cloudStableName: document.querySelector('#cloudStableName'),
+  cloudStableLocation: document.querySelector('#cloudStableLocation'),
   cloudConnectionStatus: document.querySelector('#cloudConnectionStatus'),
   cloudLocalNotice: document.querySelector('#cloudLocalNotice'),
   adminPlaceholderPanel: document.querySelector('#adminPlaceholderPanel'),
@@ -2866,11 +2901,16 @@ function getCurrentUser() {
 function getActiveStable() {
   return {
     id: cloudState.stableId || '',
-    name: cloudState.stableName || ''
+    name: cloudState.stableName || '',
+    locationCity: cloudState.locationCity || '',
+    locationCountry: cloudState.locationCountry || '',
+    latitude: cloudState.latitude,
+    longitude: cloudState.longitude
   };
 }
 
 function setCloudStatus(nextState = {}) {
+  const previousWeatherKey = getStableLocationKey(getActiveStable());
   cloudState = {
     ...cloudState,
     ...nextState
@@ -2887,6 +2927,21 @@ function setCloudStatus(nextState = {}) {
   renderCalendarCloudMode();
   renderCloudCleanup();
   renderHome();
+  if (getStableLocationKey(getActiveStable()) !== previousWeatherKey) loadTurnoutWeather();
+}
+
+function formatStableLocation(stable = getActiveStable()) {
+  const parts = [stable.locationCity, stable.locationCountry].filter(Boolean);
+  return parts.length ? parts.join(', ') : '';
+}
+
+function getStableLocationKey(stable = getActiveStable()) {
+  return [
+    stable.locationCity || '',
+    stable.locationCountry || '',
+    stable.latitude ?? '',
+    stable.longitude ?? ''
+  ].join('|');
 }
 
 function getCloudStatusText() {
@@ -2901,6 +2956,7 @@ function getCloudStatusText() {
 function renderCloudStatus() {
   const statusText = getCloudStatusText();
   const stableText = cloudState.stableName || '-';
+  const stableLocationText = formatStableLocation() || t('stable.locationNotSet');
   const migrationStableText = cloudState.stableName || t('migration.noStable');
   if (els.headerStableName) {
     els.headerStableName.textContent = cloudState.status === 'connected'
@@ -2910,6 +2966,7 @@ function renderCloudStatus() {
   }
   if (els.cloudUserEmail) els.cloudUserEmail.textContent = cloudState.email || '-';
   if (els.cloudStableName) els.cloudStableName.textContent = stableText;
+  if (els.cloudStableLocation) els.cloudStableLocation.textContent = stableLocationText;
   if (els.cloudConnectionStatus) els.cloudConnectionStatus.textContent = statusText;
   if (els.cloudLocalNotice) els.cloudLocalNotice.textContent = t('cloud.syncLocal');
   if (els.migrationStableName) els.migrationStableName.textContent = migrationStableText;
@@ -3103,6 +3160,8 @@ async function handleAdminStableSubmit(event) {
 
   const body = {
     stable_name: stableName,
+    location_city: form.elements.stableCity.value.trim(),
+    location_country: form.elements.stableCountry.value.trim(),
     owner_email: createOwner ? ownerEmail : '',
     owner_full_name: createOwner ? form.elements.ownerFullName.value.trim() : '',
     owner_password: createOwner ? ownerPassword : ''
@@ -4659,15 +4718,29 @@ async function getUserStable(user = getCurrentUser()) {
   }
   const membership = Array.isArray(memberships) ? memberships[0] : null;
   if (!membership?.stable_id) return null;
-  const { data: stables, error: stableError } = await withTimeout(
+  let { data: stables, error: stableError } = await withTimeout(
     supabaseClient
       .from('stables')
-      .select('id, name')
+      .select('id, name, location_city, location_country, latitude, longitude')
       .eq('id', membership.stable_id)
       .limit(1),
     10000,
     'stables query'
   );
+  if (stableError && isMissingStableLocationColumns(stableError)) {
+    console.warn('[EquiTrack cloud] Stable location columns are not available yet. Run supabase/migrations/stable_location.sql.');
+    const fallbackResult = await withTimeout(
+      supabaseClient
+        .from('stables')
+        .select('id, name')
+        .eq('id', membership.stable_id)
+        .limit(1),
+      10000,
+      'stables fallback query'
+    );
+    stables = fallbackResult.data;
+    stableError = fallbackResult.error;
+  }
   console.info('[EquiTrack cloud] stables query result', { stables, stableError });
   if (stableError) {
     console.error('[EquiTrack cloud] stable lookup failed', {
@@ -4687,9 +4760,23 @@ async function getUserStable(user = getCurrentUser()) {
   return {
     stableId: stable.id,
     stableName: stable.name,
+    locationCity: stable.location_city || '',
+    locationCountry: stable.location_country || '',
+    latitude: stable.latitude == null ? null : Number(stable.latitude),
+    longitude: stable.longitude == null ? null : Number(stable.longitude),
     membershipRole: membership.role || 'member',
     canManageUsers: membership.can_manage_users === true
   };
+}
+
+function isMissingStableLocationColumns(error) {
+  const text = `${error.code || ''} ${error.message || ''} ${error.details || ''} ${error.hint || ''}`.toLowerCase();
+  return text.includes('42703')
+    || text.includes('location_city')
+    || text.includes('location_country')
+    || text.includes('latitude')
+    || text.includes('longitude')
+    || text.includes('schema cache');
 }
 
 async function getUserProfileRole(user = getCurrentUser()) {
@@ -4764,6 +4851,10 @@ async function refreshCloudConnection() {
       email: '',
       stableId: '',
       stableName: '',
+      locationCity: '',
+      locationCountry: '',
+      latitude: null,
+      longitude: null,
       membershipRole: '',
       profileRole: '',
       canManageUsers: false,
@@ -4776,6 +4867,10 @@ async function refreshCloudConnection() {
     email: user.email || '',
     stableId: '',
     stableName: '',
+    locationCity: '',
+    locationCountry: '',
+    latitude: null,
+    longitude: null,
     membershipRole: '',
     profileRole: '',
     canManageUsers: false,
@@ -4797,6 +4892,10 @@ async function refreshCloudConnection() {
         email: user.email || '',
         stableId: '',
         stableName: '',
+        locationCity: '',
+        locationCountry: '',
+        latitude: null,
+        longitude: null,
         membershipRole: '',
         profileRole,
         canManageUsers: false,
@@ -4810,6 +4909,10 @@ async function refreshCloudConnection() {
       email: user.email || '',
       stableId: stable.stableId,
       stableName: stable.stableName,
+      locationCity: stable.locationCity || '',
+      locationCountry: stable.locationCountry || '',
+      latitude: stable.latitude,
+      longitude: stable.longitude,
       membershipRole: stable.membershipRole || 'member',
       profileRole,
       canManageUsers: stable.canManageUsers === true,
@@ -4843,6 +4946,10 @@ async function refreshCloudConnection() {
         email: user.email || '',
         stableId: '',
         stableName: '',
+        locationCity: '',
+        locationCountry: '',
+        latitude: null,
+        longitude: null,
         membershipRole: '',
         profileRole: '',
         canManageUsers: false,
@@ -4857,6 +4964,10 @@ async function refreshCloudConnection() {
       email: user.email || '',
       stableId: '',
       stableName: '',
+      locationCity: '',
+      locationCountry: '',
+      latitude: null,
+      longitude: null,
       membershipRole: '',
       profileRole: '',
       canManageUsers: false,
@@ -5106,27 +5217,99 @@ function renderTurnoutSuggestion() {
   els.turnoutWeatherCard.classList.add(`turnout-weather-card--${statusClass}`);
   if (turnoutWeather.status === 'ready') {
     els.turnoutWeatherMessage.textContent = t(turnoutWeather.hasRain ? 'weather.rain' : 'weather.noRain');
-    return;
+  } else {
+    els.turnoutWeatherMessage.textContent = t(turnoutWeather.status === 'error' ? 'weather.unavailable' : 'weather.loading');
   }
-  els.turnoutWeatherMessage.textContent = t(turnoutWeather.status === 'error' ? 'weather.unavailable' : 'weather.loading');
+  if (els.turnoutWeatherLocation) {
+    const locationText = t('weather.locationUsed', { location: turnoutWeather.locationLabel || `${FALLBACK_WEATHER_LOCATION.city}, ${FALLBACK_WEATHER_LOCATION.country}` });
+    els.turnoutWeatherLocation.textContent = turnoutWeather.usingFallback
+      ? `${locationText} ${t('weather.fallbackLocation')}`
+      : locationText;
+  }
 }
 
 async function loadTurnoutWeather() {
+  const stable = getActiveStable();
+  const locationKey = getStableLocationKey(stable) || 'fallback';
+  if (turnoutWeather.status !== 'error' && turnoutWeatherLocationKey === locationKey && turnoutWeather.status !== 'loading') return;
+  turnoutWeatherLocationKey = locationKey;
+  const fallbackLabel = `${FALLBACK_WEATHER_LOCATION.city}, ${FALLBACK_WEATHER_LOCATION.country}`;
+  const locationLabel = formatStableLocation(stable) || fallbackLabel;
   try {
-    turnoutWeather = { status: 'loading', hasRain: null };
+    turnoutWeather = {
+      status: 'loading',
+      hasRain: null,
+      locationLabel,
+      usingFallback: !formatStableLocation(stable)
+    };
     renderTurnoutSuggestion();
-    const response = await fetch(WEATHER_API_URL, { cache: 'no-store' });
+    const weatherLocation = await resolveWeatherLocation(stable);
+    turnoutWeather.locationLabel = weatherLocation.label;
+    turnoutWeather.usingFallback = weatherLocation.usingFallback;
+    renderTurnoutSuggestion();
+    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(weatherLocation.latitude)}&longitude=${encodeURIComponent(weatherLocation.longitude)}&daily=precipitation_sum,rain_sum&timezone=auto&forecast_days=1`;
+    const response = await fetch(weatherUrl, { cache: 'no-store' });
     if (!response.ok) throw new Error(`Weather request failed with ${response.status}`);
     const data = await response.json();
     const precipitation = Number(data?.daily?.precipitation_sum?.[0] || 0);
     const rain = Number(data?.daily?.rain_sum?.[0] || 0);
-    turnoutWeather = { status: 'ready', hasRain: precipitation > 0 || rain > 0 };
+    turnoutWeather = {
+      status: 'ready',
+      hasRain: precipitation > 0 || rain > 0,
+      locationLabel: weatherLocation.label,
+      usingFallback: weatherLocation.usingFallback
+    };
   } catch (error) {
     console.warn('[EquiTrack weather] Turnout weather unavailable', error);
-    turnoutWeather = { status: 'error', hasRain: null };
+    turnoutWeather = {
+      status: 'error',
+      hasRain: null,
+      locationLabel: turnoutWeather.locationLabel || fallbackLabel,
+      usingFallback: turnoutWeather.usingFallback !== false
+    };
   } finally {
     renderTurnoutSuggestion();
   }
+}
+
+async function resolveWeatherLocation(stable = getActiveStable()) {
+  const latitude = Number(stable.latitude);
+  const longitude = Number(stable.longitude);
+  const label = formatStableLocation(stable);
+  if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
+    return {
+      latitude,
+      longitude,
+      label: label || `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`,
+      usingFallback: false
+    };
+  }
+  if (stable.locationCity || stable.locationCountry) {
+    const query = [stable.locationCity, stable.locationCountry].filter(Boolean).join(', ');
+    try {
+      const geocodeUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1&language=en&format=json`;
+      const response = await fetch(geocodeUrl, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`Geocoding request failed with ${response.status}`);
+      const data = await response.json();
+      const result = data?.results?.[0];
+      if (result?.latitude != null && result?.longitude != null) {
+        return {
+          latitude: Number(result.latitude),
+          longitude: Number(result.longitude),
+          label: label || [result.name, result.country].filter(Boolean).join(', '),
+          usingFallback: false
+        };
+      }
+    } catch (error) {
+      console.warn('[EquiTrack weather] Stable location geocoding failed', error);
+    }
+  }
+  return {
+    latitude: FALLBACK_WEATHER_LOCATION.latitude,
+    longitude: FALLBACK_WEATHER_LOCATION.longitude,
+    label: `${FALLBACK_WEATHER_LOCATION.city}, ${FALLBACK_WEATHER_LOCATION.country}`,
+    usingFallback: true
+  };
 }
 
 function render() {

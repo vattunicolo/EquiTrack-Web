@@ -16,6 +16,10 @@ type PermissionKey =
 
 interface CreateStableRequest {
   stable_name?: string;
+  location_city?: string;
+  location_country?: string;
+  latitude?: number | string | null;
+  longitude?: number | string | null;
   owner_email?: string;
   owner_full_name?: string;
   owner_password?: string;
@@ -76,6 +80,12 @@ function optionalText(value: unknown) {
   return typeof value === 'string' ? value.trim() : '';
 }
 
+function optionalNumber(value: unknown) {
+  if (value === null || value === undefined || value === '') return null;
+  const numberValue = typeof value === 'number' ? value : Number(value);
+  return Number.isFinite(numberValue) ? numberValue : null;
+}
+
 function getBearerToken(request: Request) {
   const header = request.headers.get('authorization') || '';
   const match = header.match(/^Bearer\s+(.+)$/i);
@@ -134,6 +144,10 @@ serve(async (request: Request) => {
 
     const body = (await request.json()) as CreateStableRequest;
     const stableName = requireText(body.stable_name, 'stable_name');
+    const locationCity = optionalText(body.location_city);
+    const locationCountry = optionalText(body.location_country);
+    const latitude = optionalNumber(body.latitude);
+    const longitude = optionalNumber(body.longitude);
     const ownerEmail = optionalText(body.owner_email).toLowerCase();
     const ownerFullName = optionalText(body.owner_full_name);
     const ownerPassword = optionalText(body.owner_password);
@@ -171,9 +185,13 @@ serve(async (request: Request) => {
       .from('stables')
       .insert({
         name: stableName,
-        owner_id: ownerId || null
+        owner_id: ownerId || null,
+        location_city: locationCity || null,
+        location_country: locationCountry || null,
+        latitude,
+        longitude
       })
-      .select('id, name, owner_id')
+      .select('id, name, owner_id, location_city, location_country, latitude, longitude')
       .single();
     if (stableError || !stable) {
       throw stableError || new Error('Could not create stable.');
@@ -195,6 +213,10 @@ serve(async (request: Request) => {
       ok: true,
       stable_id: stable.id,
       stable_name: stable.name,
+      location_city: stable.location_city || null,
+      location_country: stable.location_country || null,
+      latitude: stable.latitude ?? null,
+      longitude: stable.longitude ?? null,
       owner_id: ownerId || null,
       owner_email: ownerId ? ownerEmail : null
     });
