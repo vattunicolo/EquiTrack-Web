@@ -33,6 +33,13 @@ const SUPABASE_CONFIG = {
   SUPABASE_URL: 'https://fuojlxcexpnszepgipbv.supabase.co',
   SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_6_byc2-epHvcZw1g5LlFOg_wAGSYMkU'
 };
+
+const SUPPORT_CONFIG = {
+  phoneDisplay: '+358 44 970 3191',
+  phoneHref: 'tel:+358449703191',
+  email: 'support@aequitrack.com',
+  subject: 'EquiTrack support request'
+};
 const CREATE_USER_FUNCTION_URL = 'https://fuojlxcexpnszepgipbv.functions.supabase.co/create-user';
 const CREATE_STABLE_FUNCTION_URL = 'https://fuojlxcexpnszepgipbv.functions.supabase.co/create-stable';
 
@@ -2501,6 +2508,16 @@ Object.assign(translations.en, {
   'cloudMode.autoLoading': 'Loading cloud data...'
 });
 
+Object.assign(translations.en, {
+  'support.eyebrow': 'Support',
+  'support.title': 'Support',
+  'support.phone': 'Support phone',
+  'support.email': 'Support email',
+  'support.emailButton': 'Email support',
+  'support.callButton': 'Call support',
+  'support.helper': 'For account, stable or technical issues, contact support.'
+});
+
 Object.assign(translations.fi, {
   'auth.restoring': 'Palautetaan kirjautumista...',
   'cloud.loadingStable': 'Ladataan tallia...',
@@ -2508,11 +2525,31 @@ Object.assign(translations.fi, {
   'cloudMode.autoLoading': 'Ladataan pilvidataa...'
 });
 
+Object.assign(translations.fi, {
+  'support.eyebrow': 'Tuki',
+  'support.title': 'Tuki',
+  'support.phone': 'Tuen puhelin',
+  'support.email': 'Tuen sähköposti',
+  'support.emailButton': 'Lähetä sähköposti tukeen',
+  'support.callButton': 'Soita tukeen',
+  'support.helper': 'Ota yhteyttä tukeen käyttäjätiliin, talliin tai teknisiin ongelmiin liittyen.'
+});
+
 Object.assign(translations.it, {
   'auth.restoring': 'Ripristino dell accesso...',
   'cloud.loadingStable': 'Caricamento scuderia...',
   'cloud.loadingData': 'Caricamento dati cloud...',
   'cloudMode.autoLoading': 'Caricamento dati cloud...'
+});
+
+Object.assign(translations.it, {
+  'support.eyebrow': 'Supporto',
+  'support.title': 'Supporto',
+  'support.phone': 'Telefono supporto',
+  'support.email': 'Email supporto',
+  'support.emailButton': 'Email al supporto',
+  'support.callButton': 'Chiama il supporto',
+  'support.helper': 'Contatta il supporto per problemi relativi ad account, scuderia o aspetti tecnici.'
 });
 
 let currentLanguage = localStorage.getItem(LANGUAGE_KEY) || DEFAULT_LANGUAGE;
@@ -2687,6 +2724,11 @@ const els = {
   cloudStableName: document.querySelector('#cloudStableName'),
   cloudStableLocation: document.querySelector('#cloudStableLocation'),
   cloudConnectionStatus: document.querySelector('#cloudConnectionStatus'),
+  supportPhoneText: document.querySelector('#supportPhoneText'),
+  supportEmailText: document.querySelector('#supportEmailText'),
+  supportPhoneLink: document.querySelector('#supportPhoneLink'),
+  supportEmailLink: document.querySelector('#supportEmailLink'),
+  footerSupportLink: document.querySelector('#footerSupportLink'),
   stableLocationSummary: document.querySelector('#stableLocationSummary'),
   stableLocationForm: document.querySelector('#stableLocationForm'),
   stableLocationSaveButton: document.querySelector('#stableLocationSaveButton'),
@@ -3179,6 +3221,42 @@ function renderCloudStatus() {
   if (els.cloudConnectionStatus) els.cloudConnectionStatus.textContent = statusText;
   if (els.cloudLocalNotice) els.cloudLocalNotice.textContent = t('cloud.syncLocal');
   if (els.migrationStableName) els.migrationStableName.textContent = migrationStableText;
+  renderSupportLinks();
+}
+
+function getDataModeLabel() {
+  if (authRestoring) return t('auth.restoring');
+  if (stableLoading || cloudState.status === 'loading') return t('cloud.loadingStable');
+  if (cloudDataLoading || cloudState.status === 'loadingCloud') return t('cloud.loadingData');
+  if (cloudWriteMode) return t('cloudMode.cloudStatus');
+  if (cloudUnavailable) return t('cloudMode.unavailableStatus');
+  return t('cloudMode.localStatus');
+}
+
+function getSupportMailtoHref() {
+  const user = getCurrentUser();
+  const activeStable = getActiveStable();
+  const body = [
+    'Hello EquiTrack support,',
+    '',
+    'I need help with EquiTrack.',
+    '',
+    'App context:',
+    `Logged-in email: ${user?.email || 'Not signed in'}`,
+    `Active stable: ${activeStable.name || 'Not available'}`,
+    `Current data mode: ${getDataModeLabel()}`,
+    `Browser: ${navigator.userAgent || 'Unknown'}`
+  ].join('\n');
+  return `mailto:${SUPPORT_CONFIG.email}?subject=${encodeURIComponent(SUPPORT_CONFIG.subject)}&body=${encodeURIComponent(body)}`;
+}
+
+function renderSupportLinks() {
+  const mailtoHref = getSupportMailtoHref();
+  if (els.supportPhoneText) els.supportPhoneText.textContent = SUPPORT_CONFIG.phoneDisplay;
+  if (els.supportEmailText) els.supportEmailText.textContent = SUPPORT_CONFIG.email;
+  if (els.supportPhoneLink) els.supportPhoneLink.href = SUPPORT_CONFIG.phoneHref;
+  if (els.supportEmailLink) els.supportEmailLink.href = mailtoHref;
+  if (els.footerSupportLink) els.footerSupportLink.href = getCurrentUser() ? '#support' : mailtoHref;
 }
 
 function isAdminUser() {
@@ -6841,6 +6919,12 @@ function handleAlertAction(event) {
   navigateToView(target.view, target);
 }
 
+function handleFooterSupportLink(event) {
+  if (!getCurrentUser()) return;
+  event.preventDefault();
+  navigateToView('settings', { selector: '#supportSection' });
+}
+
 function fillHorseForm(id) {
   const found = state.horses.find((item) => item.id === id);
   if (!found) return;
@@ -7267,6 +7351,7 @@ els.calendarSelectedDayAgenda?.addEventListener('click', handleListClick);
 document.querySelector('#stableView').addEventListener('click', handleQuickAction);
 els.homeOverviewSection?.addEventListener('click', handleHomeShortcut);
 els.alertsList?.addEventListener('click', handleAlertAction);
+els.footerSupportLink?.addEventListener('click', handleFooterSupportLink);
 els.horseForm.addEventListener('submit', handleHorseSubmit);
 els.taskForm.addEventListener('submit', handleTaskSubmit);
 els.hoursForm.addEventListener('submit', handleHoursSubmit);

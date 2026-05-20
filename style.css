@@ -1004,6 +1004,28 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
 .settings-section .panel {
   border-radius: 14px;
 }
+.support-panel {
+  display: grid;
+  gap: 16px;
+}
+.support-contact-list {
+  display: grid;
+  gap: 8px;
+}
+.support-contact-list p {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+}
+.support-contact-list span {
+  color: var(--muted);
+  font-weight: 800;
+}
+.support-contact-list strong {
+  color: #14335a;
+}
 .stable-location-panel {
   grid-column: 1 / -1;
 }
@@ -1831,6 +1853,16 @@ textarea { resize: vertical; }
   padding: 28px 0 42px;
   color: var(--quiet);
   font-size: 14px;
+}
+.site-footer a {
+  color: var(--accent-strong);
+  font-weight: 850;
+  text-decoration: none;
+}
+.site-footer a:hover {
+  color: #14335a;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .action-empty {
