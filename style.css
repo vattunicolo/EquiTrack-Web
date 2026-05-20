@@ -734,6 +734,108 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
   font-size: 13px;
   text-align: right;
 }
+.alerts-panel {
+  background: #ffffff;
+  border: 1px solid rgba(78, 205, 196, 0.24);
+  border-radius: 16px;
+  box-shadow: 0 14px 34px rgba(20, 51, 90, 0.07);
+  display: grid;
+  gap: 16px;
+  margin: 18px 0;
+  min-width: 0;
+  padding: 20px;
+}
+.alerts-list {
+  display: grid;
+  gap: 14px;
+}
+.alerts-empty {
+  margin: 0;
+}
+.alert-group {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.alert-group-heading {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 13px;
+  font-weight: 800;
+  gap: 10px;
+}
+.alert-severity-badge {
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.02em;
+  padding: 6px 10px;
+  text-transform: uppercase;
+}
+.alert-severity-critical {
+  background: #fff0ee;
+  color: #9f2f2a;
+}
+.alert-severity-attention {
+  background: #fff7dd;
+  color: #8a5b00;
+}
+.alert-severity-info {
+  background: #eef9fb;
+  color: #116c75;
+}
+.alert-group-list {
+  display: grid;
+  gap: 10px;
+}
+.alert-card {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-left: 5px solid #4ecdc4;
+  border-radius: 14px;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-width: 0;
+  padding: 16px;
+}
+.alert-card-critical {
+  background: #fffafa;
+  border-color: rgba(182, 59, 53, 0.24);
+  border-left-color: #d9534f;
+}
+.alert-card-attention {
+  background: #fffdf7;
+  border-color: rgba(224, 166, 39, 0.28);
+  border-left-color: #d89a24;
+}
+.alert-card-info {
+  background: #fbfefe;
+  border-color: rgba(78, 205, 196, 0.26);
+  border-left-color: #4ecdc4;
+}
+.alert-card h4 {
+  color: #14335a;
+  margin: 4px 0 5px;
+}
+.alert-card p {
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+.alert-meta {
+  color: var(--accent-dark);
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+.alert-action {
+  white-space: nowrap;
+}
 .home-quick-links {
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -1839,6 +1941,13 @@ textarea { resize: vertical; }
   .turnout-disclaimer {
     grid-column: 2;
     text-align: left;
+  }
+  .alert-card {
+    align-items: stretch;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .alert-action {
+    width: 100%;
   }
   .home-snapshot-card { padding: 18px; }
   h1 { max-width: 13ch; margin-bottom: 16px; font-size: clamp(32px, 8vw, 40px); line-height: 1.08; }

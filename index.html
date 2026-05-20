@@ -178,6 +178,11 @@
               <strong id="homeOverviewHours">0</strong>
               <small data-i18n="home.openHours">Open work hours</small>
             </button>
+            <button class="summary-card home-overview-card premium-icon-card icon-alert" type="button" data-home-shortcut="alerts">
+              <span data-i18n="alerts.notifications">Notifications</span>
+              <strong id="homeOverviewAlerts">0</strong>
+              <small data-i18n="alerts.openAlerts">Open alerts</small>
+            </button>
             <article id="turnoutWeatherCard" class="turnout-weather-card turnout-weather-card--loading premium-icon-card icon-weather">
               <div>
                 <span class="meta-label" data-i18n="weather.title">Today's turnout suggestion</span>
@@ -187,6 +192,16 @@
               <p class="turnout-disclaimer" data-i18n="weather.disclaimer">Always use your own judgement for horse safety.</p>
             </article>
           </div>
+          <section id="homeAlertsPanel" class="alerts-panel" aria-labelledby="alertsTitle">
+            <div class="module-header">
+              <div>
+                <p class="eyebrow" data-i18n="alerts.notifications">Notifications</p>
+                <h3 id="alertsTitle" data-i18n="alerts.title">Alerts</h3>
+                <p data-i18n="alerts.subtitle">A focused list of stable items that may need attention today.</p>
+              </div>
+            </div>
+            <div id="alertsList" class="alerts-list"></div>
+          </section>
           <div class="home-quick-links">
             <span class="meta-label" data-i18n="home.quickLinks">Quick links</span>
             <div class="hero-actions">
@@ -699,7 +714,7 @@
             </article>
           </section>
 
-          <section class="settings-section">
+          <section class="settings-section" id="settingsBackupSection">
             <div class="settings-section-header">
               <p class="eyebrow" data-i18n="settings.backupEyebrow">Backup & restore</p>
               <h3 data-i18n="settings.backupSectionTitle">Protect your stable data</h3>

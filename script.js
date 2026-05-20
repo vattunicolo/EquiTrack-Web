@@ -2362,6 +2362,138 @@ Object.assign(translations.it, {
   'cloudMode.failed': 'Impossibile caricare i dati cloud. La modalità locale è attiva.'
 });
 
+Object.assign(translations.en, {
+  'alerts.title': 'Alerts',
+  'alerts.notifications': 'Notifications',
+  'alerts.subtitle': 'A focused list of stable items that may need attention today.',
+  'alerts.critical': 'Critical',
+  'alerts.attention': 'Attention',
+  'alerts.info': 'Info',
+  'alerts.count': '{count} active',
+  'alerts.noActive': 'No active alerts.',
+  'alerts.openAlerts': 'Open alerts',
+  'alerts.openFeed': 'Open Feed Inventory',
+  'alerts.openTasks': 'Open Tasks',
+  'alerts.openCalendar': 'Open Calendar',
+  'alerts.openBackup': 'Open Backup',
+  'alerts.viewWeather': 'View Home weather',
+  'alerts.areaFeed': 'Feed Inventory',
+  'alerts.areaTasks': 'Tasks',
+  'alerts.areaCalendar': 'Calendar',
+  'alerts.areaBackup': 'Backup',
+  'alerts.areaWeather': 'Weather',
+  'alerts.overdueTasks': 'Overdue tasks',
+  'alerts.tasksDueToday': 'Tasks due today',
+  'alerts.feedRunningLow': 'Feed running low',
+  'alerts.feedCritical': 'Feed critical',
+  'alerts.feedEmpty': 'Feed empty',
+  'alerts.eventsToday': 'Events today',
+  'alerts.eventsTomorrow': 'Events tomorrow',
+  'alerts.upcomingRaces': 'Upcoming races',
+  'alerts.backupReminder': 'Backup reminder',
+  'alerts.weatherTurnout': 'Weather / turnout alert',
+  'alerts.rainTurnout': 'Rain today - check turnout decision',
+  'alerts.feedEmptyMessage': '{count} feed item(s) are empty or at zero stock.',
+  'alerts.feedCriticalMessage': '{count} feed item(s) are critical or may run out very soon.',
+  'alerts.feedLowMessage': '{count} feed item(s) are low or may run out soon.',
+  'alerts.overdueTasksMessage': '{count} open task(s) are overdue.',
+  'alerts.tasksTodayMessage': '{count} open task(s) are due today.',
+  'alerts.eventsTodayMessage': '{count} event(s) are scheduled today.',
+  'alerts.eventsTomorrowMessage': '{count} event(s) are scheduled tomorrow.',
+  'alerts.racesMessage': '{count} race event(s) are coming in the next 7 days.',
+  'alerts.backupMissingMessage': 'No backup export has been recorded on this device.',
+  'alerts.backupOldMessage': 'Last backup export is {count} days old.',
+  'alerts.weatherMessage': 'Rain is detected today. Review turnout before sending horses outside.'
+});
+
+Object.assign(translations.fi, {
+  'alerts.title': 'Ilmoitukset',
+  'alerts.notifications': 'Ilmoitukset',
+  'alerts.subtitle': 'Koottu lista tallin asioista, jotka voivat tarvita huomiota tänään.',
+  'alerts.critical': 'Kriittinen',
+  'alerts.attention': 'Huomio',
+  'alerts.info': 'Tieto',
+  'alerts.count': '{count} aktiivista',
+  'alerts.noActive': 'Ei aktiivisia ilmoituksia.',
+  'alerts.openAlerts': 'Avaa ilmoitukset',
+  'alerts.openFeed': 'Avaa ruokavarasto',
+  'alerts.openTasks': 'Avaa tehtävät',
+  'alerts.openCalendar': 'Avaa kalenteri',
+  'alerts.openBackup': 'Avaa varmuuskopio',
+  'alerts.viewWeather': 'Katso kotisivun sää',
+  'alerts.areaFeed': 'Ruokavarasto',
+  'alerts.areaTasks': 'Tehtävät',
+  'alerts.areaCalendar': 'Kalenteri',
+  'alerts.areaBackup': 'Varmuuskopio',
+  'alerts.areaWeather': 'Sää',
+  'alerts.overdueTasks': 'Myöhässä olevat tehtävät',
+  'alerts.tasksDueToday': 'Tänään erääntyvät tehtävät',
+  'alerts.feedRunningLow': 'Ruoka vähissä',
+  'alerts.feedCritical': 'Ruoka kriittisen vähissä',
+  'alerts.feedEmpty': 'Ruoka loppu',
+  'alerts.eventsToday': 'Tapahtumat tänään',
+  'alerts.eventsTomorrow': 'Tapahtumat huomenna',
+  'alerts.upcomingRaces': 'Tulevat lähdöt',
+  'alerts.backupReminder': 'Varmuuskopiomuistutus',
+  'alerts.weatherTurnout': 'Sää- ja tarhaushuomio',
+  'alerts.rainTurnout': 'Tänään sataa - tarkista tarhauspäätös',
+  'alerts.feedEmptyMessage': '{count} ruokavaraston tuotetta on loppu tai nollassa.',
+  'alerts.feedCriticalMessage': '{count} ruokavaraston tuotetta on kriittisen vähissä tai loppumassa pian.',
+  'alerts.feedLowMessage': '{count} ruokavaraston tuotetta on vähissä tai loppumassa pian.',
+  'alerts.overdueTasksMessage': '{count} avointa tehtävää on myöhässä.',
+  'alerts.tasksTodayMessage': '{count} avointa tehtävää erääntyy tänään.',
+  'alerts.eventsTodayMessage': '{count} tapahtumaa on merkitty tälle päivälle.',
+  'alerts.eventsTomorrowMessage': '{count} tapahtumaa on merkitty huomiselle.',
+  'alerts.racesMessage': '{count} kilpailutapahtumaa on tulossa seuraavan 7 päivän aikana.',
+  'alerts.backupMissingMessage': 'Tällä laitteella ei ole vielä kirjattua varmuuskopiovientiä.',
+  'alerts.backupOldMessage': 'Viimeisestä varmuuskopioviennistä on {count} päivää.',
+  'alerts.weatherMessage': 'Tänään on havaittu sadetta. Tarkista tarhaus ennen hevosten viemistä ulos.'
+});
+
+Object.assign(translations.it, {
+  'alerts.title': 'Avvisi',
+  'alerts.notifications': 'Notifiche',
+  'alerts.subtitle': 'Un elenco mirato degli elementi della scuderia che possono richiedere attenzione oggi.',
+  'alerts.critical': 'Critico',
+  'alerts.attention': 'Attenzione',
+  'alerts.info': 'Info',
+  'alerts.count': '{count} attivi',
+  'alerts.noActive': 'Nessun avviso attivo.',
+  'alerts.openAlerts': 'Apri avvisi',
+  'alerts.openFeed': 'Apri scorte di mangime',
+  'alerts.openTasks': 'Apri attività',
+  'alerts.openCalendar': 'Apri calendario',
+  'alerts.openBackup': 'Apri backup',
+  'alerts.viewWeather': 'Vedi meteo Home',
+  'alerts.areaFeed': 'Scorte di mangime',
+  'alerts.areaTasks': 'Attività',
+  'alerts.areaCalendar': 'Calendario',
+  'alerts.areaBackup': 'Backup',
+  'alerts.areaWeather': 'Meteo',
+  'alerts.overdueTasks': 'Attività in ritardo',
+  'alerts.tasksDueToday': 'Attività in scadenza oggi',
+  'alerts.feedRunningLow': 'Mangime in esaurimento',
+  'alerts.feedCritical': 'Mangime critico',
+  'alerts.feedEmpty': 'Mangime finito',
+  'alerts.eventsToday': 'Eventi oggi',
+  'alerts.eventsTomorrow': 'Eventi domani',
+  'alerts.upcomingRaces': 'Corse in arrivo',
+  'alerts.backupReminder': 'Promemoria backup',
+  'alerts.weatherTurnout': 'Avviso meteo/uscita',
+  'alerts.rainTurnout': 'Oggi piove - controlla la decisione sull uscita',
+  'alerts.feedEmptyMessage': '{count} voce/i di mangime sono finite o a zero.',
+  'alerts.feedCriticalMessage': '{count} voce/i di mangime sono critiche o finiranno molto presto.',
+  'alerts.feedLowMessage': '{count} voce/i di mangime sono basse o potrebbero finire presto.',
+  'alerts.overdueTasksMessage': '{count} attività aperta/e sono in ritardo.',
+  'alerts.tasksTodayMessage': '{count} attività aperta/e scadono oggi.',
+  'alerts.eventsTodayMessage': '{count} evento/i sono programmati per oggi.',
+  'alerts.eventsTomorrowMessage': '{count} evento/i sono programmati per domani.',
+  'alerts.racesMessage': '{count} evento/i di gara sono in arrivo nei prossimi 7 giorni.',
+  'alerts.backupMissingMessage': 'Nessuna esportazione backup è stata registrata su questo dispositivo.',
+  'alerts.backupOldMessage': 'L ultimo backup esportato ha {count} giorni.',
+  'alerts.weatherMessage': 'Oggi è stata rilevata pioggia. Controlla l uscita prima di mandare fuori i cavalli.'
+});
+
 let currentLanguage = localStorage.getItem(LANGUAGE_KEY) || DEFAULT_LANGUAGE;
 if (!translations[currentLanguage]) currentLanguage = DEFAULT_LANGUAGE;
 
@@ -2460,6 +2592,8 @@ const els = {
   homeOverviewEventsWeek: document.querySelector('#homeOverviewEventsWeek'),
   homeOverviewLowFeed: document.querySelector('#homeOverviewLowFeed'),
   homeOverviewHours: document.querySelector('#homeOverviewHours'),
+  homeOverviewAlerts: document.querySelector('#homeOverviewAlerts'),
+  alertsList: document.querySelector('#alertsList'),
   turnoutWeatherCard: document.querySelector('#turnoutWeatherCard'),
   turnoutWeatherMessage: document.querySelector('#turnoutWeatherMessage'),
   turnoutWeatherLocation: document.querySelector('#turnoutWeatherLocation'),
@@ -5316,6 +5450,7 @@ function renderHome() {
     els.homeOverviewHours.textContent = state.hours.reduce((total, entry) => total + Number(entry.hours || 0), 0).toFixed(1);
   }
   renderTurnoutSuggestion();
+  renderAlerts();
 }
 
 function renderTurnoutSuggestion() {
@@ -5379,7 +5514,222 @@ async function loadTurnoutWeather() {
     };
   } finally {
     renderTurnoutSuggestion();
+    renderAlerts();
   }
+}
+
+function getDateOffset(baseDate, offsetDays) {
+  const date = new Date(`${baseDate}T00:00:00Z`);
+  date.setDate(date.getDate() + offsetDays);
+  return date.toISOString().slice(0, 10);
+}
+
+function isDateBetween(dateValue, startValue, endValue) {
+  if (!dateValue) return false;
+  return dateValue >= startValue && dateValue <= endValue;
+}
+
+function getLastBackupAgeDays() {
+  const lastBackup = localStorage.getItem(LAST_BACKUP_KEY);
+  if (!lastBackup) return null;
+  const lastBackupDate = new Date(lastBackup);
+  if (Number.isNaN(lastBackupDate.getTime())) return null;
+  return Math.floor((Date.now() - lastBackupDate.getTime()) / 86400000);
+}
+
+function getActiveAlerts() {
+  const todayValue = today();
+  const tomorrowValue = getDateOffset(todayValue, 1);
+  const weekEndValue = getDateOffset(todayValue, 7);
+  const alerts = [];
+
+  const feedStatusCounts = state.inventory.reduce((counts, item) => {
+    const status = getFeedStatus(item).key;
+    counts[status] = (counts[status] || 0) + 1;
+    return counts;
+  }, {});
+  if (feedStatusCounts.empty) {
+    alerts.push({
+      id: 'feed-empty',
+      severity: 'critical',
+      titleKey: 'alerts.feedEmpty',
+      messageKey: 'alerts.feedEmptyMessage',
+      messageParams: { count: feedStatusCounts.empty },
+      areaKey: 'alerts.areaFeed',
+      actionKey: 'alerts.openFeed',
+      action: 'feed'
+    });
+  }
+  if (feedStatusCounts.critical) {
+    alerts.push({
+      id: 'feed-critical',
+      severity: 'critical',
+      titleKey: 'alerts.feedCritical',
+      messageKey: 'alerts.feedCriticalMessage',
+      messageParams: { count: feedStatusCounts.critical },
+      areaKey: 'alerts.areaFeed',
+      actionKey: 'alerts.openFeed',
+      action: 'feed'
+    });
+  }
+  if (feedStatusCounts.low) {
+    alerts.push({
+      id: 'feed-low',
+      severity: 'attention',
+      titleKey: 'alerts.feedRunningLow',
+      messageKey: 'alerts.feedLowMessage',
+      messageParams: { count: feedStatusCounts.low },
+      areaKey: 'alerts.areaFeed',
+      actionKey: 'alerts.openFeed',
+      action: 'feed'
+    });
+  }
+
+  const openTasks = state.tasks.filter((task) => !task.done);
+  const overdueTasks = openTasks.filter((task) => task.date && task.date < todayValue);
+  const tasksDueToday = openTasks.filter((task) => task.date === todayValue);
+  if (overdueTasks.length) {
+    alerts.push({
+      id: 'tasks-overdue',
+      severity: 'critical',
+      titleKey: 'alerts.overdueTasks',
+      messageKey: 'alerts.overdueTasksMessage',
+      messageParams: { count: overdueTasks.length },
+      areaKey: 'alerts.areaTasks',
+      actionKey: 'alerts.openTasks',
+      action: 'tasks'
+    });
+  }
+  if (tasksDueToday.length) {
+    alerts.push({
+      id: 'tasks-today',
+      severity: 'attention',
+      titleKey: 'alerts.tasksDueToday',
+      messageKey: 'alerts.tasksTodayMessage',
+      messageParams: { count: tasksDueToday.length },
+      areaKey: 'alerts.areaTasks',
+      actionKey: 'alerts.openTasks',
+      action: 'tasks'
+    });
+  }
+
+  const normalizedEvents = state.calendarEvents.map(normalizeCalendarEvent);
+  const eventsToday = normalizedEvents.filter((event) => event.date === todayValue);
+  const eventsTomorrow = normalizedEvents.filter((event) => event.date === tomorrowValue);
+  const upcomingRaces = normalizedEvents.filter((event) => event.type === 'race' && isDateBetween(event.date, todayValue, weekEndValue));
+  if (eventsToday.length) {
+    alerts.push({
+      id: 'events-today',
+      severity: 'info',
+      titleKey: 'alerts.eventsToday',
+      messageKey: 'alerts.eventsTodayMessage',
+      messageParams: { count: eventsToday.length },
+      areaKey: 'alerts.areaCalendar',
+      actionKey: 'alerts.openCalendar',
+      action: 'calendar'
+    });
+  }
+  if (eventsTomorrow.length) {
+    alerts.push({
+      id: 'events-tomorrow',
+      severity: 'info',
+      titleKey: 'alerts.eventsTomorrow',
+      messageKey: 'alerts.eventsTomorrowMessage',
+      messageParams: { count: eventsTomorrow.length },
+      areaKey: 'alerts.areaCalendar',
+      actionKey: 'alerts.openCalendar',
+      action: 'calendar'
+    });
+  }
+  if (upcomingRaces.length) {
+    alerts.push({
+      id: 'races-week',
+      severity: 'attention',
+      titleKey: 'alerts.upcomingRaces',
+      messageKey: 'alerts.racesMessage',
+      messageParams: { count: upcomingRaces.length },
+      areaKey: 'alerts.areaCalendar',
+      actionKey: 'alerts.openCalendar',
+      action: 'calendar'
+    });
+  }
+
+  if (turnoutWeather.status === 'ready' && turnoutWeather.hasRain) {
+    alerts.push({
+      id: 'weather-rain',
+      severity: 'attention',
+      titleKey: 'alerts.weatherTurnout',
+      messageKey: 'alerts.weatherMessage',
+      areaKey: 'alerts.areaWeather',
+      actionKey: 'alerts.viewWeather',
+      action: 'weather'
+    });
+  }
+
+  const backupAgeDays = getLastBackupAgeDays();
+  if (backupAgeDays === null) {
+    alerts.push({
+      id: 'backup-missing',
+      severity: 'info',
+      titleKey: 'alerts.backupReminder',
+      messageKey: 'alerts.backupMissingMessage',
+      areaKey: 'alerts.areaBackup',
+      actionKey: 'alerts.openBackup',
+      action: 'backup'
+    });
+  } else if (backupAgeDays > 14) {
+    alerts.push({
+      id: 'backup-old',
+      severity: 'info',
+      titleKey: 'alerts.backupReminder',
+      messageKey: 'alerts.backupOldMessage',
+      messageParams: { count: backupAgeDays },
+      areaKey: 'alerts.areaBackup',
+      actionKey: 'alerts.openBackup',
+      action: 'backup'
+    });
+  }
+
+  return alerts;
+}
+
+function renderAlerts() {
+  const alerts = getActiveAlerts();
+  if (els.homeOverviewAlerts) els.homeOverviewAlerts.textContent = alerts.length;
+  if (!els.alertsList) return;
+  if (!alerts.length) {
+    els.alertsList.innerHTML = `<p class="empty-state alerts-empty">${t('alerts.noActive')}</p>`;
+    return;
+  }
+  const groupedAlerts = ['critical', 'attention', 'info']
+    .map((severity) => ({
+      severity,
+      items: alerts.filter((alert) => alert.severity === severity)
+    }))
+    .filter((group) => group.items.length);
+
+  els.alertsList.innerHTML = groupedAlerts.map((group) => `
+    <section class="alert-group alert-group-${group.severity}" aria-label="${escapeHtml(t(`alerts.${group.severity}`))}">
+      <div class="alert-group-heading">
+        <span class="alert-severity-badge alert-severity-${group.severity}">${escapeHtml(t(`alerts.${group.severity}`))}</span>
+        <span>${escapeHtml(t('alerts.count', { count: group.items.length }))}</span>
+      </div>
+      <div class="alert-group-list">
+        ${group.items.map((alert) => `
+          <article class="alert-card alert-card-${alert.severity}">
+            <div>
+              <div class="alert-meta">
+                <span>${escapeHtml(t(alert.areaKey))}</span>
+              </div>
+              <h4>${escapeHtml(t(alert.titleKey))}</h4>
+              <p>${escapeHtml(t(alert.messageKey, alert.messageParams || {}))}</p>
+            </div>
+            ${alert.action ? `<button class="button secondary alert-action" type="button" data-alert-action="${alert.action}">${escapeHtml(t(alert.actionKey))}</button>` : ''}
+          </article>
+        `).join('')}
+      </div>
+    </section>
+  `).join('');
 }
 
 async function resolveWeatherLocation(stable = getActiveStable()) {
@@ -6376,9 +6726,25 @@ function handleHomeShortcut(event) {
     tasks: { view: 'stable', tab: 'tasks', selector: '#tasksPanel' },
     calendar: { view: 'calendar', selector: '#calendarView' },
     inventory: { view: 'stable', tab: 'inventory', selector: '#inventoryPanel' },
-    hours: { view: 'stable', tab: 'hours', selector: '#hoursPanel' }
+    hours: { view: 'stable', tab: 'hours', selector: '#hoursPanel' },
+    alerts: { view: 'home', selector: '#homeAlertsPanel' }
   };
   const target = shortcutMap[button.dataset.homeShortcut];
+  if (!target) return;
+  navigateToView(target.view, target);
+}
+
+function handleAlertAction(event) {
+  const button = event.target.closest('[data-alert-action]');
+  if (!button) return;
+  const actionMap = {
+    feed: { view: 'stable', tab: 'inventory', selector: '#inventoryPanel' },
+    tasks: { view: 'stable', tab: 'tasks', selector: '#tasksPanel' },
+    calendar: { view: 'calendar', selector: '#calendarView' },
+    backup: { view: 'settings', selector: '#settingsBackupSection' },
+    weather: { view: 'home', selector: '#turnoutWeatherCard' }
+  };
+  const target = actionMap[button.dataset.alertAction];
   if (!target) return;
   navigateToView(target.view, target);
 }
@@ -6808,6 +7174,7 @@ document.querySelectorAll('.item-list').forEach((list) => list.addEventListener(
 els.calendarSelectedDayAgenda?.addEventListener('click', handleListClick);
 document.querySelector('#stableView').addEventListener('click', handleQuickAction);
 els.homeOverviewSection?.addEventListener('click', handleHomeShortcut);
+els.alertsList?.addEventListener('click', handleAlertAction);
 els.horseForm.addEventListener('submit', handleHorseSubmit);
 els.taskForm.addEventListener('submit', handleTaskSubmit);
 els.hoursForm.addEventListener('submit', handleHoursSubmit);
