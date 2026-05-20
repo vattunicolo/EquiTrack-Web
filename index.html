@@ -433,6 +433,24 @@
                 </fieldset>
                 <button class="button primary" type="submit" data-i18n="horses.save">Save horse record</button>
               </form>
+              <div class="module-header care-history-header">
+                <div>
+                  <h3 data-i18n="care.title">Health & Care History</h3>
+                  <p data-i18n="care.subtitle">Record shoeing, vaccinations, vet visits, medication, injuries, dental care and other notes for each horse.</p>
+                </div>
+              </div>
+              <form id="careForm" class="entry-form care-form">
+                <input type="hidden" name="id">
+                <label><span data-i18n="care.horse">Horse</span><select name="horseId" required></select></label>
+                <label><span data-i18n="common.date">Date</span><input name="date" type="date" required></label>
+                <label><span data-i18n="care.type">Type</span><select name="type" required></select></label>
+                <label><span data-i18n="care.titleLabel">Title</span><input name="title" data-i18n-placeholder="care.titlePlaceholder" placeholder="Spring vaccination"></label>
+                <label><span data-i18n="care.nextDue">Next due date</span><input name="nextDueDate" type="date"></label>
+                <label><span data-i18n="care.cost">Cost</span><input name="cost" type="number" step="0.01" min="0"></label>
+                <label class="full"><span data-i18n="care.notes">Notes</span><textarea name="notes" rows="3" data-i18n-placeholder="care.notesPlaceholder" placeholder="Care details, instructions or observations"></textarea></label>
+                <button class="button primary" type="submit" data-i18n="care.save">Save care record</button>
+              </form>
+              <div id="careHistoryList" class="item-list care-history-list"></div>
               <div id="horsesList" class="item-list"></div>
             </section>
 

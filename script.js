@@ -14,6 +14,7 @@ const FALLBACK_WEATHER_LOCATION = {
 };
 const DEFAULT_LANGUAGE = 'en';
 const EVENT_TYPES = ['race', 'training', 'shoeing', 'vaccination', 'vet', 'feeding', 'other'];
+const CARE_TYPES = ['shoeing', 'vaccination', 'deworming', 'vet', 'medication', 'injury', 'dental', 'other'];
 const PROTECTED_VIEWS = ['stable', 'calendar', 'settings'];
 const ADMIN_PERMISSION_FIELDS = [
   'can_view_horses',
@@ -280,8 +281,8 @@ const translations = {
     'migration.uploadReady': 'Ready to copy local data to the active cloud stable.',
     'migration.uploading': 'Uploading local data to cloud...',
     'migration.confirmUpload': 'Upload current local browser data to the active cloud stable? Local data will stay in this browser.',
-    'migration.schemaNeeded': 'Cloud upload needs the local_id database migration. Run supabase/migrations/add_local_ids.sql in Supabase, then try again.',
-    'migration.uploadSuccess': 'Cloud upload complete: {horses} horses, {tasks} tasks, {hours} work logs, {inventory} feed items, {events} calendar events.',
+    'migration.schemaNeeded': 'Cloud upload needs the latest database migrations. Run supabase/migrations/add_local_ids.sql and supabase/migrations/horse_care_history.sql in Supabase, then try again.',
+    'migration.uploadSuccess': 'Cloud upload complete: {horses} horses, {tasks} tasks, {hours} work logs, {inventory} feed items, {events} calendar events, {care} care records.',
     'migration.uploadFailed': 'Cloud upload failed: {error}',
     'cloudRead.title': 'Cloud read preview',
     'cloudRead.text': 'Check cloud counts for the active stable without changing local data.',
@@ -472,7 +473,7 @@ const translations = {
     'cloudCleanup.ready': 'Ready to delete cloud data for the active stable.',
     'cloudCleanup.deleting': 'Deleting cloud data for the active stable...',
     'cloudCleanup.confirmDelete': 'Delete cloud data for the active stable? Local browser data will not be deleted.',
-    'cloudCleanup.success': 'Cloud cleanup complete: {events} calendar events, {inventory} feed items, {hours} work logs, {tasks} tasks, {horses} horses deleted.',
+    'cloudCleanup.success': 'Cloud cleanup complete: {events} calendar events, {care} care records, {inventory} feed items, {hours} work logs, {tasks} tasks, {horses} horses deleted.',
     'cloudCleanup.failed': 'Cloud cleanup failed: {error}',
     'cloudCleanup.permissionBlocked': 'Cloud cleanup is blocked by database permissions.',
     'message.authProtected': 'Please log in to open this section.',
@@ -677,7 +678,7 @@ const translations = {
     'backup.export': 'Download backup',
     'backup.import': 'Restore backup',
     'backup.noPreview': 'No backup selected.',
-    'backup.preview': 'Backup preview: {horses} horses, {tasks} tasks, {hours} work logs, {inventory} feed items, {events} calendar events.',
+    'backup.preview': 'Backup preview: {horses} horses, {tasks} tasks, {hours} work logs, {inventory} feed items, {events} calendar events, {care} care records.',
     'backup.confirmImport': 'Import this backup and replace current local data?',
     'backup.lastExport': 'Last export',
     'backup.storageHelp': 'Data is stored locally in this browser. Export backups regularly.',
@@ -936,8 +937,8 @@ const translations = {
     'migration.uploadReady': 'Valmis kopioimaan paikalliset tiedot aktiiviseen pilvitalliin.',
     'migration.uploading': 'Ladataan paikallisia tietoja pilveen...',
     'migration.confirmUpload': 'Ladataanko tämän selaimen paikalliset tiedot aktiiviseen pilvitalliin? Paikalliset tiedot säilyvät tässä selaimessa.',
-    'migration.schemaNeeded': 'Pilveen lataus tarvitsee local_id-tietokantamigraation. Suorita supabase/migrations/add_local_ids.sql Supabasessa ja yritä uudelleen.',
-    'migration.uploadSuccess': 'Pilveen lataus valmis: {horses} hevosta, {tasks} tehtävää, {hours} työkirjausta, {inventory} ruokavaraston tuotetta, {events} kalenteritapahtumaa.',
+    'migration.schemaNeeded': 'Pilveen lataus tarvitsee uusimmat tietokantamigraatiot. Suorita supabase/migrations/add_local_ids.sql ja supabase/migrations/horse_care_history.sql Supabasessa ja yritä uudelleen.',
+    'migration.uploadSuccess': 'Pilveen lataus valmis: {horses} hevosta, {tasks} tehtävää, {hours} työkirjausta, {inventory} ruokavaraston tuotetta, {events} kalenteritapahtumaa, {care} hoitomerkintää.',
     'migration.uploadFailed': 'Pilveen lataus epäonnistui: {error}',
     'cloudRead.title': 'Pilvitietojen esikatselu',
     'cloudRead.text': 'Tarkista aktiivisen tallin pilvimäärät muuttamatta paikallisia tietoja.',
@@ -1137,7 +1138,7 @@ const translations = {
     'cloudCleanup.ready': 'Valmis poistamaan aktiivisen tallin pilvidata.',
     'cloudCleanup.deleting': 'Poistetaan aktiivisen tallin pilvidataa...',
     'cloudCleanup.confirmDelete': 'Poistetaanko aktiivisen tallin pilvidata? Paikallista selaindataa ei poisteta.',
-    'cloudCleanup.success': 'Pilvisiivoaminen valmis: {events} kalenteritapahtumaa, {inventory} ruokavaraston tuotetta, {hours} työkirjausta, {tasks} tehtävää, {horses} hevosta poistettu.',
+    'cloudCleanup.success': 'Pilvisiivoaminen valmis: {events} kalenteritapahtumaa, {care} hoitomerkintää, {inventory} ruokavaraston tuotetta, {hours} työkirjausta, {tasks} tehtävää, {horses} hevosta poistettu.',
     'cloudCleanup.failed': 'Pilvisiivoaminen epäonnistui: {error}',
     'cloudCleanup.permissionBlocked': 'Tietokannan käyttöoikeudet estävät pilvidatan siivoamisen.',
     'message.authProtected': 'Kirjaudu sisään avataksesi tämän osion.',
@@ -1342,7 +1343,7 @@ const translations = {
     'backup.export': 'Lataa varmuuskopio',
     'backup.import': 'Palauta varmuuskopio',
     'backup.noPreview': 'Varmuuskopiota ei ole valittu.',
-    'backup.preview': 'Esikatselu: {horses} hevosta, {tasks} tehtävää, {hours} työkirjausta, {inventory} ruokavaraston tuotetta, {events} kalenteritapahtumaa.',
+    'backup.preview': 'Esikatselu: {horses} hevosta, {tasks} tehtävää, {hours} työkirjausta, {inventory} ruokavaraston tuotetta, {events} kalenteritapahtumaa, {care} hoitomerkintää.',
     'backup.confirmImport': 'Tuodaanko tämä varmuuskopio ja korvataanko nykyiset paikalliset tiedot?',
     'backup.lastExport': 'Viimeisin vienti',
     'backup.storageHelp': 'Tiedot tallennetaan paikallisesti tähän selaimeen. Vie varmuuskopioita säännöllisesti.',
@@ -1601,8 +1602,8 @@ const translations = {
     'migration.uploadReady': 'Pronto a copiare i dati locali nella scuderia cloud attiva.',
     'migration.uploading': 'Caricamento dati locali nel cloud...',
     'migration.confirmUpload': 'Caricare i dati locali di questo browser nella scuderia cloud attiva? I dati locali resteranno in questo browser.',
-    'migration.schemaNeeded': 'Il caricamento cloud richiede la migrazione database local_id. Esegui supabase/migrations/add_local_ids.sql in Supabase, poi riprova.',
-    'migration.uploadSuccess': 'Caricamento cloud completato: {horses} cavalli, {tasks} attività, {hours} registri ore, {inventory} scorte di mangime, {events} eventi calendario.',
+    'migration.schemaNeeded': 'Il caricamento cloud richiede le ultime migrazioni database. Esegui supabase/migrations/add_local_ids.sql e supabase/migrations/horse_care_history.sql in Supabase, poi riprova.',
+    'migration.uploadSuccess': 'Caricamento cloud completato: {horses} cavalli, {tasks} attività, {hours} registri ore, {inventory} scorte di mangime, {events} eventi calendario, {care} record di cura.',
     'migration.uploadFailed': 'Caricamento cloud non riuscito: {error}',
     'cloudRead.title': 'Anteprima lettura cloud',
     'cloudRead.text': 'Controlla i conteggi cloud della scuderia attiva senza modificare i dati locali.',
@@ -1802,7 +1803,7 @@ const translations = {
     'cloudCleanup.ready': 'Pronto a eliminare i dati cloud della scuderia attiva.',
     'cloudCleanup.deleting': 'Eliminazione dati cloud della scuderia attiva...',
     'cloudCleanup.confirmDelete': 'Eliminare i dati cloud della scuderia attiva? I dati locali del browser non verranno eliminati.',
-    'cloudCleanup.success': 'Pulizia cloud completata: {events} eventi calendario, {inventory} scorte di mangime, {hours} registri ore, {tasks} attività, {horses} cavalli eliminati.',
+    'cloudCleanup.success': 'Pulizia cloud completata: {events} eventi calendario, {care} record di cura, {inventory} scorte di mangime, {hours} registri ore, {tasks} attività, {horses} cavalli eliminati.',
     'cloudCleanup.failed': 'Pulizia cloud non riuscita: {error}',
     'cloudCleanup.permissionBlocked': 'La pulizia cloud è bloccata dai permessi del database.',
     'message.authProtected': 'Accedi per aprire questa sezione.',
@@ -2007,7 +2008,7 @@ const translations = {
     'backup.export': 'Scarica backup',
     'backup.import': 'Ripristina backup',
     'backup.noPreview': 'Nessun backup selezionato.',
-    'backup.preview': 'Anteprima: {horses} cavalli, {tasks} attività, {hours} registri ore, {inventory} scorte di mangime, {events} eventi calendario.',
+    'backup.preview': 'Anteprima: {horses} cavalli, {tasks} attività, {hours} registri ore, {inventory} scorte di mangime, {events} eventi calendario, {care} record di cura.',
     'backup.confirmImport': 'Importare questo backup e sostituire i dati locali attuali?',
     'backup.lastExport': 'Ultima esportazione',
     'backup.storageHelp': 'I dati sono salvati localmente in questo browser. Esporta backup regolarmente.',
@@ -2518,6 +2519,48 @@ Object.assign(translations.en, {
   'support.helper': 'For account, stable or technical issues, contact support.'
 });
 
+Object.assign(translations.en, {
+  'care.title': 'Health & Care History',
+  'care.subtitle': 'Record shoeing, vaccinations, vet visits, medication, injuries, dental care and other notes for each horse.',
+  'care.horse': 'Horse',
+  'care.type': 'Type',
+  'care.titleLabel': 'Title',
+  'care.titlePlaceholder': 'Spring vaccination',
+  'care.notes': 'Notes',
+  'care.notesPlaceholder': 'Care details, instructions or observations',
+  'care.nextDue': 'Next due date',
+  'care.cost': 'Cost',
+  'care.save': 'Save care record',
+  'care.empty': 'No health or care history yet.',
+  'care.recent': 'Recent care history',
+  'care.nextDueShort': 'Next due',
+  'care.noHorse': 'Select a horse before saving a care record.',
+  'care.saved': 'Care record saved.',
+  'care.deleted': 'Care record deleted.',
+  'care.dueToday': 'Care due today',
+  'care.overdue': 'Care overdue',
+  'care.dueSoon': 'Care due soon',
+  'care.dueTodayMessage': '{count} care item(s) are due today.',
+  'care.overdueMessage': '{count} care item(s) are overdue.',
+  'care.dueSoonMessage': '{count} care item(s) are due within the next 7 days.',
+  'care.openCare': 'Open care history',
+  'careCloud.saved': 'Care record saved to cloud.',
+  'careCloud.deleted': 'Care record deleted from cloud.',
+  'careCloud.saveFailed': 'Care record could not be saved: {error}',
+  'careCloud.deleteFailed': 'Care record could not be deleted: {error}',
+  'careCloud.permissionBlocked': 'Care history is blocked by database permissions.',
+  'delete.care': 'this care record',
+  'message.editing': 'Editing selected record.',
+  'careType.shoeing': 'Shoeing',
+  'careType.vaccination': 'Vaccination',
+  'careType.deworming': 'Deworming',
+  'careType.vet': 'Vet visit',
+  'careType.medication': 'Medication',
+  'careType.injury': 'Injury',
+  'careType.dental': 'Dental care',
+  'careType.other': 'Other'
+});
+
 Object.assign(translations.fi, {
   'auth.restoring': 'Palautetaan kirjautumista...',
   'cloud.loadingStable': 'Ladataan tallia...',
@@ -2535,6 +2578,48 @@ Object.assign(translations.fi, {
   'support.helper': 'Ota yhteyttä tukeen käyttäjätiliin, talliin tai teknisiin ongelmiin liittyen.'
 });
 
+Object.assign(translations.fi, {
+  'care.title': 'Terveys- ja hoitohistoria',
+  'care.subtitle': 'Kirjaa kengitykset, rokotukset, eläinlääkärikäynnit, lääkitykset, vammat, hammashoidot ja muut hoitomerkinnät.',
+  'care.horse': 'Hevonen',
+  'care.type': 'Tyyppi',
+  'care.titleLabel': 'Otsikko',
+  'care.titlePlaceholder': 'Kevätrokotus',
+  'care.notes': 'Muistiinpanot',
+  'care.notesPlaceholder': 'Hoidon tiedot, ohjeet tai havainnot',
+  'care.nextDue': 'Seuraava eräpäivä',
+  'care.cost': 'Kustannus',
+  'care.save': 'Tallenna hoitomerkintä',
+  'care.empty': 'Terveys- tai hoitohistoriaa ei ole vielä.',
+  'care.recent': 'Viimeaikainen hoitohistoria',
+  'care.nextDueShort': 'Seuraava',
+  'care.noHorse': 'Valitse hevonen ennen hoitomerkinnän tallentamista.',
+  'care.saved': 'Hoitomerkintä tallennettu.',
+  'care.deleted': 'Hoitomerkintä poistettu.',
+  'care.dueToday': 'Hoito erääntyy tänään',
+  'care.overdue': 'Hoito myöhässä',
+  'care.dueSoon': 'Hoito erääntyy pian',
+  'care.dueTodayMessage': '{count} hoitomerkintää erääntyy tänään.',
+  'care.overdueMessage': '{count} hoitomerkintää on myöhässä.',
+  'care.dueSoonMessage': '{count} hoitomerkintää erääntyy seuraavan 7 päivän aikana.',
+  'care.openCare': 'Avaa hoitohistoria',
+  'careCloud.saved': 'Hoitomerkintä tallennettu pilveen.',
+  'careCloud.deleted': 'Hoitomerkintä poistettu pilvestä.',
+  'careCloud.saveFailed': 'Hoitomerkintää ei voitu tallentaa: {error}',
+  'careCloud.deleteFailed': 'Hoitomerkintää ei voitu poistaa: {error}',
+  'careCloud.permissionBlocked': 'Tietokannan oikeudet estävät hoitohistorian käytön.',
+  'delete.care': 'tämä hoitomerkintä',
+  'message.editing': 'Muokataan valittua merkintää.',
+  'careType.shoeing': 'Kengitys',
+  'careType.vaccination': 'Rokotus',
+  'careType.deworming': 'Madotus',
+  'careType.vet': 'Eläinlääkärikäynti',
+  'careType.medication': 'Lääkitys',
+  'careType.injury': 'Vamma',
+  'careType.dental': 'Hammashoito',
+  'careType.other': 'Muu'
+});
+
 Object.assign(translations.it, {
   'auth.restoring': 'Ripristino dell accesso...',
   'cloud.loadingStable': 'Caricamento scuderia...',
@@ -2550,6 +2635,48 @@ Object.assign(translations.it, {
   'support.emailButton': 'Email al supporto',
   'support.callButton': 'Chiama il supporto',
   'support.helper': 'Contatta il supporto per problemi relativi ad account, scuderia o aspetti tecnici.'
+});
+
+Object.assign(translations.it, {
+  'care.title': 'Storico salute e cure',
+  'care.subtitle': 'Registra ferrature, vaccinazioni, visite veterinarie, farmaci, infortuni, cure dentali e altre note per ogni cavallo.',
+  'care.horse': 'Cavallo',
+  'care.type': 'Tipo',
+  'care.titleLabel': 'Titolo',
+  'care.titlePlaceholder': 'Vaccinazione primaverile',
+  'care.notes': 'Note',
+  'care.notesPlaceholder': 'Dettagli, istruzioni o osservazioni',
+  'care.nextDue': 'Prossima scadenza',
+  'care.cost': 'Costo',
+  'care.save': 'Salva nota di cura',
+  'care.empty': 'Nessuno storico salute o cure.',
+  'care.recent': 'Storico cure recente',
+  'care.nextDueShort': 'Prossima',
+  'care.noHorse': 'Seleziona un cavallo prima di salvare una nota di cura.',
+  'care.saved': 'Nota di cura salvata.',
+  'care.deleted': 'Nota di cura eliminata.',
+  'care.dueToday': 'Cura in scadenza oggi',
+  'care.overdue': 'Cura in ritardo',
+  'care.dueSoon': 'Cura in scadenza a breve',
+  'care.dueTodayMessage': '{count} voce/i di cura scadono oggi.',
+  'care.overdueMessage': '{count} voce/i di cura sono in ritardo.',
+  'care.dueSoonMessage': '{count} voce/i di cura scadono nei prossimi 7 giorni.',
+  'care.openCare': 'Apri storico cure',
+  'careCloud.saved': 'Nota di cura salvata nel cloud.',
+  'careCloud.deleted': 'Nota di cura eliminata dal cloud.',
+  'careCloud.saveFailed': 'Impossibile salvare la nota di cura: {error}',
+  'careCloud.deleteFailed': 'Impossibile eliminare la nota di cura: {error}',
+  'careCloud.permissionBlocked': 'Lo storico cure è bloccato dai permessi del database.',
+  'delete.care': 'questa nota di cura',
+  'message.editing': 'Modifica della voce selezionata.',
+  'careType.shoeing': 'Ferratura',
+  'careType.vaccination': 'Vaccinazione',
+  'careType.deworming': 'Sverminazione',
+  'careType.vet': 'Visita veterinaria',
+  'careType.medication': 'Farmaco',
+  'careType.injury': 'Infortunio',
+  'careType.dental': 'Cure dentali',
+  'careType.other': 'Altro'
 });
 
 let currentLanguage = localStorage.getItem(LANGUAGE_KEY) || DEFAULT_LANGUAGE;
@@ -2572,7 +2699,8 @@ const defaultData = {
     { id: createId(), name: 'Oats', category: 'Grain', quantity: 180, unit: 'kg', dailyUsage: 12, minimum: 45 },
     { id: createId(), name: 'Pellets', category: 'Concentrate', quantity: 28, unit: 'bags', dailyUsage: 2, minimum: 10 }
   ],
-  calendarEvents: []
+  calendarEvents: [],
+  careHistory: []
 };
 
 let state = loadData();
@@ -2692,6 +2820,8 @@ const els = {
   calendarTypeFilter: document.querySelector('#calendarTypeFilter'),
   calendarHorseFilter: document.querySelector('#calendarHorseFilter'),
   horseForm: document.querySelector('#horseForm'),
+  careForm: document.querySelector('#careForm'),
+  careHistoryList: document.querySelector('#careHistoryList'),
   taskForm: document.querySelector('#taskForm'),
   hoursForm: document.querySelector('#hoursForm'),
   inventoryForm: document.querySelector('#inventoryForm'),
@@ -2914,6 +3044,23 @@ function normalizeCalendarEvent(item) {
   };
 }
 
+function normalizeCareRecord(item) {
+  const type = String(item.type || item.careType || 'other').toLowerCase();
+  return {
+    id: item.id || createId(),
+    cloudId: item.cloudId || item.cloud_id || '',
+    horseId: item.horseId || '',
+    date: item.date || item.careDate || item.care_date || today(),
+    type: CARE_TYPES.includes(type) ? type : 'other',
+    title: item.title || '',
+    notes: item.notes || '',
+    nextDueDate: item.nextDueDate || item.next_due_date || '',
+    cost: item.cost === '' || item.cost == null ? '' : toSafeNumber(item.cost),
+    createdAt: item.createdAt || item.created_at || '',
+    updatedAt: item.updatedAt || item.updated_at || ''
+  };
+}
+
 function normalizeTask(item) {
   return {
     id: item.id || createId(),
@@ -2948,7 +3095,8 @@ function loadData() {
       tasks: Array.isArray(parsed.tasks) ? parsed.tasks.map(normalizeTask) : [],
       hours: Array.isArray(parsed.hours) ? parsed.hours.map(normalizeWorkLog) : [],
       inventory: Array.isArray(parsed.inventory) ? parsed.inventory.map(normalizeFeedItem) : [],
-      calendarEvents: Array.isArray(parsed.calendarEvents) ? parsed.calendarEvents.map(normalizeCalendarEvent) : []
+      calendarEvents: Array.isArray(parsed.calendarEvents) ? parsed.calendarEvents.map(normalizeCalendarEvent) : [],
+      careHistory: Array.isArray(parsed.careHistory) ? parsed.careHistory.map(normalizeCareRecord) : []
     };
   } catch (_error) {
     return JSON.parse(JSON.stringify(defaultData));
@@ -2971,7 +3119,8 @@ function saveData() {
     tasks: taskCloudWriteMode ? localData.tasks : state.tasks,
     hours: workCloudWriteMode ? localData.hours : state.hours,
     inventory: feedCloudWriteMode ? localData.inventory : state.inventory,
-    calendarEvents: calendarCloudWriteMode ? localData.calendarEvents : state.calendarEvents
+    calendarEvents: calendarCloudWriteMode ? localData.calendarEvents : state.calendarEvents,
+    careHistory: state.careHistory
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(nextState));
 }
@@ -2982,7 +3131,8 @@ function getCounts(data = state) {
     tasks: Array.isArray(data.tasks) ? data.tasks.length : 0,
     hours: Array.isArray(data.hours) ? data.hours.length : 0,
     inventory: Array.isArray(data.inventory) ? data.inventory.length : 0,
-    events: Array.isArray(data.calendarEvents) ? data.calendarEvents.length : 0
+    events: Array.isArray(data.calendarEvents) ? data.calendarEvents.length : 0,
+    care: Array.isArray(data.careHistory) ? data.careHistory.length : 0
   };
 }
 
@@ -3015,7 +3165,7 @@ function nullableNumber(value) {
 
 function getTotalCount(data = state) {
   const counts = getCounts(data);
-  return counts.horses + counts.tasks + counts.hours + counts.inventory + counts.events;
+  return counts.horses + counts.tasks + counts.hours + counts.inventory + counts.events + (counts.care || 0);
 }
 
 function showMessage(message) {
@@ -3657,6 +3807,18 @@ async function getCloudTableCount(table, stableId) {
   return count || 0;
 }
 
+async function getOptionalCloudTableCount(table, stableId) {
+  try {
+    return await getCloudTableCount(table, stableId);
+  } catch (error) {
+    if (isMissingCloudTableError(error)) {
+      console.warn(`[EquiTrack cloud] Optional table ${table} is not available yet. Run the latest Supabase migration.`, error);
+      return 0;
+    }
+    throw error;
+  }
+}
+
 async function checkCloudDataPreview() {
   const activeStable = getActiveStable();
   if (!getCurrentUser() || !activeStable.id) {
@@ -3669,14 +3831,15 @@ async function checkCloudDataPreview() {
   renderCloudReadPreview();
   try {
     const stableId = activeStable.id;
-    const [horses, tasks, hours, inventory, events] = await Promise.all([
+    const [horses, tasks, hours, inventory, events, care] = await Promise.all([
       getCloudTableCount('horses', stableId),
       getCloudTableCount('tasks', stableId),
       getCloudTableCount('work_logs', stableId),
       getCloudTableCount('feed_items', stableId),
-      getCloudTableCount('calendar_events', stableId)
+      getCloudTableCount('calendar_events', stableId),
+      getOptionalCloudTableCount('horse_care_history', stableId)
     ]);
-    cloudReadCounts = { horses, tasks, hours, inventory, events };
+    cloudReadCounts = { horses, tasks, hours, inventory, events, care };
     cloudReadStatusText = t('cloudRead.success');
     renderCloudReadPreview();
     showMessage(cloudReadStatusText);
@@ -3726,6 +3889,23 @@ async function fetchCloudRows(table, stableId, orderColumn = 'created_at') {
     .order(orderColumn, { ascending: true });
   if (error) throw error;
   return Array.isArray(data) ? data : [];
+}
+
+function isMissingCloudTableError(error) {
+  const message = `${error?.message || ''} ${error?.details || ''} ${error?.hint || ''}`.toLowerCase();
+  return error?.code === '42P01' || error?.code === 'PGRST205' || message.includes('could not find the table');
+}
+
+async function fetchOptionalCloudRows(table, stableId, orderColumn = 'created_at') {
+  try {
+    return await fetchCloudRows(table, stableId, orderColumn);
+  } catch (error) {
+    if (isMissingCloudTableError(error)) {
+      console.warn(`[EquiTrack cloud] Optional table ${table} is not available yet. Run the latest Supabase migration.`, error);
+      return [];
+    }
+    throw error;
+  }
 }
 
 function mapCloudHorse(row) {
@@ -3829,13 +4009,30 @@ function mapCloudCalendarEvent(row, horseIdMap) {
   });
 }
 
+function mapCloudCareRecord(row, horseIdMap) {
+  return normalizeCareRecord({
+    id: row.local_id || row.id,
+    cloudId: row.id,
+    horseId: horseIdMap.get(row.horse_id) || '',
+    date: row.care_date,
+    type: row.care_type,
+    title: row.title,
+    notes: row.notes,
+    nextDueDate: row.next_due_date,
+    cost: row.cost,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at
+  });
+}
+
 async function loadCloudSnapshot(stableId) {
-  const [horseRows, taskRows, workRows, feedRows, eventRows] = await Promise.all([
+  const [horseRows, taskRows, workRows, feedRows, eventRows, careRows] = await Promise.all([
     fetchCloudRows('horses', stableId),
     fetchCloudRows('tasks', stableId),
     fetchCloudRows('work_logs', stableId),
     fetchCloudRows('feed_items', stableId),
-    fetchCloudRows('calendar_events', stableId, 'date')
+    fetchCloudRows('calendar_events', stableId, 'date'),
+    fetchOptionalCloudRows('horse_care_history', stableId, 'care_date')
   ]);
   const horses = horseRows.map(mapCloudHorse);
   const horseIdMap = new Map(horseRows.map((row, index) => [row.id, horses[index].id]));
@@ -3844,7 +4041,8 @@ async function loadCloudSnapshot(stableId) {
     tasks: taskRows.map((row) => mapCloudTask(row, horseIdMap)),
     hours: workRows.map((row) => mapCloudWorkLog(row, horseIdMap)),
     inventory: feedRows.map(mapCloudFeedItem),
-    calendarEvents: eventRows.map((row) => mapCloudCalendarEvent(row, horseIdMap))
+    calendarEvents: eventRows.map((row) => mapCloudCalendarEvent(row, horseIdMap)),
+    careHistory: careRows.map((row) => mapCloudCareRecord(row, horseIdMap))
   };
 }
 
@@ -4141,6 +4339,7 @@ async function handleCloudHorseDelete(id) {
   try {
     await deleteHorseFromCloud(id);
     state.horses = state.horses.filter((horse) => horse.id !== id);
+    state.careHistory = state.careHistory.filter((record) => record.horseId !== id);
     render();
     showMessage(t('horseCloud.deleted'));
   } catch (error) {
@@ -4753,6 +4952,24 @@ function calendarEventToCloudRow(stableId, rawEvent, horseIdMap = null) {
   };
 }
 
+function careRecordToCloudRow(stableId, rawRecord, horseIdMap = null) {
+  const record = normalizeCareRecord(rawRecord);
+  const horseId = horseIdMap
+    ? horseIdMap.get(record.horseId)
+    : state.horses.find((horse) => horse.id === record.horseId)?.cloudId;
+  return {
+    stable_id: stableId,
+    local_id: record.id || createId(),
+    horse_id: horseId || null,
+    care_date: isValidDate(record.date) || today(),
+    care_type: record.type,
+    title: cleanText(record.title),
+    notes: cleanText(record.notes),
+    next_due_date: isValidDate(record.nextDueDate),
+    cost: nullableNumber(record.cost)
+  };
+}
+
 async function loadCloudCalendarEvents(stableId) {
   const rows = await fetchCloudRows('calendar_events', stableId, 'date');
   const horseIdMap = new Map(state.horses.filter((horse) => horse.cloudId).map((horse) => [horse.cloudId, horse.id]));
@@ -4874,6 +5091,70 @@ async function handleCloudCalendarEventDelete(id) {
   }
 }
 
+async function saveCareRecordToCloud(rawRecord) {
+  const activeStable = getActiveStable();
+  if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
+  const row = careRecordToCloudRow(activeStable.id, rawRecord);
+  const request = rawRecord.cloudId
+    ? supabaseClient
+      .from('horse_care_history')
+      .update(row)
+      .eq('stable_id', activeStable.id)
+      .eq('id', rawRecord.cloudId)
+    : supabaseClient
+      .from('horse_care_history')
+      .upsert(row, { onConflict: 'stable_id,local_id' });
+  const { data, error } = await request.select('*').single();
+  if (error) throw error;
+  const horseIdMap = new Map(state.horses.filter((horse) => horse.cloudId).map((horse) => [horse.cloudId, horse.id]));
+  return mapCloudCareRecord(data, horseIdMap);
+}
+
+async function handleCloudCareRecordSave(rawRecord) {
+  try {
+    const savedRecord = await saveCareRecordToCloud(rawRecord);
+    const existingIndex = state.careHistory.findIndex((entry) => entry.id === savedRecord.id);
+    if (existingIndex >= 0) state.careHistory[existingIndex] = savedRecord;
+    else state.careHistory.push(savedRecord);
+    render();
+    showMessage(t('careCloud.saved'));
+    return true;
+  } catch (error) {
+    console.error('[EquiTrack cloud] Care history save failed', error);
+    const errorMessage = isPermissionError(error) ? t('careCloud.permissionBlocked') : getAuthErrorMessage(error);
+    showMessage(t('careCloud.saveFailed', { error: errorMessage }));
+    return false;
+  }
+}
+
+async function deleteCareRecordFromCloud(id) {
+  const activeStable = getActiveStable();
+  if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
+  const careRecord = state.careHistory.find((entry) => entry.id === id);
+  if (!careRecord) return;
+  let query = supabaseClient.from('horse_care_history').delete().eq('stable_id', activeStable.id);
+  query = careRecord.cloudId ? query.eq('id', careRecord.cloudId) : query.eq('local_id', careRecord.id);
+  const { error } = await query.select('id');
+  if (error) throw error;
+}
+
+async function handleCloudCareRecordDelete(id) {
+  if (!confirmDelete(t('delete.care'))) {
+    showMessage(t('message.deleteCancelled'));
+    return;
+  }
+  try {
+    await deleteCareRecordFromCloud(id);
+    state.careHistory = state.careHistory.filter((entry) => entry.id !== id);
+    render();
+    showMessage(t('careCloud.deleted'));
+  } catch (error) {
+    console.error('[EquiTrack cloud] Care history delete failed', error);
+    const errorMessage = isPermissionError(error) ? t('careCloud.permissionBlocked') : getAuthErrorMessage(error);
+    showMessage(t('careCloud.deleteFailed', { error: errorMessage }));
+  }
+}
+
 function getCloudCleanupGate() {
   const currentUser = getCurrentUser();
   const activeStable = getActiveStable();
@@ -4919,6 +5200,18 @@ async function deleteCloudRowsForStable(table, stableId) {
   return Array.isArray(data) ? data.length : 0;
 }
 
+async function deleteOptionalCloudRowsForStable(table, stableId) {
+  try {
+    return await deleteCloudRowsForStable(table, stableId);
+  } catch (error) {
+    if (isMissingCloudTableError(error)) {
+      console.warn(`[EquiTrack cloud] Optional table ${table} is not available yet. Run the latest Supabase migration.`, error);
+      return 0;
+    }
+    throw error;
+  }
+}
+
 async function cleanupCloudDataForStable() {
   if (blockCloudPreviewEdit()) return;
   const cleanupGate = getCloudCleanupGate();
@@ -4935,9 +5228,10 @@ async function cleanupCloudDataForStable() {
   renderCloudCleanup();
 
   const stableId = cleanupGate.activeStable.id;
-  const counts = { events: 0, inventory: 0, hours: 0, tasks: 0, horses: 0 };
+  const counts = { events: 0, care: 0, inventory: 0, hours: 0, tasks: 0, horses: 0 };
   try {
     counts.events = await deleteCloudRowsForStable('calendar_events', stableId);
+    counts.care = await deleteOptionalCloudRowsForStable('horse_care_history', stableId);
     counts.inventory = await deleteCloudRowsForStable('feed_items', stableId);
     counts.hours = await deleteCloudRowsForStable('work_logs', stableId);
     counts.tasks = await deleteCloudRowsForStable('tasks', stableId);
@@ -5024,6 +5318,12 @@ function buildCalendarRows(stableId, horseIdMap, sourceData = state) {
   });
 }
 
+function buildCareRows(stableId, horseIdMap, sourceData = state) {
+  return (sourceData.careHistory || []).map((rawRecord) => {
+    return careRecordToCloudRow(stableId, rawRecord, horseIdMap);
+  });
+}
+
 async function upsertCloudRows(table, rows, selectColumns = 'id, local_id') {
   if (!rows.length) return [];
   const { data, error } = await supabaseClient
@@ -5050,7 +5350,7 @@ async function uploadLocalDataToCloud() {
   renderMigrationPreview();
 
   const stableId = uploadGate.activeStable.id;
-  const counts = { horses: 0, tasks: 0, hours: 0, inventory: 0, events: 0 };
+  const counts = { horses: 0, tasks: 0, hours: 0, inventory: 0, events: 0, care: 0 };
   try {
     const localUploadData = loadData();
     const uploadedHorses = await upsertCloudRows('horses', buildHorseRows(stableId, localUploadData));
@@ -5061,6 +5361,7 @@ async function uploadLocalDataToCloud() {
     counts.hours = (await upsertCloudRows('work_logs', buildWorkLogRows(stableId, horseIdMap, localUploadData), 'local_id')).length;
     counts.inventory = (await upsertCloudRows('feed_items', buildFeedRows(stableId, localUploadData), 'local_id')).length;
     counts.events = (await upsertCloudRows('calendar_events', buildCalendarRows(stableId, horseIdMap, localUploadData), 'local_id')).length;
+    counts.care = (await upsertCloudRows('horse_care_history', buildCareRows(stableId, horseIdMap, localUploadData), 'local_id')).length;
 
     const uploadedAt = new Date().toISOString();
     localStorage.setItem(LAST_CLOUD_UPLOAD_KEY, uploadedAt);
@@ -5071,7 +5372,7 @@ async function uploadLocalDataToCloud() {
     showMessage(message);
   } catch (error) {
     console.error('[EquiTrack cloud] Manual upload failed', error);
-    const errorMessage = isMissingLocalIdSchemaError(error) ? t('migration.schemaNeeded') : getAuthErrorMessage(error);
+    const errorMessage = isMissingLocalIdSchemaError(error) || isMissingCloudTableError(error) ? t('migration.schemaNeeded') : getAuthErrorMessage(error);
     const message = t('migration.uploadFailed', { error: errorMessage });
     migrationUploadStatusText = message;
     if (els.migrationUploadStatus) els.migrationUploadStatus.textContent = message;
@@ -5538,6 +5839,16 @@ function renderHorseOptions() {
   const singleOptions = [`<option value="">${t('tasks.noHorseAssigned')}</option>`]
     .concat(state.horses.map((horse) => `<option value="${horse.id}">${escapeHtml(horse.name)}</option>`));
   els.taskForm.elements.horseId.innerHTML = singleOptions.join('');
+  if (els.careForm?.elements.horseId) {
+    els.careForm.elements.horseId.innerHTML = [`<option value="">${t('care.horse')}</option>`]
+      .concat(state.horses.map((horse) => `<option value="${horse.id}">${escapeHtml(horse.name)}</option>`))
+      .join('');
+  }
+  if (els.careForm?.elements.type) {
+    els.careForm.elements.type.innerHTML = CARE_TYPES
+      .map((type) => `<option value="${type}">${t(`careType.${type}`)}</option>`)
+      .join('');
+  }
 
   els.eventForm.elements.horseIds.innerHTML = state.horses
     .map((horse) => `<option value="${horse.id}">${escapeHtml(horse.name)}</option>`)
@@ -5824,6 +6135,47 @@ function getActiveAlerts() {
     });
   }
 
+  const normalizedCareRecords = state.careHistory.map(normalizeCareRecord).filter((record) => record.nextDueDate);
+  const careOverdue = normalizedCareRecords.filter((record) => record.nextDueDate < todayValue);
+  const careDueToday = normalizedCareRecords.filter((record) => record.nextDueDate === todayValue);
+  const careDueSoon = normalizedCareRecords.filter((record) => record.nextDueDate > todayValue && record.nextDueDate <= weekEndValue);
+  if (careOverdue.length) {
+    alerts.push({
+      id: 'care-overdue',
+      severity: 'critical',
+      titleKey: 'care.overdue',
+      messageKey: 'care.overdueMessage',
+      messageParams: { count: careOverdue.length },
+      areaKey: 'care.title',
+      actionKey: 'care.openCare',
+      action: 'care'
+    });
+  }
+  if (careDueToday.length) {
+    alerts.push({
+      id: 'care-today',
+      severity: 'attention',
+      titleKey: 'care.dueToday',
+      messageKey: 'care.dueTodayMessage',
+      messageParams: { count: careDueToday.length },
+      areaKey: 'care.title',
+      actionKey: 'care.openCare',
+      action: 'care'
+    });
+  }
+  if (careDueSoon.length) {
+    alerts.push({
+      id: 'care-week',
+      severity: 'info',
+      titleKey: 'care.dueSoon',
+      messageKey: 'care.dueSoonMessage',
+      messageParams: { count: careDueSoon.length },
+      areaKey: 'care.title',
+      actionKey: 'care.openCare',
+      action: 'care'
+    });
+  }
+
   if (turnoutWeather.status === 'ready' && turnoutWeather.hasRain) {
     alerts.push({
       id: 'weather-rain',
@@ -5949,6 +6301,7 @@ function render() {
   renderStableHeader();
   renderToday();
   renderHorses();
+  renderCareHistory();
   renderTasks();
   renderHours();
   renderInventory();
@@ -6080,6 +6433,11 @@ function renderHorses() {
       horse.birth && `${t('horses.birth')}: ${horse.birth}`,
       horse.registration && `${t('horses.registration')}: ${horse.registration}`
     ].filter(Boolean);
+    const careRecords = state.careHistory
+      .map(normalizeCareRecord)
+      .filter((record) => record.horseId === horse.id)
+      .sort((a, b) => b.date.localeCompare(a.date))
+      .slice(0, 3);
     return `
       <article class="item-card horse-card horse-profile-card premium-stable-card">
         <div class="horse-profile-main">
@@ -6121,6 +6479,10 @@ function renderHorses() {
                 ['horses.generalNotes', horse.notes]
               ])}
             </div>
+            <section class="horse-care-preview">
+              <h5>${t('care.recent')}</h5>
+              ${careRecords.length ? careRecords.map(renderCareLine).join('') : `<p>${t('care.empty')}</p>`}
+            </section>
           </details>
         </div>
         <div class="item-actions">
@@ -6341,6 +6703,47 @@ function renderSelectedDayAgenda() {
         <div class="item-actions">
           <button class="button ghost" type="button" data-action="edit-event" data-id="${event.id}">${t('common.edit')}</button>
           <button class="button ghost danger" type="button" data-action="delete-event" data-id="${event.id}">${t('common.delete')}</button>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+function renderCareLine(record) {
+  const nextDue = record.nextDueDate ? ` · ${t('care.nextDueShort')}: ${record.nextDueDate}` : '';
+  return `<p><span class="pill care-type-pill">${t(`careType.${record.type}`)}</span> ${escapeHtml(record.date)} - ${escapeHtml(record.title || t(`careType.${record.type}`))}${escapeHtml(nextDue)}</p>`;
+}
+
+function renderCareHistory() {
+  if (!els.careHistoryList) return;
+  if (!state.careHistory.length) {
+    els.careHistoryList.innerHTML = `<p class="empty-state">${t('care.empty')}</p>`;
+    return;
+  }
+  const sortedRecords = state.careHistory
+    .map(normalizeCareRecord)
+    .sort((a, b) => b.date.localeCompare(a.date));
+  els.careHistoryList.innerHTML = sortedRecords.map((record) => {
+    const horse = state.horses.find((item) => item.id === record.horseId);
+    const meta = [
+      horse?.name || t('tasks.noHorse'),
+      t(`careType.${record.type}`),
+      record.nextDueDate && `${t('care.nextDueShort')}: ${record.nextDueDate}`,
+      record.cost !== '' && record.cost != null && `${t('care.cost')}: ${formatNumber(record.cost)}`
+    ].filter(Boolean);
+    return `
+      <article class="item-card care-card premium-stable-card">
+        <div>
+          <h4>${escapeHtml(record.title || t(`careType.${record.type}`))}</h4>
+          <p>${escapeHtml(record.notes || t('common.noNotes'))}</p>
+          <div class="item-meta">
+            <span class="pill">${escapeHtml(record.date)}</span>
+            ${meta.map((item) => `<span class="pill">${escapeHtml(item)}</span>`).join('')}
+          </div>
+        </div>
+        <div class="item-actions">
+          <button class="button ghost" type="button" data-action="edit-care" data-id="${record.id}">${t('common.edit')}</button>
+          <button class="button ghost danger" type="button" data-action="delete-care" data-id="${record.id}">${t('common.delete')}</button>
         </div>
       </article>
     `;
@@ -6598,6 +7001,41 @@ function handleHorseSubmit(event) {
   showMessage(t('message.horseSaved'));
 }
 
+function handleCareSubmit(event) {
+  event.preventDefault();
+  if (blockCloudPreviewEdit()) return;
+  const form = event.currentTarget;
+  if (!form.elements.horseId.value) {
+    showMessage(t('care.noHorse'));
+    return;
+  }
+  const existing = state.careHistory.find((entry) => entry.id === form.elements.id.value);
+  const now = new Date().toISOString();
+  const careRecord = {
+    id: form.elements.id.value,
+    horseId: form.elements.horseId.value,
+    date: form.elements.date.value,
+    type: form.elements.type.value,
+    title: form.elements.title.value.trim(),
+    notes: form.elements.notes.value.trim(),
+    nextDueDate: form.elements.nextDueDate.value,
+    cost: form.elements.cost.value,
+    createdAt: existing?.createdAt || now,
+    updatedAt: now
+  };
+  if (cloudWriteMode) {
+    if (!careRecord.id) careRecord.id = createId();
+    if (existing?.cloudId) careRecord.cloudId = existing.cloudId;
+    handleCloudCareRecordSave(careRecord).then((saved) => {
+      if (saved) resetForm(form);
+    });
+    return;
+  }
+  upsert('careHistory', normalizeCareRecord(careRecord));
+  resetForm(form);
+  showMessage(t('care.saved'));
+}
+
 function handleTaskSubmit(event) {
   event.preventDefault();
   if (blockCloudPreviewEdit()) return;
@@ -6761,7 +7199,12 @@ function handleListClick(event) {
   if (action === 'edit-horse') fillHorseForm(id);
   if (action === 'delete-horse') {
     if (cloudWriteMode) handleCloudHorseDelete(id);
-    else deleteItem('horses', id, t('delete.horse'), t('message.horseDeleted'));
+    else deleteHorseLocal(id);
+  }
+  if (action === 'edit-care') fillCareForm(id);
+  if (action === 'delete-care') {
+    if (cloudWriteMode) handleCloudCareRecordDelete(id);
+    else deleteItem('careHistory', id, t('delete.care'), t('care.deleted'));
   }
   if (action === 'toggle-task') toggleTask(id);
   if (action === 'edit-task') fillTaskForm(id);
@@ -6910,6 +7353,7 @@ function handleAlertAction(event) {
   const actionMap = {
     feed: { view: 'stable', tab: 'inventory', selector: '#inventoryPanel' },
     tasks: { view: 'stable', tab: 'tasks', selector: '#tasksPanel' },
+    care: { view: 'stable', tab: 'horses', selector: '#careHistoryList' },
     calendar: { view: 'calendar', selector: '#calendarView' },
     backup: { view: 'settings', selector: '#settingsBackupSection' },
     weather: { view: 'home', selector: '#turnoutWeatherCard' }
@@ -6947,6 +7391,24 @@ function fillHorseForm(id) {
   els.horseForm.elements.notes.value = horse.notes;
   showView('stable');
   els.horseForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function fillCareForm(id) {
+  const found = state.careHistory.find((item) => item.id === id);
+  if (!found || !els.careForm) return;
+  const record = normalizeCareRecord(found);
+  els.careForm.elements.id.value = record.id;
+  els.careForm.elements.horseId.value = record.horseId;
+  els.careForm.elements.date.value = record.date;
+  els.careForm.elements.type.value = record.type;
+  els.careForm.elements.title.value = record.title;
+  els.careForm.elements.notes.value = record.notes;
+  els.careForm.elements.nextDueDate.value = record.nextDueDate;
+  els.careForm.elements.cost.value = record.cost;
+  showView('stable');
+  activateTab('horses');
+  els.careForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  showMessage(t('message.editing'));
 }
 
 function fillTaskForm(id) {
@@ -7031,6 +7493,19 @@ function deleteItem(collection, id, label, message) {
   showMessage(message);
 }
 
+function deleteHorseLocal(id) {
+  if (blockCloudPreviewEdit()) return;
+  if (!confirmDelete(t('delete.horse'))) {
+    showMessage(t('message.deleteCancelled'));
+    return;
+  }
+  state.horses = state.horses.filter((horse) => horse.id !== id);
+  state.careHistory = state.careHistory.filter((record) => record.horseId !== id);
+  saveData();
+  render();
+  showMessage(t('message.horseDeleted'));
+}
+
 function toggleTask(id) {
   if (blockCloudPreviewEdit()) return;
   const task = state.tasks.find((item) => item.id === id);
@@ -7056,7 +7531,8 @@ function normalizeImportedData(imported) {
     tasks: Array.isArray(data.tasks) ? data.tasks.map(normalizeTask) : [],
     hours: Array.isArray(data.hours) ? data.hours.map(normalizeWorkLog) : [],
     inventory: Array.isArray(data.inventory) ? data.inventory.map(normalizeFeedItem) : [],
-    calendarEvents: Array.isArray(data.calendarEvents) ? data.calendarEvents.map(normalizeCalendarEvent) : []
+    calendarEvents: Array.isArray(data.calendarEvents) ? data.calendarEvents.map(normalizeCalendarEvent) : [],
+    careHistory: Array.isArray(data.careHistory) ? data.careHistory.map(normalizeCareRecord) : []
   };
 }
 
@@ -7080,7 +7556,7 @@ function createBackupPayload(createdAt = new Date().toISOString(), data = state)
   const normalizedData = normalizeImportedData(data);
   return {
     appName: 'EquiTrack',
-    backupFormatVersion: 3,
+    backupFormatVersion: 4,
     createdAt,
     exportedFrom: 'EquiTrack-Web',
     counts: getCounts(normalizedData),
@@ -7168,7 +7644,7 @@ function resetLocalData() {
   }
   cloudWriteMode = false;
   cloudPreviewMode = false;
-  state = { horses: [], tasks: [], hours: [], inventory: [], calendarEvents: [] };
+  state = { horses: [], tasks: [], hours: [], inventory: [], calendarEvents: [], careHistory: [] };
   saveData();
   render();
   showMessage(t('message.resetDone'));
@@ -7353,6 +7829,7 @@ els.homeOverviewSection?.addEventListener('click', handleHomeShortcut);
 els.alertsList?.addEventListener('click', handleAlertAction);
 els.footerSupportLink?.addEventListener('click', handleFooterSupportLink);
 els.horseForm.addEventListener('submit', handleHorseSubmit);
+els.careForm?.addEventListener('submit', handleCareSubmit);
 els.taskForm.addEventListener('submit', handleTaskSubmit);
 els.hoursForm.addEventListener('submit', handleHoursSubmit);
 els.inventoryForm.addEventListener('submit', handleInventorySubmit);
@@ -7409,6 +7886,7 @@ els.calendarAddEventButton?.addEventListener('click', addEventForSelectedDay);
 document.querySelectorAll('[data-calendar-view-mode]').forEach((button) => button.addEventListener('click', handleCalendarViewModeClick));
 els.taskForm.elements.date.value = today();
 els.hoursForm.elements.date.value = today();
+if (els.careForm?.elements.date) els.careForm.elements.date.value = today();
 els.eventForm.elements.date.value = today();
 setAdminPermissionValues(els.adminUserForm?.elements.stableRole?.value || 'viewer');
 

@@ -1621,6 +1621,14 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
 }
 .entry-form label span, .language-picker span { line-height: 1.35; }
 .entry-form .full, .entry-form button { grid-column: 1 / -1; }
+.care-history-header {
+  margin-top: 30px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+.care-form {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbfc 100%);
+}
 .form-help {
   color: var(--muted);
   line-height: 1.55;
@@ -1693,6 +1701,36 @@ textarea { resize: vertical; }
 }
 .horse-profile-card {
   background: linear-gradient(180deg, #ffffff 0%, #fbfdfe 100%);
+}
+.horse-care-preview {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid rgba(78, 205, 196, 0.24);
+  border-radius: 10px;
+  background: #f8fbfc;
+}
+.horse-care-preview h5 {
+  margin: 0;
+  color: #14335a;
+  font-size: 14px;
+}
+.horse-care-preview p {
+  margin: 0;
+  color: var(--muted);
+}
+.care-history-list {
+  margin-top: 12px;
+}
+.care-card {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdfe 100%);
+}
+.care-type-pill {
+  border-color: rgba(78, 205, 196, 0.42);
+  color: var(--accent-strong);
+  background: #eefbf9;
 }
 .task-card.task-open {
   background: #ffffff;
