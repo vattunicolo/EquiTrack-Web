@@ -2494,6 +2494,27 @@ Object.assign(translations.it, {
   'alerts.weatherMessage': 'Oggi è stata rilevata pioggia. Controlla l uscita prima di mandare fuori i cavalli.'
 });
 
+Object.assign(translations.en, {
+  'auth.restoring': 'Restoring session...',
+  'cloud.loadingStable': 'Loading stable...',
+  'cloud.loadingData': 'Loading cloud data...',
+  'cloudMode.autoLoading': 'Loading cloud data...'
+});
+
+Object.assign(translations.fi, {
+  'auth.restoring': 'Palautetaan kirjautumista...',
+  'cloud.loadingStable': 'Ladataan tallia...',
+  'cloud.loadingData': 'Ladataan pilvidataa...',
+  'cloudMode.autoLoading': 'Ladataan pilvidataa...'
+});
+
+Object.assign(translations.it, {
+  'auth.restoring': 'Ripristino dell accesso...',
+  'cloud.loadingStable': 'Caricamento scuderia...',
+  'cloud.loadingData': 'Caricamento dati cloud...',
+  'cloudMode.autoLoading': 'Caricamento dati cloud...'
+});
+
 let currentLanguage = localStorage.getItem(LANGUAGE_KEY) || DEFAULT_LANGUAGE;
 if (!translations[currentLanguage]) currentLanguage = DEFAULT_LANGUAGE;
 
@@ -2534,6 +2555,8 @@ let pendingServiceWorker = null;
 let supabaseClient = null;
 let authUser = null;
 let authRestoring = false;
+let stableLoading = false;
+let cloudDataLoading = false;
 let isCloudUploading = false;
 let migrationUploadStatusText = '';
 let cloudReadStatusText = '';
@@ -3019,6 +3042,25 @@ function withTimeout(promise, milliseconds, label) {
   return Promise.race([promise, timeout]).finally(() => window.clearTimeout(timeoutId));
 }
 
+function delay(ms) {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+async function retryOnce(operation, label) {
+  try {
+    return await operation();
+  } catch (error) {
+    console.warn(`[EquiTrack cloud] ${label} failed, retrying once`, error);
+    await delay(700);
+    try {
+      return await operation();
+    } catch (retryError) {
+      console.error(`[EquiTrack cloud] ${label} failed after retry`, retryError);
+      throw retryError;
+    }
+  }
+}
+
 function isProtectedView(viewName) {
   return PROTECTED_VIEWS.includes(viewName);
 }
@@ -3105,11 +3147,14 @@ function getStableLocationKey(stable = getActiveStable()) {
 }
 
 function getCloudStatusText() {
+  if (authRestoring) return t('auth.restoring');
+  if (cloudDataLoading || cloudState.status === 'loadingCloud') return t('cloud.loadingData');
+  if (cloudUnavailable) return t('cloudMode.cloudUnavailable');
   if (cloudState.status === 'connected') return t('cloud.connectedAs', { email: cloudState.email });
   if (cloudState.status === 'noStable') return t('cloud.noStable');
   if (cloudState.status === 'permissionBlocked') return t('cloud.permissionBlocked');
   if (cloudState.status === 'error') return t('cloud.loadError');
-  if (cloudState.status === 'loading') return t('cloud.loadingStable');
+  if (stableLoading || cloudState.status === 'loading') return t('cloud.loadingStable');
   return t(cloudState.messageKey || 'cloud.notConnected');
 }
 
@@ -3565,13 +3610,13 @@ async function checkCloudDataPreview() {
 function renderCloudMode() {
   const activeStable = getActiveStable();
   const currentUser = getCurrentUser();
-  const modeText = cloudPreviewMode
-    ? t('cloudMode.previewStatus')
-    : cloudWriteMode
-      ? t('cloudMode.cloudStatus')
-      : cloudUnavailable || cloudState.status === 'error' || cloudState.status === 'permissionBlocked'
-        ? t('cloudMode.unavailableStatus')
-        : t('cloudMode.localStatus');
+  let modeText = t('cloudMode.localStatus');
+  if (authRestoring) modeText = t('auth.restoring');
+  else if (stableLoading || cloudState.status === 'loading') modeText = t('cloud.loadingStable');
+  else if (cloudDataLoading || cloudState.status === 'loadingCloud') modeText = t('cloud.loadingData');
+  else if (cloudPreviewMode) modeText = t('cloudMode.previewStatus');
+  else if (cloudWriteMode) modeText = t('cloudMode.cloudStatus');
+  else if (cloudUnavailable || cloudState.status === 'error' || cloudState.status === 'permissionBlocked') modeText = t('cloudMode.unavailableStatus');
   if (els.dataModeStatus) {
     els.dataModeStatus.textContent = modeText;
     els.dataModeStatus.classList.toggle('cloud-preview-active', cloudPreviewMode || cloudWriteMode);
@@ -3764,12 +3809,19 @@ async function enableCloudMode(options = {}) {
     if (!automatic) showMessage(cloudModeStatusText);
     return;
   }
+  cloudDataLoading = true;
+  cloudUnavailable = false;
   cloudModeStatusText = t(automatic ? 'cloudMode.autoLoading' : 'cloudMode.loading');
+  setCloudStatus({
+    status: 'loadingCloud',
+    messageKey: 'cloud.loadingData'
+  });
   renderCloudMode();
   try {
-    state = await loadCloudSnapshot(activeStable.id);
+    state = await retryOnce(() => loadCloudSnapshot(activeStable.id), 'Cloud data load');
     cloudWriteMode = true;
     cloudPreviewMode = false;
+    cloudDataLoading = false;
     cloudUnavailable = false;
     cloudLocalOverride = false;
     localStorage.removeItem(CLOUD_LOCAL_OVERRIDE_KEY);
@@ -3780,6 +3832,12 @@ async function enableCloudMode(options = {}) {
     calendarCloudWriteMode = false;
     cloudModeStatusText = t('cloudMode.enabled');
     cloudReadCounts = getCounts(state);
+    setCloudStatus({
+      status: 'connected',
+      stableId: activeStable.id,
+      stableName: activeStable.name,
+      messageKey: 'cloud.connectedAs'
+    });
     render();
     if (navigateToStable) showView('stable');
     if (!automatic) showMessage(cloudModeStatusText);
@@ -3788,8 +3846,15 @@ async function enableCloudMode(options = {}) {
     state = loadData();
     cloudWriteMode = false;
     cloudPreviewMode = false;
+    cloudDataLoading = false;
     cloudUnavailable = true;
     cloudModeStatusText = t('cloudMode.failed');
+    setCloudStatus({
+      status: 'connected',
+      stableId: activeStable.id,
+      stableName: activeStable.name,
+      messageKey: 'cloud.connectedAs'
+    });
     render();
     showMessage(t('cloudMode.cloudUnavailable'));
   }
@@ -5054,6 +5119,8 @@ async function getUserProfileRole(user = getCurrentUser()) {
 async function refreshCloudConnection() {
   const user = getCurrentUser();
   if (!user) {
+    stableLoading = false;
+    cloudDataLoading = false;
     cloudUnavailable = false;
     if (cloudPreviewMode) {
       state = loadData();
@@ -5106,6 +5173,10 @@ async function refreshCloudConnection() {
     });
     return cloudState.status;
   }
+  stableLoading = true;
+  cloudDataLoading = false;
+  cloudUnavailable = false;
+  cloudModeStatusText = t('cloud.loadingStable');
   setCloudStatus({
     status: 'loading',
     email: user.email || '',
@@ -5120,9 +5191,13 @@ async function refreshCloudConnection() {
     canManageUsers: false,
     messageKey: 'cloud.loadingStable'
   });
+  renderCloudMode();
   try {
-    const profileRole = await getUserProfileRole(user);
-    const stable = await getUserStable(user);
+    const { profileRole, stable } = await retryOnce(async () => ({
+      profileRole: await getUserProfileRole(user),
+      stable: await getUserStable(user)
+    }), 'Active stable load');
+    stableLoading = false;
     if (!stable) {
       if (cloudWriteMode || cloudPreviewMode) {
         state = loadData();
@@ -5176,6 +5251,8 @@ async function refreshCloudConnection() {
     await enableCloudMode({ automatic: true });
     return cloudState.status;
   } catch (error) {
+    stableLoading = false;
+    cloudDataLoading = false;
     logAuthError('Stable lookup failed', error);
     if (cloudWriteMode || cloudPreviewMode) {
       state = loadData();
@@ -5264,6 +5341,10 @@ async function setupAuth() {
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
       console.info('[EquiTrack auth] Auth state changed', { event, hasSession: Boolean(session) });
       authUser = session?.user || null;
+      if (event === 'INITIAL_SESSION' && authRestoring) {
+        updateAuthUi();
+        return;
+      }
       if (event === 'SIGNED_OUT') {
         disableCloudMode('cloudMode.returnedLocal');
       } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
@@ -5280,6 +5361,8 @@ async function setupAuth() {
     await refreshCloudConnection();
   } catch (error) {
     logAuthError('Session initialization failed', error);
+    stableLoading = false;
+    cloudDataLoading = false;
     showMessage(getAuthErrorMessage(error));
   } finally {
     authRestoring = false;
