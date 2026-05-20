@@ -2606,6 +2606,10 @@ const els = {
   homeAuthCta: document.querySelector('#homeAuthCta'),
   homeAccountBadge: document.querySelector('#homeAccountBadge'),
   homeStableBadge: document.querySelector('#homeStableBadge'),
+  homeLandingHero: document.querySelector('#homeLandingHero'),
+  homeFeatureGrid: document.querySelector('#homeFeatureGrid'),
+  homeIconStrip: document.querySelector('#homeIconStrip'),
+  homeLandingLower: document.querySelector('#homeLandingLower'),
   homeOverviewSection: document.querySelector('#homeOverviewSection'),
   homeOverviewStable: document.querySelector('#homeOverviewStable'),
   homeOverviewHorses: document.querySelector('#homeOverviewHorses'),
@@ -5491,6 +5495,7 @@ function renderHome() {
   const weekEnd = new Date(now);
   weekEnd.setDate(weekEnd.getDate() + 7);
   const isReturningStableUser = Boolean(user && activeStable.id);
+  const showLandingHome = !isReturningStableUser;
   const tipsDismissed = localStorage.getItem(HOME_TIPS_KEY) === 'true';
   if (els.homeAuthCta) {
     els.homeAuthCta.dataset.viewLink = user ? 'stable' : 'login';
@@ -5510,6 +5515,10 @@ function renderHome() {
       els.homeStableBadge.textContent = cloudWriteMode ? t('calendar.cloudMode') : t('calendar.localMode');
     }
   }
+  if (els.homeLandingHero) els.homeLandingHero.hidden = !showLandingHome;
+  if (els.homeFeatureGrid) els.homeFeatureGrid.hidden = !showLandingHome;
+  if (els.homeIconStrip) els.homeIconStrip.hidden = !showLandingHome;
+  if (els.homeLandingLower) els.homeLandingLower.hidden = !showLandingHome;
   if (els.homeOverviewSection) els.homeOverviewSection.hidden = !isReturningStableUser;
   if (els.homeTipsSection) els.homeTipsSection.hidden = tipsDismissed || isReturningStableUser;
   if (els.homeOverviewStable) els.homeOverviewStable.textContent = activeStable.name || t('cloudRead.noStable');
