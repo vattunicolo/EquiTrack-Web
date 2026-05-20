@@ -37,7 +37,7 @@ const SUPABASE_CONFIG = {
 const SUPPORT_CONFIG = {
   phoneDisplay: '+358 44 970 3191',
   phoneHref: 'tel:+358449703191',
-  email: 'NICOLON_SAHKOPOSTI_TAHAN',
+  email: 'nicolo.manzone@aequitrack.com',
   subject: 'EquiTrack support request'
 };
 const CREATE_USER_FUNCTION_URL = 'https://fuojlxcexpnszepgipbv.functions.supabase.co/create-user';
