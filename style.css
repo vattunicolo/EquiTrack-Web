@@ -206,6 +206,33 @@ h1, h2, h3, h4, p, span, strong, button, a, label {
   color: #8a5a00;
   font-weight: 850;
 }
+.save-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 4px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #f8fbfc;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+}
+.save-status-saving {
+  border-color: rgba(53, 119, 186, 0.28);
+  background: #eef6ff;
+  color: #255f99;
+}
+.save-status-saved {
+  border-color: rgba(78, 205, 196, 0.36);
+  background: #eefbf9;
+  color: var(--accent-strong);
+}
+.save-status-error {
+  border-color: rgba(182, 59, 53, 0.28);
+  background: #fff2f0;
+  color: var(--danger);
+}
 .auth-button {
   min-height: 36px;
   border-color: var(--line-strong);

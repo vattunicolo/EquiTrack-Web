@@ -16,6 +16,7 @@ const DEFAULT_LANGUAGE = 'en';
 const EVENT_TYPES = ['race', 'training', 'shoeing', 'vaccination', 'vet', 'feeding', 'other'];
 const CARE_TYPES = ['shoeing', 'vaccination', 'deworming', 'vet', 'medication', 'injury', 'dental', 'other'];
 const PROTECTED_VIEWS = ['stable', 'calendar', 'settings'];
+const CLOUD_WRITE_TIMEOUT_MS = 15000;
 const ADMIN_PERMISSION_FIELDS = [
   'can_view_horses',
   'can_edit_horses',
@@ -284,6 +285,11 @@ const translations = {
     'migration.schemaNeeded': 'Cloud upload needs the latest database migrations. Run supabase/migrations/add_local_ids.sql and supabase/migrations/horse_care_history.sql in Supabase, then try again.',
     'migration.uploadSuccess': 'Cloud upload complete: {horses} horses, {tasks} tasks, {hours} work logs, {inventory} feed items, {events} calendar events, {care} care records.',
     'migration.uploadFailed': 'Cloud upload failed: {error}',
+    'saveStatus.idle': 'Saved',
+    'saveStatus.saving': 'Saving...',
+    'saveStatus.saved': 'Saved',
+    'saveStatus.error': 'Save failed - retry',
+    'saveStatus.timeout': 'Cloud save timed out. Please try again.',
     'cloudRead.title': 'Cloud read preview',
     'cloudRead.text': 'Check cloud counts for the active stable without changing local data.',
     'cloudRead.targetStable': 'Read target stable',
@@ -940,6 +946,11 @@ const translations = {
     'migration.schemaNeeded': 'Pilveen lataus tarvitsee uusimmat tietokantamigraatiot. Suorita supabase/migrations/add_local_ids.sql ja supabase/migrations/horse_care_history.sql Supabasessa ja yritä uudelleen.',
     'migration.uploadSuccess': 'Pilveen lataus valmis: {horses} hevosta, {tasks} tehtävää, {hours} työkirjausta, {inventory} ruokavaraston tuotetta, {events} kalenteritapahtumaa, {care} hoitomerkintää.',
     'migration.uploadFailed': 'Pilveen lataus epäonnistui: {error}',
+    'saveStatus.idle': 'Tallennettu',
+    'saveStatus.saving': 'Tallennetaan...',
+    'saveStatus.saved': 'Tallennettu',
+    'saveStatus.error': 'Tallennus epäonnistui - yritä uudelleen',
+    'saveStatus.timeout': 'Pilvitallennus aikakatkaistiin. Yritä uudelleen.',
     'cloudRead.title': 'Pilvitietojen esikatselu',
     'cloudRead.text': 'Tarkista aktiivisen tallin pilvimäärät muuttamatta paikallisia tietoja.',
     'cloudRead.targetStable': 'Luettava talli',
@@ -1605,6 +1616,11 @@ const translations = {
     'migration.schemaNeeded': 'Il caricamento cloud richiede le ultime migrazioni database. Esegui supabase/migrations/add_local_ids.sql e supabase/migrations/horse_care_history.sql in Supabase, poi riprova.',
     'migration.uploadSuccess': 'Caricamento cloud completato: {horses} cavalli, {tasks} attività, {hours} registri ore, {inventory} scorte di mangime, {events} eventi calendario, {care} record di cura.',
     'migration.uploadFailed': 'Caricamento cloud non riuscito: {error}',
+    'saveStatus.idle': 'Salvato',
+    'saveStatus.saving': 'Salvataggio...',
+    'saveStatus.saved': 'Salvato',
+    'saveStatus.error': 'Salvataggio non riuscito - riprova',
+    'saveStatus.timeout': 'Il salvataggio cloud è scaduto. Riprova.',
     'cloudRead.title': 'Anteprima lettura cloud',
     'cloudRead.text': 'Controlla i conteggi cloud della scuderia attiva senza modificare i dati locali.',
     'cloudRead.targetStable': 'Scuderia da leggere',
@@ -2745,6 +2761,9 @@ let feedCloudWriteMode = false;
 let feedCloudStatusText = '';
 let calendarCloudWriteMode = false;
 let calendarCloudStatusText = '';
+let cloudSaveState = 'idle';
+let cloudSaveStatusTimer = null;
+const cloudMutationLocks = new Set();
 let cloudState = {
   status: 'notConnected',
   email: '',
@@ -2848,6 +2867,7 @@ const els = {
   authSetupNotice: document.querySelector('#authSetupNotice'),
   headerStableName: document.querySelector('#headerStableName'),
   dataModeStatus: document.querySelector('#dataModeStatus'),
+  cloudSaveStatus: document.querySelector('#cloudSaveStatus'),
   stableStableBadge: document.querySelector('#stableStableBadge'),
   stableModeBadge: document.querySelector('#stableModeBadge'),
   cloudUserEmail: document.querySelector('#cloudUserEmail'),
@@ -3230,6 +3250,15 @@ function isPermissionError(error) {
   return error?.status === 401 || error?.status === 403 || code === '42501' || message.includes('row-level security') || message.includes('permission denied');
 }
 
+function getCloudErrorMessage(error) {
+  const message = String(error?.message || error || '');
+  if (message.toLowerCase().includes('timed out') || message.toLowerCase().includes('timeout')) {
+    return t('saveStatus.timeout');
+  }
+  if (isTransientCloudError(error)) return t('auth.networkError');
+  return message || 'Unknown error';
+}
+
 function withTimeout(promise, milliseconds, label) {
   let timeoutId;
   const timeout = new Promise((_, reject) => {
@@ -3254,6 +3283,124 @@ async function retryOnce(operation, label) {
       console.error(`[EquiTrack cloud] ${label} failed after retry`, retryError);
       throw retryError;
     }
+  }
+}
+
+function setCloudSaveState(nextState) {
+  cloudSaveState = nextState;
+  if (cloudSaveStatusTimer) {
+    window.clearTimeout(cloudSaveStatusTimer);
+    cloudSaveStatusTimer = null;
+  }
+  renderCloudSaveStatus();
+  if (nextState === 'saved') {
+    cloudSaveStatusTimer = window.setTimeout(() => {
+      cloudSaveState = 'idle';
+      renderCloudSaveStatus();
+    }, 2600);
+  }
+}
+
+function renderCloudSaveStatus() {
+  if (!els.cloudSaveStatus) return;
+  const visible = cloudWriteMode || cloudSaveState !== 'idle';
+  els.cloudSaveStatus.hidden = !visible;
+  els.cloudSaveStatus.textContent = t(`saveStatus.${cloudSaveState}`);
+  els.cloudSaveStatus.className = `save-status save-status-${cloudSaveState}`;
+}
+
+function isTransientCloudError(error) {
+  const message = String(error?.message || error || '').toLowerCase();
+  const status = Number(error?.status || 0);
+  return (
+    error?.name === 'TypeError' ||
+    status === 408 ||
+    status === 429 ||
+    status >= 500 ||
+    message.includes('failed to fetch') ||
+    message.includes('network') ||
+    message.includes('timeout') ||
+    message.includes('timed out')
+  );
+}
+
+async function retryCloudWrite(operation, label) {
+  try {
+    return await operation();
+  } catch (error) {
+    if (!isTransientCloudError(error) || isPermissionError(error)) throw error;
+    console.warn(`[EquiTrack cloud] ${label} failed, retrying once`, error);
+    await delay(700);
+    return operation();
+  }
+}
+
+async function executeCloudMutation(table, label, operation) {
+  console.info('[EquiTrack cloud] Mutation started', { table, label });
+  setCloudSaveState('saving');
+  try {
+    const response = await retryCloudWrite(
+      async () => {
+        const result = await withTimeout(operation(), CLOUD_WRITE_TIMEOUT_MS, label);
+        if (result?.error) throw result.error;
+        return result;
+      },
+      label
+    );
+    setCloudSaveState('saved');
+    console.info('[EquiTrack cloud] Mutation saved', { table, label });
+    return response?.data;
+  } catch (error) {
+    console.error('[EquiTrack cloud] Mutation failed', { table, label, error });
+    setCloudSaveState('error');
+    throw error;
+  }
+}
+
+function getCloudActionKey(action, id = '') {
+  return `${action}:${id || 'new'}`;
+}
+
+function tryStartCloudAction(action, id = '') {
+  const key = getCloudActionKey(action, id);
+  if (cloudMutationLocks.has(key)) {
+    console.info('[EquiTrack cloud] Duplicate action ignored', { action, id });
+    showMessage(t('saveStatus.saving'));
+    return null;
+  }
+  cloudMutationLocks.add(key);
+  return key;
+}
+
+function finishCloudAction(key) {
+  if (key) cloudMutationLocks.delete(key);
+}
+
+function getSubmitButton(form) {
+  return form?.querySelector('button[type="submit"]');
+}
+
+async function runCloudFormSubmit(form, action, id, operation, onSuccess) {
+  const lockKey = tryStartCloudAction(action, id);
+  if (!lockKey) return;
+  const submitButton = getSubmitButton(form);
+  if (submitButton) submitButton.disabled = true;
+  try {
+    const saved = await operation();
+    if (saved) onSuccess?.();
+  } finally {
+    finishCloudAction(lockKey);
+    if (submitButton) submitButton.disabled = false;
+  }
+}
+
+async function runCloudAction(action, id, operation) {
+  const lockKey = tryStartCloudAction(action, id);
+  if (!lockKey) return false;
+  try {
+    return await operation();
+  } finally {
+    finishCloudAction(lockKey);
   }
 }
 
@@ -4261,7 +4408,7 @@ async function enableHorseCloudWrites() {
     showMessage(horseCloudStatusText);
   } catch (error) {
     console.error('[EquiTrack cloud] Horse cloud mode failed', error);
-    const errorMessage = isPermissionError(error) ? t('horseCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('horseCloud.permissionBlocked') : getCloudErrorMessage(error);
     horseCloudStatusText = t('horseCloud.loadFailed', { error: errorMessage });
     horseCloudWriteMode = false;
     const localData = loadData();
@@ -4289,17 +4436,18 @@ async function saveHorseToCloud(rawHorse) {
   const activeStable = getActiveStable();
   if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
   const row = horseToCloudRow(activeStable.id, rawHorse);
-  const request = rawHorse.cloudId
-    ? supabaseClient
-      .from('horses')
-      .update(row)
-      .eq('stable_id', activeStable.id)
-      .eq('id', rawHorse.cloudId)
-    : supabaseClient
-      .from('horses')
-      .upsert(row, { onConflict: 'stable_id,local_id' });
-  const { data, error } = await request.select('*').single();
-  if (error) throw error;
+  const data = await executeCloudMutation('horses', 'horse save', () => {
+    const request = rawHorse.cloudId
+      ? supabaseClient
+        .from('horses')
+        .update(row)
+        .eq('stable_id', activeStable.id)
+        .eq('id', rawHorse.cloudId)
+      : supabaseClient
+        .from('horses')
+        .upsert(row, { onConflict: 'stable_id,local_id' });
+    return request.select('*').single();
+  });
   return mapCloudHorse(data);
 }
 
@@ -4314,7 +4462,7 @@ async function handleCloudHorseSave(rawHorse) {
     return true;
   } catch (error) {
     console.error('[EquiTrack cloud] Horse save failed', error);
-    const errorMessage = isPermissionError(error) ? t('horseCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('horseCloud.permissionBlocked') : getCloudErrorMessage(error);
     showMessage(t('horseCloud.saveFailed', { error: errorMessage }));
     return false;
   }
@@ -4325,10 +4473,11 @@ async function deleteHorseFromCloud(id) {
   if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
   const horse = state.horses.find((entry) => entry.id === id);
   if (!horse) return;
-  let query = supabaseClient.from('horses').delete().eq('stable_id', activeStable.id);
-  query = horse.cloudId ? query.eq('id', horse.cloudId) : query.eq('local_id', horse.id);
-  const { error } = await query.select('id');
-  if (error) throw error;
+  await executeCloudMutation('horses', 'horse delete', () => {
+    let query = supabaseClient.from('horses').delete().eq('stable_id', activeStable.id);
+    query = horse.cloudId ? query.eq('id', horse.cloudId) : query.eq('local_id', horse.id);
+    return query.select('id');
+  });
 }
 
 async function handleCloudHorseDelete(id) {
@@ -4336,6 +4485,8 @@ async function handleCloudHorseDelete(id) {
     showMessage(t('message.deleteCancelled'));
     return;
   }
+  const lockKey = tryStartCloudAction('horse-delete', id);
+  if (!lockKey) return;
   try {
     await deleteHorseFromCloud(id);
     state.horses = state.horses.filter((horse) => horse.id !== id);
@@ -4344,8 +4495,10 @@ async function handleCloudHorseDelete(id) {
     showMessage(t('horseCloud.deleted'));
   } catch (error) {
     console.error('[EquiTrack cloud] Horse delete failed', error);
-    const errorMessage = isPermissionError(error) ? t('horseCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('horseCloud.permissionBlocked') : getCloudErrorMessage(error);
     showMessage(t('horseCloud.deleteFailed', { error: errorMessage }));
+  } finally {
+    finishCloudAction(lockKey);
   }
 }
 
@@ -4434,7 +4587,7 @@ async function enableTaskCloudWrites() {
     showMessage(taskCloudStatusText);
   } catch (error) {
     console.error('[EquiTrack cloud] Task cloud mode failed', error);
-    const errorMessage = isPermissionError(error) ? t('taskCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('taskCloud.permissionBlocked') : getCloudErrorMessage(error);
     taskCloudStatusText = t('taskCloud.loadFailed', { error: errorMessage });
     taskCloudWriteMode = false;
     const localData = loadData();
@@ -4462,17 +4615,18 @@ async function saveTaskToCloud(rawTask) {
   const activeStable = getActiveStable();
   if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
   const row = taskToCloudRow(activeStable.id, rawTask);
-  const request = rawTask.cloudId
-    ? supabaseClient
-      .from('tasks')
-      .update(row)
-      .eq('stable_id', activeStable.id)
-      .eq('id', rawTask.cloudId)
-    : supabaseClient
-      .from('tasks')
-      .upsert(row, { onConflict: 'stable_id,local_id' });
-  const { data, error } = await request.select('*').single();
-  if (error) throw error;
+  const data = await executeCloudMutation('tasks', 'task save', () => {
+    const request = rawTask.cloudId
+      ? supabaseClient
+        .from('tasks')
+        .update(row)
+        .eq('stable_id', activeStable.id)
+        .eq('id', rawTask.cloudId)
+      : supabaseClient
+        .from('tasks')
+        .upsert(row, { onConflict: 'stable_id,local_id' });
+    return request.select('*').single();
+  });
   const horseIdMap = new Map(state.horses.filter((horse) => horse.cloudId).map((horse) => [horse.cloudId, horse.id]));
   return mapCloudTask(data, horseIdMap);
 }
@@ -4488,7 +4642,7 @@ async function handleCloudTaskSave(rawTask, successMessage = t('taskCloud.saved'
     return true;
   } catch (error) {
     console.error('[EquiTrack cloud] Task save failed', error);
-    const errorMessage = isPermissionError(error) ? t('taskCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('taskCloud.permissionBlocked') : getCloudErrorMessage(error);
     showMessage(t('taskCloud.saveFailed', { error: errorMessage }));
     return false;
   }
@@ -4499,10 +4653,11 @@ async function deleteTaskFromCloud(id) {
   if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
   const task = state.tasks.find((entry) => entry.id === id);
   if (!task) return;
-  let query = supabaseClient.from('tasks').delete().eq('stable_id', activeStable.id);
-  query = task.cloudId ? query.eq('id', task.cloudId) : query.eq('local_id', task.id);
-  const { error } = await query.select('id');
-  if (error) throw error;
+  await executeCloudMutation('tasks', 'task delete', () => {
+    let query = supabaseClient.from('tasks').delete().eq('stable_id', activeStable.id);
+    query = task.cloudId ? query.eq('id', task.cloudId) : query.eq('local_id', task.id);
+    return query.select('id');
+  });
 }
 
 async function handleCloudTaskDelete(id) {
@@ -4510,6 +4665,8 @@ async function handleCloudTaskDelete(id) {
     showMessage(t('message.deleteCancelled'));
     return;
   }
+  const lockKey = tryStartCloudAction('task-delete', id);
+  if (!lockKey) return;
   try {
     await deleteTaskFromCloud(id);
     state.tasks = state.tasks.filter((task) => task.id !== id);
@@ -4517,8 +4674,10 @@ async function handleCloudTaskDelete(id) {
     showMessage(t('taskCloud.deleted'));
   } catch (error) {
     console.error('[EquiTrack cloud] Task delete failed', error);
-    const errorMessage = isPermissionError(error) ? t('taskCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('taskCloud.permissionBlocked') : getCloudErrorMessage(error);
     showMessage(t('taskCloud.deleteFailed', { error: errorMessage }));
+  } finally {
+    finishCloudAction(lockKey);
   }
 }
 
@@ -4607,7 +4766,7 @@ async function enableWorkCloudWrites() {
     showMessage(workCloudStatusText);
   } catch (error) {
     console.error('[EquiTrack cloud] Work log cloud mode failed', error);
-    const errorMessage = isPermissionError(error) ? t('workCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('workCloud.permissionBlocked') : getCloudErrorMessage(error);
     workCloudStatusText = t('workCloud.loadFailed', { error: errorMessage });
     workCloudWriteMode = false;
     const localData = loadData();
@@ -4635,17 +4794,18 @@ async function saveWorkLogToCloud(rawEntry) {
   const activeStable = getActiveStable();
   if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
   const row = workLogToCloudRow(activeStable.id, rawEntry);
-  const request = rawEntry.cloudId
-    ? supabaseClient
-      .from('work_logs')
-      .update(row)
-      .eq('stable_id', activeStable.id)
-      .eq('id', rawEntry.cloudId)
-    : supabaseClient
-      .from('work_logs')
-      .upsert(row, { onConflict: 'stable_id,local_id' });
-  const { data, error } = await request.select('*').single();
-  if (error) throw error;
+  const data = await executeCloudMutation('work_logs', 'work log save', () => {
+    const request = rawEntry.cloudId
+      ? supabaseClient
+        .from('work_logs')
+        .update(row)
+        .eq('stable_id', activeStable.id)
+        .eq('id', rawEntry.cloudId)
+      : supabaseClient
+        .from('work_logs')
+        .upsert(row, { onConflict: 'stable_id,local_id' });
+    return request.select('*').single();
+  });
   const horseIdMap = new Map(state.horses.filter((horse) => horse.cloudId).map((horse) => [horse.cloudId, horse.id]));
   return mapCloudWorkLog(data, horseIdMap);
 }
@@ -4661,7 +4821,7 @@ async function handleCloudWorkLogSave(rawEntry) {
     return true;
   } catch (error) {
     console.error('[EquiTrack cloud] Work log save failed', error);
-    const errorMessage = isPermissionError(error) ? t('workCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('workCloud.permissionBlocked') : getCloudErrorMessage(error);
     showMessage(t('workCloud.saveFailed', { error: errorMessage }));
     return false;
   }
@@ -4672,10 +4832,11 @@ async function deleteWorkLogFromCloud(id) {
   if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
   const entry = state.hours.find((item) => item.id === id);
   if (!entry) return;
-  let query = supabaseClient.from('work_logs').delete().eq('stable_id', activeStable.id);
-  query = entry.cloudId ? query.eq('id', entry.cloudId) : query.eq('local_id', entry.id);
-  const { error } = await query.select('id');
-  if (error) throw error;
+  await executeCloudMutation('work_logs', 'work log delete', () => {
+    let query = supabaseClient.from('work_logs').delete().eq('stable_id', activeStable.id);
+    query = entry.cloudId ? query.eq('id', entry.cloudId) : query.eq('local_id', entry.id);
+    return query.select('id');
+  });
 }
 
 async function handleCloudWorkLogDelete(id) {
@@ -4683,6 +4844,8 @@ async function handleCloudWorkLogDelete(id) {
     showMessage(t('message.deleteCancelled'));
     return;
   }
+  const lockKey = tryStartCloudAction('work-log-delete', id);
+  if (!lockKey) return;
   try {
     await deleteWorkLogFromCloud(id);
     state.hours = state.hours.filter((entry) => entry.id !== id);
@@ -4690,8 +4853,10 @@ async function handleCloudWorkLogDelete(id) {
     showMessage(t('workCloud.deleted'));
   } catch (error) {
     console.error('[EquiTrack cloud] Work log delete failed', error);
-    const errorMessage = isPermissionError(error) ? t('workCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('workCloud.permissionBlocked') : getCloudErrorMessage(error);
     showMessage(t('workCloud.deleteFailed', { error: errorMessage }));
+  } finally {
+    finishCloudAction(lockKey);
   }
 }
 
@@ -4786,7 +4951,7 @@ async function enableFeedCloudWrites() {
     showMessage(feedCloudStatusText);
   } catch (error) {
     console.error('[EquiTrack cloud] Feed inventory cloud mode failed', error);
-    const errorMessage = isPermissionError(error) ? t('feedCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('feedCloud.permissionBlocked') : getCloudErrorMessage(error);
     feedCloudStatusText = t('feedCloud.loadFailed', { error: errorMessage });
     feedCloudWriteMode = false;
     const localData = loadData();
@@ -4814,17 +4979,18 @@ async function saveFeedItemToCloud(rawItem) {
   const activeStable = getActiveStable();
   if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
   const row = feedItemToCloudRow(activeStable.id, rawItem);
-  const request = rawItem.cloudId
-    ? supabaseClient
-      .from('feed_items')
-      .update(row)
-      .eq('stable_id', activeStable.id)
-      .eq('id', rawItem.cloudId)
-    : supabaseClient
-      .from('feed_items')
-      .upsert(row, { onConflict: 'stable_id,local_id' });
-  const { data, error } = await request.select('*').single();
-  if (error) throw error;
+  const data = await executeCloudMutation('feed_items', 'feed item save', () => {
+    const request = rawItem.cloudId
+      ? supabaseClient
+        .from('feed_items')
+        .update(row)
+        .eq('stable_id', activeStable.id)
+        .eq('id', rawItem.cloudId)
+      : supabaseClient
+        .from('feed_items')
+        .upsert(row, { onConflict: 'stable_id,local_id' });
+    return request.select('*').single();
+  });
   return mapCloudFeedItem(data);
 }
 
@@ -4848,7 +5014,7 @@ async function handleCloudFeedItemSave(rawItem, successMessage = t('feedCloud.sa
     return true;
   } catch (error) {
     console.error('[EquiTrack cloud] Feed inventory save failed', error);
-    const errorMessage = isPermissionError(error) ? t('feedCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('feedCloud.permissionBlocked') : getCloudErrorMessage(error);
     showMessage(t('feedCloud.saveFailed', { error: errorMessage }));
     return false;
   }
@@ -4859,10 +5025,11 @@ async function deleteFeedItemFromCloud(id) {
   if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
   const item = state.inventory.find((entry) => entry.id === id);
   if (!item) return;
-  let query = supabaseClient.from('feed_items').delete().eq('stable_id', activeStable.id);
-  query = item.cloudId ? query.eq('id', item.cloudId) : query.eq('local_id', item.id);
-  const { error } = await query.select('id');
-  if (error) throw error;
+  await executeCloudMutation('feed_items', 'feed item delete', () => {
+    let query = supabaseClient.from('feed_items').delete().eq('stable_id', activeStable.id);
+    query = item.cloudId ? query.eq('id', item.cloudId) : query.eq('local_id', item.id);
+    return query.select('id');
+  });
 }
 
 async function handleCloudFeedItemDelete(id) {
@@ -4870,6 +5037,8 @@ async function handleCloudFeedItemDelete(id) {
     showMessage(t('message.deleteCancelled'));
     return;
   }
+  const lockKey = tryStartCloudAction('feed-delete', id);
+  if (!lockKey) return;
   try {
     await deleteFeedItemFromCloud(id);
     state.inventory = state.inventory.filter((item) => item.id !== id);
@@ -4877,8 +5046,10 @@ async function handleCloudFeedItemDelete(id) {
     showMessage(t('feedCloud.deleted'));
   } catch (error) {
     console.error('[EquiTrack cloud] Feed inventory delete failed', error);
-    const errorMessage = isPermissionError(error) ? t('feedCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('feedCloud.permissionBlocked') : getCloudErrorMessage(error);
     showMessage(t('feedCloud.deleteFailed', { error: errorMessage }));
+  } finally {
+    finishCloudAction(lockKey);
   }
 }
 
@@ -5003,7 +5174,7 @@ async function enableCalendarCloudWrites() {
     showMessage(calendarCloudStatusText);
   } catch (error) {
     console.error('[EquiTrack cloud] Calendar cloud mode failed', error);
-    const errorMessage = isPermissionError(error) ? t('calendarCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('calendarCloud.permissionBlocked') : getCloudErrorMessage(error);
     calendarCloudStatusText = t('calendarCloud.loadFailed', { error: errorMessage });
     calendarCloudWriteMode = false;
     const localData = loadData();
@@ -5031,17 +5202,18 @@ async function saveCalendarEventToCloud(rawEvent) {
   const activeStable = getActiveStable();
   if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
   const row = calendarEventToCloudRow(activeStable.id, rawEvent);
-  const request = rawEvent.cloudId
-    ? supabaseClient
-      .from('calendar_events')
-      .update(row)
-      .eq('stable_id', activeStable.id)
-      .eq('id', rawEvent.cloudId)
-    : supabaseClient
-      .from('calendar_events')
-      .upsert(row, { onConflict: 'stable_id,local_id' });
-  const { data, error } = await request.select('*').single();
-  if (error) throw error;
+  const data = await executeCloudMutation('calendar_events', 'calendar event save', () => {
+    const request = rawEvent.cloudId
+      ? supabaseClient
+        .from('calendar_events')
+        .update(row)
+        .eq('stable_id', activeStable.id)
+        .eq('id', rawEvent.cloudId)
+      : supabaseClient
+        .from('calendar_events')
+        .upsert(row, { onConflict: 'stable_id,local_id' });
+    return request.select('*').single();
+  });
   const horseIdMap = new Map(state.horses.filter((horse) => horse.cloudId).map((horse) => [horse.cloudId, horse.id]));
   return mapCloudCalendarEvent(data, horseIdMap);
 }
@@ -5057,7 +5229,7 @@ async function handleCloudCalendarEventSave(rawEvent) {
     return true;
   } catch (error) {
     console.error('[EquiTrack cloud] Calendar event save failed', error);
-    const errorMessage = isPermissionError(error) ? t('calendarCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('calendarCloud.permissionBlocked') : getCloudErrorMessage(error);
     showMessage(t('calendarCloud.saveFailed', { error: errorMessage }));
     return false;
   }
@@ -5068,10 +5240,11 @@ async function deleteCalendarEventFromCloud(id) {
   if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
   const calendarEvent = state.calendarEvents.find((entry) => entry.id === id);
   if (!calendarEvent) return;
-  let query = supabaseClient.from('calendar_events').delete().eq('stable_id', activeStable.id);
-  query = calendarEvent.cloudId ? query.eq('id', calendarEvent.cloudId) : query.eq('local_id', calendarEvent.id);
-  const { error } = await query.select('id');
-  if (error) throw error;
+  await executeCloudMutation('calendar_events', 'calendar event delete', () => {
+    let query = supabaseClient.from('calendar_events').delete().eq('stable_id', activeStable.id);
+    query = calendarEvent.cloudId ? query.eq('id', calendarEvent.cloudId) : query.eq('local_id', calendarEvent.id);
+    return query.select('id');
+  });
 }
 
 async function handleCloudCalendarEventDelete(id) {
@@ -5079,6 +5252,8 @@ async function handleCloudCalendarEventDelete(id) {
     showMessage(t('message.deleteCancelled'));
     return;
   }
+  const lockKey = tryStartCloudAction('calendar-delete', id);
+  if (!lockKey) return;
   try {
     await deleteCalendarEventFromCloud(id);
     state.calendarEvents = state.calendarEvents.filter((entry) => entry.id !== id);
@@ -5086,8 +5261,10 @@ async function handleCloudCalendarEventDelete(id) {
     showMessage(t('calendarCloud.deleted'));
   } catch (error) {
     console.error('[EquiTrack cloud] Calendar event delete failed', error);
-    const errorMessage = isPermissionError(error) ? t('calendarCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('calendarCloud.permissionBlocked') : getCloudErrorMessage(error);
     showMessage(t('calendarCloud.deleteFailed', { error: errorMessage }));
+  } finally {
+    finishCloudAction(lockKey);
   }
 }
 
@@ -5095,17 +5272,18 @@ async function saveCareRecordToCloud(rawRecord) {
   const activeStable = getActiveStable();
   if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
   const row = careRecordToCloudRow(activeStable.id, rawRecord);
-  const request = rawRecord.cloudId
-    ? supabaseClient
-      .from('horse_care_history')
-      .update(row)
-      .eq('stable_id', activeStable.id)
-      .eq('id', rawRecord.cloudId)
-    : supabaseClient
-      .from('horse_care_history')
-      .upsert(row, { onConflict: 'stable_id,local_id' });
-  const { data, error } = await request.select('*').single();
-  if (error) throw error;
+  const data = await executeCloudMutation('horse_care_history', 'care history save', () => {
+    const request = rawRecord.cloudId
+      ? supabaseClient
+        .from('horse_care_history')
+        .update(row)
+        .eq('stable_id', activeStable.id)
+        .eq('id', rawRecord.cloudId)
+      : supabaseClient
+        .from('horse_care_history')
+        .upsert(row, { onConflict: 'stable_id,local_id' });
+    return request.select('*').single();
+  });
   const horseIdMap = new Map(state.horses.filter((horse) => horse.cloudId).map((horse) => [horse.cloudId, horse.id]));
   return mapCloudCareRecord(data, horseIdMap);
 }
@@ -5121,7 +5299,7 @@ async function handleCloudCareRecordSave(rawRecord) {
     return true;
   } catch (error) {
     console.error('[EquiTrack cloud] Care history save failed', error);
-    const errorMessage = isPermissionError(error) ? t('careCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('careCloud.permissionBlocked') : getCloudErrorMessage(error);
     showMessage(t('careCloud.saveFailed', { error: errorMessage }));
     return false;
   }
@@ -5132,10 +5310,11 @@ async function deleteCareRecordFromCloud(id) {
   if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
   const careRecord = state.careHistory.find((entry) => entry.id === id);
   if (!careRecord) return;
-  let query = supabaseClient.from('horse_care_history').delete().eq('stable_id', activeStable.id);
-  query = careRecord.cloudId ? query.eq('id', careRecord.cloudId) : query.eq('local_id', careRecord.id);
-  const { error } = await query.select('id');
-  if (error) throw error;
+  await executeCloudMutation('horse_care_history', 'care history delete', () => {
+    let query = supabaseClient.from('horse_care_history').delete().eq('stable_id', activeStable.id);
+    query = careRecord.cloudId ? query.eq('id', careRecord.cloudId) : query.eq('local_id', careRecord.id);
+    return query.select('id');
+  });
 }
 
 async function handleCloudCareRecordDelete(id) {
@@ -5143,6 +5322,8 @@ async function handleCloudCareRecordDelete(id) {
     showMessage(t('message.deleteCancelled'));
     return;
   }
+  const lockKey = tryStartCloudAction('care-delete', id);
+  if (!lockKey) return;
   try {
     await deleteCareRecordFromCloud(id);
     state.careHistory = state.careHistory.filter((entry) => entry.id !== id);
@@ -5150,8 +5331,10 @@ async function handleCloudCareRecordDelete(id) {
     showMessage(t('careCloud.deleted'));
   } catch (error) {
     console.error('[EquiTrack cloud] Care history delete failed', error);
-    const errorMessage = isPermissionError(error) ? t('careCloud.permissionBlocked') : getAuthErrorMessage(error);
+    const errorMessage = isPermissionError(error) ? t('careCloud.permissionBlocked') : getCloudErrorMessage(error);
     showMessage(t('careCloud.deleteFailed', { error: errorMessage }));
+  } finally {
+    finishCloudAction(lockKey);
   }
 }
 
@@ -6313,6 +6496,7 @@ function render() {
   renderMigrationPreview();
   renderCloudReadPreview();
   renderCloudMode();
+  renderCloudSaveStatus();
   renderHorseCloudMode();
   renderTaskCloudMode();
   renderWorkCloudMode();
@@ -6991,9 +7175,7 @@ function handleHorseSubmit(event) {
     if (!horse.id) horse.id = createId();
     const existingHorse = state.horses.find((entry) => entry.id === horse.id);
     if (existingHorse?.cloudId) horse.cloudId = existingHorse.cloudId;
-    handleCloudHorseSave(horse).then((saved) => {
-      if (saved) resetForm(form);
-    });
+    runCloudFormSubmit(form, 'horse-save', horse.id, () => handleCloudHorseSave(horse), () => resetForm(form));
     return;
   }
   upsert('horses', horse);
@@ -7026,9 +7208,7 @@ function handleCareSubmit(event) {
   if (cloudWriteMode) {
     if (!careRecord.id) careRecord.id = createId();
     if (existing?.cloudId) careRecord.cloudId = existing.cloudId;
-    handleCloudCareRecordSave(careRecord).then((saved) => {
-      if (saved) resetForm(form);
-    });
+    runCloudFormSubmit(form, 'care-save', careRecord.id, () => handleCloudCareRecordSave(careRecord), () => resetForm(form));
     return;
   }
   upsert('careHistory', normalizeCareRecord(careRecord));
@@ -7052,11 +7232,9 @@ function handleTaskSubmit(event) {
     if (!task.id) task.id = createId();
     const existingTask = state.tasks.find((entry) => entry.id === task.id);
     if (existingTask?.cloudId) task.cloudId = existingTask.cloudId;
-    handleCloudTaskSave(task).then((saved) => {
-      if (saved) {
-        resetForm(form);
-        form.elements.date.value = today();
-      }
+    runCloudFormSubmit(form, 'task-save', task.id, () => handleCloudTaskSave(task), () => {
+      resetForm(form);
+      form.elements.date.value = today();
     });
     return;
   }
@@ -7082,11 +7260,9 @@ function handleHoursSubmit(event) {
     const existingEntry = state.hours.find((item) => item.id === entry.id);
     if (existingEntry?.cloudId) entry.cloudId = existingEntry.cloudId;
     if (existingEntry?.horseId) entry.horseId = existingEntry.horseId;
-    handleCloudWorkLogSave(entry).then((saved) => {
-      if (saved) {
-        resetForm(form);
-        form.elements.date.value = today();
-      }
+    runCloudFormSubmit(form, 'work-log-save', entry.id, () => handleCloudWorkLogSave(entry), () => {
+      resetForm(form);
+      form.elements.date.value = today();
     });
     return;
   }
@@ -7132,9 +7308,7 @@ function handleInventorySubmit(event) {
     if (!feedItem.id) feedItem.id = createId();
     const existingItem = state.inventory.find((item) => item.id === feedItem.id);
     if (existingItem?.cloudId) feedItem.cloudId = existingItem.cloudId;
-    handleCloudFeedItemSave(feedItem).then((saved) => {
-      if (saved) resetForm(form);
-    });
+    runCloudFormSubmit(form, 'feed-save', feedItem.id, () => handleCloudFeedItemSave(feedItem), () => resetForm(form));
     return;
   }
   upsert('inventory', feedItem);
@@ -7168,13 +7342,11 @@ function handleEventSubmit(event) {
     if (!calendarEvent.id) calendarEvent.id = createId();
     const existingEvent = state.calendarEvents.find((entry) => entry.id === calendarEvent.id);
     if (existingEvent?.cloudId) calendarEvent.cloudId = existingEvent.cloudId;
-    handleCloudCalendarEventSave(calendarEvent).then((saved) => {
-      if (saved) {
-        selectedCalendarDate = calendarEvent.date || selectedCalendarDate;
-        calendarCursor = new Date(`${selectedCalendarDate}T00:00:00`);
-        resetForm(form);
-        form.elements.date.value = selectedCalendarDate;
-      }
+    runCloudFormSubmit(form, 'calendar-save', calendarEvent.id, () => handleCloudCalendarEventSave(calendarEvent), () => {
+      selectedCalendarDate = calendarEvent.date || selectedCalendarDate;
+      calendarCursor = new Date(`${selectedCalendarDate}T00:00:00`);
+      resetForm(form);
+      form.elements.date.value = selectedCalendarDate;
     });
     return;
   }
@@ -7291,7 +7463,7 @@ function toggleShoppingStatus(id) {
   if (!found) return;
   const nextItem = { ...normalizeFeedItem(found), shoppingListed: !normalizeFeedItem(found).shoppingListed };
   if (cloudWriteMode) {
-    handleCloudFeedItemSave(nextItem, t('feedCloud.shoppingUpdated'));
+    runCloudAction('feed-shopping', id, () => handleCloudFeedItemSave(nextItem, t('feedCloud.shoppingUpdated')));
     return;
   }
   state.inventory = state.inventory.map((item) => (item.id === id ? nextItem : item));
@@ -7512,7 +7684,7 @@ function toggleTask(id) {
   if (!task) return;
   const nextTask = { ...task, done: !task.done };
   if (cloudWriteMode) {
-    handleCloudTaskSave(nextTask, t('taskCloud.toggled'));
+    runCloudAction('task-toggle', id, () => handleCloudTaskSave(nextTask, t('taskCloud.toggled')));
     return;
   }
   task.done = nextTask.done;
