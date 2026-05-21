@@ -692,8 +692,10 @@
               <p data-i18n="raceEntries.importHelp">CSV or plain text import foundation is available. PDF/Excel import will be added later.</p>
             </div>
           </div>
-          <label class="file-button button secondary"><span data-i18n="raceEntries.importButton">Import race file</span><input id="raceImportInput" type="file" accept=".csv,.txt,text/csv,text/plain"></label>
+          <label class="file-button button secondary"><span data-i18n="raceEntries.importButton">Import race file</span><input id="raceImportInput" type="file" accept=".pdf,.csv,.txt,application/pdf,text/csv,text/plain"></label>
           <p id="raceImportStatus" class="status-text" data-i18n="raceEntries.importPlaceholder">Manual entry works now. PDF/Excel import will be added later.</p>
+          <div id="raceImportPreview" class="race-import-preview"></div>
+          <button id="raceImportSaveButton" class="button primary" type="button" hidden data-i18n="raceEntries.saveImported">Save selected races</button>
         </section>
 
         <section class="race-entry-list-section">

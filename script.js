@@ -16,6 +16,8 @@ const DEFAULT_LANGUAGE = 'en';
 const EVENT_TYPES = ['race', 'training', 'shoeing', 'vaccination', 'vet', 'feeding', 'other'];
 const CARE_TYPES = ['shoeing', 'vaccination', 'deworming', 'vet', 'medication', 'injury', 'dental', 'other'];
 const RACE_ENTRY_STATUSES = ['draft', 'ready', 'sent'];
+const PDFJS_CDN_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+const PDFJS_WORKER_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 const PROTECTED_VIEWS = ['stable', 'calendar', 'raceEntries', 'settings'];
 const CLOUD_WRITE_TIMEOUT_MS = 15000;
 const ADMIN_PERMISSION_FIELDS = [
@@ -2734,10 +2736,23 @@ Object.assign(translations.en, {
   'raceEntries.createDraft': 'Create email draft',
   'raceEntries.mailtoNotice': 'This creates an email draft. Check all details before sending.',
   'raceEntries.importTitle': 'Import race file',
-  'raceEntries.importHelp': 'CSV or plain text import foundation is available. PDF/Excel import will be added later.',
+  'raceEntries.importHelp': 'Import Italian race-program PDFs, CSV, or plain text as a reviewable draft. PDF/Excel import is best-effort.',
   'raceEntries.importButton': 'Import race file',
-  'raceEntries.importPlaceholder': 'Manual entry works now. PDF/Excel import will be added later.',
+  'raceEntries.importPlaceholder': 'Upload an Italian race-program PDF, CSV, or text file. Review imported races before saving.',
   'raceEntries.importLoaded': 'Race file loaded. Review the text and add opportunities manually for now.',
+  'raceEntries.importPdf': 'Import PDF',
+  'raceEntries.readingPdf': 'Reading PDF...',
+  'raceEntries.racesFound': 'Races found: {count}',
+  'raceEntries.reviewImported': 'Review imported races before saving.',
+  'raceEntries.saveImported': 'Save selected races',
+  'raceEntries.removeImported': 'Remove from import',
+  'raceEntries.pdfReadFailed': 'Could not read this PDF. Try manual entry.',
+  'raceEntries.noRacesFound': 'No races found in this file. Try manual entry.',
+  'raceEntries.pdfUnavailable': 'PDF import is unavailable. Please enter races manually.',
+  'raceEntries.importSaved': 'Imported {count} race opportunity/opportunities.',
+  'raceEntries.importSaveFailed': 'Imported races could not be saved: {error}',
+  'raceEntries.importTextLoaded': 'Text file loaded. Races found: {count}. Review before saving.',
+  'raceEntries.importCsvLoaded': 'CSV file loaded. Races found: {count}. Review before saving.',
   'raceEntries.savedOpportunity': 'Race opportunity saved.',
   'raceEntries.deletedOpportunity': 'Race opportunity deleted.',
   'raceEntries.savedPlan': 'Planned race entry saved.',
@@ -2799,10 +2814,23 @@ Object.assign(translations.fi, {
   'raceEntries.createDraft': 'Luo sähköpostiluonnos',
   'raceEntries.mailtoNotice': 'Tämä luo sähköpostiluonnoksen. Tarkista tiedot ennen lähettämistä.',
   'raceEntries.importTitle': 'Tuo lähtötiedosto',
-  'raceEntries.importHelp': 'CSV- tai tekstitiedoston tuonnin pohja on valmis. PDF/Excel-tuonti lisätään myöhemmin.',
+  'raceEntries.importHelp': 'Tuo italialaisia lähtöohjelmien PDF-, CSV- tai tekstitiedostoja tarkistettavaksi luonnokseksi. PDF/Excel-tuonti on paras yritys.',
   'raceEntries.importButton': 'Tuo lähtötiedosto',
-  'raceEntries.importPlaceholder': 'Käsin lisääminen toimii nyt. PDF/Excel-tuonti lisätään myöhemmin.',
+  'raceEntries.importPlaceholder': 'Lataa italialainen lähtöohjelman PDF-, CSV- tai tekstitiedosto. Tarkista tuodut lähdöt ennen tallennusta.',
   'raceEntries.importLoaded': 'Lähtötiedosto ladattu. Tarkista teksti ja lisää lähdöt käsin toistaiseksi.',
+  'raceEntries.importPdf': 'Tuo PDF',
+  'raceEntries.readingPdf': 'Luetaan PDF-tiedostoa...',
+  'raceEntries.racesFound': 'Lähtöjä löytyi: {count}',
+  'raceEntries.reviewImported': 'Tarkista tuodut lähdöt ennen tallennusta.',
+  'raceEntries.saveImported': 'Tallenna valitut lähdöt',
+  'raceEntries.removeImported': 'Poista tuonnista',
+  'raceEntries.pdfReadFailed': 'PDF-tiedostoa ei voitu lukea. Lisää lähdöt käsin.',
+  'raceEntries.noRacesFound': 'Tiedostosta ei löytynyt lähtöjä. Kokeile käsin lisäämistä.',
+  'raceEntries.pdfUnavailable': 'PDF-tuonti ei ole käytettävissä. Lisää lähdöt käsin.',
+  'raceEntries.importSaved': 'Tuotiin {count} lähtöä.',
+  'raceEntries.importSaveFailed': 'Tuotuja lähtöjä ei voitu tallentaa: {error}',
+  'raceEntries.importTextLoaded': 'Tekstitiedosto ladattu. Lähtöjä löytyi: {count}. Tarkista ennen tallennusta.',
+  'raceEntries.importCsvLoaded': 'CSV-tiedosto ladattu. Lähtöjä löytyi: {count}. Tarkista ennen tallennusta.',
   'raceEntries.savedOpportunity': 'Lähtö tallennettu.',
   'raceEntries.deletedOpportunity': 'Lähtö poistettu.',
   'raceEntries.savedPlan': 'Suunniteltu ilmoittautuminen tallennettu.',
@@ -2864,10 +2892,23 @@ Object.assign(translations.it, {
   'raceEntries.createDraft': 'Crea bozza email',
   'raceEntries.mailtoNotice': 'Questo crea una bozza email. Controlla i dati prima di inviarla.',
   'raceEntries.importTitle': 'Importa file gare',
-  'raceEntries.importHelp': 'È disponibile una base per CSV o testo semplice. L’importazione PDF/Excel sarà aggiunta più avanti.',
+  'raceEntries.importHelp': 'Importa PDF, CSV o testi di programmi gara italiani come bozza da rivedere. L’importazione PDF/Excel è indicativa.',
   'raceEntries.importButton': 'Importa file gare',
-  'raceEntries.importPlaceholder': 'L’inserimento manuale funziona ora. L’importazione PDF/Excel sarà aggiunta più avanti.',
+  'raceEntries.importPlaceholder': 'Carica un PDF, CSV o file di testo di un programma gara italiano. Rivedi le gare importate prima di salvarle.',
   'raceEntries.importLoaded': 'File gara caricato. Rivedi il testo e aggiungi manualmente le opportunità per ora.',
+  'raceEntries.importPdf': 'Importa PDF',
+  'raceEntries.readingPdf': 'Lettura PDF...',
+  'raceEntries.racesFound': 'Gare trovate: {count}',
+  'raceEntries.reviewImported': 'Rivedi le gare importate prima di salvarle.',
+  'raceEntries.saveImported': 'Salva gare selezionate',
+  'raceEntries.removeImported': 'Rimuovi dall’importazione',
+  'raceEntries.pdfReadFailed': 'Impossibile leggere questo PDF. Usa l’inserimento manuale.',
+  'raceEntries.noRacesFound': 'Nessuna gara trovata in questo file. Prova l’inserimento manuale.',
+  'raceEntries.pdfUnavailable': 'Importazione PDF non disponibile. Inserisci le gare manualmente.',
+  'raceEntries.importSaved': 'Importate {count} opportunità gara.',
+  'raceEntries.importSaveFailed': 'Impossibile salvare le gare importate: {error}',
+  'raceEntries.importTextLoaded': 'File di testo caricato. Gare trovate: {count}. Rivedi prima di salvare.',
+  'raceEntries.importCsvLoaded': 'File CSV caricato. Gare trovate: {count}. Rivedi prima di salvare.',
   'raceEntries.savedOpportunity': 'Opportunità gara salvata.',
   'raceEntries.deletedOpportunity': 'Opportunità gara eliminata.',
   'raceEntries.savedPlan': 'Iscrizione pianificata salvata.',
@@ -2961,6 +3002,7 @@ let calendarCloudWriteMode = false;
 let calendarCloudStatusText = '';
 let cloudSaveState = 'idle';
 let cloudSaveStatusTimer = null;
+let raceImportPreviewItems = [];
 const cloudMutationLocks = new Set();
 let cloudState = {
   status: 'notConnected',
@@ -3043,6 +3085,8 @@ const els = {
   raceOpportunityList: document.querySelector('#raceOpportunityList'),
   raceImportInput: document.querySelector('#raceImportInput'),
   raceImportStatus: document.querySelector('#raceImportStatus'),
+  raceImportPreview: document.querySelector('#raceImportPreview'),
+  raceImportSaveButton: document.querySelector('#raceImportSaveButton'),
   horseForm: document.querySelector('#horseForm'),
   careForm: document.querySelector('#careForm'),
   careHistoryList: document.querySelector('#careHistoryList'),
@@ -3323,6 +3367,222 @@ function normalizeRacePlan(item) {
     createdAt: item.createdAt || item.created_at || '',
     updatedAt: item.updatedAt || item.updated_at || ''
   };
+}
+
+function slugifyRaceImport(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 54) || 'race';
+}
+
+function createRaceImportLocalId(race) {
+  const date = race.raceDate || 'unknown-date';
+  const number = race.raceNumber || 'x';
+  return `race-import-${slugifyRaceImport(race.racetrackName || 'napoli')}-${date}-${number}-${slugifyRaceImport(race.raceName)}`;
+}
+
+function normalizeItalianProgramText(text) {
+  return String(text || '')
+    .replace(/\r/g, '\n')
+    .replace(/\u00a0/g, ' ')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function parseItalianProgramDate(line) {
+  const months = {
+    gennaio: '01',
+    febbraio: '02',
+    marzo: '03',
+    aprile: '04',
+    maggio: '05',
+    giugno: '06',
+    luglio: '07',
+    agosto: '08',
+    settembre: '09',
+    ottobre: '10',
+    novembre: '11',
+    dicembre: '12'
+  };
+  const match = String(line || '').match(/\b\d+\s*\^\s*GIORNATA\s*-\s*[^\d]*(\d{1,2})\s+([A-Za-zÀ-ÿ]+)\s+(\d{4})/i);
+  if (!match) return '';
+  const day = match[1].padStart(2, '0');
+  const month = months[match[2].toLowerCase()];
+  if (!month) return '';
+  return `${match[3]}-${month}-${day}`;
+}
+
+function looksLikeItalianRaceLine(line) {
+  const value = String(line || '').trim();
+  if (!/^\d{1,2}\s+\S+/.test(value)) return false;
+  if (/^\d+\s*\^/.test(value)) return false;
+  if (/^(?:Mt\.?|Metri)\b/i.test(value)) return false;
+  if (/^\d{1,2}\s+(?:maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre|gennaio|febbraio|marzo|aprile)\b/i.test(value)) return false;
+  return /[A-Za-zÀ-ÿ]{3,}/.test(value);
+}
+
+function isItalianRaceBodyLine(line) {
+  return /^(Per|Mt\.?|Metri|Riservata|Riservato|EVENTUALE|VEDI|Batteria|FINALE|CONSOLAZIONE|Massimo|Max)\b/i.test(String(line || '').trim());
+}
+
+function parseItalianRaceHeader(line) {
+  const match = String(line || '').trim().match(/^(\d{1,2})\s+(.+)$/);
+  if (!match) return null;
+  const rest = match[2].trim();
+  const prizeMatch = rest.match(/\(([^)]*€[^)]*)\)/i);
+  const prizeInfo = prizeMatch ? prizeMatch[1].trim() : '';
+  const beforePrize = prizeMatch ? rest.slice(0, prizeMatch.index).trim() : rest;
+  const afterPrize = prizeMatch ? rest.slice(prizeMatch.index + prizeMatch[0].length).trim() : '';
+  return {
+    raceNumber: match[1],
+    raceName: beforePrize || rest,
+    prizeInfo,
+    raceClass: afterPrize
+  };
+}
+
+function extractDistanceFromLines(lines) {
+  const match = lines.join(' ').match(/\b(?:Mt\.?|Metri)\s*([\d.,/]+)/i);
+  return match ? match[0].replace(/\s+/g, ' ').trim() : '';
+}
+
+function extractStartMethodFromLines(lines) {
+  const text = lines.join(' ');
+  if (/autostart/i.test(text)) return 'Autostart';
+  if (/nastri/i.test(text)) return 'Nastri';
+  if (/partenza/i.test(text)) {
+    const match = text.match(/partenza[^.]{0,60}/i);
+    return match ? match[0].trim() : '';
+  }
+  return '';
+}
+
+function extractEligibilityFromLines(lines) {
+  const eligibilityLines = lines.filter((line) => /^(Per|Riservata|Riservato|Handicap|Invito)\b/i.test(line.trim()));
+  return eligibilityLines.join(' ').trim();
+}
+
+function buildRaceOpportunityFromBlock(currentDate, header, bodyLines) {
+  const normalizedBody = bodyLines.map((line) => line.trim()).filter(Boolean);
+  const opportunity = normalizeRaceOpportunity({
+    id: createRaceImportLocalId({
+      racetrackName: 'Napoli',
+      raceDate: currentDate,
+      raceNumber: header.raceNumber,
+      raceName: header.raceName
+    }),
+    racetrackName: 'Napoli',
+    raceDate: currentDate,
+    raceNumber: header.raceNumber,
+    raceName: header.raceName,
+    raceClass: header.raceClass,
+    distance: extractDistanceFromLines(normalizedBody),
+    startMethod: extractStartMethodFromLines(normalizedBody),
+    prizeInfo: header.prizeInfo,
+    eligibilityNotes: extractEligibilityFromLines(normalizedBody),
+    notes: normalizedBody.join('\n')
+  });
+  opportunity.id = createRaceImportLocalId(opportunity);
+  return opportunity;
+}
+
+function parseItalianRaceProgramText(text) {
+  const lines = normalizeItalianProgramText(text)
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const races = [];
+  let currentDate = '';
+  let currentHeader = null;
+  let currentHeaderLines = [];
+  let currentBody = [];
+
+  const finalizeHeaderDraft = () => {
+    if (!currentHeader && currentHeaderLines.length) {
+      currentHeader = parseItalianRaceHeader(currentHeaderLines.join(' '));
+      currentHeaderLines = [];
+    }
+  };
+
+  const flushRace = () => {
+    finalizeHeaderDraft();
+    if (!currentHeader || !currentDate) return;
+    races.push(buildRaceOpportunityFromBlock(currentDate, currentHeader, currentBody));
+    currentHeader = null;
+    currentHeaderLines = [];
+    currentBody = [];
+  };
+
+  lines.forEach((line) => {
+    const parsedDate = parseItalianProgramDate(line);
+    if (parsedDate) {
+      flushRace();
+      currentDate = parsedDate;
+      return;
+    }
+    if (!currentDate) return;
+    if (/^\d{1,2}$/.test(line)) {
+      flushRace();
+      currentHeaderLines = [line];
+      return;
+    }
+    if (currentHeaderLines.length) {
+      if (isItalianRaceBodyLine(line)) {
+        finalizeHeaderDraft();
+        if (currentHeader) currentBody.push(line);
+        return;
+      }
+      currentHeaderLines.push(line);
+      return;
+    }
+    if (looksLikeItalianRaceLine(line)) {
+      const parsedHeader = parseItalianRaceHeader(line);
+      if (parsedHeader) {
+        flushRace();
+        currentHeaderLines = [line];
+        return;
+      }
+    }
+    if (currentHeader) currentBody.push(line);
+  });
+  flushRace();
+  return races;
+}
+
+function parseRaceCsvOrText(text, type = 'text') {
+  const parsedProgram = parseItalianRaceProgramText(text);
+  if (parsedProgram.length || type === 'pdf') return parsedProgram;
+  return normalizeItalianProgramText(text)
+    .split('\n')
+    .map((line, index) => {
+      const parts = line.split(/[;,]/).map((part) => part.trim());
+      if (parts.length < 2 || !parts[0]) return null;
+      const raceDate = isValidDate(parts[1]) || today();
+      return normalizeRaceOpportunity({
+        id: createRaceImportLocalId({
+          racetrackName: parts[0] || 'Napoli',
+          raceDate,
+          raceNumber: parts[2] || String(index + 1),
+          raceName: parts[3] || parts[2] || `Race ${index + 1}`
+        }),
+        racetrackName: parts[0] || 'Napoli',
+        raceDate,
+        raceNumber: parts[2] || '',
+        raceName: parts[3] || '',
+        raceClass: parts[4] || '',
+        distance: parts[5] || '',
+        prizeInfo: parts[6] || '',
+        eligibilityNotes: parts[7] || '',
+        contactEmail: parts[8] || '',
+        notes: line
+      });
+    })
+    .filter(Boolean);
 }
 
 function normalizeTask(item) {
@@ -7653,11 +7913,55 @@ function getRacePlansForOpportunity(opportunityId) {
     .filter((plan) => plan.opportunityId === opportunityId);
 }
 
+function renderRaceImportPreview() {
+  if (!els.raceImportPreview) return;
+  if (!raceImportPreviewItems.length) {
+    els.raceImportPreview.innerHTML = '';
+    if (els.raceImportSaveButton) els.raceImportSaveButton.hidden = true;
+    return;
+  }
+  els.raceImportPreview.innerHTML = `
+    <div class="module-header">
+      <div>
+        <h4>${t('raceEntries.reviewImported')}</h4>
+        <p>${t('raceEntries.racesFound', { count: raceImportPreviewItems.length })}</p>
+      </div>
+    </div>
+    <div class="race-import-list">
+      ${raceImportPreviewItems.map((race) => `
+        <article class="race-import-card" data-import-id="${race.id}">
+          <label class="checkbox-line">
+            <input type="checkbox" data-import-field="selected" ${race.selected ? 'checked' : ''}>
+            <span>${escapeHtml([race.raceDate, race.raceNumber, race.raceName].filter(Boolean).join(' - '))}</span>
+          </label>
+          <div class="entry-form compact-form">
+            <label><span>${t('raceEntries.racetrack')}</span><input data-import-field="racetrackName" value="${escapeHtml(race.racetrackName)}"></label>
+            <label><span>${t('raceEntries.raceDate')}</span><input data-import-field="raceDate" type="date" value="${escapeHtml(race.raceDate)}"></label>
+            <label><span>${t('raceEntries.raceNumber')}</span><input data-import-field="raceNumber" value="${escapeHtml(race.raceNumber)}"></label>
+            <label><span>${t('raceEntries.raceName')}</span><input data-import-field="raceName" value="${escapeHtml(race.raceName)}"></label>
+            <label><span>${t('raceEntries.prizeInfo')}</span><input data-import-field="prizeInfo" value="${escapeHtml(race.prizeInfo)}"></label>
+            <label><span>${t('raceEntries.distance')}</span><input data-import-field="distance" value="${escapeHtml(race.distance)}"></label>
+            <label class="full"><span>${t('raceEntries.raceClass')}</span><input data-import-field="raceClass" value="${escapeHtml(race.raceClass)}"></label>
+            <label class="full"><span>${t('raceEntries.eligibilityNotes')}</span><textarea data-import-field="eligibilityNotes" rows="2">${escapeHtml(race.eligibilityNotes)}</textarea></label>
+            <label class="full"><span>${t('common.notesSimple')}</span><textarea data-import-field="notes" rows="3">${escapeHtml(race.notes)}</textarea></label>
+          </div>
+          <button class="button ghost danger" type="button" data-action="remove-imported-race" data-id="${race.id}">${t('raceEntries.removeImported')}</button>
+        </article>
+      `).join('')}
+    </div>
+  `;
+  if (els.raceImportSaveButton) {
+    els.raceImportSaveButton.hidden = false;
+    els.raceImportSaveButton.disabled = !raceImportPreviewItems.some((race) => race.selected);
+  }
+}
+
 function renderRaceEntries() {
   if (!els.raceOpportunityList) return;
   const activeStable = getActiveStable();
   if (els.raceEntriesStableBadge) els.raceEntriesStableBadge.textContent = activeStable.name || t('cloudRead.noStable');
   if (els.raceEntriesModeBadge) els.raceEntriesModeBadge.textContent = cloudWriteMode ? t('calendar.cloudMode') : t('calendar.localMode');
+  renderRaceImportPreview();
   if (!state.raceEntryOpportunities.length) {
     els.raceOpportunityList.innerHTML = `<p class="empty-state">${t('raceEntries.empty')}</p>`;
     return;
@@ -8477,18 +8781,180 @@ function createRaceEmailDraft(planId) {
   window.location.href = href;
 }
 
+function loadPdfJs() {
+  if (window.pdfjsLib?.getDocument) return Promise.resolve(window.pdfjsLib);
+  return new Promise((resolve, reject) => {
+    const existing = document.querySelector(`script[src="${PDFJS_CDN_URL}"]`);
+    const script = existing || document.createElement('script');
+    script.src = PDFJS_CDN_URL;
+    script.async = true;
+    script.onload = () => {
+      if (!window.pdfjsLib?.getDocument) {
+        reject(new Error('PDF.js did not initialize'));
+        return;
+      }
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_URL;
+      resolve(window.pdfjsLib);
+    };
+    script.onerror = () => reject(new Error('PDF.js failed to load'));
+    if (!existing) document.head.appendChild(script);
+  });
+}
+
+function linesFromPdfTextContent(textContent) {
+  const items = (textContent.items || [])
+    .filter((item) => String(item.str || '').trim())
+    .map((item) => ({
+      text: String(item.str || '').trim(),
+      x: Number(item.transform?.[4] || 0),
+      y: Number(item.transform?.[5] || 0)
+    }))
+    .sort((a, b) => Math.abs(b.y - a.y) > 2 ? b.y - a.y : a.x - b.x);
+  const lines = [];
+  items.forEach((item) => {
+    const line = lines.find((entry) => Math.abs(entry.y - item.y) <= 2);
+    if (line) line.items.push(item);
+    else lines.push({ y: item.y, items: [item] });
+  });
+  return lines
+    .sort((a, b) => b.y - a.y)
+    .map((line) => line.items.sort((a, b) => a.x - b.x).map((item) => item.text).join(' ').replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+}
+
+async function extractPdfText(file) {
+  const pdfjsLib = await loadPdfJs();
+  const bytes = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+  const pages = [];
+  for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+    const page = await pdf.getPage(pageNumber);
+    const textContent = await page.getTextContent();
+    pages.push(linesFromPdfTextContent(textContent).join('\n'));
+  }
+  return pages.join('\n');
+}
+
+function setRaceImportPreview(races, statusKey = 'raceEntries.racesFound') {
+  raceImportPreviewItems = races.map((race) => ({
+    ...normalizeRaceOpportunity(race),
+    id: createRaceImportLocalId(race),
+    selected: race.selected !== false
+  }));
+  if (els.raceImportStatus) {
+    els.raceImportStatus.textContent = raceImportPreviewItems.length
+      ? `${t(statusKey, { count: raceImportPreviewItems.length })} ${t('raceEntries.reviewImported')}`
+      : t('raceEntries.noRacesFound');
+  }
+  renderRaceImportPreview();
+}
+
 async function handleRaceImportFile(event) {
   const file = event.target.files?.[0];
   if (!file) return;
+  raceImportPreviewItems = [];
+  renderRaceImportPreview();
   try {
-    await file.text();
-    if (els.raceImportStatus) els.raceImportStatus.textContent = t('raceEntries.importLoaded');
-    showMessage(t('raceEntries.importLoaded'));
+    const fileName = file.name.toLowerCase();
+    const isPdf = file.type === 'application/pdf' || fileName.endsWith('.pdf');
+    const isCsv = file.type === 'text/csv' || fileName.endsWith('.csv');
+    let text = '';
+    if (isPdf) {
+      if (els.raceImportStatus) els.raceImportStatus.textContent = t('raceEntries.readingPdf');
+      text = await extractPdfText(file);
+    } else {
+      text = await file.text();
+    }
+    const races = parseRaceCsvOrText(text, isPdf ? 'pdf' : isCsv ? 'csv' : 'text');
+    if (!races.length) {
+      if (els.raceImportStatus) els.raceImportStatus.textContent = t('raceEntries.noRacesFound');
+      showMessage(t('raceEntries.noRacesFound'));
+      return;
+    }
+    setRaceImportPreview(races, isPdf ? 'raceEntries.racesFound' : isCsv ? 'raceEntries.importCsvLoaded' : 'raceEntries.importTextLoaded');
+    showMessage(t('raceEntries.racesFound', { count: races.length }));
   } catch (error) {
     console.error('[EquiTrack race entries] Race file import failed', error);
-    if (els.raceImportStatus) els.raceImportStatus.textContent = t('raceEntries.importPlaceholder');
+    const fileName = file.name.toLowerCase();
+    const isPdf = file.type === 'application/pdf' || fileName.endsWith('.pdf');
+    const message = isPdf && /pdf\.js|pdfjs|load|initialize/i.test(String(error?.message || error))
+      ? t('raceEntries.pdfUnavailable')
+      : isPdf
+        ? t('raceEntries.pdfReadFailed')
+        : t('raceEntries.importPlaceholder');
+    if (els.raceImportStatus) els.raceImportStatus.textContent = message;
+    showMessage(message);
   } finally {
     event.target.value = '';
+  }
+}
+
+function updateRaceImportPreviewField(target) {
+  const card = target.closest('[data-import-id]');
+  const field = target.dataset.importField;
+  if (!card || !field) return;
+  const item = raceImportPreviewItems.find((race) => race.id === card.dataset.importId);
+  if (!item) return;
+  if (field === 'selected') item.selected = target.checked;
+  else item[field] = target.value;
+  if (els.raceImportSaveButton) els.raceImportSaveButton.disabled = !raceImportPreviewItems.some((race) => race.selected);
+}
+
+function removeImportedRace(id) {
+  raceImportPreviewItems = raceImportPreviewItems.filter((race) => race.id !== id);
+  if (els.raceImportStatus) {
+    els.raceImportStatus.textContent = raceImportPreviewItems.length
+      ? `${t('raceEntries.racesFound', { count: raceImportPreviewItems.length })} ${t('raceEntries.reviewImported')}`
+      : t('raceEntries.noRacesFound');
+  }
+  renderRaceImportPreview();
+}
+
+async function saveImportedRaceOpportunities() {
+  if (blockCloudPreviewEdit()) return;
+  const selected = raceImportPreviewItems.filter((race) => race.selected).map((race) => {
+    const normalized = normalizeRaceOpportunity(race);
+    const now = new Date().toISOString();
+    normalized.id = createRaceImportLocalId(normalized);
+    normalized.createdAt = normalized.createdAt || now;
+    normalized.updatedAt = now;
+    return normalized;
+  });
+  if (!selected.length) return;
+  if (els.raceImportSaveButton) els.raceImportSaveButton.disabled = true;
+  try {
+    if (cloudWriteMode) {
+      for (const opportunity of selected) {
+        const existing = state.raceEntryOpportunities.find((entry) => entry.id === opportunity.id);
+        if (existing?.cloudId) opportunity.cloudId = existing.cloudId;
+        const saved = await saveRaceOpportunityToCloud(opportunity);
+        const existingIndex = state.raceEntryOpportunities.findIndex((entry) => entry.id === saved.id);
+        if (existingIndex >= 0) state.raceEntryOpportunities[existingIndex] = saved;
+        else state.raceEntryOpportunities.push(saved);
+      }
+    } else {
+      selected.forEach((opportunity) => {
+        const existingIndex = state.raceEntryOpportunities.findIndex((entry) => entry.id === opportunity.id);
+        if (existingIndex >= 0) state.raceEntryOpportunities[existingIndex] = opportunity;
+        else state.raceEntryOpportunities.push(opportunity);
+      });
+      saveData();
+    }
+    const savedCount = selected.length;
+    raceImportPreviewItems = [];
+    render();
+    if (els.raceImportStatus) els.raceImportStatus.textContent = t('raceEntries.importSaved', { count: savedCount });
+    showMessage(t('raceEntries.importSaved', { count: savedCount }));
+  } catch (error) {
+    console.error('[EquiTrack race entries] Imported race save failed', error);
+    const errorMessage = isPermissionError(error)
+      ? t('raceEntryCloud.permissionBlocked')
+      : isMissingCloudTableError(error)
+        ? t('migration.schemaNeeded')
+        : getCloudErrorMessage(error);
+    showMessage(t('raceEntries.importSaveFailed', { error: errorMessage }));
+  } finally {
+    if (els.raceImportSaveButton) els.raceImportSaveButton.disabled = !raceImportPreviewItems.some((race) => race.selected);
   }
 }
 
@@ -8839,6 +9305,14 @@ els.eventForm.addEventListener('submit', handleEventSubmit);
 els.raceOpportunityForm?.addEventListener('submit', handleRaceOpportunitySubmit);
 els.racePlanForm?.addEventListener('submit', handleRacePlanSubmit);
 els.raceImportInput?.addEventListener('change', handleRaceImportFile);
+els.raceImportPreview?.addEventListener('input', (event) => updateRaceImportPreviewField(event.target));
+els.raceImportPreview?.addEventListener('change', (event) => updateRaceImportPreviewField(event.target));
+els.raceImportPreview?.addEventListener('click', (event) => {
+  const button = event.target.closest('button[data-action="remove-imported-race"]');
+  if (!button) return;
+  removeImportedRace(button.dataset.id);
+});
+els.raceImportSaveButton?.addEventListener('click', saveImportedRaceOpportunities);
 els.exportButton.addEventListener('click', exportBackup);
 els.importInput.addEventListener('change', (event) => importBackup(event.target.files[0]));
 els.restoreEmergencyButton?.addEventListener('click', restoreEmergencyBackup);

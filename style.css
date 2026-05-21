@@ -1306,6 +1306,41 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
   margin: 4px 0 0;
   color: var(--muted);
 }
+.race-import-preview {
+  display: grid;
+  gap: 14px;
+  margin-top: 16px;
+}
+.race-import-list {
+  display: grid;
+  gap: 14px;
+}
+.race-import-card {
+  padding: 14px;
+  border: 1px solid rgba(20, 51, 90, 0.1);
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(20, 51, 90, 0.08);
+}
+.checkbox-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: #14335a;
+  font-weight: 800;
+}
+.checkbox-line input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+.compact-form {
+  padding: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  background: #f8fbfc;
+  box-shadow: none;
+}
 .calendar-month-card, .selected-day-card, .calendar-list-section {
   background: #ffffff;
   border: 1px solid var(--line);
@@ -2173,6 +2208,7 @@ textarea { resize: vertical; }
   .tab-button { min-height: 46px; }
   .module-panel { padding: 12px; }
   .entry-form { padding: 14px; }
+  .compact-form { grid-template-columns: minmax(0, 1fr); }
   .item-card { gap: 12px; }
   .race-plan-card { grid-template-columns: minmax(0, 1fr); }
   .pill { max-width: 100%; overflow-wrap: anywhere; }
