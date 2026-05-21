@@ -15,7 +15,8 @@ const FALLBACK_WEATHER_LOCATION = {
 const DEFAULT_LANGUAGE = 'en';
 const EVENT_TYPES = ['race', 'training', 'shoeing', 'vaccination', 'vet', 'feeding', 'other'];
 const CARE_TYPES = ['shoeing', 'vaccination', 'deworming', 'vet', 'medication', 'injury', 'dental', 'other'];
-const PROTECTED_VIEWS = ['stable', 'calendar', 'settings'];
+const RACE_ENTRY_STATUSES = ['draft', 'ready', 'sent'];
+const PROTECTED_VIEWS = ['stable', 'calendar', 'raceEntries', 'settings'];
 const CLOUD_WRITE_TIMEOUT_MS = 15000;
 const ADMIN_PERMISSION_FIELDS = [
   'can_view_horses',
@@ -282,8 +283,8 @@ const translations = {
     'migration.uploadReady': 'Ready to copy local data to the active cloud stable.',
     'migration.uploading': 'Uploading local data to cloud...',
     'migration.confirmUpload': 'Upload current local browser data to the active cloud stable? Local data will stay in this browser.',
-    'migration.schemaNeeded': 'Cloud upload needs the latest database migrations. Run supabase/migrations/add_local_ids.sql and supabase/migrations/horse_care_history.sql in Supabase, then try again.',
-    'migration.uploadSuccess': 'Cloud upload complete: {horses} horses, {tasks} tasks, {hours} work logs, {inventory} feed items, {events} calendar events, {care} care records.',
+    'migration.schemaNeeded': 'Cloud upload needs the latest database migrations. Run supabase/migrations/add_local_ids.sql, supabase/migrations/horse_care_history.sql, and supabase/migrations/race_entry_planner.sql in Supabase, then try again.',
+    'migration.uploadSuccess': 'Cloud upload complete: {horses} horses, {tasks} tasks, {hours} work logs, {inventory} feed items, {events} calendar events, {care} care records, {raceOpportunities} race opportunities, {racePlans} race plans.',
     'migration.uploadFailed': 'Cloud upload failed: {error}',
     'saveStatus.idle': 'Saved',
     'saveStatus.saving': 'Saving...',
@@ -943,8 +944,8 @@ const translations = {
     'migration.uploadReady': 'Valmis kopioimaan paikalliset tiedot aktiiviseen pilvitalliin.',
     'migration.uploading': 'Ladataan paikallisia tietoja pilveen...',
     'migration.confirmUpload': 'Ladataanko tämän selaimen paikalliset tiedot aktiiviseen pilvitalliin? Paikalliset tiedot säilyvät tässä selaimessa.',
-    'migration.schemaNeeded': 'Pilveen lataus tarvitsee uusimmat tietokantamigraatiot. Suorita supabase/migrations/add_local_ids.sql ja supabase/migrations/horse_care_history.sql Supabasessa ja yritä uudelleen.',
-    'migration.uploadSuccess': 'Pilveen lataus valmis: {horses} hevosta, {tasks} tehtävää, {hours} työkirjausta, {inventory} ruokavaraston tuotetta, {events} kalenteritapahtumaa, {care} hoitomerkintää.',
+    'migration.schemaNeeded': 'Pilveen lataus tarvitsee uusimmat tietokantamigraatiot. Suorita supabase/migrations/add_local_ids.sql, supabase/migrations/horse_care_history.sql ja supabase/migrations/race_entry_planner.sql Supabasessa ja yritä uudelleen.',
+    'migration.uploadSuccess': 'Pilveen lataus valmis: {horses} hevosta, {tasks} tehtävää, {hours} työkirjausta, {inventory} ruokavaraston tuotetta, {events} kalenteritapahtumaa, {care} hoitomerkintää, {raceOpportunities} lähtöä, {racePlans} suunniteltua ilmoittautumista.',
     'migration.uploadFailed': 'Pilveen lataus epäonnistui: {error}',
     'saveStatus.idle': 'Tallennettu',
     'saveStatus.saving': 'Tallennetaan...',
@@ -1613,8 +1614,8 @@ const translations = {
     'migration.uploadReady': 'Pronto a copiare i dati locali nella scuderia cloud attiva.',
     'migration.uploading': 'Caricamento dati locali nel cloud...',
     'migration.confirmUpload': 'Caricare i dati locali di questo browser nella scuderia cloud attiva? I dati locali resteranno in questo browser.',
-    'migration.schemaNeeded': 'Il caricamento cloud richiede le ultime migrazioni database. Esegui supabase/migrations/add_local_ids.sql e supabase/migrations/horse_care_history.sql in Supabase, poi riprova.',
-    'migration.uploadSuccess': 'Caricamento cloud completato: {horses} cavalli, {tasks} attività, {hours} registri ore, {inventory} scorte di mangime, {events} eventi calendario, {care} record di cura.',
+    'migration.schemaNeeded': 'Il caricamento cloud richiede le ultime migrazioni database. Esegui supabase/migrations/add_local_ids.sql, supabase/migrations/horse_care_history.sql e supabase/migrations/race_entry_planner.sql in Supabase, poi riprova.',
+    'migration.uploadSuccess': 'Caricamento cloud completato: {horses} cavalli, {tasks} attività, {hours} registri ore, {inventory} scorte di mangime, {events} eventi calendario, {care} record di cura, {raceOpportunities} opportunità gara, {racePlans} iscrizioni pianificate.',
     'migration.uploadFailed': 'Caricamento cloud non riuscito: {error}',
     'saveStatus.idle': 'Salvato',
     'saveStatus.saving': 'Salvataggio...',
@@ -2695,6 +2696,201 @@ Object.assign(translations.it, {
   'careType.other': 'Altro'
 });
 
+Object.assign(translations.en, {
+  'nav.raceEntries': 'Race Entries',
+  'raceEntries.eyebrow': 'Race Entry Planner',
+  'raceEntries.title': 'Plan race entries and prepare emails.',
+  'raceEntries.subtitle': 'Plan which horses can be entered into upcoming races and prepare entry emails.',
+  'raceEntries.opportunityFormTitle': 'Add race opportunity',
+  'raceEntries.opportunityFormHelp': 'Enter monthly racetrack opportunities manually. File import can come later.',
+  'raceEntries.planFormTitle': 'Plan horse entry',
+  'raceEntries.planFormHelp': 'Select a race opportunity, choose a horse, and prepare an email draft.',
+  'raceEntries.racetrack': 'Racetrack name',
+  'raceEntries.raceDate': 'Race date',
+  'raceEntries.raceNumber': 'Race number',
+  'raceEntries.raceName': 'Race name',
+  'raceEntries.raceClass': 'Race class / category',
+  'raceEntries.distance': 'Distance',
+  'raceEntries.startMethod': 'Start method',
+  'raceEntries.prizeInfo': 'Prize info',
+  'raceEntries.eligibilityNotes': 'Eligibility notes',
+  'raceEntries.entryDeadline': 'Entry deadline',
+  'raceEntries.contactEmail': 'Racetrack/contact email',
+  'raceEntries.opportunity': 'Race opportunity',
+  'raceEntries.horse': 'Horse',
+  'raceEntries.stable': 'Stable',
+  'raceEntries.driver': 'Driver',
+  'raceEntries.trainer': 'Trainer / contact person',
+  'raceEntries.status': 'Status',
+  'raceEntries.statusDraft': 'Draft',
+  'raceEntries.statusReady': 'Ready',
+  'raceEntries.statusSent': 'Sent manually',
+  'raceEntries.saveOpportunity': 'Save race opportunity',
+  'raceEntries.savePlan': 'Save planned entry',
+  'raceEntries.opportunitiesTitle': 'Race opportunities',
+  'raceEntries.opportunitiesHelp': 'Track upcoming race options, planned horses, and email drafts.',
+  'raceEntries.empty': 'No race opportunities yet.',
+  'raceEntries.noPlans': 'No horses planned for this race yet.',
+  'raceEntries.createDraft': 'Create email draft',
+  'raceEntries.mailtoNotice': 'This creates an email draft. Check all details before sending.',
+  'raceEntries.importTitle': 'Import race file',
+  'raceEntries.importHelp': 'CSV or plain text import foundation is available. PDF/Excel import will be added later.',
+  'raceEntries.importButton': 'Import race file',
+  'raceEntries.importPlaceholder': 'Manual entry works now. PDF/Excel import will be added later.',
+  'raceEntries.importLoaded': 'Race file loaded. Review the text and add opportunities manually for now.',
+  'raceEntries.savedOpportunity': 'Race opportunity saved.',
+  'raceEntries.deletedOpportunity': 'Race opportunity deleted.',
+  'raceEntries.savedPlan': 'Planned race entry saved.',
+  'raceEntries.deletedPlan': 'Planned race entry deleted.',
+  'raceEntries.noContactEmail': 'Add a contact email before creating an email draft.',
+  'raceEntries.deadlineSoon': 'Race entry deadline soon',
+  'raceEntries.deadlineSoonMessage': '{count} race entry deadline(s) are within the next 7 days.',
+  'raceEntries.openRaceEntries': 'Open Race Entries',
+  'raceEntries.emailSubject': 'Race entry - {racetrack} - {date} - {horse}',
+  'raceEntries.emailGreeting': 'Hello,',
+  'raceEntries.emailIntro': 'I would like to enter the following horse for this race.',
+  'raceEntries.emailClosing': 'Please confirm the entry details. Thank you.',
+  'raceEntryCloud.savedOpportunity': 'Race opportunity saved to cloud.',
+  'raceEntryCloud.deletedOpportunity': 'Race opportunity deleted from cloud.',
+  'raceEntryCloud.savedPlan': 'Planned entry saved to cloud.',
+  'raceEntryCloud.deletedPlan': 'Planned entry deleted from cloud.',
+  'raceEntryCloud.saveFailed': 'Race entry save failed: {error}',
+  'raceEntryCloud.deleteFailed': 'Race entry delete failed: {error}',
+  'raceEntryCloud.permissionBlocked': 'Race entries are blocked by database permissions.',
+  'delete.raceOpportunity': 'this race opportunity',
+  'delete.racePlan': 'this planned race entry'
+});
+
+Object.assign(translations.fi, {
+  'nav.raceEntries': 'Lähdöt',
+  'raceEntries.eyebrow': 'Lähtöihin ilmoittaminen',
+  'raceEntries.title': 'Suunnittele ilmoittautumiset ja sähköpostit.',
+  'raceEntries.subtitle': 'Suunnittele, mitkä hevoset voidaan ilmoittaa tuleviin lähtöihin, ja valmistele sähköpostiluonnokset.',
+  'raceEntries.opportunityFormTitle': 'Lisää lähtömahdollisuus',
+  'raceEntries.opportunityFormHelp': 'Kirjaa raviradan kuukausittaiset lähtömahdollisuudet käsin. Tiedostotuonti voidaan lisätä myöhemmin.',
+  'raceEntries.planFormTitle': 'Suunnittele hevosen ilmoittaminen',
+  'raceEntries.planFormHelp': 'Valitse lähtö, hevonen ja valmistele sähköpostiluonnos.',
+  'raceEntries.racetrack': 'Ravirata',
+  'raceEntries.raceDate': 'Lähtöpäivä',
+  'raceEntries.raceNumber': 'Lähdön numero',
+  'raceEntries.raceName': 'Lähdön nimi',
+  'raceEntries.raceClass': 'Sarja / kategoria',
+  'raceEntries.distance': 'Matka',
+  'raceEntries.startMethod': 'Lähtötapa',
+  'raceEntries.prizeInfo': 'Palkintotiedot',
+  'raceEntries.eligibilityNotes': 'Osallistumisehdot',
+  'raceEntries.entryDeadline': 'Ilmoittautumisen määräaika',
+  'raceEntries.contactEmail': 'Raviradan/yhteyshenkilön sähköposti',
+  'raceEntries.opportunity': 'Lähtömahdollisuus',
+  'raceEntries.horse': 'Hevonen',
+  'raceEntries.stable': 'Talli',
+  'raceEntries.driver': 'Ohjastaja',
+  'raceEntries.trainer': 'Valmentaja / yhteyshenkilö',
+  'raceEntries.status': 'Tila',
+  'raceEntries.statusDraft': 'Luonnos',
+  'raceEntries.statusReady': 'Valmis',
+  'raceEntries.statusSent': 'Lähetetty käsin',
+  'raceEntries.saveOpportunity': 'Tallenna lähtö',
+  'raceEntries.savePlan': 'Tallenna suunniteltu ilmoittautuminen',
+  'raceEntries.opportunitiesTitle': 'Lähtömahdollisuudet',
+  'raceEntries.opportunitiesHelp': 'Seuraa tulevia lähtöjä, suunniteltuja hevosia ja sähköpostiluonnoksia.',
+  'raceEntries.empty': 'Lähtömahdollisuuksia ei ole vielä.',
+  'raceEntries.noPlans': 'Tähän lähtöön ei ole vielä suunniteltu hevosia.',
+  'raceEntries.createDraft': 'Luo sähköpostiluonnos',
+  'raceEntries.mailtoNotice': 'Tämä luo sähköpostiluonnoksen. Tarkista tiedot ennen lähettämistä.',
+  'raceEntries.importTitle': 'Tuo lähtötiedosto',
+  'raceEntries.importHelp': 'CSV- tai tekstitiedoston tuonnin pohja on valmis. PDF/Excel-tuonti lisätään myöhemmin.',
+  'raceEntries.importButton': 'Tuo lähtötiedosto',
+  'raceEntries.importPlaceholder': 'Käsin lisääminen toimii nyt. PDF/Excel-tuonti lisätään myöhemmin.',
+  'raceEntries.importLoaded': 'Lähtötiedosto ladattu. Tarkista teksti ja lisää lähdöt käsin toistaiseksi.',
+  'raceEntries.savedOpportunity': 'Lähtö tallennettu.',
+  'raceEntries.deletedOpportunity': 'Lähtö poistettu.',
+  'raceEntries.savedPlan': 'Suunniteltu ilmoittautuminen tallennettu.',
+  'raceEntries.deletedPlan': 'Suunniteltu ilmoittautuminen poistettu.',
+  'raceEntries.noContactEmail': 'Lisää yhteyssähköposti ennen sähköpostiluonnoksen luomista.',
+  'raceEntries.deadlineSoon': 'Ilmoittautumisen määräaika lähestyy',
+  'raceEntries.deadlineSoonMessage': '{count} ilmoittautumisen määräaikaa on seuraavan 7 päivän aikana.',
+  'raceEntries.openRaceEntries': 'Avaa Lähdöt',
+  'raceEntries.emailSubject': 'Ilmoittautuminen - {racetrack} - {date} - {horse}',
+  'raceEntries.emailGreeting': 'Hei,',
+  'raceEntries.emailIntro': 'Haluaisin ilmoittaa seuraavan hevosen tähän lähtöön.',
+  'raceEntries.emailClosing': 'Vahvistattehan ilmoittautumisen tiedot. Kiitos.',
+  'raceEntryCloud.savedOpportunity': 'Lähtö tallennettu pilveen.',
+  'raceEntryCloud.deletedOpportunity': 'Lähtö poistettu pilvestä.',
+  'raceEntryCloud.savedPlan': 'Suunniteltu ilmoittautuminen tallennettu pilveen.',
+  'raceEntryCloud.deletedPlan': 'Suunniteltu ilmoittautuminen poistettu pilvestä.',
+  'raceEntryCloud.saveFailed': 'Lähdön tallennus epäonnistui: {error}',
+  'raceEntryCloud.deleteFailed': 'Lähdön poisto epäonnistui: {error}',
+  'raceEntryCloud.permissionBlocked': 'Tietokannan oikeudet estävät lähtöjen käytön.',
+  'delete.raceOpportunity': 'tämä lähtö',
+  'delete.racePlan': 'tämä suunniteltu ilmoittautuminen'
+});
+
+Object.assign(translations.it, {
+  'nav.raceEntries': 'Iscrizioni',
+  'raceEntries.eyebrow': 'Pianificazione iscrizioni gara',
+  'raceEntries.title': 'Pianifica iscrizioni e prepara email.',
+  'raceEntries.subtitle': 'Pianifica quali cavalli iscrivere alle prossime gare e prepara bozze email.',
+  'raceEntries.opportunityFormTitle': 'Aggiungi opportunità gara',
+  'raceEntries.opportunityFormHelp': 'Inserisci manualmente le opportunità mensili degli ippodromi. L’importazione file arriverà più avanti.',
+  'raceEntries.planFormTitle': 'Pianifica iscrizione cavallo',
+  'raceEntries.planFormHelp': 'Seleziona una gara, scegli un cavallo e prepara una bozza email.',
+  'raceEntries.racetrack': 'Ippodromo',
+  'raceEntries.raceDate': 'Data gara',
+  'raceEntries.raceNumber': 'Numero gara',
+  'raceEntries.raceName': 'Nome gara',
+  'raceEntries.raceClass': 'Classe / categoria',
+  'raceEntries.distance': 'Distanza',
+  'raceEntries.startMethod': 'Metodo di partenza',
+  'raceEntries.prizeInfo': 'Premi',
+  'raceEntries.eligibilityNotes': 'Note requisiti',
+  'raceEntries.entryDeadline': 'Scadenza iscrizione',
+  'raceEntries.contactEmail': 'Email ippodromo/contatto',
+  'raceEntries.opportunity': 'Opportunità gara',
+  'raceEntries.horse': 'Cavallo',
+  'raceEntries.stable': 'Scuderia',
+  'raceEntries.driver': 'Driver',
+  'raceEntries.trainer': 'Allenatore / referente',
+  'raceEntries.status': 'Stato',
+  'raceEntries.statusDraft': 'Bozza',
+  'raceEntries.statusReady': 'Pronta',
+  'raceEntries.statusSent': 'Inviata manualmente',
+  'raceEntries.saveOpportunity': 'Salva opportunità gara',
+  'raceEntries.savePlan': 'Salva iscrizione pianificata',
+  'raceEntries.opportunitiesTitle': 'Opportunità gara',
+  'raceEntries.opportunitiesHelp': 'Tieni traccia delle gare future, dei cavalli pianificati e delle bozze email.',
+  'raceEntries.empty': 'Nessuna opportunità gara.',
+  'raceEntries.noPlans': 'Nessun cavallo pianificato per questa gara.',
+  'raceEntries.createDraft': 'Crea bozza email',
+  'raceEntries.mailtoNotice': 'Questo crea una bozza email. Controlla i dati prima di inviarla.',
+  'raceEntries.importTitle': 'Importa file gare',
+  'raceEntries.importHelp': 'È disponibile una base per CSV o testo semplice. L’importazione PDF/Excel sarà aggiunta più avanti.',
+  'raceEntries.importButton': 'Importa file gare',
+  'raceEntries.importPlaceholder': 'L’inserimento manuale funziona ora. L’importazione PDF/Excel sarà aggiunta più avanti.',
+  'raceEntries.importLoaded': 'File gara caricato. Rivedi il testo e aggiungi manualmente le opportunità per ora.',
+  'raceEntries.savedOpportunity': 'Opportunità gara salvata.',
+  'raceEntries.deletedOpportunity': 'Opportunità gara eliminata.',
+  'raceEntries.savedPlan': 'Iscrizione pianificata salvata.',
+  'raceEntries.deletedPlan': 'Iscrizione pianificata eliminata.',
+  'raceEntries.noContactEmail': 'Aggiungi un’email di contatto prima di creare una bozza.',
+  'raceEntries.deadlineSoon': 'Scadenza iscrizione vicina',
+  'raceEntries.deadlineSoonMessage': '{count} scadenza/e iscrizione sono nei prossimi 7 giorni.',
+  'raceEntries.openRaceEntries': 'Apri Iscrizioni',
+  'raceEntries.emailSubject': 'Iscrizione gara - {racetrack} - {date} - {horse}',
+  'raceEntries.emailGreeting': 'Ciao,',
+  'raceEntries.emailIntro': 'Vorrei iscrivere il seguente cavallo a questa gara.',
+  'raceEntries.emailClosing': 'Confermate per favore i dettagli dell’iscrizione. Grazie.',
+  'raceEntryCloud.savedOpportunity': 'Opportunità gara salvata nel cloud.',
+  'raceEntryCloud.deletedOpportunity': 'Opportunità gara eliminata dal cloud.',
+  'raceEntryCloud.savedPlan': 'Iscrizione pianificata salvata nel cloud.',
+  'raceEntryCloud.deletedPlan': 'Iscrizione pianificata eliminata dal cloud.',
+  'raceEntryCloud.saveFailed': 'Salvataggio iscrizione non riuscito: {error}',
+  'raceEntryCloud.deleteFailed': 'Eliminazione iscrizione non riuscita: {error}',
+  'raceEntryCloud.permissionBlocked': 'Le iscrizioni sono bloccate dai permessi del database.',
+  'delete.raceOpportunity': 'questa opportunità gara',
+  'delete.racePlan': 'questa iscrizione pianificata'
+});
+
 let currentLanguage = localStorage.getItem(LANGUAGE_KEY) || DEFAULT_LANGUAGE;
 if (!translations[currentLanguage]) currentLanguage = DEFAULT_LANGUAGE;
 
@@ -2716,7 +2912,9 @@ const defaultData = {
     { id: createId(), name: 'Pellets', category: 'Concentrate', quantity: 28, unit: 'bags', dailyUsage: 2, minimum: 10 }
   ],
   calendarEvents: [],
-  careHistory: []
+  careHistory: [],
+  raceEntryOpportunities: [],
+  raceEntryPlans: []
 };
 
 let state = loadData();
@@ -2838,6 +3036,13 @@ const els = {
   calendarScopeFilter: document.querySelector('#calendarScopeFilter'),
   calendarTypeFilter: document.querySelector('#calendarTypeFilter'),
   calendarHorseFilter: document.querySelector('#calendarHorseFilter'),
+  raceEntriesStableBadge: document.querySelector('#raceEntriesStableBadge'),
+  raceEntriesModeBadge: document.querySelector('#raceEntriesModeBadge'),
+  raceOpportunityForm: document.querySelector('#raceOpportunityForm'),
+  racePlanForm: document.querySelector('#racePlanForm'),
+  raceOpportunityList: document.querySelector('#raceOpportunityList'),
+  raceImportInput: document.querySelector('#raceImportInput'),
+  raceImportStatus: document.querySelector('#raceImportStatus'),
   horseForm: document.querySelector('#horseForm'),
   careForm: document.querySelector('#careForm'),
   careHistoryList: document.querySelector('#careHistoryList'),
@@ -3081,6 +3286,45 @@ function normalizeCareRecord(item) {
   };
 }
 
+function normalizeRaceOpportunity(item) {
+  return {
+    id: item.id || createId(),
+    cloudId: item.cloudId || item.cloud_id || '',
+    racetrackName: item.racetrackName || item.racetrack_name || '',
+    raceDate: item.raceDate || item.race_date || today(),
+    raceNumber: item.raceNumber || item.race_number || '',
+    raceName: item.raceName || item.race_name || '',
+    raceClass: item.raceClass || item.race_class || '',
+    distance: item.distance || '',
+    startMethod: item.startMethod || item.start_method || '',
+    prizeInfo: item.prizeInfo || item.prize_info || '',
+    eligibilityNotes: item.eligibilityNotes || item.eligibility_notes || '',
+    entryDeadline: item.entryDeadline || item.entry_deadline || '',
+    contactEmail: item.contactEmail || item.contact_email || '',
+    notes: item.notes || '',
+    createdAt: item.createdAt || item.created_at || '',
+    updatedAt: item.updatedAt || item.updated_at || ''
+  };
+}
+
+function normalizeRacePlan(item) {
+  const status = String(item.status || 'draft').toLowerCase();
+  return {
+    id: item.id || createId(),
+    cloudId: item.cloudId || item.cloud_id || '',
+    opportunityId: item.opportunityId || item.opportunity_id || '',
+    horseId: item.horseId || item.horse_id || '',
+    driver: item.driver || '',
+    trainer: item.trainer || item.trainer_contact || '',
+    notes: item.notes || '',
+    status: RACE_ENTRY_STATUSES.includes(status) ? status : 'draft',
+    emailSubject: item.emailSubject || item.email_subject || '',
+    emailBody: item.emailBody || item.email_body || '',
+    createdAt: item.createdAt || item.created_at || '',
+    updatedAt: item.updatedAt || item.updated_at || ''
+  };
+}
+
 function normalizeTask(item) {
   return {
     id: item.id || createId(),
@@ -3116,7 +3360,9 @@ function loadData() {
       hours: Array.isArray(parsed.hours) ? parsed.hours.map(normalizeWorkLog) : [],
       inventory: Array.isArray(parsed.inventory) ? parsed.inventory.map(normalizeFeedItem) : [],
       calendarEvents: Array.isArray(parsed.calendarEvents) ? parsed.calendarEvents.map(normalizeCalendarEvent) : [],
-      careHistory: Array.isArray(parsed.careHistory) ? parsed.careHistory.map(normalizeCareRecord) : []
+      careHistory: Array.isArray(parsed.careHistory) ? parsed.careHistory.map(normalizeCareRecord) : [],
+      raceEntryOpportunities: Array.isArray(parsed.raceEntryOpportunities) ? parsed.raceEntryOpportunities.map(normalizeRaceOpportunity) : [],
+      raceEntryPlans: Array.isArray(parsed.raceEntryPlans) ? parsed.raceEntryPlans.map(normalizeRacePlan) : []
     };
   } catch (_error) {
     return JSON.parse(JSON.stringify(defaultData));
@@ -3140,7 +3386,9 @@ function saveData() {
     hours: workCloudWriteMode ? localData.hours : state.hours,
     inventory: feedCloudWriteMode ? localData.inventory : state.inventory,
     calendarEvents: calendarCloudWriteMode ? localData.calendarEvents : state.calendarEvents,
-    careHistory: state.careHistory
+    careHistory: state.careHistory,
+    raceEntryOpportunities: state.raceEntryOpportunities,
+    raceEntryPlans: state.raceEntryPlans
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(nextState));
 }
@@ -3152,7 +3400,9 @@ function getCounts(data = state) {
     hours: Array.isArray(data.hours) ? data.hours.length : 0,
     inventory: Array.isArray(data.inventory) ? data.inventory.length : 0,
     events: Array.isArray(data.calendarEvents) ? data.calendarEvents.length : 0,
-    care: Array.isArray(data.careHistory) ? data.careHistory.length : 0
+    care: Array.isArray(data.careHistory) ? data.careHistory.length : 0,
+    raceOpportunities: Array.isArray(data.raceEntryOpportunities) ? data.raceEntryOpportunities.length : 0,
+    racePlans: Array.isArray(data.raceEntryPlans) ? data.raceEntryPlans.length : 0
   };
 }
 
@@ -3185,7 +3435,7 @@ function nullableNumber(value) {
 
 function getTotalCount(data = state) {
   const counts = getCounts(data);
-  return counts.horses + counts.tasks + counts.hours + counts.inventory + counts.events + (counts.care || 0);
+  return counts.horses + counts.tasks + counts.hours + counts.inventory + counts.events + (counts.care || 0) + (counts.raceOpportunities || 0) + (counts.racePlans || 0);
 }
 
 function showMessage(message) {
@@ -4172,24 +4422,68 @@ function mapCloudCareRecord(row, horseIdMap) {
   });
 }
 
+function mapCloudRaceOpportunity(row) {
+  return normalizeRaceOpportunity({
+    id: row.local_id || row.id,
+    cloudId: row.id,
+    racetrackName: row.racetrack_name,
+    raceDate: row.race_date,
+    raceNumber: row.race_number,
+    raceName: row.race_name,
+    raceClass: row.race_class,
+    distance: row.distance,
+    startMethod: row.start_method,
+    prizeInfo: row.prize_info,
+    eligibilityNotes: row.eligibility_notes,
+    entryDeadline: row.entry_deadline,
+    contactEmail: row.contact_email,
+    notes: row.notes,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at
+  });
+}
+
+function mapCloudRacePlan(row, opportunityIdMap, horseIdMap) {
+  return normalizeRacePlan({
+    id: row.local_id || row.id,
+    cloudId: row.id,
+    opportunityId: opportunityIdMap.get(row.opportunity_id) || '',
+    horseId: horseIdMap.get(row.horse_id) || '',
+    driver: row.driver,
+    trainer: row.trainer_contact,
+    notes: row.notes,
+    status: row.status,
+    emailSubject: row.email_subject,
+    emailBody: row.email_body,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at
+  });
+}
+
 async function loadCloudSnapshot(stableId) {
-  const [horseRows, taskRows, workRows, feedRows, eventRows, careRows] = await Promise.all([
+  const [horseRows, taskRows, workRows, feedRows, eventRows, careRows, raceOpportunityRows, racePlanRows] = await Promise.all([
     fetchCloudRows('horses', stableId),
     fetchCloudRows('tasks', stableId),
     fetchCloudRows('work_logs', stableId),
     fetchCloudRows('feed_items', stableId),
     fetchCloudRows('calendar_events', stableId, 'date'),
-    fetchOptionalCloudRows('horse_care_history', stableId, 'care_date')
+    fetchOptionalCloudRows('horse_care_history', stableId, 'care_date'),
+    fetchOptionalCloudRows('race_entry_opportunities', stableId, 'race_date'),
+    fetchOptionalCloudRows('race_entry_plans', stableId, 'created_at')
   ]);
   const horses = horseRows.map(mapCloudHorse);
   const horseIdMap = new Map(horseRows.map((row, index) => [row.id, horses[index].id]));
+  const raceEntryOpportunities = raceOpportunityRows.map(mapCloudRaceOpportunity);
+  const opportunityIdMap = new Map(raceOpportunityRows.map((row, index) => [row.id, raceEntryOpportunities[index].id]));
   return {
     horses,
     tasks: taskRows.map((row) => mapCloudTask(row, horseIdMap)),
     hours: workRows.map((row) => mapCloudWorkLog(row, horseIdMap)),
     inventory: feedRows.map(mapCloudFeedItem),
     calendarEvents: eventRows.map((row) => mapCloudCalendarEvent(row, horseIdMap)),
-    careHistory: careRows.map((row) => mapCloudCareRecord(row, horseIdMap))
+    careHistory: careRows.map((row) => mapCloudCareRecord(row, horseIdMap)),
+    raceEntryOpportunities,
+    raceEntryPlans: racePlanRows.map((row) => mapCloudRacePlan(row, opportunityIdMap, horseIdMap))
   };
 }
 
@@ -4491,6 +4785,7 @@ async function handleCloudHorseDelete(id) {
     await deleteHorseFromCloud(id);
     state.horses = state.horses.filter((horse) => horse.id !== id);
     state.careHistory = state.careHistory.filter((record) => record.horseId !== id);
+    state.raceEntryPlans = state.raceEntryPlans.filter((plan) => plan.horseId !== id);
     render();
     showMessage(t('horseCloud.deleted'));
   } catch (error) {
@@ -5141,6 +5436,44 @@ function careRecordToCloudRow(stableId, rawRecord, horseIdMap = null) {
   };
 }
 
+function raceOpportunityToCloudRow(stableId, rawOpportunity) {
+  const opportunity = normalizeRaceOpportunity(rawOpportunity);
+  return {
+    stable_id: stableId,
+    local_id: opportunity.id || createId(),
+    racetrack_name: cleanText(opportunity.racetrackName) || 'Unnamed racetrack',
+    race_date: isValidDate(opportunity.raceDate) || today(),
+    race_number: cleanText(opportunity.raceNumber),
+    race_name: cleanText(opportunity.raceName),
+    race_class: cleanText(opportunity.raceClass),
+    distance: cleanText(opportunity.distance),
+    start_method: cleanText(opportunity.startMethod),
+    prize_info: cleanText(opportunity.prizeInfo),
+    eligibility_notes: cleanText(opportunity.eligibilityNotes),
+    entry_deadline: isValidDate(opportunity.entryDeadline),
+    contact_email: cleanText(opportunity.contactEmail),
+    notes: cleanText(opportunity.notes)
+  };
+}
+
+function racePlanToCloudRow(stableId, rawPlan) {
+  const plan = normalizeRacePlan(rawPlan);
+  const opportunity = state.raceEntryOpportunities.find((entry) => entry.id === plan.opportunityId);
+  const horse = state.horses.find((entry) => entry.id === plan.horseId);
+  return {
+    stable_id: stableId,
+    local_id: plan.id || createId(),
+    opportunity_id: opportunity?.cloudId || null,
+    horse_id: horse?.cloudId || null,
+    driver: cleanText(plan.driver),
+    trainer_contact: cleanText(plan.trainer),
+    notes: cleanText(plan.notes),
+    status: RACE_ENTRY_STATUSES.includes(plan.status) ? plan.status : 'draft',
+    email_subject: cleanText(plan.emailSubject),
+    email_body: cleanText(plan.emailBody)
+  };
+}
+
 async function loadCloudCalendarEvents(stableId) {
   const rows = await fetchCloudRows('calendar_events', stableId, 'date');
   const horseIdMap = new Map(state.horses.filter((horse) => horse.cloudId).map((horse) => [horse.cloudId, horse.id]));
@@ -5338,6 +5671,163 @@ async function handleCloudCareRecordDelete(id) {
   }
 }
 
+async function saveRaceOpportunityToCloud(rawOpportunity) {
+  const activeStable = getActiveStable();
+  if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
+  const row = raceOpportunityToCloudRow(activeStable.id, rawOpportunity);
+  const data = await executeCloudMutation('race_entry_opportunities', 'race opportunity save', () => {
+    const request = rawOpportunity.cloudId
+      ? supabaseClient
+        .from('race_entry_opportunities')
+        .update(row)
+        .eq('stable_id', activeStable.id)
+        .eq('id', rawOpportunity.cloudId)
+      : supabaseClient
+        .from('race_entry_opportunities')
+        .upsert(row, { onConflict: 'stable_id,local_id' });
+    return request.select('*').single();
+  });
+  return mapCloudRaceOpportunity(data);
+}
+
+async function handleCloudRaceOpportunitySave(rawOpportunity) {
+  try {
+    const savedOpportunity = await saveRaceOpportunityToCloud(rawOpportunity);
+    const existingIndex = state.raceEntryOpportunities.findIndex((entry) => entry.id === savedOpportunity.id);
+    if (existingIndex >= 0) state.raceEntryOpportunities[existingIndex] = savedOpportunity;
+    else state.raceEntryOpportunities.push(savedOpportunity);
+    render();
+    showMessage(t('raceEntryCloud.savedOpportunity'));
+    return true;
+  } catch (error) {
+    console.error('[EquiTrack cloud] Race opportunity save failed', error);
+    const errorMessage = isPermissionError(error)
+      ? t('raceEntryCloud.permissionBlocked')
+      : isMissingCloudTableError(error)
+        ? t('migration.schemaNeeded')
+        : getCloudErrorMessage(error);
+    showMessage(t('raceEntryCloud.saveFailed', { error: errorMessage }));
+    return false;
+  }
+}
+
+async function deleteRaceOpportunityFromCloud(id) {
+  const activeStable = getActiveStable();
+  if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
+  const opportunity = state.raceEntryOpportunities.find((entry) => entry.id === id);
+  if (!opportunity) return;
+  await executeCloudMutation('race_entry_opportunities', 'race opportunity delete', () => {
+    let query = supabaseClient.from('race_entry_opportunities').delete().eq('stable_id', activeStable.id);
+    query = opportunity.cloudId ? query.eq('id', opportunity.cloudId) : query.eq('local_id', opportunity.id);
+    return query.select('id');
+  });
+}
+
+async function handleCloudRaceOpportunityDelete(id) {
+  if (!confirmDelete(t('delete.raceOpportunity'))) {
+    showMessage(t('message.deleteCancelled'));
+    return;
+  }
+  const lockKey = tryStartCloudAction('race-opportunity-delete', id);
+  if (!lockKey) return;
+  try {
+    await deleteRaceOpportunityFromCloud(id);
+    state.raceEntryOpportunities = state.raceEntryOpportunities.filter((entry) => entry.id !== id);
+    state.raceEntryPlans = state.raceEntryPlans.filter((entry) => entry.opportunityId !== id);
+    render();
+    showMessage(t('raceEntryCloud.deletedOpportunity'));
+  } catch (error) {
+    console.error('[EquiTrack cloud] Race opportunity delete failed', error);
+    const errorMessage = isPermissionError(error)
+      ? t('raceEntryCloud.permissionBlocked')
+      : isMissingCloudTableError(error)
+        ? t('migration.schemaNeeded')
+        : getCloudErrorMessage(error);
+    showMessage(t('raceEntryCloud.deleteFailed', { error: errorMessage }));
+  } finally {
+    finishCloudAction(lockKey);
+  }
+}
+
+async function saveRacePlanToCloud(rawPlan) {
+  const activeStable = getActiveStable();
+  if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
+  const row = racePlanToCloudRow(activeStable.id, rawPlan);
+  const data = await executeCloudMutation('race_entry_plans', 'race plan save', () => {
+    const request = rawPlan.cloudId
+      ? supabaseClient
+        .from('race_entry_plans')
+        .update(row)
+        .eq('stable_id', activeStable.id)
+        .eq('id', rawPlan.cloudId)
+      : supabaseClient
+        .from('race_entry_plans')
+        .upsert(row, { onConflict: 'stable_id,local_id' });
+    return request.select('*').single();
+  });
+  const opportunityIdMap = new Map(state.raceEntryOpportunities.filter((entry) => entry.cloudId).map((entry) => [entry.cloudId, entry.id]));
+  const horseIdMap = new Map(state.horses.filter((horse) => horse.cloudId).map((horse) => [horse.cloudId, horse.id]));
+  return mapCloudRacePlan(data, opportunityIdMap, horseIdMap);
+}
+
+async function handleCloudRacePlanSave(rawPlan) {
+  try {
+    const savedPlan = await saveRacePlanToCloud(rawPlan);
+    const existingIndex = state.raceEntryPlans.findIndex((entry) => entry.id === savedPlan.id);
+    if (existingIndex >= 0) state.raceEntryPlans[existingIndex] = savedPlan;
+    else state.raceEntryPlans.push(savedPlan);
+    render();
+    showMessage(t('raceEntryCloud.savedPlan'));
+    return true;
+  } catch (error) {
+    console.error('[EquiTrack cloud] Race plan save failed', error);
+    const errorMessage = isPermissionError(error)
+      ? t('raceEntryCloud.permissionBlocked')
+      : isMissingCloudTableError(error)
+        ? t('migration.schemaNeeded')
+        : getCloudErrorMessage(error);
+    showMessage(t('raceEntryCloud.saveFailed', { error: errorMessage }));
+    return false;
+  }
+}
+
+async function deleteRacePlanFromCloud(id) {
+  const activeStable = getActiveStable();
+  if (!activeStable.id) throw new Error(t('cloudRead.noStable'));
+  const plan = state.raceEntryPlans.find((entry) => entry.id === id);
+  if (!plan) return;
+  await executeCloudMutation('race_entry_plans', 'race plan delete', () => {
+    let query = supabaseClient.from('race_entry_plans').delete().eq('stable_id', activeStable.id);
+    query = plan.cloudId ? query.eq('id', plan.cloudId) : query.eq('local_id', plan.id);
+    return query.select('id');
+  });
+}
+
+async function handleCloudRacePlanDelete(id) {
+  if (!confirmDelete(t('delete.racePlan'))) {
+    showMessage(t('message.deleteCancelled'));
+    return;
+  }
+  const lockKey = tryStartCloudAction('race-plan-delete', id);
+  if (!lockKey) return;
+  try {
+    await deleteRacePlanFromCloud(id);
+    state.raceEntryPlans = state.raceEntryPlans.filter((entry) => entry.id !== id);
+    render();
+    showMessage(t('raceEntryCloud.deletedPlan'));
+  } catch (error) {
+    console.error('[EquiTrack cloud] Race plan delete failed', error);
+    const errorMessage = isPermissionError(error)
+      ? t('raceEntryCloud.permissionBlocked')
+      : isMissingCloudTableError(error)
+        ? t('migration.schemaNeeded')
+        : getCloudErrorMessage(error);
+    showMessage(t('raceEntryCloud.deleteFailed', { error: errorMessage }));
+  } finally {
+    finishCloudAction(lockKey);
+  }
+}
+
 function getCloudCleanupGate() {
   const currentUser = getCurrentUser();
   const activeStable = getActiveStable();
@@ -5411,8 +5901,10 @@ async function cleanupCloudDataForStable() {
   renderCloudCleanup();
 
   const stableId = cleanupGate.activeStable.id;
-  const counts = { events: 0, care: 0, inventory: 0, hours: 0, tasks: 0, horses: 0 };
+  const counts = { events: 0, care: 0, racePlans: 0, raceOpportunities: 0, inventory: 0, hours: 0, tasks: 0, horses: 0 };
   try {
+    counts.racePlans = await deleteOptionalCloudRowsForStable('race_entry_plans', stableId);
+    counts.raceOpportunities = await deleteOptionalCloudRowsForStable('race_entry_opportunities', stableId);
     counts.events = await deleteCloudRowsForStable('calendar_events', stableId);
     counts.care = await deleteOptionalCloudRowsForStable('horse_care_history', stableId);
     counts.inventory = await deleteCloudRowsForStable('feed_items', stableId);
@@ -5507,6 +5999,30 @@ function buildCareRows(stableId, horseIdMap, sourceData = state) {
   });
 }
 
+function buildRaceOpportunityRows(stableId, sourceData = state) {
+  return (sourceData.raceEntryOpportunities || []).map((rawOpportunity) => {
+    return raceOpportunityToCloudRow(stableId, rawOpportunity);
+  });
+}
+
+function buildRacePlanRows(stableId, opportunityIdMap, horseIdMap, sourceData = state) {
+  return (sourceData.raceEntryPlans || []).map((rawPlan) => {
+    const plan = normalizeRacePlan(rawPlan);
+    return {
+      stable_id: stableId,
+      local_id: plan.id || createId(),
+      opportunity_id: opportunityIdMap.get(plan.opportunityId) || null,
+      horse_id: horseIdMap.get(plan.horseId) || null,
+      driver: cleanText(plan.driver),
+      trainer_contact: cleanText(plan.trainer),
+      notes: cleanText(plan.notes),
+      status: RACE_ENTRY_STATUSES.includes(plan.status) ? plan.status : 'draft',
+      email_subject: cleanText(plan.emailSubject),
+      email_body: cleanText(plan.emailBody)
+    };
+  });
+}
+
 async function upsertCloudRows(table, rows, selectColumns = 'id, local_id') {
   if (!rows.length) return [];
   const { data, error } = await supabaseClient
@@ -5533,7 +6049,7 @@ async function uploadLocalDataToCloud() {
   renderMigrationPreview();
 
   const stableId = uploadGate.activeStable.id;
-  const counts = { horses: 0, tasks: 0, hours: 0, inventory: 0, events: 0, care: 0 };
+  const counts = { horses: 0, tasks: 0, hours: 0, inventory: 0, events: 0, care: 0, raceOpportunities: 0, racePlans: 0 };
   try {
     const localUploadData = loadData();
     const uploadedHorses = await upsertCloudRows('horses', buildHorseRows(stableId, localUploadData));
@@ -5545,6 +6061,10 @@ async function uploadLocalDataToCloud() {
     counts.inventory = (await upsertCloudRows('feed_items', buildFeedRows(stableId, localUploadData), 'local_id')).length;
     counts.events = (await upsertCloudRows('calendar_events', buildCalendarRows(stableId, horseIdMap, localUploadData), 'local_id')).length;
     counts.care = (await upsertCloudRows('horse_care_history', buildCareRows(stableId, horseIdMap, localUploadData), 'local_id')).length;
+    const uploadedRaceOpportunities = await upsertCloudRows('race_entry_opportunities', buildRaceOpportunityRows(stableId, localUploadData));
+    counts.raceOpportunities = uploadedRaceOpportunities.length;
+    const opportunityIdMap = new Map(uploadedRaceOpportunities.map((opportunity) => [opportunity.local_id, opportunity.id]));
+    counts.racePlans = (await upsertCloudRows('race_entry_plans', buildRacePlanRows(stableId, opportunityIdMap, horseIdMap, localUploadData), 'local_id')).length;
 
     const uploadedAt = new Date().toISOString();
     localStorage.setItem(LAST_CLOUD_UPLOAD_KEY, uploadedAt);
@@ -6057,6 +6577,27 @@ function renderHorseOptions() {
     els.calendarHorseFilter.value = calendarFilters.horse;
   }
   if (els.calendarScopeFilter) els.calendarScopeFilter.value = calendarFilters.scope;
+  renderRaceEntryOptions();
+}
+
+function renderRaceEntryOptions() {
+  if (!els.racePlanForm) return;
+  const opportunityOptions = state.raceEntryOpportunities
+    .map(normalizeRaceOpportunity)
+    .sort((a, b) => a.raceDate.localeCompare(b.raceDate))
+    .map((opportunity) => {
+      const label = [opportunity.raceDate, opportunity.racetrackName, opportunity.raceNumber && `#${opportunity.raceNumber}`, opportunity.raceName]
+        .filter(Boolean)
+        .join(' - ');
+      return `<option value="${opportunity.id}">${escapeHtml(label)}</option>`;
+    });
+  els.racePlanForm.elements.opportunityId.innerHTML = [`<option value="">${t('raceEntries.opportunity')}</option>`].concat(opportunityOptions).join('');
+  els.racePlanForm.elements.horseId.innerHTML = [`<option value="">${t('raceEntries.horse')}</option>`]
+    .concat(state.horses.map((horse) => `<option value="${horse.id}">${escapeHtml(horse.name)}</option>`))
+    .join('');
+  els.racePlanForm.elements.status.innerHTML = RACE_ENTRY_STATUSES
+    .map((status) => `<option value="${status}">${t(`raceEntries.status${status.charAt(0).toUpperCase()}${status.slice(1)}`)}</option>`)
+    .join('');
 }
 
 function renderHome() {
@@ -6359,6 +6900,22 @@ function getActiveAlerts() {
     });
   }
 
+  const raceDeadlinesSoon = state.raceEntryOpportunities
+    .map(normalizeRaceOpportunity)
+    .filter((opportunity) => opportunity.entryDeadline && isDateBetween(opportunity.entryDeadline, todayValue, weekEndValue));
+  if (raceDeadlinesSoon.length) {
+    alerts.push({
+      id: 'race-entry-deadline',
+      severity: 'attention',
+      titleKey: 'raceEntries.deadlineSoon',
+      messageKey: 'raceEntries.deadlineSoonMessage',
+      messageParams: { count: raceDeadlinesSoon.length },
+      areaKey: 'raceEntries.eyebrow',
+      actionKey: 'raceEntries.openRaceEntries',
+      action: 'raceEntries'
+    });
+  }
+
   if (turnoutWeather.status === 'ready' && turnoutWeather.hasRain) {
     alerts.push({
       id: 'weather-rain',
@@ -6492,6 +7049,7 @@ function render() {
   renderEvents();
   renderCalendarMonth();
   renderCalendarPlanner();
+  renderRaceEntries();
   renderBackupStatus();
   renderMigrationPreview();
   renderCloudReadPreview();
@@ -7089,6 +7647,83 @@ function renderCalendarPlanner() {
   `;
 }
 
+function getRacePlansForOpportunity(opportunityId) {
+  return state.raceEntryPlans
+    .map(normalizeRacePlan)
+    .filter((plan) => plan.opportunityId === opportunityId);
+}
+
+function renderRaceEntries() {
+  if (!els.raceOpportunityList) return;
+  const activeStable = getActiveStable();
+  if (els.raceEntriesStableBadge) els.raceEntriesStableBadge.textContent = activeStable.name || t('cloudRead.noStable');
+  if (els.raceEntriesModeBadge) els.raceEntriesModeBadge.textContent = cloudWriteMode ? t('calendar.cloudMode') : t('calendar.localMode');
+  if (!state.raceEntryOpportunities.length) {
+    els.raceOpportunityList.innerHTML = `<p class="empty-state">${t('raceEntries.empty')}</p>`;
+    return;
+  }
+  const sortedOpportunities = state.raceEntryOpportunities
+    .map(normalizeRaceOpportunity)
+    .sort((a, b) => `${a.raceDate} ${a.racetrackName}`.localeCompare(`${b.raceDate} ${b.racetrackName}`));
+  els.raceOpportunityList.innerHTML = sortedOpportunities.map((opportunity) => {
+    const plans = getRacePlansForOpportunity(opportunity.id);
+    const details = [
+      opportunity.raceNumber && `${t('raceEntries.raceNumber')}: ${opportunity.raceNumber}`,
+      opportunity.raceName && `${t('raceEntries.raceName')}: ${opportunity.raceName}`,
+      opportunity.raceClass && `${t('raceEntries.raceClass')}: ${opportunity.raceClass}`,
+      opportunity.distance && `${t('raceEntries.distance')}: ${opportunity.distance}`,
+      opportunity.startMethod && `${t('raceEntries.startMethod')}: ${opportunity.startMethod}`,
+      opportunity.entryDeadline && `${t('raceEntries.entryDeadline')}: ${opportunity.entryDeadline}`,
+      opportunity.contactEmail && `${t('raceEntries.contactEmail')}: ${opportunity.contactEmail}`
+    ].filter(Boolean);
+    return `
+      <article class="item-card race-entry-card premium-stable-card">
+        <div>
+          <h4>${escapeHtml(opportunity.racetrackName || t('raceEntries.racetrack'))}</h4>
+          <p>${escapeHtml([opportunity.raceDate, opportunity.prizeInfo].filter(Boolean).join(' - ') || t('common.notSet'))}</p>
+          <div class="item-meta">
+            ${details.map((detail) => `<span class="pill">${escapeHtml(detail)}</span>`).join('')}
+          </div>
+          ${opportunity.eligibilityNotes ? `<div class="detail-box"><strong>${t('raceEntries.eligibilityNotes')}</strong><p>${escapeHtml(opportunity.eligibilityNotes)}</p></div>` : ''}
+          ${opportunity.notes ? `<div class="detail-box"><strong>${t('common.notesSimple')}</strong><p>${escapeHtml(opportunity.notes)}</p></div>` : ''}
+          <div class="race-plan-list">
+            ${plans.length ? plans.map((plan) => renderRacePlanLine(plan, opportunity)).join('') : `<p class="empty-state">${t('raceEntries.noPlans')}</p>`}
+          </div>
+        </div>
+        <div class="item-actions">
+          <button class="button ghost" type="button" data-action="plan-race-entry" data-id="${opportunity.id}">${t('raceEntries.savePlan')}</button>
+          <button class="button ghost" type="button" data-action="edit-race-opportunity" data-id="${opportunity.id}">${t('common.edit')}</button>
+          <button class="button ghost danger" type="button" data-action="delete-race-opportunity" data-id="${opportunity.id}">${t('common.delete')}</button>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+function renderRacePlanLine(plan, opportunity) {
+  const horse = state.horses.find((entry) => entry.id === plan.horseId);
+  const meta = [
+    horse?.name || t('tasks.noHorse'),
+    plan.driver && `${t('raceEntries.driver')}: ${plan.driver}`,
+    plan.trainer && `${t('raceEntries.trainer')}: ${plan.trainer}`,
+    t(`raceEntries.status${plan.status.charAt(0).toUpperCase()}${plan.status.slice(1)}`)
+  ].filter(Boolean);
+  return `
+    <article class="race-plan-card">
+      <div>
+        <strong>${escapeHtml(horse?.name || t('tasks.noHorse'))}</strong>
+        <p>${escapeHtml(plan.notes || t('common.noNotes'))}</p>
+        <div class="item-meta">${meta.map((item) => `<span class="pill">${escapeHtml(item)}</span>`).join('')}</div>
+      </div>
+      <div class="item-actions">
+        <button class="button ghost" type="button" data-action="draft-race-email" data-id="${plan.id}">${t('raceEntries.createDraft')}</button>
+        <button class="button ghost" type="button" data-action="edit-race-plan" data-id="${plan.id}">${t('common.edit')}</button>
+        <button class="button ghost danger" type="button" data-action="delete-race-plan" data-id="${plan.id}">${t('common.delete')}</button>
+      </div>
+    </article>
+  `;
+}
+
 function formatEventLine(event) {
   return `${event.date}${event.time ? ` ${event.time}` : ''} - ${event.name} (${t(`eventType.${event.type}`)})`;
 }
@@ -7358,6 +7993,69 @@ function handleEventSubmit(event) {
   showMessage(t('message.eventSaved'));
 }
 
+function handleRaceOpportunitySubmit(event) {
+  event.preventDefault();
+  if (blockCloudPreviewEdit()) return;
+  const form = event.currentTarget;
+  const existing = state.raceEntryOpportunities.find((entry) => entry.id === form.elements.id.value);
+  const now = new Date().toISOString();
+  const opportunity = {
+    id: form.elements.id.value,
+    racetrackName: form.elements.racetrackName.value.trim(),
+    raceDate: form.elements.raceDate.value,
+    raceNumber: form.elements.raceNumber.value.trim(),
+    raceName: form.elements.raceName.value.trim(),
+    raceClass: form.elements.raceClass.value.trim(),
+    distance: form.elements.distance.value.trim(),
+    startMethod: form.elements.startMethod.value.trim(),
+    prizeInfo: form.elements.prizeInfo.value.trim(),
+    eligibilityNotes: form.elements.eligibilityNotes.value.trim(),
+    entryDeadline: form.elements.entryDeadline.value,
+    contactEmail: form.elements.contactEmail.value.trim(),
+    notes: form.elements.notes.value.trim(),
+    createdAt: existing?.createdAt || now,
+    updatedAt: now
+  };
+  if (cloudWriteMode) {
+    if (!opportunity.id) opportunity.id = createId();
+    if (existing?.cloudId) opportunity.cloudId = existing.cloudId;
+    runCloudFormSubmit(form, 'race-opportunity-save', opportunity.id, () => handleCloudRaceOpportunitySave(opportunity), () => resetForm(form));
+    return;
+  }
+  upsert('raceEntryOpportunities', normalizeRaceOpportunity(opportunity));
+  resetForm(form);
+  showMessage(t('raceEntries.savedOpportunity'));
+}
+
+function handleRacePlanSubmit(event) {
+  event.preventDefault();
+  if (blockCloudPreviewEdit()) return;
+  const form = event.currentTarget;
+  const existing = state.raceEntryPlans.find((entry) => entry.id === form.elements.id.value);
+  const plan = {
+    id: form.elements.id.value,
+    opportunityId: form.elements.opportunityId.value,
+    horseId: form.elements.horseId.value,
+    driver: form.elements.driver.value.trim(),
+    trainer: form.elements.trainer.value.trim(),
+    notes: form.elements.notes.value.trim(),
+    status: form.elements.status.value,
+    emailSubject: existing?.emailSubject || '',
+    emailBody: existing?.emailBody || '',
+    createdAt: existing?.createdAt || new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+  if (cloudWriteMode) {
+    if (!plan.id) plan.id = createId();
+    if (existing?.cloudId) plan.cloudId = existing.cloudId;
+    runCloudFormSubmit(form, 'race-plan-save', plan.id, () => handleCloudRacePlanSave(plan), () => resetForm(form));
+    return;
+  }
+  upsert('raceEntryPlans', normalizeRacePlan(plan));
+  resetForm(form);
+  showMessage(t('raceEntries.savedPlan'));
+}
+
 function handleListClick(event) {
   const button = event.target.closest('button[data-action]');
   if (!button) return;
@@ -7400,6 +8098,18 @@ function handleListClick(event) {
     if (cloudWriteMode) handleCloudCalendarEventDelete(id);
     else deleteItem('calendarEvents', id, t('delete.event'), t('message.eventDeleted'));
   }
+  if (action === 'plan-race-entry') fillRacePlanForOpportunity(id);
+  if (action === 'edit-race-opportunity') fillRaceOpportunityForm(id);
+  if (action === 'delete-race-opportunity') {
+    if (cloudWriteMode) handleCloudRaceOpportunityDelete(id);
+    else deleteRaceOpportunityLocal(id);
+  }
+  if (action === 'edit-race-plan') fillRacePlanForm(id);
+  if (action === 'delete-race-plan') {
+    if (cloudWriteMode) handleCloudRacePlanDelete(id);
+    else deleteItem('raceEntryPlans', id, t('delete.racePlan'), t('raceEntries.deletedPlan'));
+  }
+  if (action === 'draft-race-email') createRaceEmailDraft(id);
 }
 
 function handleCalendarFilterChange() {
@@ -7527,6 +8237,7 @@ function handleAlertAction(event) {
     tasks: { view: 'stable', tab: 'tasks', selector: '#tasksPanel' },
     care: { view: 'stable', tab: 'horses', selector: '#careHistoryList' },
     calendar: { view: 'calendar', selector: '#calendarView' },
+    raceEntries: { view: 'raceEntries', selector: '#raceEntriesView' },
     backup: { view: 'settings', selector: '#settingsBackupSection' },
     weather: { view: 'home', selector: '#turnoutWeatherCard' }
   };
@@ -7653,6 +8364,52 @@ function fillEventForm(id) {
   els.eventForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
+function fillRaceOpportunityForm(id) {
+  const found = state.raceEntryOpportunities.find((entry) => entry.id === id);
+  if (!found || !els.raceOpportunityForm) return;
+  const opportunity = normalizeRaceOpportunity(found);
+  els.raceOpportunityForm.elements.id.value = opportunity.id;
+  els.raceOpportunityForm.elements.racetrackName.value = opportunity.racetrackName;
+  els.raceOpportunityForm.elements.raceDate.value = opportunity.raceDate;
+  els.raceOpportunityForm.elements.raceNumber.value = opportunity.raceNumber;
+  els.raceOpportunityForm.elements.raceName.value = opportunity.raceName;
+  els.raceOpportunityForm.elements.raceClass.value = opportunity.raceClass;
+  els.raceOpportunityForm.elements.distance.value = opportunity.distance;
+  els.raceOpportunityForm.elements.startMethod.value = opportunity.startMethod;
+  els.raceOpportunityForm.elements.prizeInfo.value = opportunity.prizeInfo;
+  els.raceOpportunityForm.elements.eligibilityNotes.value = opportunity.eligibilityNotes;
+  els.raceOpportunityForm.elements.entryDeadline.value = opportunity.entryDeadline;
+  els.raceOpportunityForm.elements.contactEmail.value = opportunity.contactEmail;
+  els.raceOpportunityForm.elements.notes.value = opportunity.notes;
+  showView('raceEntries');
+  els.raceOpportunityForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  showMessage(t('message.editing'));
+}
+
+function fillRacePlanForOpportunity(opportunityId) {
+  if (!els.racePlanForm) return;
+  showView('raceEntries');
+  resetForm(els.racePlanForm);
+  els.racePlanForm.elements.opportunityId.value = opportunityId;
+  els.racePlanForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function fillRacePlanForm(id) {
+  const found = state.raceEntryPlans.find((entry) => entry.id === id);
+  if (!found || !els.racePlanForm) return;
+  const plan = normalizeRacePlan(found);
+  els.racePlanForm.elements.id.value = plan.id;
+  els.racePlanForm.elements.opportunityId.value = plan.opportunityId;
+  els.racePlanForm.elements.horseId.value = plan.horseId;
+  els.racePlanForm.elements.driver.value = plan.driver;
+  els.racePlanForm.elements.trainer.value = plan.trainer;
+  els.racePlanForm.elements.status.value = plan.status;
+  els.racePlanForm.elements.notes.value = plan.notes;
+  showView('raceEntries');
+  els.racePlanForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  showMessage(t('message.editing'));
+}
+
 function deleteItem(collection, id, label, message) {
   if (blockCloudPreviewEdit()) return;
   if (!confirmDelete(label)) {
@@ -7665,6 +8422,76 @@ function deleteItem(collection, id, label, message) {
   showMessage(message);
 }
 
+function deleteRaceOpportunityLocal(id) {
+  if (blockCloudPreviewEdit()) return;
+  if (!confirmDelete(t('delete.raceOpportunity'))) {
+    showMessage(t('message.deleteCancelled'));
+    return;
+  }
+  state.raceEntryOpportunities = state.raceEntryOpportunities.filter((entry) => entry.id !== id);
+  state.raceEntryPlans = state.raceEntryPlans.filter((entry) => entry.opportunityId !== id);
+  saveData();
+  render();
+  showMessage(t('raceEntries.deletedOpportunity'));
+}
+
+function buildRaceEmailDraft(planId) {
+  const plan = normalizeRacePlan(state.raceEntryPlans.find((entry) => entry.id === planId) || {});
+  const opportunity = normalizeRaceOpportunity(state.raceEntryOpportunities.find((entry) => entry.id === plan.opportunityId) || {});
+  const horse = state.horses.find((entry) => entry.id === plan.horseId);
+  const activeStable = getActiveStable();
+  const horseName = horse?.name || t('tasks.noHorse');
+  const subject = t('raceEntries.emailSubject', {
+    racetrack: opportunity.racetrackName || t('raceEntries.racetrack'),
+    date: opportunity.raceDate || '',
+    horse: horseName
+  });
+  const body = [
+    t('raceEntries.emailGreeting'),
+    '',
+    t('raceEntries.emailIntro'),
+    '',
+    `${t('raceEntries.racetrack')}: ${opportunity.racetrackName}`,
+    `${t('raceEntries.raceDate')}: ${opportunity.raceDate}`,
+    `${t('raceEntries.raceNumber')}: ${opportunity.raceNumber || '-'}`,
+    `${t('raceEntries.raceName')}: ${opportunity.raceName || '-'}`,
+    `${t('raceEntries.horse')}: ${horseName}`,
+    `${t('raceEntries.driver')}: ${plan.driver || '-'}`,
+    `${t('raceEntries.trainer')}: ${plan.trainer || '-'}`,
+    `${t('raceEntries.stable')}: ${activeStable.name || '-'}`,
+    `${t('support.email')}: ${getCurrentUser()?.email || '-'}`,
+    `${t('common.notesSimple')}: ${plan.notes || opportunity.notes || '-'}`,
+    '',
+    t('raceEntries.emailClosing')
+  ].join('\n');
+  return { to: opportunity.contactEmail, subject, body };
+}
+
+function createRaceEmailDraft(planId) {
+  const draft = buildRaceEmailDraft(planId);
+  if (!draft.to) {
+    showMessage(t('raceEntries.noContactEmail'));
+    return;
+  }
+  const href = `mailto:${encodeURIComponent(draft.to)}?subject=${encodeURIComponent(draft.subject)}&body=${encodeURIComponent(draft.body)}`;
+  window.location.href = href;
+}
+
+async function handleRaceImportFile(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  try {
+    await file.text();
+    if (els.raceImportStatus) els.raceImportStatus.textContent = t('raceEntries.importLoaded');
+    showMessage(t('raceEntries.importLoaded'));
+  } catch (error) {
+    console.error('[EquiTrack race entries] Race file import failed', error);
+    if (els.raceImportStatus) els.raceImportStatus.textContent = t('raceEntries.importPlaceholder');
+  } finally {
+    event.target.value = '';
+  }
+}
+
 function deleteHorseLocal(id) {
   if (blockCloudPreviewEdit()) return;
   if (!confirmDelete(t('delete.horse'))) {
@@ -7673,6 +8500,7 @@ function deleteHorseLocal(id) {
   }
   state.horses = state.horses.filter((horse) => horse.id !== id);
   state.careHistory = state.careHistory.filter((record) => record.horseId !== id);
+  state.raceEntryPlans = state.raceEntryPlans.filter((plan) => plan.horseId !== id);
   saveData();
   render();
   showMessage(t('message.horseDeleted'));
@@ -7704,7 +8532,9 @@ function normalizeImportedData(imported) {
     hours: Array.isArray(data.hours) ? data.hours.map(normalizeWorkLog) : [],
     inventory: Array.isArray(data.inventory) ? data.inventory.map(normalizeFeedItem) : [],
     calendarEvents: Array.isArray(data.calendarEvents) ? data.calendarEvents.map(normalizeCalendarEvent) : [],
-    careHistory: Array.isArray(data.careHistory) ? data.careHistory.map(normalizeCareRecord) : []
+    careHistory: Array.isArray(data.careHistory) ? data.careHistory.map(normalizeCareRecord) : [],
+    raceEntryOpportunities: Array.isArray(data.raceEntryOpportunities) ? data.raceEntryOpportunities.map(normalizeRaceOpportunity) : [],
+    raceEntryPlans: Array.isArray(data.raceEntryPlans) ? data.raceEntryPlans.map(normalizeRacePlan) : []
   };
 }
 
@@ -7728,7 +8558,7 @@ function createBackupPayload(createdAt = new Date().toISOString(), data = state)
   const normalizedData = normalizeImportedData(data);
   return {
     appName: 'EquiTrack',
-    backupFormatVersion: 4,
+    backupFormatVersion: 5,
     createdAt,
     exportedFrom: 'EquiTrack-Web',
     counts: getCounts(normalizedData),
@@ -7816,7 +8646,7 @@ function resetLocalData() {
   }
   cloudWriteMode = false;
   cloudPreviewMode = false;
-  state = { horses: [], tasks: [], hours: [], inventory: [], calendarEvents: [], careHistory: [] };
+  state = { horses: [], tasks: [], hours: [], inventory: [], calendarEvents: [], careHistory: [], raceEntryOpportunities: [], raceEntryPlans: [] };
   saveData();
   render();
   showMessage(t('message.resetDone'));
@@ -8006,6 +8836,9 @@ els.taskForm.addEventListener('submit', handleTaskSubmit);
 els.hoursForm.addEventListener('submit', handleHoursSubmit);
 els.inventoryForm.addEventListener('submit', handleInventorySubmit);
 els.eventForm.addEventListener('submit', handleEventSubmit);
+els.raceOpportunityForm?.addEventListener('submit', handleRaceOpportunitySubmit);
+els.racePlanForm?.addEventListener('submit', handleRacePlanSubmit);
+els.raceImportInput?.addEventListener('change', handleRaceImportFile);
 els.exportButton.addEventListener('click', exportBackup);
 els.importInput.addEventListener('change', (event) => importBackup(event.target.files[0]));
 els.restoreEmergencyButton?.addEventListener('click', restoreEmergencyBackup);
@@ -8060,6 +8893,7 @@ els.taskForm.elements.date.value = today();
 els.hoursForm.elements.date.value = today();
 if (els.careForm?.elements.date) els.careForm.elements.date.value = today();
 els.eventForm.elements.date.value = today();
+if (els.raceOpportunityForm?.elements.raceDate) els.raceOpportunityForm.elements.raceDate.value = today();
 setAdminPermissionValues(els.adminUserForm?.elements.stableRole?.value || 'viewer');
 
 applyTranslations();

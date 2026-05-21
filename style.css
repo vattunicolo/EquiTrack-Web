@@ -1270,6 +1270,42 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
   grid-template-columns: minmax(0, 1.75fr) minmax(280px, 0.85fr);
   margin: 24px 0;
 }
+.race-entry-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+  margin: 24px 0 18px;
+}
+.race-entry-panel,
+.race-import-panel,
+.race-entry-list-section {
+  margin-bottom: 18px;
+}
+.race-entry-card {
+  align-items: start;
+}
+.race-plan-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+.race-plan-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid rgba(78, 205, 196, 0.22);
+  border-radius: 10px;
+  background: #f8fbfc;
+}
+.race-plan-card strong {
+  color: #14335a;
+}
+.race-plan-card p {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
 .calendar-month-card, .selected-day-card, .calendar-list-section {
   background: #ffffff;
   border: 1px solid var(--line);
@@ -1951,7 +1987,7 @@ textarea { resize: vertical; }
   .top-nav {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
   .auth-status {
     width: 100%;
@@ -1972,7 +2008,7 @@ textarea { resize: vertical; }
   .home-overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .home-process-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .calendar-dashboard { grid-template-columns: minmax(0, 1fr); }
+  .calendar-dashboard, .race-entry-layout { grid-template-columns: minmax(0, 1fr); }
   .calendar-card-header { align-items: stretch; flex-direction: column; }
   .calendar-tools { grid-template-columns: minmax(0, 1fr); }
   .quick-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -2138,6 +2174,7 @@ textarea { resize: vertical; }
   .module-panel { padding: 12px; }
   .entry-form { padding: 14px; }
   .item-card { gap: 12px; }
+  .race-plan-card { grid-template-columns: minmax(0, 1fr); }
   .pill { max-width: 100%; overflow-wrap: anywhere; }
 }
 

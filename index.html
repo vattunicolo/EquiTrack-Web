@@ -26,6 +26,7 @@
         <button class="nav-button active" type="button" data-view-link="home" data-i18n="nav.home">Home</button>
         <button class="nav-button" type="button" data-view-link="stable" data-i18n="nav.stable">My Stable</button>
         <button class="nav-button" type="button" data-view-link="calendar" data-i18n="nav.calendar">Calendar</button>
+        <button class="nav-button" type="button" data-view-link="raceEntries" data-i18n="nav.raceEntries">Race Entries</button>
         <button class="nav-button" type="button" data-view-link="settings" data-i18n="nav.settings">Settings / Backup</button>
       </nav>
 
@@ -35,6 +36,7 @@
           <button class="nav-button active" type="button" data-view-link="home" data-i18n="nav.home">Home</button>
           <button class="nav-button" type="button" data-view-link="stable" data-i18n="nav.stable">My Stable</button>
           <button class="nav-button" type="button" data-view-link="calendar" data-i18n="nav.calendar">Calendar</button>
+          <button class="nav-button" type="button" data-view-link="raceEntries" data-i18n="nav.raceEntries">Race Entries</button>
           <button class="nav-button" type="button" data-view-link="settings" data-i18n="nav.settings">Settings / Backup</button>
         </div>
       </details>
@@ -616,6 +618,92 @@
             </div>
           </div>
           <div id="eventsList" class="item-list"></div>
+        </section>
+      </section>
+
+      <section id="raceEntriesView" class="view">
+        <div class="section-heading race-entry-hero">
+          <div>
+            <p class="eyebrow" data-i18n="raceEntries.eyebrow">Race Entry Planner</p>
+            <h2 data-i18n="raceEntries.title">Plan race entries and prepare emails.</h2>
+            <p data-i18n="raceEntries.subtitle">Plan which horses can be entered into upcoming races and prepare entry emails.</p>
+            <div class="calendar-hero-meta">
+              <span class="pill" id="raceEntriesStableBadge">-</span>
+              <span class="pill good" id="raceEntriesModeBadge">-</span>
+            </div>
+          </div>
+        </div>
+
+        <section class="race-entry-layout" aria-label="Race Entry Planner">
+          <article class="panel race-entry-panel">
+            <div class="module-header">
+              <div>
+                <h3 data-i18n="raceEntries.opportunityFormTitle">Add race opportunity</h3>
+                <p data-i18n="raceEntries.opportunityFormHelp">Enter monthly racetrack opportunities manually. File import can come later.</p>
+              </div>
+            </div>
+            <form id="raceOpportunityForm" class="entry-form">
+              <input type="hidden" name="id">
+              <label><span data-i18n="raceEntries.racetrack">Racetrack name</span><input name="racetrackName" required></label>
+              <label><span data-i18n="raceEntries.raceDate">Race date</span><input name="raceDate" type="date" required></label>
+              <label><span data-i18n="raceEntries.raceNumber">Race number</span><input name="raceNumber"></label>
+              <label><span data-i18n="raceEntries.raceName">Race name</span><input name="raceName"></label>
+              <label><span data-i18n="raceEntries.raceClass">Race class / category</span><input name="raceClass"></label>
+              <label><span data-i18n="raceEntries.distance">Distance</span><input name="distance"></label>
+              <label><span data-i18n="raceEntries.startMethod">Start method</span><input name="startMethod"></label>
+              <label><span data-i18n="raceEntries.prizeInfo">Prize info</span><input name="prizeInfo"></label>
+              <label><span data-i18n="raceEntries.entryDeadline">Entry deadline</span><input name="entryDeadline" type="date"></label>
+              <label><span data-i18n="raceEntries.contactEmail">Racetrack/contact email</span><input name="contactEmail" type="email"></label>
+              <label class="full"><span data-i18n="raceEntries.eligibilityNotes">Eligibility notes</span><textarea name="eligibilityNotes" rows="2"></textarea></label>
+              <label class="full"><span data-i18n="common.notesSimple">Notes</span><textarea name="notes" rows="3"></textarea></label>
+              <button class="button primary" type="submit" data-i18n="raceEntries.saveOpportunity">Save race opportunity</button>
+            </form>
+          </article>
+
+          <article class="panel race-entry-panel">
+            <div class="module-header">
+              <div>
+                <h3 data-i18n="raceEntries.planFormTitle">Plan horse entry</h3>
+                <p data-i18n="raceEntries.planFormHelp">Select a race opportunity, choose a horse, and prepare an email draft.</p>
+              </div>
+            </div>
+            <form id="racePlanForm" class="entry-form">
+              <input type="hidden" name="id">
+              <label><span data-i18n="raceEntries.opportunity">Race opportunity</span><select name="opportunityId" required></select></label>
+              <label><span data-i18n="raceEntries.horse">Horse</span><select name="horseId" required></select></label>
+              <label><span data-i18n="raceEntries.driver">Driver</span><input name="driver"></label>
+              <label><span data-i18n="raceEntries.trainer">Trainer / contact person</span><input name="trainer"></label>
+              <label><span data-i18n="raceEntries.status">Status</span><select name="status">
+                <option value="draft" data-i18n="raceEntries.statusDraft">Draft</option>
+                <option value="ready" data-i18n="raceEntries.statusReady">Ready</option>
+                <option value="sent" data-i18n="raceEntries.statusSent">Sent manually</option>
+              </select></label>
+              <label class="full"><span data-i18n="common.notesSimple">Notes</span><textarea name="notes" rows="3"></textarea></label>
+              <button class="button primary" type="submit" data-i18n="raceEntries.savePlan">Save planned entry</button>
+            </form>
+            <p class="update-note" data-i18n="raceEntries.mailtoNotice">This creates an email draft. Check all details before sending.</p>
+          </article>
+        </section>
+
+        <section class="panel race-import-panel">
+          <div class="module-header">
+            <div>
+              <h3 data-i18n="raceEntries.importTitle">Import race file</h3>
+              <p data-i18n="raceEntries.importHelp">CSV or plain text import foundation is available. PDF/Excel import will be added later.</p>
+            </div>
+          </div>
+          <label class="file-button button secondary"><span data-i18n="raceEntries.importButton">Import race file</span><input id="raceImportInput" type="file" accept=".csv,.txt,text/csv,text/plain"></label>
+          <p id="raceImportStatus" class="status-text" data-i18n="raceEntries.importPlaceholder">Manual entry works now. PDF/Excel import will be added later.</p>
+        </section>
+
+        <section class="race-entry-list-section">
+          <div class="module-header">
+            <div>
+              <h3 data-i18n="raceEntries.opportunitiesTitle">Race opportunities</h3>
+              <p data-i18n="raceEntries.opportunitiesHelp">Track upcoming race options, planned horses, and email drafts.</p>
+            </div>
+          </div>
+          <div id="raceOpportunityList" class="item-list race-entry-list"></div>
         </section>
       </section>
 
