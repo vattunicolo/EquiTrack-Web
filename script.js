@@ -2768,6 +2768,15 @@ Object.assign(translations.en, {
   'raceEntries.emailGreeting': 'Hello,',
   'raceEntries.emailIntro': 'I would like to enter the following horse for this race.',
   'raceEntries.emailClosing': 'Please confirm the entry details. Thank you.',
+  'raceEntries.racetracks': 'Racetracks',
+  'raceEntries.raceDays': 'Race days',
+  'raceEntries.selectRaceDay': 'Select a race day',
+  'raceEntries.racesOnThisDay': 'Races on this day',
+  'raceEntries.raceCount': '{count} race(s)',
+  'raceEntries.showOnlyPossible': 'Show only races with possible matching horses',
+  'raceEntries.searchRaces': 'Search races',
+  'raceEntries.noRacesForDay': 'No races for this day.',
+  'raceEntries.eligibilityDisclaimer': 'Eligibility is a suggestion. Always verify official race conditions.',
   'raceEntryCloud.savedOpportunity': 'Race opportunity saved to cloud.',
   'raceEntryCloud.deletedOpportunity': 'Race opportunity deleted from cloud.',
   'raceEntryCloud.savedPlan': 'Planned entry saved to cloud.',
@@ -2882,6 +2891,15 @@ Object.assign(translations.fi, {
   'raceEntries.emailGreeting': 'Hei,',
   'raceEntries.emailIntro': 'Haluaisin ilmoittaa seuraavan hevosen tähän lähtöön.',
   'raceEntries.emailClosing': 'Vahvistattehan ilmoittautumisen tiedot. Kiitos.',
+  'raceEntries.racetracks': 'Raviradat',
+  'raceEntries.raceDays': 'Lähtöpäivät',
+  'raceEntries.selectRaceDay': 'Valitse lähtöpäivä',
+  'raceEntries.racesOnThisDay': 'Lähdöt tälle päivälle',
+  'raceEntries.raceCount': '{count} lähtöä',
+  'raceEntries.showOnlyPossible': 'Näytä vain lähdöt, joihin on mahdollisesti sopivia hevosia',
+  'raceEntries.searchRaces': 'Hae lähtöjä',
+  'raceEntries.noRacesForDay': 'Tälle päivälle ei ole lähtöjä.',
+  'raceEntries.eligibilityDisclaimer': 'Sopivuus on ehdotus. Tarkista aina viralliset lähtöehdot.',
   'raceEntryCloud.savedOpportunity': 'Lähtö tallennettu pilveen.',
   'raceEntryCloud.deletedOpportunity': 'Lähtö poistettu pilvestä.',
   'raceEntryCloud.savedPlan': 'Suunniteltu ilmoittautuminen tallennettu pilveen.',
@@ -2996,6 +3014,15 @@ Object.assign(translations.it, {
   'raceEntries.emailGreeting': 'Ciao,',
   'raceEntries.emailIntro': 'Vorrei iscrivere il seguente cavallo a questa gara.',
   'raceEntries.emailClosing': 'Confermate per favore i dettagli dell’iscrizione. Grazie.',
+  'raceEntries.racetracks': 'Ippodromi',
+  'raceEntries.raceDays': 'Giorni di gara',
+  'raceEntries.selectRaceDay': 'Seleziona un giorno di gara',
+  'raceEntries.racesOnThisDay': 'Gare di questo giorno',
+  'raceEntries.raceCount': '{count} gara/e',
+  'raceEntries.showOnlyPossible': 'Mostra solo gare con cavalli potenzialmente compatibili',
+  'raceEntries.searchRaces': 'Cerca gare',
+  'raceEntries.noRacesForDay': 'Nessuna gara per questo giorno.',
+  'raceEntries.eligibilityDisclaimer': 'L’idoneità è un suggerimento. Verifica sempre le condizioni ufficiali.',
   'raceEntryCloud.savedOpportunity': 'Opportunità gara salvata nel cloud.',
   'raceEntryCloud.deletedOpportunity': 'Opportunità gara eliminata dal cloud.',
   'raceEntryCloud.savedPlan': 'Iscrizione pianificata salvata nel cloud.',
@@ -3116,6 +3143,9 @@ let cloudSaveStatusTimer = null;
 let raceImportPreviewItems = [];
 let racePrograms = [];
 let raceProgramRaces = [];
+let selectedPublishedRaceDay = { racetrack: '', date: '' };
+let publishedRaceFilter = { possibleOnly: false, search: '' };
+let publishedRaceFilterTimer = null;
 const cloudMutationLocks = new Set();
 let cloudState = {
   status: 'notConnected',
@@ -8364,31 +8394,105 @@ function renderPublishedRacePrograms() {
     els.publishedRaceProgramList.innerHTML = `<p class="empty-state">${t('racePrograms.noPrograms')}</p>`;
     return;
   }
-  els.publishedRaceProgramList.innerHTML = publishedPrograms.map((program) => {
-    const races = raceProgramRaces
-      .filter((race) => race.programId === program.id)
-      .sort((a, b) => `${a.raceDate} ${a.raceNumber}`.localeCompare(`${b.raceDate} ${b.raceNumber}`));
-    return `
-      <article class="race-program-card">
-        <div class="module-header">
+  const publishedRaceContexts = publishedPrograms.flatMap((program) => raceProgramRaces
+    .filter((race) => race.programId === program.id)
+    .map((race) => ({ race, program })));
+  if (!publishedRaceContexts.length) {
+    els.publishedRaceProgramList.innerHTML = `<p class="empty-state">${t('raceEntries.noRacesForDay')}</p>`;
+    return;
+  }
+  const grouped = new Map();
+  publishedRaceContexts.forEach((context) => {
+    const racetrack = context.program.racetrackName || context.race.racetrackName || t('raceEntries.racetrack');
+    const date = context.race.raceDate || '';
+    if (!grouped.has(racetrack)) grouped.set(racetrack, new Map());
+    const days = grouped.get(racetrack);
+    if (!days.has(date)) days.set(date, []);
+    days.get(date).push(context);
+  });
+  const firstRacetrack = Array.from(grouped.keys())[0] || '';
+  const firstDate = firstRacetrack ? Array.from(grouped.get(firstRacetrack).keys()).sort()[0] || '' : '';
+  const selectedRacetrackExists = selectedPublishedRaceDay.racetrack && grouped.has(selectedPublishedRaceDay.racetrack);
+  const selectedDateExists = selectedRacetrackExists && grouped.get(selectedPublishedRaceDay.racetrack).has(selectedPublishedRaceDay.date);
+  if (!selectedDateExists) selectedPublishedRaceDay = { racetrack: firstRacetrack, date: firstDate };
+  const selectedContexts = (grouped.get(selectedPublishedRaceDay.racetrack)?.get(selectedPublishedRaceDay.date) || [])
+    .sort((a, b) => `${a.race.raceNumber} ${a.race.raceName}`.localeCompare(`${b.race.raceNumber} ${b.race.raceName}`));
+  const search = publishedRaceFilter.search.trim().toLowerCase();
+  const filteredContexts = selectedContexts.filter(({ race }) => {
+    const { possible } = getEligibilityHorseBuckets(race);
+    const matchesPossible = !publishedRaceFilter.possibleOnly || possible.length > 0;
+    const haystack = [race.raceName, race.raceNumber, race.raceClass, race.eligibilityNotes, race.distance, race.prizeInfo]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
+    return matchesPossible && (!search || haystack.includes(search));
+  });
+  els.publishedRaceProgramList.innerHTML = `
+    <div class="race-day-browser">
+      <aside class="race-day-sidebar">
+        <div class="module-header compact">
           <div>
-            <h3>${escapeHtml(program.title || program.racetrackName || t('racePrograms.title'))}</h3>
-            <p>${escapeHtml([program.racetrackName, program.locationCity, program.programMonth].filter(Boolean).join(' - '))}</p>
+            <h3>${t('raceEntries.racetracks')}</h3>
+            <p>${t('raceEntries.selectRaceDay')}</p>
           </div>
         </div>
-        <div class="race-import-list">
-          ${races.map((race) => renderGlobalRaceCard(race, program)).join('')}
+        <div class="race-track-list">
+          ${Array.from(grouped.entries()).map(([racetrack, days]) => `
+            <article class="race-track-group">
+              <h4>${escapeHtml(racetrack)}</h4>
+              <div class="race-day-list">
+                ${Array.from(days.entries())
+                  .sort(([dateA], [dateB]) => `${dateA}`.localeCompare(`${dateB}`))
+                  .map(([date, races]) => {
+                    const active = racetrack === selectedPublishedRaceDay.racetrack && date === selectedPublishedRaceDay.date;
+                    return `
+                      <button class="race-day-button ${active ? 'active' : ''}" type="button" data-action="select-published-race-day" data-racetrack="${escapeHtml(racetrack)}" data-date="${escapeHtml(date)}">
+                        <span>${escapeHtml(date || t('raceEntries.raceDate'))}</span>
+                        <small>${t('raceEntries.raceCount', { count: races.length })}</small>
+                      </button>
+                    `;
+                  }).join('')}
+              </div>
+            </article>
+          `).join('')}
         </div>
-      </article>
-    `;
-  }).join('');
+      </aside>
+      <section class="race-day-detail">
+        <div class="module-header">
+          <div>
+            <h3>${t('raceEntries.racesOnThisDay')}</h3>
+            <p>${escapeHtml([selectedPublishedRaceDay.racetrack, selectedPublishedRaceDay.date].filter(Boolean).join(' - '))}</p>
+          </div>
+        </div>
+        <div class="race-day-filters">
+          <label><span>${t('raceEntries.searchRaces')}</span><input data-race-filter="search" value="${escapeHtml(publishedRaceFilter.search)}" placeholder="${t('raceEntries.searchRaces')}"></label>
+          <label class="checkbox-line inline-checkbox">
+            <input type="checkbox" data-race-filter="possibleOnly" ${publishedRaceFilter.possibleOnly ? 'checked' : ''}>
+            <span>${t('raceEntries.showOnlyPossible')}</span>
+          </label>
+        </div>
+        <p class="update-note">${t('raceEntries.eligibilityDisclaimer')}</p>
+        <div class="race-import-list">
+          ${filteredContexts.length
+            ? filteredContexts.map(({ race, program }) => renderGlobalRaceCard(race, program)).join('')
+            : `<p class="empty-state">${t('raceEntries.noRacesForDay')}</p>`}
+        </div>
+      </section>
+    </div>
+  `;
 }
 
 function renderGlobalRaceCard(race, program) {
   const plans = getRacePlansForProgramRace(race.id);
   const { possible, manual } = getEligibilityHorseBuckets(race);
-  const horseOptions = state.horses.map((horse) => `<option value="${horse.id}">${escapeHtml(horse.name)}</option>`).join('');
+  const horseOrder = [
+    ...possible,
+    ...manual.filter((horse) => !possible.some((entry) => entry.id === horse.id)),
+    ...state.horses.filter((horse) => !possible.some((entry) => entry.id === horse.id) && !manual.some((entry) => entry.id === horse.id))
+  ];
+  const horseOptions = horseOrder.map((horse) => `<option value="${horse.id}">${escapeHtml(horse.name)}</option>`).join('');
   const details = [
+    race.raceClass && `${t('raceEntries.raceClass')}: ${race.raceClass}`,
     race.prizeInfo && `${t('raceEntries.prizeInfo')}: ${race.prizeInfo}`,
     race.distance && `${t('raceEntries.distance')}: ${race.distance}`,
     race.entryDeadline && `${t('raceEntries.entryDeadline')}: ${race.entryDeadline}`,
@@ -8403,8 +8507,10 @@ function renderGlobalRaceCard(race, program) {
         ${race.eligibilityNotes ? `<div class="detail-box"><strong>${t('raceEntries.eligibilityNotes')}</strong><p>${escapeHtml(race.eligibilityNotes)}</p></div>` : ''}
         <div class="detail-box">
           <strong>${t('racePrograms.possibleMatches')}</strong>
-          <p>${possible.length ? escapeHtml(possible.map((horse) => horse.name).join(', ')) : t('racePrograms.manualCheck')}</p>
-          ${manual.length ? `<p>${t('racePrograms.manualCheck')}: ${escapeHtml(manual.map((horse) => horse.name).join(', '))}</p>` : ''}
+          <div class="horse-chip-list">
+            ${possible.length ? possible.map((horse) => `<span class="horse-chip">${escapeHtml(horse.name)}</span>`).join('') : `<span class="muted-inline">${t('racePrograms.manualCheck')}</span>`}
+          </div>
+          ${manual.length ? `<div class="horse-chip-list manual-check"><strong>${t('racePrograms.manualCheck')}:</strong> ${manual.map((horse) => `<span class="horse-chip subtle">${escapeHtml(horse.name)}</span>`).join('')}</div>` : ''}
         </div>
         ${plans.length ? `<div class="race-plan-list">${plans.map((plan) => renderRacePlanLine(plan, null)).join('')}</div>` : ''}
         ${canCreateRacePlans() ? `<div class="entry-form compact-form">
@@ -8999,6 +9105,13 @@ function handleListClick(event) {
   }
   if (action === 'draft-race-email') createRaceEmailDraft(id);
   if (action === 'create-global-race-plan') createGlobalRacePlan(id, button.closest('[data-program-race-id]'));
+  if (action === 'select-published-race-day') {
+    selectedPublishedRaceDay = {
+      racetrack: button.dataset.racetrack || '',
+      date: button.dataset.date || ''
+    };
+    renderPublishedRacePrograms();
+  }
   if (action === 'edit-race-program') fillRaceProgramForm(id);
   if (action === 'select-race-program-import') selectRaceProgramForImport(id);
   if (action === 'publish-race-program') changeRaceProgramStatus(id, 'published');
@@ -10010,6 +10123,19 @@ els.raceProgramAdminList?.addEventListener('change', (event) => {
   if (!input) return;
   selectRaceProgramForImport(input.dataset.programImportId, false);
   handleRaceImportFile(event);
+});
+els.publishedRaceProgramList?.addEventListener('input', (event) => {
+  const filter = event.target.closest('[data-race-filter]');
+  if (!filter) return;
+  if (filter.dataset.raceFilter === 'search') publishedRaceFilter.search = filter.value || '';
+  window.clearTimeout(publishedRaceFilterTimer);
+  publishedRaceFilterTimer = window.setTimeout(renderPublishedRacePrograms, 250);
+});
+els.publishedRaceProgramList?.addEventListener('change', (event) => {
+  const filter = event.target.closest('[data-race-filter]');
+  if (!filter) return;
+  if (filter.dataset.raceFilter === 'possibleOnly') publishedRaceFilter.possibleOnly = filter.checked;
+  renderPublishedRacePrograms();
 });
 els.raceImportPreview?.addEventListener('input', (event) => updateRaceImportPreviewField(event.target));
 els.raceImportPreview?.addEventListener('change', (event) => updateRaceImportPreviewField(event.target));

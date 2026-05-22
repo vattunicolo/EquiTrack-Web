@@ -1315,6 +1315,111 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
   display: grid;
   gap: 14px;
 }
+.race-day-browser {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.34fr) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+.race-day-sidebar,
+.race-day-detail {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid rgba(20, 51, 90, 0.1);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(20, 51, 90, 0.08);
+}
+.module-header.compact {
+  margin-bottom: 12px;
+}
+.race-track-list,
+.race-day-list {
+  display: grid;
+  gap: 10px;
+}
+.race-track-group {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(78, 205, 196, 0.2);
+  border-radius: 14px;
+  background: #f8fbfc;
+}
+.race-track-group h4 {
+  margin: 0;
+  color: #14335a;
+}
+.race-day-button {
+  display: grid;
+  gap: 3px;
+  width: 100%;
+  min-height: 54px;
+  padding: 10px 12px;
+  border: 1px solid rgba(20, 51, 90, 0.1);
+  border-radius: 12px;
+  background: #ffffff;
+  color: #14335a;
+  text-align: left;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.race-day-button:hover,
+.race-day-button:focus-visible,
+.race-day-button.active {
+  border-color: rgba(78, 205, 196, 0.65);
+  box-shadow: 0 10px 24px rgba(20, 51, 90, 0.1);
+  transform: translateY(-1px);
+}
+.race-day-button span {
+  font-weight: 850;
+}
+.race-day-button small {
+  color: var(--muted);
+}
+.race-day-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 12px;
+}
+.inline-checkbox {
+  min-height: 44px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(20, 51, 90, 0.1);
+  border-radius: 12px;
+  background: #f8fbfc;
+}
+.horse-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.horse-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 5px 10px;
+  border: 1px solid rgba(78, 205, 196, 0.3);
+  border-radius: 999px;
+  background: rgba(78, 205, 196, 0.12);
+  color: #14335a;
+  font-size: 13px;
+  font-weight: 850;
+}
+.horse-chip.subtle {
+  background: #eef4f7;
+  border-color: rgba(20, 51, 90, 0.12);
+}
+.manual-check {
+  align-items: center;
+}
+.muted-inline {
+  color: var(--muted);
+  font-size: 14px;
+}
 .race-program-management-heading,
 .race-program-status-group {
   display: grid;
@@ -2072,6 +2177,8 @@ textarea { resize: vertical; }
   .home-process-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .calendar-dashboard, .race-entry-layout { grid-template-columns: minmax(0, 1fr); }
+  .race-day-browser,
+  .race-day-filters { grid-template-columns: minmax(0, 1fr); }
   .race-program-admin-card { grid-template-columns: minmax(0, 1fr); }
   .calendar-card-header { align-items: stretch; flex-direction: column; }
   .calendar-tools { grid-template-columns: minmax(0, 1fr); }
