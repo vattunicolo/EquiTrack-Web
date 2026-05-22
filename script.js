@@ -533,10 +533,23 @@ const translations = {
     'horses.nickname': 'Stable name / nickname',
     'horses.owner': 'Owner',
     'horses.breed': 'Breed',
-    'horses.birth': 'Date of birth or birth year',
+    'horses.birth': 'Birth date',
     'horses.gender': 'Gender',
+    'horses.genderMale': 'Male',
+    'horses.genderFemale': 'Female',
+    'horses.genderGelding': 'Gelding',
+    'horses.genderUnknown': 'Unknown',
     'horses.color': 'Color',
     'horses.registration': 'Registration number',
+    'horses.racingProfile': 'Racing profile',
+    'horses.countryOfOrigin': 'Country of origin',
+    'horses.totalEarnings': 'Total earnings',
+    'horses.last5Earnings': 'Earnings in last 5 starts',
+    'horses.racingCategory': 'Racing category',
+    'horses.trainerName': 'Trainer',
+    'horses.ownerName': 'Owner',
+    'horses.defaultDriver': 'Default driver',
+    'horses.racingNotes': 'Racing notes',
     'horses.feedingNotes': 'Feeding notes',
     'horses.careNotes': 'Care notes',
     'horses.shoeingNotes': 'Shoeing notes',
@@ -1204,10 +1217,23 @@ const translations = {
     'horses.nickname': 'Tallinimi / lempinimi',
     'horses.owner': 'Omistaja',
     'horses.breed': 'Rotu',
-    'horses.birth': 'Syntymäaika tai -vuosi',
+    'horses.birth': 'Syntymäaika',
     'horses.gender': 'Sukupuoli',
+    'horses.genderMale': 'Ori / uros',
+    'horses.genderFemale': 'Tamma',
+    'horses.genderGelding': 'Ruuna',
+    'horses.genderUnknown': 'Tuntematon',
     'horses.color': 'Vari',
     'horses.registration': 'Rekisterinumero',
+    'horses.racingProfile': 'Kilpailuprofiili',
+    'horses.countryOfOrigin': 'Alkuperämaa',
+    'horses.totalEarnings': 'Kokonaisansiot',
+    'horses.last5Earnings': 'Ansiot viimeisissä 5 lähdössä',
+    'horses.racingCategory': 'Kilpailukategoria',
+    'horses.trainerName': 'Valmentaja',
+    'horses.ownerName': 'Omistaja',
+    'horses.defaultDriver': 'Vakio-ohjastaja',
+    'horses.racingNotes': 'Kilpailumuistiinpanot',
     'horses.feedingNotes': 'Ruokintamuistiinpanot',
     'horses.careNotes': 'Hoitomuistiinpanot',
     'horses.shoeingNotes': 'Kengitysmuistiinpanot',
@@ -1875,10 +1901,23 @@ const translations = {
     'horses.nickname': 'Nome in scuderia / soprannome',
     'horses.owner': 'Proprietario',
     'horses.breed': 'Razza',
-    'horses.birth': 'Anno o data di nascita',
+    'horses.birth': 'Data di nascita',
     'horses.gender': 'Sesso',
+    'horses.genderMale': 'Maschio',
+    'horses.genderFemale': 'Femmina',
+    'horses.genderGelding': 'Castrone',
+    'horses.genderUnknown': 'Sconosciuto',
     'horses.color': 'Colore',
     'horses.registration': 'Numero registrazione',
+    'horses.racingProfile': 'Profilo corse',
+    'horses.countryOfOrigin': 'Paese di origine',
+    'horses.totalEarnings': 'Vincite totali',
+    'horses.last5Earnings': 'Vincite nelle ultime 5 corse',
+    'horses.racingCategory': 'Categoria corse',
+    'horses.trainerName': 'Allenatore',
+    'horses.ownerName': 'Proprietario',
+    'horses.defaultDriver': 'Driver predefinito',
+    'horses.racingNotes': 'Note corse',
     'horses.feedingNotes': 'Note alimentazione',
     'horses.careNotes': 'Note cura',
     'horses.shoeingNotes': 'Note ferratura',
@@ -2777,6 +2816,24 @@ Object.assign(translations.en, {
   'raceEntries.searchRaces': 'Search races',
   'raceEntries.noRacesForDay': 'No races for this day.',
   'raceEntries.eligibilityDisclaimer': 'Eligibility is a suggestion. Always verify official race conditions.',
+  'eligibility.eligible': 'Eligible',
+  'eligibility.notEligible': 'Not eligible',
+  'eligibility.manualCheck': 'Manual check',
+  'eligibility.reasons': 'Eligibility reasons',
+  'eligibility.ageMatches': 'Age matches',
+  'eligibility.ageMissing': 'Age missing',
+  'eligibility.ageTooYoung': 'Age too young',
+  'eligibility.ageTooOld': 'Age too old',
+  'eligibility.earningsMatch': 'Earnings match',
+  'eligibility.earningsMissing': 'Earnings missing',
+  'eligibility.earningsTooLow': 'Earnings too low',
+  'eligibility.earningsTooHigh': 'Earnings too high',
+  'eligibility.genderMatches': 'Gender matches',
+  'eligibility.genderMismatch': 'Gender mismatch',
+  'eligibility.genderMissing': 'Gender missing',
+  'eligibility.categoryMatches': 'Category matches',
+  'eligibility.categoryMissing': 'Category missing',
+  'eligibility.categoryManual': 'Category needs manual check',
   'raceEntryCloud.savedOpportunity': 'Race opportunity saved to cloud.',
   'raceEntryCloud.deletedOpportunity': 'Race opportunity deleted from cloud.',
   'raceEntryCloud.savedPlan': 'Planned entry saved to cloud.',
@@ -2900,6 +2957,24 @@ Object.assign(translations.fi, {
   'raceEntries.searchRaces': 'Hae lähtöjä',
   'raceEntries.noRacesForDay': 'Tälle päivälle ei ole lähtöjä.',
   'raceEntries.eligibilityDisclaimer': 'Sopivuus on ehdotus. Tarkista aina viralliset lähtöehdot.',
+  'eligibility.eligible': 'Sopiva',
+  'eligibility.notEligible': 'Ei sopiva',
+  'eligibility.manualCheck': 'Tarkista käsin',
+  'eligibility.reasons': 'Sopivuuden perusteet',
+  'eligibility.ageMatches': 'Ikä sopii',
+  'eligibility.ageMissing': 'Ikä puuttuu',
+  'eligibility.ageTooYoung': 'Liian nuori',
+  'eligibility.ageTooOld': 'Liian vanha',
+  'eligibility.earningsMatch': 'Ansiot sopivat',
+  'eligibility.earningsMissing': 'Ansiot puuttuvat',
+  'eligibility.earningsTooLow': 'Ansiot liian pienet',
+  'eligibility.earningsTooHigh': 'Ansiot liian suuret',
+  'eligibility.genderMatches': 'Sukupuoli sopii',
+  'eligibility.genderMismatch': 'Sukupuoli ei sovi',
+  'eligibility.genderMissing': 'Sukupuoli puuttuu',
+  'eligibility.categoryMatches': 'Kategoria sopii',
+  'eligibility.categoryMissing': 'Kategoria puuttuu',
+  'eligibility.categoryManual': 'Kategoria vaatii käsin tarkistuksen',
   'raceEntryCloud.savedOpportunity': 'Lähtö tallennettu pilveen.',
   'raceEntryCloud.deletedOpportunity': 'Lähtö poistettu pilvestä.',
   'raceEntryCloud.savedPlan': 'Suunniteltu ilmoittautuminen tallennettu pilveen.',
@@ -3023,6 +3098,24 @@ Object.assign(translations.it, {
   'raceEntries.searchRaces': 'Cerca gare',
   'raceEntries.noRacesForDay': 'Nessuna gara per questo giorno.',
   'raceEntries.eligibilityDisclaimer': 'L’idoneità è un suggerimento. Verifica sempre le condizioni ufficiali.',
+  'eligibility.eligible': 'Idoneo',
+  'eligibility.notEligible': 'Non idoneo',
+  'eligibility.manualCheck': 'Controllo manuale',
+  'eligibility.reasons': 'Motivi idoneità',
+  'eligibility.ageMatches': 'Età compatibile',
+  'eligibility.ageMissing': 'Età mancante',
+  'eligibility.ageTooYoung': 'Troppo giovane',
+  'eligibility.ageTooOld': 'Troppo anziano',
+  'eligibility.earningsMatch': 'Vincite compatibili',
+  'eligibility.earningsMissing': 'Vincite mancanti',
+  'eligibility.earningsTooLow': 'Vincite troppo basse',
+  'eligibility.earningsTooHigh': 'Vincite troppo alte',
+  'eligibility.genderMatches': 'Sesso compatibile',
+  'eligibility.genderMismatch': 'Sesso non compatibile',
+  'eligibility.genderMissing': 'Sesso mancante',
+  'eligibility.categoryMatches': 'Categoria compatibile',
+  'eligibility.categoryMissing': 'Categoria mancante',
+  'eligibility.categoryManual': 'Categoria da controllare manualmente',
   'raceEntryCloud.savedOpportunity': 'Opportunità gara salvata nel cloud.',
   'raceEntryCloud.deletedOpportunity': 'Opportunità gara eliminata dal cloud.',
   'raceEntryCloud.savedPlan': 'Iscrizione pianificata salvata nel cloud.',
@@ -3429,9 +3522,17 @@ function normalizeHorse(item) {
     owner: item.owner || '',
     breed: item.breed || '',
     birth: item.birth || item.birthDate || item.birthYear || item.age || '',
-    gender: item.gender || '',
+    gender: normalizeHorseGender(item.gender || ''),
     color: item.color || '',
     registration: item.registration || item.registrationNumber || '',
+    countryOfOrigin: item.countryOfOrigin || item.country_of_origin || '',
+    totalEarnings: item.totalEarnings ?? item.total_earnings ?? '',
+    last5Earnings: item.last5Earnings ?? item.last_5_earnings ?? '',
+    racingCategory: item.racingCategory || item.racing_category || '',
+    trainerName: item.trainerName || item.trainer_name || '',
+    ownerName: item.ownerName || item.owner_name || '',
+    defaultDriver: item.defaultDriver || item.default_driver || '',
+    racingNotes: item.racingNotes || item.racing_notes || '',
     feedingNotes: item.feedingNotes || '',
     careNotes: item.careNotes || '',
     shoeingNotes: item.shoeingNotes || '',
@@ -4785,6 +4886,14 @@ function mapCloudHorse(row) {
     gender: row.gender,
     color: row.color,
     registration: row.registration_number,
+    countryOfOrigin: row.country_of_origin,
+    totalEarnings: row.total_earnings,
+    last5Earnings: row.last_5_earnings,
+    racingCategory: row.racing_category,
+    trainerName: row.trainer_name,
+    ownerName: row.owner_name,
+    defaultDriver: row.default_driver,
+    racingNotes: row.racing_notes,
     feedingNotes: row.feeding_notes,
     careNotes: row.care_notes,
     shoeingNotes: row.shoeing_notes,
@@ -5140,6 +5249,14 @@ function horseToCloudRow(stableId, rawHorse) {
     gender: cleanText(horse.gender),
     color: cleanText(horse.color),
     registration_number: cleanText(horse.registration),
+    country_of_origin: cleanText(horse.countryOfOrigin),
+    total_earnings: horse.totalEarnings === '' ? null : toSafeNumber(horse.totalEarnings, 0),
+    last_5_earnings: horse.last5Earnings === '' ? null : toSafeNumber(horse.last5Earnings, 0),
+    racing_category: cleanText(horse.racingCategory),
+    trainer_name: cleanText(horse.trainerName),
+    owner_name: cleanText(horse.ownerName),
+    default_driver: cleanText(horse.defaultDriver),
+    racing_notes: cleanText(horse.racingNotes),
     feeding_notes: cleanText(horse.feedingNotes),
     care_notes: cleanText(horse.careNotes),
     shoeing_notes: cleanText(horse.shoeingNotes),
@@ -7774,10 +7891,20 @@ function renderHorses() {
               ${renderHorseDetailGroup('horses.basicInfo', [
                 ['horses.owner', horse.owner],
                 ['horses.breed', horse.breed],
+                ['horses.color', horse.color]
+              ])}
+              ${renderHorseDetailGroup('horses.racingProfile', [
+                ['horses.registration', horse.registration],
                 ['horses.birth', horse.birth],
                 ['horses.gender', horse.gender],
-                ['horses.color', horse.color],
-                ['horses.registration', horse.registration]
+                ['horses.countryOfOrigin', horse.countryOfOrigin],
+                ['horses.totalEarnings', horse.totalEarnings],
+                ['horses.last5Earnings', horse.last5Earnings],
+                ['horses.racingCategory', horse.racingCategory],
+                ['horses.trainerName', horse.trainerName],
+                ['horses.ownerName', horse.ownerName],
+                ['horses.defaultDriver', horse.defaultDriver],
+                ['horses.racingNotes', horse.racingNotes]
               ])}
               ${renderHorseDetailGroup('horses.care', [
                 ['horses.careNotes', horse.careNotes],
@@ -8250,36 +8377,146 @@ function getHorseAgeAtRace(horse, raceDate) {
   return year - Number(match[0]);
 }
 
-function getEligibilityHorseBuckets(race) {
+function normalizeHorseGender(value) {
+  const text = String(value || '').trim().toLowerCase();
+  if (!text) return 'unknown';
+  if (/female|mare|femmina|tamma|stute|f$/.test(text)) return 'female';
+  if (/gelding|ruuna|castrone/.test(text)) return 'gelding';
+  if (/male|stallion|maschio|ori|m$/.test(text)) return 'male';
+  return ['male', 'female', 'gelding', 'unknown'].includes(text) ? text : 'unknown';
+}
+
+function parseItalianMoney(value) {
+  const normalized = String(value || '').replace(/\s/g, '').replace(/\./g, '').replace(',', '.');
+  const number = Number(normalized);
+  return Number.isFinite(number) ? number : null;
+}
+
+function getRaceEligibilityRules(race) {
   const text = `${race.eligibilityNotes || ''} ${race.raceClass || ''}`.toLowerCase();
-  const ageMatch = text.match(/(\d+)\s*anni(?:\s*ed\s*oltre)?/i);
-  const minAge = ageMatch ? Number(ageMatch[1]) : null;
-  const andOlder = /\d+\s*anni\s*ed\s*oltre/i.test(text);
-  const wantsFemale = /femmine/i.test(text);
-  const wantsMale = /maschi/i.test(text);
+  const ageRules = [];
+  let match;
+  const rangeMatch = text.match(/(\d+)\s*(?:e|\/|-)\s*(\d+)\s*anni/);
+  if (rangeMatch) ageRules.push({ min: Number(rangeMatch[1]), max: Number(rangeMatch[2]) });
+  const andOlderPattern = /(\d+)\s*anni\s*ed\s*oltre/g;
+  const exactAgePattern = /(\d+)\s*anni(?!\s*ed\s*oltre)/g;
+  while ((match = andOlderPattern.exec(text)) !== null) ageRules.push({ min: Number(match[1]), max: null });
+  while ((match = exactAgePattern.exec(text)) !== null) {
+    const age = Number(match[1]);
+    if (!ageRules.some((rule) => rule.min === age && rule.max === age)) ageRules.push({ min: age, max: age });
+  }
+  const earningsRange = text.match(/vincitori\s+da\s*€?\s*([\d.,]+)\s+ad\s*€?\s*([\d.,]+)/);
+  const nonWinnersLast5 = text.match(/non\s+vincitori\s+di\s*€?\s*([\d.,]+)\s+nelle\s+ultime\s+5/);
+  const nonWinners = !nonWinnersLast5 ? text.match(/non\s+vincitori\s+di\s*€?\s*([\d.,]+)/) : null;
+  const categoryMatch = text.match(/(?:cat\.?|categoria)\s*([a-g](?:\s*[\/eo,-]\s*[a-g])*)/i);
+  return {
+    ageRules,
+    gender: /femmine/i.test(text) ? 'female' : /maschi/i.test(text) ? 'male' : '',
+    earningsMin: earningsRange ? parseItalianMoney(earningsRange[1]) : null,
+    earningsMax: earningsRange ? parseItalianMoney(earningsRange[2]) : nonWinners ? parseItalianMoney(nonWinners[1]) : null,
+    last5Max: nonWinnersLast5 ? parseItalianMoney(nonWinnersLast5[1]) : null,
+    categories: categoryMatch ? Array.from(new Set(categoryMatch[1].toUpperCase().match(/[A-G]/g) || [])) : [],
+    categoryManual: /superiore/i.test(text)
+  };
+}
+
+function evaluateHorseRaceEligibility(horseInput, race) {
+  const horse = normalizeHorse(horseInput);
+  const rules = getRaceEligibilityRules(race);
+  const reasons = [];
+  let hasFailure = false;
+  let hasManual = false;
+  const hasParsedRule = rules.ageRules.length
+    || rules.gender
+    || rules.earningsMin != null
+    || rules.earningsMax != null
+    || rules.last5Max != null
+    || rules.categories.length;
+  if (!hasParsedRule) hasManual = true;
+  if (rules.ageRules.length) {
+    const age = getHorseAgeAtRace(horse, race.raceDate);
+    if (age == null) {
+      hasManual = true;
+      reasons.push('eligibility.ageMissing');
+    } else if (rules.ageRules.some((rule) => age >= rule.min && (rule.max == null || age <= rule.max))) {
+      reasons.push('eligibility.ageMatches');
+    } else {
+      hasFailure = true;
+      reasons.push(age < Math.min(...rules.ageRules.map((rule) => rule.min)) ? 'eligibility.ageTooYoung' : 'eligibility.ageTooOld');
+    }
+  }
+  if (rules.gender) {
+    const gender = normalizeHorseGender(horse.gender);
+    if (gender === 'unknown') {
+      hasManual = true;
+      reasons.push('eligibility.genderMissing');
+    } else if (gender === rules.gender) {
+      reasons.push('eligibility.genderMatches');
+    } else if (gender === 'gelding' && rules.gender === 'male') {
+      hasManual = true;
+      reasons.push('eligibility.genderMissing');
+    } else {
+      hasFailure = true;
+      reasons.push('eligibility.genderMismatch');
+    }
+  }
+  if (rules.earningsMin != null || rules.earningsMax != null) {
+    const earnings = horse.totalEarnings === '' ? null : toSafeNumber(horse.totalEarnings, NaN);
+    if (!Number.isFinite(earnings)) {
+      hasManual = true;
+      reasons.push('eligibility.earningsMissing');
+    } else if ((rules.earningsMin == null || earnings >= rules.earningsMin) && (rules.earningsMax == null || earnings < rules.earningsMax)) {
+      reasons.push('eligibility.earningsMatch');
+    } else {
+      hasFailure = true;
+      reasons.push(rules.earningsMin != null && earnings < rules.earningsMin ? 'eligibility.earningsTooLow' : 'eligibility.earningsTooHigh');
+    }
+  }
+  if (rules.last5Max != null) {
+    const earnings = horse.last5Earnings === '' ? null : toSafeNumber(horse.last5Earnings, NaN);
+    if (!Number.isFinite(earnings)) {
+      hasManual = true;
+      reasons.push('eligibility.earningsMissing');
+    } else if (earnings < rules.last5Max) {
+      reasons.push('eligibility.earningsMatch');
+    } else {
+      hasFailure = true;
+      reasons.push('eligibility.earningsTooHigh');
+    }
+  }
+  if (rules.categories.length) {
+    const category = String(horse.racingCategory || '').trim().toUpperCase();
+    if (!category) {
+      hasManual = true;
+      reasons.push('eligibility.categoryMissing');
+    } else if (rules.categoryManual) {
+      hasManual = true;
+      reasons.push('eligibility.categoryManual');
+    } else if (rules.categories.includes(category)) {
+      reasons.push('eligibility.categoryMatches');
+    } else {
+      hasFailure = true;
+      reasons.push('eligibility.categoryManual');
+    }
+  }
+  return {
+    horse,
+    status: hasFailure ? 'not_eligible' : hasManual ? 'manual_check' : 'eligible',
+    reasons: reasons.length ? reasons : ['eligibility.manualCheck']
+  };
+}
+
+function getEligibilityHorseBuckets(race) {
   const possible = [];
   const manual = [];
+  const notEligible = [];
   state.horses.map(normalizeHorse).forEach((horse) => {
-    const age = getHorseAgeAtRace(horse, race.raceDate);
-    const gender = String(horse.gender || '').toLowerCase();
-    let known = true;
-    let matches = true;
-    if (minAge) {
-      if (age == null) known = false;
-      else matches = matches && (andOlder ? age >= minAge : age === minAge);
-    }
-    if (wantsFemale) {
-      if (!gender) known = false;
-      else matches = matches && /female|mare|femmina|tamma|stute|f/i.test(gender);
-    }
-    if (wantsMale) {
-      if (!gender) known = false;
-      else matches = matches && /male|stallion|gelding|maschio|ori|ruuna|m/i.test(gender);
-    }
-    if (!known) manual.push(horse);
-    else if (matches) possible.push(horse);
+    const result = evaluateHorseRaceEligibility(horse, race);
+    if (result.status === 'eligible') possible.push(result);
+    else if (result.status === 'manual_check') manual.push(result);
+    else notEligible.push(result);
   });
-  return { possible, manual };
+  return { possible, manual, notEligible };
 }
 
 function renderRaceProgramOptions() {
@@ -8484,12 +8721,15 @@ function renderPublishedRacePrograms() {
 
 function renderGlobalRaceCard(race, program) {
   const plans = getRacePlansForProgramRace(race.id);
-  const { possible, manual } = getEligibilityHorseBuckets(race);
+  const { possible, manual, notEligible } = getEligibilityHorseBuckets(race);
+  const possibleHorses = possible.map((entry) => entry.horse);
+  const manualHorses = manual.map((entry) => entry.horse);
   const horseOrder = [
-    ...possible,
-    ...manual.filter((horse) => !possible.some((entry) => entry.id === horse.id)),
-    ...state.horses.filter((horse) => !possible.some((entry) => entry.id === horse.id) && !manual.some((entry) => entry.id === horse.id))
+    ...possibleHorses,
+    ...manualHorses.filter((horse) => !possibleHorses.some((entry) => entry.id === horse.id)),
+    ...state.horses.filter((horse) => !possibleHorses.some((entry) => entry.id === horse.id) && !manualHorses.some((entry) => entry.id === horse.id))
   ];
+  const firstHorse = normalizeHorse(horseOrder[0] || {});
   const horseOptions = horseOrder.map((horse) => `<option value="${horse.id}">${escapeHtml(horse.name)}</option>`).join('');
   const details = [
     race.raceClass && `${t('raceEntries.raceClass')}: ${race.raceClass}`,
@@ -8508,15 +8748,16 @@ function renderGlobalRaceCard(race, program) {
         <div class="detail-box">
           <strong>${t('racePrograms.possibleMatches')}</strong>
           <div class="horse-chip-list">
-            ${possible.length ? possible.map((horse) => `<span class="horse-chip">${escapeHtml(horse.name)}</span>`).join('') : `<span class="muted-inline">${t('racePrograms.manualCheck')}</span>`}
+            ${possible.length ? possible.map((entry) => `<span class="horse-chip" title="${escapeHtml(entry.reasons.map((reason) => t(reason)).join(' · '))}">${escapeHtml(entry.horse.name)}</span>`).join('') : `<span class="muted-inline">${t('racePrograms.manualCheck')}</span>`}
           </div>
-          ${manual.length ? `<div class="horse-chip-list manual-check"><strong>${t('racePrograms.manualCheck')}:</strong> ${manual.map((horse) => `<span class="horse-chip subtle">${escapeHtml(horse.name)}</span>`).join('')}</div>` : ''}
+          ${manual.length ? `<div class="horse-chip-list manual-check"><strong>${t('racePrograms.manualCheck')}:</strong> ${manual.map((entry) => `<span class="horse-chip attention" title="${escapeHtml(entry.reasons.map((reason) => t(reason)).join(' · '))}">${escapeHtml(entry.horse.name)}</span>`).join('')}</div>` : ''}
+          ${notEligible.length ? `<details class="eligibility-reasons"><summary>${t('eligibility.notEligible')}</summary>${notEligible.map((entry) => `<p><strong>${escapeHtml(entry.horse.name)}</strong>: ${escapeHtml(entry.reasons.map((reason) => t(reason)).join(', '))}</p>`).join('')}</details>` : ''}
         </div>
         ${plans.length ? `<div class="race-plan-list">${plans.map((plan) => renderRacePlanLine(plan, null)).join('')}</div>` : ''}
         ${canCreateRacePlans() ? `<div class="entry-form compact-form">
           <label><span>${t('raceEntries.horse')}</span><select data-plan-field="horseId">${horseOptions}</select></label>
-          <label><span>${t('raceEntries.driver')}</span><input data-plan-field="driver"></label>
-          <label><span>${t('raceEntries.trainer')}</span><input data-plan-field="trainer"></label>
+          <label><span>${t('raceEntries.driver')}</span><input data-plan-field="driver" value="${escapeHtml(firstHorse.defaultDriver)}"></label>
+          <label><span>${t('raceEntries.trainer')}</span><input data-plan-field="trainer" value="${escapeHtml(firstHorse.trainerName)}"></label>
           <label class="full"><span>${t('common.notesSimple')}</span><textarea data-plan-field="notes" rows="2"></textarea></label>
           <button class="button primary" type="button" data-action="create-global-race-plan" data-id="${race.id}">${t('racePrograms.createPlan')}</button>
         </div>` : ''}
@@ -8721,6 +8962,14 @@ function handleHorseSubmit(event) {
     gender: form.elements.gender.value.trim(),
     color: form.elements.color.value.trim(),
     registration: form.elements.registration.value.trim(),
+    countryOfOrigin: form.elements.countryOfOrigin.value.trim(),
+    totalEarnings: form.elements.totalEarnings.value,
+    last5Earnings: form.elements.last5Earnings.value,
+    racingCategory: form.elements.racingCategory.value.trim(),
+    trainerName: form.elements.trainerName.value.trim(),
+    ownerName: form.elements.ownerName.value.trim(),
+    defaultDriver: form.elements.defaultDriver.value.trim(),
+    racingNotes: form.elements.racingNotes.value.trim(),
     feedingNotes: form.elements.feedingNotes.value.trim(),
     careNotes: form.elements.careNotes.value.trim(),
     shoeingNotes: form.elements.shoeingNotes.value.trim(),
@@ -9011,13 +9260,14 @@ async function createGlobalRacePlan(raceId, card) {
   if (!canCreateRacePlans()) return;
   const horseId = card.querySelector('[data-plan-field="horseId"]')?.value || '';
   if (!horseId) return;
+  const selectedHorse = normalizeHorse(state.horses.find((horse) => horse.id === horseId) || {});
   const plan = normalizeRacePlan({
     id: createId(),
     opportunityId: '',
     programRaceId: raceId,
     horseId,
-    driver: card.querySelector('[data-plan-field="driver"]')?.value || '',
-    trainer: card.querySelector('[data-plan-field="trainer"]')?.value || '',
+    driver: card.querySelector('[data-plan-field="driver"]')?.value || selectedHorse.defaultDriver || '',
+    trainer: card.querySelector('[data-plan-field="trainer"]')?.value || selectedHorse.trainerName || '',
     notes: card.querySelector('[data-plan-field="notes"]')?.value || '',
     status: 'draft',
     createdAt: new Date().toISOString(),
@@ -9048,6 +9298,16 @@ function selectRaceProgramForImport(programId, openPicker = true) {
   const importPanel = els.raceImportInput?.closest('.race-import-panel') || els.raceImportProgramLabel;
   importPanel?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   if (openPicker) window.setTimeout(() => els.raceImportInput?.click(), 150);
+}
+
+function prefillGlobalRacePlanDefaults(container) {
+  if (!container) return;
+  const horseId = container.querySelector('[data-plan-field="horseId"]')?.value || '';
+  const horse = normalizeHorse(state.horses.find((entry) => entry.id === horseId) || {});
+  const driverInput = container.querySelector('[data-plan-field="driver"]');
+  const trainerInput = container.querySelector('[data-plan-field="trainer"]');
+  if (driverInput && !driverInput.value && horse.defaultDriver) driverInput.value = horse.defaultDriver;
+  if (trainerInput && !trainerInput.value && horse.trainerName) trainerInput.value = horse.trainerName;
 }
 
 function handleListClick(event) {
@@ -9273,6 +9533,14 @@ function fillHorseForm(id) {
   els.horseForm.elements.gender.value = horse.gender;
   els.horseForm.elements.color.value = horse.color;
   els.horseForm.elements.registration.value = horse.registration;
+  els.horseForm.elements.countryOfOrigin.value = horse.countryOfOrigin;
+  els.horseForm.elements.totalEarnings.value = horse.totalEarnings;
+  els.horseForm.elements.last5Earnings.value = horse.last5Earnings;
+  els.horseForm.elements.racingCategory.value = horse.racingCategory;
+  els.horseForm.elements.trainerName.value = horse.trainerName;
+  els.horseForm.elements.ownerName.value = horse.ownerName;
+  els.horseForm.elements.defaultDriver.value = horse.defaultDriver;
+  els.horseForm.elements.racingNotes.value = horse.racingNotes;
   els.horseForm.elements.feedingNotes.value = horse.feedingNotes;
   els.horseForm.elements.careNotes.value = horse.careNotes;
   els.horseForm.elements.shoeingNotes.value = horse.shoeingNotes;
@@ -10132,6 +10400,8 @@ els.publishedRaceProgramList?.addEventListener('input', (event) => {
   publishedRaceFilterTimer = window.setTimeout(renderPublishedRacePrograms, 250);
 });
 els.publishedRaceProgramList?.addEventListener('change', (event) => {
+  const planField = event.target.closest('[data-plan-field="horseId"]');
+  if (planField) prefillGlobalRacePlanDefaults(planField.closest('[data-program-race-id]'));
   const filter = event.target.closest('[data-race-filter]');
   if (!filter) return;
   if (filter.dataset.raceFilter === 'possibleOnly') publishedRaceFilter.possibleOnly = filter.checked;

@@ -410,10 +410,26 @@
                   <label><span data-i18n="horses.nickname">Stable name / nickname</span><input name="nickname" placeholder="Auri"></label>
                   <label><span data-i18n="horses.owner">Owner</span><input name="owner" placeholder="Stable owner"></label>
                   <label><span data-i18n="horses.breed">Breed</span><input name="breed" placeholder="Finnhorse"></label>
-                  <label><span data-i18n="horses.birth">Date of birth or birth year</span><input name="birth" placeholder="2018 or 2018-05-12"></label>
-                  <label><span data-i18n="horses.gender">Gender</span><input name="gender" placeholder="Mare"></label>
                   <label><span data-i18n="horses.color">Color</span><input name="color" placeholder="Bay"></label>
+                </fieldset>
+                <fieldset class="form-group">
+                  <legend data-i18n="horses.racingProfile">Racing profile</legend>
                   <label><span data-i18n="horses.registration">Registration number</span><input name="registration" placeholder="FI-12345"></label>
+                  <label><span data-i18n="horses.birth">Birth date</span><input name="birth" placeholder="2018 or 2018-05-12"></label>
+                  <label><span data-i18n="horses.gender">Gender</span><select name="gender">
+                    <option value="unknown" data-i18n="horses.genderUnknown">Unknown</option>
+                    <option value="male" data-i18n="horses.genderMale">Male</option>
+                    <option value="female" data-i18n="horses.genderFemale">Female</option>
+                    <option value="gelding" data-i18n="horses.genderGelding">Gelding</option>
+                  </select></label>
+                  <label><span data-i18n="horses.countryOfOrigin">Country of origin</span><input name="countryOfOrigin" placeholder="Italy"></label>
+                  <label><span data-i18n="horses.totalEarnings">Total earnings</span><input name="totalEarnings" type="number" min="0" step="0.01"></label>
+                  <label><span data-i18n="horses.last5Earnings">Earnings in last 5 starts</span><input name="last5Earnings" type="number" min="0" step="0.01"></label>
+                  <label><span data-i18n="horses.racingCategory">Racing category</span><input name="racingCategory" placeholder="F"></label>
+                  <label><span data-i18n="horses.trainerName">Trainer</span><input name="trainerName"></label>
+                  <label><span data-i18n="horses.ownerName">Owner</span><input name="ownerName"></label>
+                  <label><span data-i18n="horses.defaultDriver">Default driver</span><input name="defaultDriver"></label>
+                  <label class="full"><span data-i18n="horses.racingNotes">Racing notes</span><textarea name="racingNotes" rows="3"></textarea></label>
                 </fieldset>
                 <fieldset class="form-group">
                   <legend data-i18n="horses.care">Care</legend>
