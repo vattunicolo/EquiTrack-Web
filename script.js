@@ -2779,16 +2779,25 @@ Object.assign(translations.en, {
   'delete.racePlan': 'this planned race entry',
   'racePrograms.adminTitle': 'Global race programs',
   'racePrograms.adminHelp': 'Super Admin creates and publishes race programs for every stable.',
+  'racePrograms.manageTitle': 'Manage race programs',
   'racePrograms.title': 'Program title',
   'racePrograms.month': 'Program month',
   'racePrograms.status': 'Status',
   'racePrograms.statusDraft': 'Draft',
   'racePrograms.statusPublished': 'Published',
   'racePrograms.statusArchived': 'Archived',
+  'racePrograms.draftPrograms': 'Draft programs',
+  'racePrograms.publishedPrograms': 'Published programs',
+  'racePrograms.archivedPrograms': 'Archived programs',
   'racePrograms.saveProgram': 'Save race program',
   'racePrograms.publishedTitle': 'Published race programs',
   'racePrograms.publishedHelp': 'Choose suitable published races and create stable-specific entry plans.',
   'racePrograms.program': 'Race program',
+  'racePrograms.importToProgram': 'Import race file to this program',
+  'racePrograms.saveImportedToProgram': 'Save selected races to this program',
+  'racePrograms.racesInProgram': 'Races in program',
+  'racePrograms.createFirst': 'Create a race program first, then import a race file.',
+  'racePrograms.selectedImportProgram': 'Import target: {program}',
   'racePrograms.publish': 'Publish',
   'racePrograms.archive': 'Archive',
   'racePrograms.saved': 'Race program saved.',
@@ -2884,16 +2893,25 @@ Object.assign(translations.fi, {
   'delete.racePlan': 'tämä suunniteltu ilmoittautuminen',
   'racePrograms.adminTitle': 'Yhteiset lähtöohjelmat',
   'racePrograms.adminHelp': 'Super Admin luo ja julkaisee lähtöohjelmat kaikille talleille.',
+  'racePrograms.manageTitle': 'Hallitse lähtöohjelmia',
   'racePrograms.title': 'Ohjelman nimi',
   'racePrograms.month': 'Ohjelman kuukausi',
   'racePrograms.status': 'Tila',
   'racePrograms.statusDraft': 'Luonnos',
   'racePrograms.statusPublished': 'Julkaistu',
   'racePrograms.statusArchived': 'Arkistoitu',
+  'racePrograms.draftPrograms': 'Luonnosohjelmat',
+  'racePrograms.publishedPrograms': 'Julkaistut ohjelmat',
+  'racePrograms.archivedPrograms': 'Arkistoidut ohjelmat',
   'racePrograms.saveProgram': 'Tallenna lähtöohjelma',
   'racePrograms.publishedTitle': 'Julkaistut lähtöohjelmat',
   'racePrograms.publishedHelp': 'Valitse sopivat julkaistut lähdöt ja luo tallikohtaiset ilmoittautumissuunnitelmat.',
   'racePrograms.program': 'Lähtöohjelma',
+  'racePrograms.importToProgram': 'Tuo lähtötiedosto tähän ohjelmaan',
+  'racePrograms.saveImportedToProgram': 'Tallenna valitut lähdöt tähän ohjelmaan',
+  'racePrograms.racesInProgram': 'Lähtöjä ohjelmassa',
+  'racePrograms.createFirst': 'Luo ensin raviohjelma ja tuo sitten lähtötiedosto.',
+  'racePrograms.selectedImportProgram': 'Tuonnin kohde: {program}',
   'racePrograms.publish': 'Julkaise',
   'racePrograms.archive': 'Arkistoi',
   'racePrograms.saved': 'Lähtöohjelma tallennettu.',
@@ -2989,16 +3007,25 @@ Object.assign(translations.it, {
   'delete.racePlan': 'questa iscrizione pianificata',
   'racePrograms.adminTitle': 'Programmi gara globali',
   'racePrograms.adminHelp': 'Il Super Admin crea e pubblica programmi gara per tutte le scuderie.',
+  'racePrograms.manageTitle': 'Gestisci programmi gara',
   'racePrograms.title': 'Titolo programma',
   'racePrograms.month': 'Mese programma',
   'racePrograms.status': 'Stato',
   'racePrograms.statusDraft': 'Bozza',
   'racePrograms.statusPublished': 'Pubblicato',
   'racePrograms.statusArchived': 'Archiviato',
+  'racePrograms.draftPrograms': 'Programmi in bozza',
+  'racePrograms.publishedPrograms': 'Programmi pubblicati',
+  'racePrograms.archivedPrograms': 'Programmi archiviati',
   'racePrograms.saveProgram': 'Salva programma gara',
   'racePrograms.publishedTitle': 'Programmi gara pubblicati',
   'racePrograms.publishedHelp': 'Scegli le gare pubblicate adatte e crea piani di iscrizione per la tua scuderia.',
   'racePrograms.program': 'Programma gara',
+  'racePrograms.importToProgram': 'Importa file gare in questo programma',
+  'racePrograms.saveImportedToProgram': 'Salva gare selezionate in questo programma',
+  'racePrograms.racesInProgram': 'Gare nel programma',
+  'racePrograms.createFirst': 'Crea prima un programma gare, poi importa un file.',
+  'racePrograms.selectedImportProgram': 'Destinazione importazione: {program}',
   'racePrograms.publish': 'Pubblica',
   'racePrograms.archive': 'Archivia',
   'racePrograms.saved': 'Programma gara salvato.',
@@ -8227,12 +8254,60 @@ function getEligibilityHorseBuckets(race) {
 
 function renderRaceProgramOptions() {
   if (!els.raceImportProgramSelect) return;
+  const currentValue = els.raceImportProgramSelect.value;
   const programs = racePrograms
     .filter((program) => program.status !== 'archived')
     .sort((a, b) => `${b.createdAt}`.localeCompare(`${a.createdAt}`));
   els.raceImportProgramSelect.innerHTML = [`<option value="">${t('racePrograms.program')}</option>`]
     .concat(programs.map((program) => `<option value="${program.id}">${escapeHtml(program.title || program.racetrackName || program.id)}</option>`))
     .join('');
+  if (programs.some((program) => program.id === currentValue)) els.raceImportProgramSelect.value = currentValue;
+}
+
+function getRaceProgramStatusLabel(status) {
+  const safeStatus = status || 'draft';
+  return t(`racePrograms.status${safeStatus.charAt(0).toUpperCase()}${safeStatus.slice(1)}`);
+}
+
+function renderRaceProgramAdminCard(program) {
+  const races = raceProgramRaces.filter((race) => race.programId === program.id);
+  const location = [program.racetrackName, program.locationCity, program.locationCountry].filter(Boolean).join(' - ');
+  return `
+    <article class="item-card premium-stable-card race-program-admin-card">
+      <div>
+        <h4>${escapeHtml(program.title || program.racetrackName || t('racePrograms.title'))}</h4>
+        <p>${escapeHtml([location, program.programMonth].filter(Boolean).join(' - '))}</p>
+        <div class="item-meta">
+          <span class="pill">${getRaceProgramStatusLabel(program.status)}</span>
+          <span class="pill">${t('raceEntries.racetrack')}: ${escapeHtml(program.racetrackName || '-')}</span>
+          <span class="pill">${t('racePrograms.racesInProgram')}: ${races.length}</span>
+        </div>
+        <div class="race-plan-list">
+          ${races.slice(0, 8).map((race) => `
+            <article class="race-plan-card">
+              <div>
+                <strong>${escapeHtml([race.raceDate, race.raceNumber, race.raceName].filter(Boolean).join(' - '))}</strong>
+                <p>${escapeHtml([race.prizeInfo, race.distance].filter(Boolean).join(' - ') || t('common.noNotes'))}</p>
+              </div>
+              <div class="item-actions">
+                <button class="button ghost" type="button" data-action="edit-global-race" data-id="${race.id}">${t('common.edit')}</button>
+                <button class="button ghost danger" type="button" data-action="delete-global-race" data-id="${race.id}">${t('common.delete')}</button>
+              </div>
+            </article>
+          `).join('')}
+        </div>
+      </div>
+      <div class="item-actions">
+        <button class="button ghost" type="button" data-action="edit-race-program" data-id="${program.id}">${t('common.edit')}</button>
+        <label class="file-button button secondary">
+          <span>${t('racePrograms.importToProgram')}</span>
+          <input type="file" accept=".pdf,.csv,.txt,application/pdf,text/csv,text/plain" data-program-import-id="${program.id}">
+        </label>
+        <button class="button ghost" type="button" data-action="publish-race-program" data-id="${program.id}">${t('racePrograms.publish')}</button>
+        <button class="button ghost" type="button" data-action="archive-race-program" data-id="${program.id}">${t('racePrograms.archive')}</button>
+      </div>
+    </article>
+  `;
 }
 
 function renderRaceProgramAdmin() {
@@ -8246,44 +8321,35 @@ function renderRaceProgramAdmin() {
   }
   renderRaceProgramOptions();
   if (!racePrograms.length) {
-    els.raceProgramAdminList.innerHTML = `<p class="empty-state">${t('racePrograms.noPrograms')}</p>`;
+    els.raceProgramAdminList.innerHTML = `<p class="empty-state">${t('racePrograms.createFirst')}</p>`;
     return;
   }
-  els.raceProgramAdminList.innerHTML = racePrograms.map((program) => {
-    const races = raceProgramRaces.filter((race) => race.programId === program.id);
-    return `
-      <article class="item-card premium-stable-card">
-        <div>
-          <h4>${escapeHtml(program.title || program.racetrackName || t('racePrograms.title'))}</h4>
-          <p>${escapeHtml([program.racetrackName, program.programMonth].filter(Boolean).join(' - '))}</p>
-          <div class="item-meta">
-            <span class="pill">${t(`racePrograms.status${program.status.charAt(0).toUpperCase()}${program.status.slice(1)}`)}</span>
-            <span class="pill">${t('raceEntries.racetrack')}: ${escapeHtml(program.racetrackName || '-')}</span>
-            <span class="pill">${t('raceEntries.opportunitiesTitle')}: ${races.length}</span>
+  const groups = [
+    { key: 'draft', title: t('racePrograms.draftPrograms') },
+    { key: 'published', title: t('racePrograms.publishedPrograms') },
+    { key: 'archived', title: t('racePrograms.archivedPrograms') }
+  ];
+  els.raceProgramAdminList.innerHTML = `
+    <div class="race-program-management-heading">
+      <h4>${t('racePrograms.manageTitle')}</h4>
+      <p>${t('racePrograms.adminHelp')}</p>
+    </div>
+    ${groups.map((group) => {
+      const programs = racePrograms.filter((program) => (program.status || 'draft') === group.key);
+      if (!programs.length) return '';
+      return `
+        <section class="race-program-status-group">
+          <h4>${group.title}</h4>
+          <div class="item-list race-program-list">
+            ${programs
+              .sort((a, b) => `${b.createdAt}`.localeCompare(`${a.createdAt}`))
+              .map(renderRaceProgramAdminCard)
+              .join('')}
           </div>
-          <div class="race-plan-list">
-            ${races.slice(0, 8).map((race) => `
-              <article class="race-plan-card">
-                <div>
-                  <strong>${escapeHtml([race.raceDate, race.raceNumber, race.raceName].filter(Boolean).join(' - '))}</strong>
-                  <p>${escapeHtml([race.prizeInfo, race.distance].filter(Boolean).join(' - ') || t('common.noNotes'))}</p>
-                </div>
-                <div class="item-actions">
-                  <button class="button ghost" type="button" data-action="edit-global-race" data-id="${race.id}">${t('common.edit')}</button>
-                  <button class="button ghost danger" type="button" data-action="delete-global-race" data-id="${race.id}">${t('common.delete')}</button>
-                </div>
-              </article>
-            `).join('')}
-          </div>
-        </div>
-        <div class="item-actions">
-          <button class="button ghost" type="button" data-action="edit-race-program" data-id="${program.id}">${t('common.edit')}</button>
-          <button class="button ghost" type="button" data-action="publish-race-program" data-id="${program.id}">${t('racePrograms.publish')}</button>
-          <button class="button ghost" type="button" data-action="archive-race-program" data-id="${program.id}">${t('racePrograms.archive')}</button>
-        </div>
-      </article>
-    `;
-  }).join('');
+        </section>
+      `;
+    }).join('')}
+  `;
 }
 
 function renderPublishedRacePrograms() {
@@ -8293,7 +8359,7 @@ function renderPublishedRacePrograms() {
     els.publishedRaceProgramList.innerHTML = `<p class="empty-state">${t('racePrograms.cloudRequired')}</p>`;
     return;
   }
-  const publishedPrograms = racePrograms.filter((program) => program.status === 'published' || isSuperAdmin());
+  const publishedPrograms = racePrograms.filter((program) => program.status === 'published');
   if (!publishedPrograms.length) {
     els.publishedRaceProgramList.innerHTML = `<p class="empty-state">${t('racePrograms.noPrograms')}</p>`;
     return;
@@ -8393,6 +8459,9 @@ function renderRaceImportPreview() {
   if (els.raceImportSaveButton) {
     els.raceImportSaveButton.hidden = false;
     els.raceImportSaveButton.disabled = !raceImportPreviewItems.some((race) => race.selected);
+    els.raceImportSaveButton.textContent = cloudWriteMode && isSuperAdmin() && els.raceImportProgramSelect?.value
+      ? t('racePrograms.saveImportedToProgram')
+      : t('raceEntries.saveImported');
   }
 }
 
@@ -8859,6 +8928,22 @@ async function createGlobalRacePlan(raceId, card) {
   showMessage(t('raceEntries.savedPlan'));
 }
 
+function selectRaceProgramForImport(programId, openPicker = true) {
+  const program = racePrograms.find((entry) => entry.id === programId);
+  if (!program || !els.raceImportProgramSelect) return;
+  els.raceImportProgramSelect.value = programId;
+  raceImportPreviewItems = [];
+  renderRaceImportPreview();
+  if (els.raceImportStatus) {
+    els.raceImportStatus.textContent = t('racePrograms.selectedImportProgram', {
+      program: program.title || program.racetrackName || program.id
+    });
+  }
+  const importPanel = els.raceImportInput?.closest('.race-import-panel') || els.raceImportProgramLabel;
+  importPanel?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (openPicker) window.setTimeout(() => els.raceImportInput?.click(), 150);
+}
+
 function handleListClick(event) {
   const button = event.target.closest('button[data-action]');
   if (!button) return;
@@ -8915,6 +9000,7 @@ function handleListClick(event) {
   if (action === 'draft-race-email') createRaceEmailDraft(id);
   if (action === 'create-global-race-plan') createGlobalRacePlan(id, button.closest('[data-program-race-id]'));
   if (action === 'edit-race-program') fillRaceProgramForm(id);
+  if (action === 'select-race-program-import') selectRaceProgramForImport(id);
   if (action === 'publish-race-program') changeRaceProgramStatus(id, 'published');
   if (action === 'archive-race-program') changeRaceProgramStatus(id, 'archived');
   if (action === 'edit-global-race') editGlobalRaceInImportPreview(id);
@@ -9919,6 +10005,12 @@ els.raceOpportunityForm?.addEventListener('submit', handleRaceOpportunitySubmit)
 els.racePlanForm?.addEventListener('submit', handleRacePlanSubmit);
 els.raceProgramForm?.addEventListener('submit', handleRaceProgramSubmit);
 els.raceImportInput?.addEventListener('change', handleRaceImportFile);
+els.raceProgramAdminList?.addEventListener('change', (event) => {
+  const input = event.target.closest('input[data-program-import-id]');
+  if (!input) return;
+  selectRaceProgramForImport(input.dataset.programImportId, false);
+  handleRaceImportFile(event);
+});
 els.raceImportPreview?.addEventListener('input', (event) => updateRaceImportPreviewField(event.target));
 els.raceImportPreview?.addEventListener('change', (event) => updateRaceImportPreviewField(event.target));
 els.raceImportPreview?.addEventListener('click', (event) => {

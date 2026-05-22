@@ -1315,6 +1315,27 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
   display: grid;
   gap: 14px;
 }
+.race-program-management-heading,
+.race-program-status-group {
+  display: grid;
+  gap: 10px;
+}
+.race-program-management-heading h4,
+.race-program-status-group h4 {
+  margin: 0;
+  color: #14335a;
+}
+.race-program-management-heading p {
+  margin: 0;
+  color: var(--muted);
+}
+.race-program-status-group {
+  margin-top: 14px;
+}
+.race-program-admin-card {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
 .race-import-card {
   padding: 14px;
   border: 1px solid rgba(20, 51, 90, 0.1);
@@ -2051,6 +2072,7 @@ textarea { resize: vertical; }
   .home-process-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .calendar-dashboard, .race-entry-layout { grid-template-columns: minmax(0, 1fr); }
+  .race-program-admin-card { grid-template-columns: minmax(0, 1fr); }
   .calendar-card-header { align-items: stretch; flex-direction: column; }
   .calendar-tools { grid-template-columns: minmax(0, 1fr); }
   .quick-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
