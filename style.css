@@ -1322,6 +1322,13 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
   background: #ffffff;
   box-shadow: 0 10px 24px rgba(20, 51, 90, 0.08);
 }
+.race-program-card {
+  padding: 18px;
+  border: 1px solid rgba(20, 51, 90, 0.1);
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(20, 51, 90, 0.08);
+}
 .checkbox-line {
   display: flex;
   align-items: center;

@@ -634,6 +634,45 @@
           </div>
         </div>
 
+        <section id="raceProgramCloudNotice" class="panel race-import-panel" hidden>
+          <p class="status-text" data-i18n="racePrograms.cloudRequired">Published race programs require cloud connection.</p>
+        </section>
+
+        <section id="raceProgramAdminPanel" class="panel race-import-panel" hidden>
+          <div class="module-header">
+            <div>
+              <h3 data-i18n="racePrograms.adminTitle">Global race programs</h3>
+              <p data-i18n="racePrograms.adminHelp">Super Admin creates and publishes race programs for every stable.</p>
+            </div>
+          </div>
+          <form id="raceProgramForm" class="entry-form">
+            <input type="hidden" name="id">
+            <label><span data-i18n="racePrograms.title">Program title</span><input name="title" required></label>
+            <label><span data-i18n="raceEntries.racetrack">Racetrack name</span><input name="racetrackName" required></label>
+            <label><span data-i18n="stable.city">Stable city</span><input name="locationCity"></label>
+            <label><span data-i18n="stable.country">Stable country</span><input name="locationCountry"></label>
+            <label><span data-i18n="racePrograms.month">Program month</span><input name="programMonth" placeholder="2026-05"></label>
+            <label><span data-i18n="racePrograms.status">Status</span><select name="status">
+              <option value="draft" data-i18n="racePrograms.statusDraft">Draft</option>
+              <option value="published" data-i18n="racePrograms.statusPublished">Published</option>
+              <option value="archived" data-i18n="racePrograms.statusArchived">Archived</option>
+            </select></label>
+            <button class="button primary" type="submit" data-i18n="racePrograms.saveProgram">Save race program</button>
+          </form>
+          <div id="raceProgramAdminList" class="item-list race-program-list"></div>
+        </section>
+
+        <section class="race-entry-list-section">
+          <div class="module-header">
+            <div>
+              <h3 data-i18n="racePrograms.publishedTitle">Published race programs</h3>
+              <p data-i18n="racePrograms.publishedHelp">Choose suitable published races and create stable-specific entry plans.</p>
+            </div>
+          </div>
+          <p class="update-note" data-i18n="racePrograms.disclaimer">Eligibility is a suggestion. Always verify official race conditions before entering.</p>
+          <div id="publishedRaceProgramList" class="item-list race-entry-list"></div>
+        </section>
+
         <section class="race-entry-layout" aria-label="Race Entry Planner">
           <article class="panel race-entry-panel">
             <div class="module-header">
@@ -692,6 +731,7 @@
               <p data-i18n="raceEntries.importHelp">CSV or plain text import foundation is available. PDF/Excel import will be added later.</p>
             </div>
           </div>
+          <label id="raceImportProgramLabel" hidden><span data-i18n="racePrograms.program">Race program</span><select id="raceImportProgramSelect"></select></label>
           <label class="file-button button secondary"><span data-i18n="raceEntries.importButton">Import race file</span><input id="raceImportInput" type="file" accept=".pdf,.csv,.txt,application/pdf,text/csv,text/plain"></label>
           <p id="raceImportStatus" class="status-text" data-i18n="raceEntries.importPlaceholder">Manual entry works now. PDF/Excel import will be added later.</p>
           <div id="raceImportPreview" class="race-import-preview"></div>
@@ -702,7 +742,7 @@
           <div class="module-header">
             <div>
               <h3 data-i18n="raceEntries.opportunitiesTitle">Race opportunities</h3>
-              <p data-i18n="raceEntries.opportunitiesHelp">Track upcoming race options, planned horses, and email drafts.</p>
+              <p data-i18n="raceEntries.opportunitiesHelp">Track stable-specific race options, planned horses, and email drafts.</p>
             </div>
           </div>
           <div id="raceOpportunityList" class="item-list race-entry-list"></div>
