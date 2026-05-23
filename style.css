@@ -2099,6 +2099,36 @@ textarea { resize: vertical; }
   gap: 10px;
   margin: 14px 0;
 }
+.racing-profile-shell {
+  display: grid;
+  gap: 14px;
+  border: 1px solid rgba(78, 205, 196, 0.26);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fcfc 100%);
+  box-shadow: 0 16px 38px rgba(14, 45, 77, 0.08);
+  padding: 16px;
+}
+.racing-profile-shell.compact {
+  margin-top: 14px;
+  padding: 14px;
+}
+.racing-profile-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+}
+.racing-profile-header h4 {
+  color: #14335a;
+  font-size: clamp(20px, 3vw, 28px);
+  margin: 0;
+}
+.racing-profile-header .eyebrow {
+  margin: 0 0 4px;
+}
+.racing-profile-panels {
+  padding-top: 0;
+}
 .racing-mini-card,
 .racing-start-row {
   background: rgba(255, 255, 255, 0.86);
@@ -2110,6 +2140,19 @@ textarea { resize: vertical; }
   display: grid;
   gap: 6px;
   padding: 12px;
+}
+.racing-stat-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+.racing-stat-row span {
+  display: grid;
+  gap: 2px;
+}
+.racing-stat-row b {
+  color: #14335a;
+  font-size: 18px;
 }
 .racing-mini-card strong,
 .racing-start-row strong {
@@ -2128,6 +2171,41 @@ textarea { resize: vertical; }
 .racing-start-history h5 {
   color: #14335a;
   margin: 0 0 10px;
+}
+.racing-start-table-wrap {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow-x: auto;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(14, 45, 77, 0.06);
+}
+.racing-start-table {
+  width: 100%;
+  min-width: 940px;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.racing-start-table th,
+.racing-start-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+.racing-start-table th {
+  position: sticky;
+  top: 0;
+  background: #f0fbfa;
+  color: #14335a;
+  font-size: 12px;
+  text-transform: uppercase;
+  z-index: 1;
+}
+.racing-start-table td {
+  color: var(--text);
+}
+.racing-start-actions {
+  min-width: 160px;
 }
 .racing-start-list {
   display: grid;
@@ -2363,7 +2441,8 @@ textarea { resize: vertical; }
     text-align: left;
   }
   .button { min-height: 50px; padding: 0 14px; }
-  .summary-grid, .feature-grid, .side-tabs, .entry-form, .item-card, .feed-stats, .quick-actions, .form-group, .horse-detail-grid, .calendar-tools, .permission-grid, .racing-performance-grid, .racing-start-row { grid-template-columns: minmax(0, 1fr); }
+  .summary-grid, .feature-grid, .side-tabs, .entry-form, .item-card, .feed-stats, .quick-actions, .form-group, .horse-detail-grid, .calendar-tools, .permission-grid, .racing-performance-grid, .racing-start-row, .racing-stat-row { grid-template-columns: minmax(0, 1fr); }
+  .racing-profile-header { display: grid; }
   .calendar-hero { padding: 18px; }
   .stable-hero { padding: 18px; }
   .settings-hero { padding: 18px; }

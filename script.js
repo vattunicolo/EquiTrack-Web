@@ -727,6 +727,7 @@ const translations = {
     'common.notesSimple': 'Notes',
     'common.edit': 'Edit',
     'common.delete': 'Delete',
+    'common.actions': 'Actions',
     'common.notSet': 'not set',
     'common.noNotes': 'No notes yet.',
     'common.yes': 'Yes',
@@ -1413,6 +1414,7 @@ const translations = {
     'common.notesSimple': 'Muistiinpanot',
     'common.edit': 'Muokkaa',
     'common.delete': 'Poista',
+    'common.actions': 'Toiminnot',
     'common.notSet': 'ei asetettu',
     'common.noNotes': 'Ei muistiinpanoja.',
     'common.yes': 'Kyllä',
@@ -2099,6 +2101,7 @@ const translations = {
     'common.notesSimple': 'Note',
     'common.edit': 'Modifica',
     'common.delete': 'Elimina',
+    'common.actions': 'Azioni',
     'common.notSet': 'non impostata',
     'common.noNotes': 'Nessuna nota.',
     'common.yes': 'Sì',
@@ -2905,6 +2908,7 @@ Object.assign(translations.en, {
   'racingRegistry.linkedData': 'Linked racing data',
   'racingRegistry.saveFailed': 'Racing horse save failed: {error}',
   'racingRegistry.performanceSummary': 'Performance summary',
+  'racingRegistry.age': 'Age',
   'racingRegistry.startHistory': 'Start history',
   'racingRegistry.career': 'Career',
   'racingRegistry.last12Months': 'Last 12 months',
@@ -2948,6 +2952,7 @@ Object.assign(translations.en, {
   'racingRegistry.resultsImportSaveFailed': 'Results import failed: {error}',
   'racingRegistry.racetrackCode': 'Racetrack code',
   'racingRegistry.raceCode': 'Race code',
+  'racingRegistry.raceAndTrack': 'Race / racetrack',
   'racingRegistry.driver': 'Driver',
   'racingRegistry.placement': 'Placement',
   'racingRegistry.kmTime': 'Km time',
@@ -2964,6 +2969,7 @@ Object.assign(translations.en, {
   'racingRegistry.startDeleted': 'Start deleted.',
   'racingRegistry.startSaveFailed': 'Start history save failed: {error}',
   'racingRegistry.noStarts': 'No starts recorded yet.',
+  'racingRegistry.noPerformanceSummary': 'No performance summary entered yet.',
   'raceControl.title': 'Race Control',
   'raceControl.tools': 'Super Admin race tools',
   'raceControl.help': 'Manage central racing horses, results, and published race programs for every stable.',
@@ -3142,6 +3148,7 @@ Object.assign(translations.fi, {
   'racingRegistry.linkedData': 'Linkitetyt kilpailutiedot',
   'racingRegistry.saveFailed': 'Kilpahevosen tallennus epäonnistui: {error}',
   'racingRegistry.performanceSummary': 'Suoritusyhteenveto',
+  'racingRegistry.age': 'Ikä',
   'racingRegistry.startHistory': 'Lähtöhistoria',
   'racingRegistry.career': 'Ura',
   'racingRegistry.last12Months': 'Viimeiset 12 kk',
@@ -3185,6 +3192,7 @@ Object.assign(translations.fi, {
   'racingRegistry.resultsImportSaveFailed': 'Tulosimportti epäonnistui: {error}',
   'racingRegistry.racetrackCode': 'Raviradan koodi',
   'racingRegistry.raceCode': 'Lähdön koodi',
+  'racingRegistry.raceAndTrack': 'Lähtö / ravirata',
   'racingRegistry.driver': 'Ohjastaja',
   'racingRegistry.placement': 'Sijoitus',
   'racingRegistry.kmTime': 'Km-aika',
@@ -3201,6 +3209,7 @@ Object.assign(translations.fi, {
   'racingRegistry.startDeleted': 'Lähtö poistettu.',
   'racingRegistry.startSaveFailed': 'Lähtöhistorian tallennus epäonnistui: {error}',
   'racingRegistry.noStarts': 'Lähtöjä ei ole vielä tallennettu.',
+  'racingRegistry.noPerformanceSummary': 'Suoritusyhteenvetoa ei ole vielä täytetty.',
   'raceControl.title': 'Ravien hallinta',
   'raceControl.tools': 'Super Adminin ravityökalut',
   'raceControl.help': 'Hallinnoi keskitettyjä kilpahevosia, tuloksia ja julkaistuja raviohjelmia kaikille talleille.',
@@ -3379,6 +3388,7 @@ Object.assign(translations.it, {
   'racingRegistry.linkedData': 'Dati corsa collegati',
   'racingRegistry.saveFailed': 'Salvataggio cavallo da corsa non riuscito: {error}',
   'racingRegistry.performanceSummary': 'Riepilogo prestazioni',
+  'racingRegistry.age': 'Età',
   'racingRegistry.startHistory': 'Storico partenze',
   'racingRegistry.career': 'Carriera',
   'racingRegistry.last12Months': 'Ultimi 12 mesi',
@@ -3422,6 +3432,7 @@ Object.assign(translations.it, {
   'racingRegistry.resultsImportSaveFailed': 'Importazione risultati non riuscita: {error}',
   'racingRegistry.racetrackCode': 'Codice ippodromo',
   'racingRegistry.raceCode': 'Codice corsa',
+  'racingRegistry.raceAndTrack': 'Corsa / ippodromo',
   'racingRegistry.driver': 'Guidatore',
   'racingRegistry.placement': 'Piazzamento',
   'racingRegistry.kmTime': 'Tempo al km',
@@ -3438,6 +3449,7 @@ Object.assign(translations.it, {
   'racingRegistry.startDeleted': 'Partenza eliminata.',
   'racingRegistry.startSaveFailed': 'Salvataggio storico partenze non riuscito: {error}',
   'racingRegistry.noStarts': 'Nessuna partenza registrata.',
+  'racingRegistry.noPerformanceSummary': 'Nessun riepilogo prestazioni inserito.',
   'raceControl.title': 'Controllo corse',
   'raceControl.tools': 'Strumenti corse Super Admin',
   'raceControl.help': 'Gestisci cavalli da corsa centrali, risultati e programmi pubblicati per tutte le scuderie.',
@@ -8639,7 +8651,7 @@ function renderHorses() {
               <h5>${t('care.recent')}</h5>
               ${careRecords.length ? careRecords.map(renderCareLine).join('') : `<p>${t('care.empty')}</p>`}
             </section>
-            ${linkedRacingHorse ? renderRacingStartHistory(linkedRacingHorse, false, 5) : ''}
+            ${linkedRacingHorse ? renderRacingHorseProfile(linkedRacingHorse, { compact: true }) : ''}
           </details>
         </div>
         <div class="item-actions">
@@ -9395,13 +9407,13 @@ function renderRaceProgramAdmin() {
 }
 
 function formatRacingStatLine(horse, prefix) {
-  return [
-    `${t('racingRegistry.starts')}: ${escapeHtml(horse[`${prefix}Starts`] || 0)}`,
-    `${t('racingRegistry.wins')}: ${escapeHtml(horse[`${prefix}Wins`] || 0)}`,
-    `${t('racingRegistry.places')}: ${escapeHtml(horse[`${prefix}Places`] || 0)}`,
-    `${t('racingRegistry.show')}: ${escapeHtml(horse[`${prefix}Show`] || 0)}`,
-    `${t('racingRegistry.earnings')}: ${escapeHtml(horse[`${prefix}Earnings`] || 0)}`
-  ].join(' | ');
+  return `${t('racingRegistry.starts')}: ${horse[`${prefix}Starts`] || 0} | ${t('racingRegistry.wins')}: ${horse[`${prefix}Wins`] || 0} | ${t('racingRegistry.places')}: ${horse[`${prefix}Places`] || 0} | ${t('racingRegistry.show')}: ${horse[`${prefix}Show`] || 0} | ${t('racingRegistry.earnings')}: ${horse[`${prefix}Earnings`] || 0}`;
+}
+
+function hasRacingPerformanceSummary(horse) {
+  return ['career', 'twelveMonth', 'year', 'twoMonth'].some((prefix) => (
+    horse[`${prefix}Starts`] || horse[`${prefix}Wins`] || horse[`${prefix}Places`] || horse[`${prefix}Show`] || horse[`${prefix}Earnings`]
+  ));
 }
 
 function renderRacingPerformanceSummary(horse) {
@@ -9416,9 +9428,16 @@ function renderRacingPerformanceSummary(horse) {
       ${cards.map(([labelKey, prefix]) => `
         <article class="racing-mini-card">
           <strong>${t(labelKey)}</strong>
-          <span>${formatRacingStatLine(horse, prefix)}</span>
+          <div class="racing-stat-row">
+            <span><b>${escapeHtml(horse[`${prefix}Starts`] || 0)}</b>${t('racingRegistry.starts')}</span>
+            <span><b>${escapeHtml(horse[`${prefix}Wins`] || 0)}</b>${t('racingRegistry.wins')}</span>
+            <span><b>${escapeHtml(horse[`${prefix}Places`] || 0)}</b>${t('racingRegistry.places')}</span>
+            <span><b>${escapeHtml(horse[`${prefix}Show`] || 0)}</b>${t('racingRegistry.show')}</span>
+            <span><b>${escapeHtml(horse[`${prefix}Earnings`] || 0)}</b>${t('racingRegistry.earnings')}</span>
+          </div>
         </article>
       `).join('')}
+      ${hasRacingPerformanceSummary(horse) ? '' : `<p class="empty-state">${t('racingRegistry.noPerformanceSummary')}</p>`}
     </section>
   `;
 }
@@ -9454,37 +9473,90 @@ function renderRacingStartHistory(horse, editable = false, limit = 0) {
   const starts = getRacingStartsForHorse(horse.id);
   const visibleStarts = limit ? starts.slice(0, limit) : starts;
   if (!visibleStarts.length) {
-    return `<section class="racing-start-history"><h5>${t('racingRegistry.startHistory')}</h5><p class="empty-state">${t('racingRegistry.noStarts')}</p></section>`;
+    return `<section class="racing-start-history"><h5>${t('racingRegistry.startHistory')}</h5><p class="empty-state">${t('racingRegistry.noStarts')} ${t('racingRegistry.resultsImportFuture')}</p></section>`;
   }
   return `
     <section class="racing-start-history">
       <h5>${t('racingRegistry.startHistory')}</h5>
-      <div class="racing-start-list">
-        ${visibleStarts.map((start) => `
-          <article class="racing-start-row">
-            <div>
-              <strong>${escapeHtml(start.raceDate || t('common.notSet'))}</strong>
-              <span>${escapeHtml([start.racetrackCode, start.racetrackName, start.raceCode].filter(Boolean).join(' - ') || t('common.notSet'))}</span>
-            </div>
-            <div><strong>${t('racingRegistry.driver')}</strong><span>${escapeHtml(start.driverName || t('common.notSet'))}</span></div>
-            <div><strong>${t('racingRegistry.placement')}</strong><span>${escapeHtml(start.placement || t('common.notSet'))}</span></div>
-            <div><strong>${t('racingRegistry.kmTime')}</strong><span>${escapeHtml(start.kilometerTime || t('common.notSet'))}</span></div>
-            <div><strong>${t('racingRegistry.distance')}</strong><span>${escapeHtml(start.distance || t('common.notSet'))}</span></div>
-            <div><strong>${t('racingRegistry.starters')}</strong><span>${escapeHtml(start.startersInfo || t('common.notSet'))}</span></div>
-            <div><strong>${t('racingRegistry.shoeing')}</strong><span>${escapeHtml(start.shoeing || t('common.notSet'))}</span></div>
-            <div><strong>${t('racingRegistry.netPrize')}</strong><span>${escapeHtml(start.netPrize || t('common.notSet'))}</span></div>
-            <div><strong>${t('racingRegistry.grossPrize')}</strong><span>${escapeHtml(start.grossPrize || t('common.notSet'))}</span></div>
-            ${start.raceNotes ? `<p>${escapeHtml(start.raceNotes)}</p>` : ''}
-            ${start.videoUrl ? `<a href="${escapeHtml(start.videoUrl)}" target="_blank" rel="noopener noreferrer">${t('racingRegistry.videoUrl')}</a>` : ''}
-            ${editable ? `
-              <div class="item-actions">
-                <button class="button ghost" type="button" data-action="edit-racing-start" data-id="${start.id}">${t('common.edit')}</button>
-                <button class="button ghost danger" type="button" data-action="delete-racing-start" data-id="${start.id}">${t('common.delete')}</button>
-              </div>
-            ` : ''}
-          </article>
-        `).join('')}
+      <div class="racing-start-table-wrap">
+        <table class="racing-start-table">
+          <thead>
+            <tr>
+              <th>${t('raceEntries.raceDate')}</th>
+              <th>${t('racingRegistry.raceAndTrack')}</th>
+              <th>${t('racingRegistry.driver')}</th>
+              <th>${t('racingRegistry.placement')}</th>
+              <th>${t('racingRegistry.kmTime')}</th>
+              <th>${t('racingRegistry.distance')}</th>
+              <th>${t('racingRegistry.starters')}</th>
+              <th>${t('racingRegistry.shoeing')}</th>
+              <th>${t('racingRegistry.netPrize')}</th>
+              <th>${t('racingRegistry.grossPrize')}</th>
+              <th>${t('common.notesSimple')}</th>
+              ${editable ? `<th>${t('common.actions')}</th>` : ''}
+            </tr>
+          </thead>
+          <tbody>
+            ${visibleStarts.map((start) => `
+              <tr>
+                <td>${escapeHtml(start.raceDate || t('common.notSet'))}</td>
+                <td>${escapeHtml([start.racetrackCode, start.racetrackName, start.raceCode].filter(Boolean).join(' - ') || t('common.notSet'))}</td>
+                <td>${escapeHtml(start.driverName || t('common.notSet'))}</td>
+                <td>${escapeHtml(start.placement || t('common.notSet'))}</td>
+                <td>${escapeHtml(start.kilometerTime || t('common.notSet'))}</td>
+                <td>${escapeHtml(start.distance || t('common.notSet'))}</td>
+                <td>${escapeHtml(start.startersInfo || t('common.notSet'))}</td>
+                <td>${escapeHtml(start.shoeing || t('common.notSet'))}</td>
+                <td>${escapeHtml(start.netPrize || t('common.notSet'))}</td>
+                <td>${escapeHtml(start.grossPrize || t('common.notSet'))}</td>
+                <td>${escapeHtml(start.raceNotes || t('common.noNotes'))}${start.videoUrl ? `<br><a href="${escapeHtml(start.videoUrl)}" target="_blank" rel="noopener noreferrer">${t('racingRegistry.videoUrl')}</a>` : ''}</td>
+                ${editable ? `
+                  <td class="racing-start-actions">
+                    <button class="button ghost" type="button" data-action="edit-racing-start" data-id="${start.id}">${t('common.edit')}</button>
+                    <button class="button ghost danger" type="button" data-action="delete-racing-start" data-id="${start.id}">${t('common.delete')}</button>
+                  </td>
+                ` : ''}
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
       </div>
+    </section>
+  `;
+}
+
+function getRacingHorseAgeText(horse) {
+  const birthYear = Number(horse.birthYear || String(horse.birthDate || '').slice(0, 4));
+  if (!birthYear) return '';
+  return `${new Date().getFullYear() - birthYear}`;
+}
+
+function renderRacingHorseProfile(horse, { editable = false, compact = false } = {}) {
+  const headerMeta = [
+    horse.registrationNumber && `${t('racingRegistry.registration')}: ${horse.registrationNumber}`,
+    getRacingHorseAgeText(horse) && `${t('racingRegistry.age')}: ${getRacingHorseAgeText(horse)}`,
+    horse.gender && `${t('horses.gender')}: ${t(`horses.gender${horse.gender.charAt(0).toUpperCase()}${horse.gender.slice(1)}`) || horse.gender}`,
+    horse.countryOfOrigin,
+    horse.racingCategory && `${t('horses.racingCategory')}: ${horse.racingCategory}`,
+    `${t('racingRegistry.totalEarnings')}: ${horse.careerEarnings || horse.totalEarnings || 0}`,
+    horse.lastResultsUpdate && `${t('racingRegistry.lastResultsUpdate')}: ${horse.lastResultsUpdate}`
+  ].filter(Boolean);
+  return `
+    <section class="racing-profile-shell ${compact ? 'compact' : ''}">
+      <div class="racing-profile-header">
+        <div>
+          <p class="eyebrow">${t('racingRegistry.title')}</p>
+          <h4>${escapeHtml(horse.horseName)}</h4>
+          <div class="item-meta">${headerMeta.map((item) => `<span class="pill">${escapeHtml(item)}</span>`).join('')}</div>
+        </div>
+        ${editable ? `<button class="button ghost" type="button" data-action="edit-racing-horse" data-id="${horse.id}">${t('common.edit')}</button>` : ''}
+      </div>
+      ${renderRacingPerformanceSummary(horse)}
+      <div class="horse-detail-grid racing-profile-panels">
+        ${renderRacingRecords(horse)}
+        ${renderRacingCategories(horse)}
+      </div>
+      ${renderRacingStartHistory(horse, editable, compact ? 5 : 0)}
     </section>
   `;
 }
@@ -9596,12 +9668,7 @@ function renderRacingHorseRegistry() {
         </div>
         <details class="horse-details">
           <summary>${t('racingRegistry.performanceSummary')}</summary>
-          ${renderRacingPerformanceSummary(horse)}
-          <div class="horse-detail-grid">
-            ${renderRacingRecords(horse)}
-            ${renderRacingCategories(horse)}
-          </div>
-          ${renderRacingStartHistory(horse, true)}
+          ${renderRacingHorseProfile(horse, { editable: true })}
         </details>
       </div>
       <div class="item-actions">
