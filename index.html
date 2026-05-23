@@ -750,6 +750,22 @@
           </form>
           <p class="update-note" data-i18n="racingRegistry.resultsImportFuture">Results import will be added later to update earnings and start history from result files.</p>
           <p class="update-note" data-i18n="racingRegistry.summaryManualNote">Summary values are maintained by Super Admin for now.</p>
+          <section class="race-results-import-panel">
+            <div class="module-header">
+              <div>
+                <h4 data-i18n="racingRegistry.importResultsPdf">Import results PDF</h4>
+                <p data-i18n="racingRegistry.resultsImportHelp">Upload user-provided Italian results PDFs and review rows before saving.</p>
+              </div>
+            </div>
+            <label class="file-button button secondary"><span data-i18n="racingRegistry.importResultsPdf">Import results PDF</span><input id="resultsImportInput" type="file" accept=".pdf,application/pdf"></label>
+            <label class="checkbox-line">
+              <input id="resultsImportUpdateEarnings" type="checkbox">
+              <span data-i18n="racingRegistry.updateEarnings">Update horse earnings from gross prize</span>
+            </label>
+            <p id="resultsImportStatus" class="status-text" data-i18n="racingRegistry.resultsImportReady">Upload a results PDF to review imported starts.</p>
+            <div id="resultsImportPreview" class="race-import-preview"></div>
+            <button id="resultsImportSaveButton" class="button primary" type="button" hidden data-i18n="racingRegistry.saveResults">Save selected results</button>
+          </section>
           <form id="racingHorseStartForm" class="entry-form">
             <input type="hidden" name="id">
             <label><span data-i18n="racingRegistry.horseName">Horse name</span><select name="racingHorseId" required></select></label>

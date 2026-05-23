@@ -2929,6 +2929,23 @@ Object.assign(translations.en, {
   'racingRegistry.reclaimAllowed': 'Reclaim allowed',
   'racingRegistry.summaryManualNote': 'Summary values are maintained by Super Admin for now.',
   'racingRegistry.resultsImportFuture': 'Results import will be added later to update earnings and start history from result files.',
+  'racingRegistry.importResultsPdf': 'Import results PDF',
+  'racingRegistry.resultsImportHelp': 'Upload user-provided Italian results PDFs and review rows before saving.',
+  'racingRegistry.resultsImportReady': 'Upload a results PDF to review imported starts.',
+  'racingRegistry.readingResultsPdf': 'Reading results PDF...',
+  'racingRegistry.resultsFound': 'Results found: {count}',
+  'racingRegistry.reviewResults': 'Review imported results',
+  'racingRegistry.saveResults': 'Save selected results',
+  'racingRegistry.noResultsFound': 'No results found in this file.',
+  'racingRegistry.resultsPdfReadFailed': 'Could not read this results PDF.',
+  'racingRegistry.noRegistryMatch': 'No registry match',
+  'racingRegistry.createRacingHorse': 'Create racing horse',
+  'racingRegistry.matchExistingHorse': 'Match existing horse',
+  'racingRegistry.skipRow': 'Skip row',
+  'racingRegistry.updateEarnings': 'Update horse earnings from gross prize',
+  'racingRegistry.duplicateResult': 'Duplicate result detected. This row will update the existing start and will not add earnings again.',
+  'racingRegistry.resultsImportSaved': 'Results import saved: {count} row(s), {duplicates} duplicate(s), {skipped} skipped.',
+  'racingRegistry.resultsImportSaveFailed': 'Results import failed: {error}',
   'racingRegistry.racetrackCode': 'Racetrack code',
   'racingRegistry.raceCode': 'Race code',
   'racingRegistry.driver': 'Driver',
@@ -3134,6 +3151,23 @@ Object.assign(translations.fi, {
   'racingRegistry.reclaimAllowed': 'Myyntilähtö sallittu',
   'racingRegistry.summaryManualNote': 'Super Admin ylläpitää yhteenvetotietoja toistaiseksi käsin.',
   'racingRegistry.resultsImportFuture': 'Tulostuonti lisätään myöhemmin ansioiden ja lähtöhistorian päivittämiseen.',
+  'racingRegistry.importResultsPdf': 'Tuo tulos-PDF',
+  'racingRegistry.resultsImportHelp': 'Lataa käyttäjän toimittama italialainen tulos-PDF ja tarkista rivit ennen tallennusta.',
+  'racingRegistry.resultsImportReady': 'Lataa tulos-PDF lähtöjen tarkistusta varten.',
+  'racingRegistry.readingResultsPdf': 'Luetaan tulos-PDF:ää...',
+  'racingRegistry.resultsFound': 'Tuloksia löytyi: {count}',
+  'racingRegistry.reviewResults': 'Tarkista tuodut tulokset',
+  'racingRegistry.saveResults': 'Tallenna valitut tulokset',
+  'racingRegistry.noResultsFound': 'Tästä tiedostosta ei löytynyt tuloksia.',
+  'racingRegistry.resultsPdfReadFailed': 'Tulos-PDF:ää ei voitu lukea.',
+  'racingRegistry.noRegistryMatch': 'Ei rekisteriosumaa',
+  'racingRegistry.createRacingHorse': 'Luo kilpahevonen',
+  'racingRegistry.matchExistingHorse': 'Yhdistä olemassa olevaan hevoseen',
+  'racingRegistry.skipRow': 'Ohita rivi',
+  'racingRegistry.updateEarnings': 'Päivitä hevosen ansiot bruttopalkinnosta',
+  'racingRegistry.duplicateResult': 'Kaksoistulos havaittu. Tämä rivi päivittää olemassa olevan lähdön eikä lisää ansioita uudelleen.',
+  'racingRegistry.resultsImportSaved': 'Tulosimportti tallennettu: {count} riviä, {duplicates} kaksoiskappaletta, {skipped} ohitettu.',
+  'racingRegistry.resultsImportSaveFailed': 'Tulosimportti epäonnistui: {error}',
   'racingRegistry.racetrackCode': 'Raviradan koodi',
   'racingRegistry.raceCode': 'Lähdön koodi',
   'racingRegistry.driver': 'Ohjastaja',
@@ -3339,6 +3373,23 @@ Object.assign(translations.it, {
   'racingRegistry.reclaimAllowed': 'Reclamare consentito',
   'racingRegistry.summaryManualNote': 'I valori riepilogativi sono mantenuti dal Super Admin per ora.',
   'racingRegistry.resultsImportFuture': 'Importazione risultati sarà aggiunta più avanti per aggiornare vincite e storico partenze.',
+  'racingRegistry.importResultsPdf': 'Importa PDF risultati',
+  'racingRegistry.resultsImportHelp': 'Carica PDF risultati italiani forniti dall’utente e rivedi le righe prima di salvare.',
+  'racingRegistry.resultsImportReady': 'Carica un PDF risultati per rivedere le partenze importate.',
+  'racingRegistry.readingResultsPdf': 'Lettura PDF risultati...',
+  'racingRegistry.resultsFound': 'Risultati trovati: {count}',
+  'racingRegistry.reviewResults': 'Rivedi risultati importati',
+  'racingRegistry.saveResults': 'Salva risultati selezionati',
+  'racingRegistry.noResultsFound': 'Nessun risultato trovato in questo file.',
+  'racingRegistry.resultsPdfReadFailed': 'Impossibile leggere questo PDF risultati.',
+  'racingRegistry.noRegistryMatch': 'Nessuna corrispondenza nel registro',
+  'racingRegistry.createRacingHorse': 'Crea cavallo da corsa',
+  'racingRegistry.matchExistingHorse': 'Abbina cavallo esistente',
+  'racingRegistry.skipRow': 'Salta riga',
+  'racingRegistry.updateEarnings': 'Aggiorna vincite dal premio lordo',
+  'racingRegistry.duplicateResult': 'Risultato duplicato rilevato. Questa riga aggiornerà la partenza esistente senza aggiungere di nuovo le vincite.',
+  'racingRegistry.resultsImportSaved': 'Importazione risultati salvata: {count} righe, {duplicates} duplicati, {skipped} saltate.',
+  'racingRegistry.resultsImportSaveFailed': 'Importazione risultati non riuscita: {error}',
   'racingRegistry.racetrackCode': 'Codice ippodromo',
   'racingRegistry.raceCode': 'Codice corsa',
   'racingRegistry.driver': 'Guidatore',
@@ -3437,6 +3488,7 @@ let raceProgramRaces = [];
 let racingHorses = [];
 let racingHorseStarts = [];
 let racingHorseSearchTerm = '';
+let resultsImportPreviewItems = [];
 let selectedPublishedRaceDay = { racetrack: '', date: '' };
 let publishedRaceFilter = { possibleOnly: false, search: '' };
 let publishedRaceFilterTimer = null;
@@ -3534,6 +3586,11 @@ const els = {
   racingHorseStartForm: document.querySelector('#racingHorseStartForm'),
   racingHorseSearch: document.querySelector('#racingHorseSearch'),
   racingHorseRegistryList: document.querySelector('#racingHorseRegistryList'),
+  resultsImportInput: document.querySelector('#resultsImportInput'),
+  resultsImportUpdateEarnings: document.querySelector('#resultsImportUpdateEarnings'),
+  resultsImportStatus: document.querySelector('#resultsImportStatus'),
+  resultsImportPreview: document.querySelector('#resultsImportPreview'),
+  resultsImportSaveButton: document.querySelector('#resultsImportSaveButton'),
   raceImportProgramLabel: document.querySelector('#raceImportProgramLabel'),
   raceImportProgramSelect: document.querySelector('#raceImportProgramSelect'),
   publishedRaceProgramList: document.querySelector('#publishedRaceProgramList'),
@@ -4157,6 +4214,179 @@ function parseRaceCsvOrText(text, type = 'text') {
       });
     })
     .filter(Boolean);
+}
+
+function parseItalianNumber(value) {
+  const cleaned = String(value || '').replace(/[^\d,.-]/g, '').replace(/\./g, '').replace(',', '.');
+  const number = Number(cleaned);
+  return Number.isFinite(number) ? number : null;
+}
+
+function parseItalianResultsDate(value) {
+  const match = String(value || '').match(/\b(\d{1,2})[./-](\d{1,2})[./-](\d{4})\b/);
+  if (!match) return '';
+  return `${match[3]}-${match[2].padStart(2, '0')}-${match[1].padStart(2, '0')}`;
+}
+
+function createResultImportId(row) {
+  return [
+    'result-import',
+    slugifyRaceImport(row.racetrackName || 'napoli'),
+    row.raceDate || 'unknown-date',
+    row.raceNumber || 'x',
+    row.startingNumber || 'x',
+    slugifyRaceImport(row.horseName || 'horse')
+  ].join('-');
+}
+
+function normalizeResultsText(text) {
+  return normalizeItalianProgramText(text)
+    .replace(/(\d{1,2}\))\s+/g, '\n$1 ')
+    .replace(/\s+((?:\d{2}|RP|DI|RI|RC|NP|SQ|R)\s+\d{1,2}\s+)/gi, '\n$1')
+    .replace(/\n{2,}/g, '\n')
+    .trim();
+}
+
+function parseItalianResultsRaceHeader(line) {
+  const match = String(line || '').trim().match(/^(\d{1,2})\)\s+(.+?)\s+\(([^)]*)\)\s+Metri\s+(\d+)\s+E\.?\s*([\d.,]+)/i);
+  if (!match) return null;
+  return {
+    raceNumber: match[1],
+    raceName: match[2].trim(),
+    raceCode: match[3].trim(),
+    distance: match[4],
+    totalPrize: match[5]
+  };
+}
+
+function looksLikeResultRow(line) {
+  return /^(?:\d{1,2}|RP|DI|RI|RC|NP|SQ|R)\s+\d{1,2}\s+/i.test(String(line || '').trim());
+}
+
+function parseItalianResultRow(line, context) {
+  const raw = String(line || '').replace(/\s+/g, ' ').trim();
+  const tokens = raw.split(' ');
+  if (tokens.length < 4) return null;
+  const placement = tokens[0];
+  const startingNumber = tokens[1];
+  let cursor = 2;
+  let totalTime = '';
+  let distanceIndex = -1;
+  for (let index = cursor; index < tokens.length; index += 1) {
+    if (/^\d{3,4}$/.test(tokens[index]) && (tokens[index] === String(context.distance) || index > cursor)) {
+      distanceIndex = index;
+      break;
+    }
+  }
+  if (distanceIndex < 0) return null;
+  if (distanceIndex > cursor && /^\d+\.\d{2}\.\d$/i.test(tokens[distanceIndex - 1])) {
+    totalTime = tokens[distanceIndex - 1];
+    distanceIndex -= 1;
+  }
+  const horseName = tokens.slice(cursor, distanceIndex).join(' ').trim();
+  cursor = distanceIndex;
+  if (totalTime) cursor += 1;
+  const distance = tokens[cursor] || context.distance || '';
+  cursor += 1;
+  let kilometerTime = '';
+  if (/^\d{1,2}\.\d$/i.test(tokens[cursor] || '')) {
+    kilometerTime = tokens[cursor];
+    cursor += 1;
+  }
+  const moneyIndexes = [];
+  for (let index = cursor; index < tokens.length; index += 1) {
+    if (/^\d{1,3}(?:\.\d{3})*,\d{2}$|^\d+,\d{2}$/.test(tokens[index])) moneyIndexes.push(index);
+    if (moneyIndexes.length === 2) break;
+  }
+  const netPrize = moneyIndexes[0] != null ? parseItalianNumber(tokens[moneyIndexes[0]]) : null;
+  const grossPrize = moneyIndexes[1] != null ? parseItalianNumber(tokens[moneyIndexes[1]]) : null;
+  const personTokens = moneyIndexes[1] != null ? tokens.slice(moneyIndexes[1] + 1) : tokens.slice(cursor);
+  const driverName = personTokens.slice(0, 3).join(' ').replace(/\d+$/, '').trim();
+  const remainingPeople = personTokens.slice(3).join(' ').trim();
+  return {
+    id: createResultImportId({ ...context, startingNumber, horseName }),
+    selected: Boolean(horseName),
+    raceDate: context.raceDate,
+    racetrackName: context.racetrackName,
+    raceNumber: context.raceNumber,
+    raceName: context.raceName,
+    raceCode: context.raceCode,
+    startingNumber,
+    placement,
+    horseName,
+    totalTime,
+    distance,
+    kilometerTime,
+    netPrize: netPrize ?? '',
+    grossPrize: grossPrize ?? '',
+    driverName,
+    ownerName: '',
+    trainerName: '',
+    notes: [remainingPeople, raw].filter(Boolean).join('\n'),
+    matchMode: 'skip',
+    racingHorseId: '',
+    duplicate: false
+  };
+}
+
+function findRacingHorseByName(horseName) {
+  const normalized = String(horseName || '').trim().toLowerCase();
+  return racingHorses.find((horse) => String(horse.horseName || '').trim().toLowerCase() === normalized) || null;
+}
+
+function hasDuplicateRacingStart(row, racingHorseId = row.racingHorseId) {
+  if (!racingHorseId) return false;
+  return Boolean(findDuplicateRacingStart(row, racingHorseId));
+}
+
+function findDuplicateRacingStart(row, racingHorseId = row.racingHorseId) {
+  if (!racingHorseId) return null;
+  return racingHorseStarts.find((start) => {
+    const normalized = normalizeRacingHorseStart(start);
+    return normalized.racingHorseId === racingHorseId
+      && normalized.raceDate === row.raceDate
+      && String(normalized.racetrackName || '').trim().toLowerCase() === String(row.racetrackName || '').trim().toLowerCase()
+      && String(normalized.raceCode || '').trim().toLowerCase() === String(row.raceNumber || row.raceCode || '').trim().toLowerCase();
+  }) || null;
+}
+
+function enrichResultImportMatches(rows) {
+  return rows.map((row) => {
+    const match = findRacingHorseByName(row.horseName);
+    const racingHorseId = match?.id || row.racingHorseId || '';
+    return {
+      ...row,
+      racingHorseId,
+      matchMode: racingHorseId ? 'match' : (row.matchMode || 'skip'),
+      duplicate: hasDuplicateRacingStart(row, racingHorseId)
+    };
+  });
+}
+
+function parseItalianResultsPdfText(text) {
+  const lines = normalizeResultsText(text).split('\n').map((line) => line.trim()).filter(Boolean);
+  let racetrackName = 'Napoli';
+  let raceDate = '';
+  const rows = [];
+  let currentRace = null;
+  lines.forEach((line) => {
+    const header = line.match(/\b([A-ZÀ-Ý]+)\s+RIUNIONE\s+N\.\s*\d+\s+di\s+(\d{1,2}[./-]\d{1,2}[./-]\d{4})/i);
+    if (header) {
+      racetrackName = `${header[1].slice(0, 1)}${header[1].slice(1).toLowerCase()}`;
+      raceDate = parseItalianResultsDate(header[2]);
+      return;
+    }
+    const raceHeader = parseItalianResultsRaceHeader(line);
+    if (raceHeader) {
+      currentRace = { ...raceHeader, racetrackName, raceDate };
+      return;
+    }
+    if (currentRace && looksLikeResultRow(line)) {
+      const parsed = parseItalianResultRow(line, currentRace);
+      if (parsed) rows.push(parsed);
+    }
+  });
+  return enrichResultImportMatches(rows);
 }
 
 function normalizeTask(item) {
@@ -9173,11 +9403,87 @@ function renderRacingStartHistory(horse, editable = false, limit = 0) {
   `;
 }
 
+function renderResultsImportPreview() {
+  if (!els.resultsImportPreview) return;
+  if (!resultsImportPreviewItems.length) {
+    els.resultsImportPreview.innerHTML = '';
+    if (els.resultsImportSaveButton) els.resultsImportSaveButton.hidden = true;
+    return;
+  }
+  const horseOptions = [`<option value="">${t('racingRegistry.noRegistryMatch')}</option>`]
+    .concat(racingHorses
+      .sort((a, b) => a.horseName.localeCompare(b.horseName))
+      .map((horse) => `<option value="${horse.id}">${escapeHtml([horse.horseName, horse.registrationNumber].filter(Boolean).join(' - '))}</option>`))
+    .join('');
+  const grouped = new Map();
+  resultsImportPreviewItems.forEach((row) => {
+    const key = `${row.raceNumber} ${row.raceName}`;
+    if (!grouped.has(key)) grouped.set(key, []);
+    grouped.get(key).push(row);
+  });
+  els.resultsImportPreview.innerHTML = `
+    <div class="module-header">
+      <div>
+        <h4>${t('racingRegistry.reviewResults')}</h4>
+        <p>${t('racingRegistry.resultsFound', { count: resultsImportPreviewItems.length })}</p>
+      </div>
+    </div>
+    ${Array.from(grouped.entries()).map(([raceLabel, rows]) => `
+      <section class="race-import-group">
+        <h5>${escapeHtml(raceLabel)}</h5>
+        <div class="race-import-list">
+          ${rows.map((row) => `
+            <article class="race-import-card" data-result-id="${row.id}">
+              <label class="checkbox-line">
+                <input type="checkbox" data-result-field="selected" ${row.selected ? 'checked' : ''}>
+                <span>${escapeHtml([row.placement, row.startingNumber, row.horseName].filter(Boolean).join(' - '))}</span>
+              </label>
+              ${row.duplicate ? `<p class="status-text warning">${t('racingRegistry.duplicateResult')}</p>` : ''}
+              <div class="entry-form compact-form">
+                <label><span>${t('racingRegistry.horseName')}</span><input data-result-field="horseName" value="${escapeHtml(row.horseName)}"></label>
+                <label><span>${t('racingRegistry.placement')}</span><input data-result-field="placement" value="${escapeHtml(row.placement)}"></label>
+                <label><span>${t('raceEntries.raceNumber')}</span><input data-result-field="raceNumber" value="${escapeHtml(row.raceNumber)}"></label>
+                <label><span>${t('racingRegistry.distance')}</span><input data-result-field="distance" value="${escapeHtml(row.distance)}"></label>
+                <label><span>${t('racingRegistry.kmTime')}</span><input data-result-field="kilometerTime" value="${escapeHtml(row.kilometerTime)}"></label>
+                <label><span>${t('racingRegistry.netPrize')}</span><input data-result-field="netPrize" type="number" step="0.01" value="${escapeHtml(row.netPrize)}"></label>
+                <label><span>${t('racingRegistry.grossPrize')}</span><input data-result-field="grossPrize" type="number" step="0.01" value="${escapeHtml(row.grossPrize)}"></label>
+                <label><span>${t('racingRegistry.driver')}</span><input data-result-field="driverName" value="${escapeHtml(row.driverName)}"></label>
+                <label><span>${t('horses.ownerName')}</span><input data-result-field="ownerName" value="${escapeHtml(row.ownerName)}"></label>
+                <label><span>${t('horses.trainerName')}</span><input data-result-field="trainerName" value="${escapeHtml(row.trainerName)}"></label>
+                <label><span>${t('racingRegistry.matchExistingHorse')}</span><select data-result-field="racingHorseId">${horseOptions}</select></label>
+                <label><span>${t('racingRegistry.noRegistryMatch')}</span><select data-result-field="matchMode">
+                  <option value="skip">${t('racingRegistry.skipRow')}</option>
+                  <option value="create">${t('racingRegistry.createRacingHorse')}</option>
+                  <option value="match">${t('racingRegistry.matchExistingHorse')}</option>
+                </select></label>
+                <label class="full"><span>${t('common.notesSimple')}</span><textarea data-result-field="notes" rows="3">${escapeHtml(row.notes)}</textarea></label>
+              </div>
+            </article>
+          `).join('')}
+        </div>
+      </section>
+    `).join('')}
+  `;
+  resultsImportPreviewItems.forEach((row) => {
+    const card = els.resultsImportPreview.querySelector(`[data-result-id="${CSS.escape(row.id)}"]`);
+    if (!card) return;
+    const horseSelect = card.querySelector('[data-result-field="racingHorseId"]');
+    const modeSelect = card.querySelector('[data-result-field="matchMode"]');
+    if (horseSelect) horseSelect.value = row.racingHorseId || '';
+    if (modeSelect) modeSelect.value = row.matchMode || (row.racingHorseId ? 'match' : 'skip');
+  });
+  if (els.resultsImportSaveButton) {
+    els.resultsImportSaveButton.hidden = false;
+    els.resultsImportSaveButton.disabled = !resultsImportPreviewItems.some((row) => row.selected);
+  }
+}
+
 function renderRacingHorseRegistry() {
   if (!els.racingHorseRegistryList || !els.racingHorseForm) return;
   const isAdmin = isSuperAdmin() && cloudWriteMode;
   els.racingHorseForm.hidden = !isAdmin;
   if (els.racingHorseStartForm) els.racingHorseStartForm.hidden = !isAdmin;
+  if (els.resultsImportInput?.closest('.race-results-import-panel')) els.resultsImportInput.closest('.race-results-import-panel').hidden = !isAdmin;
   if (els.racingHorseSearch) els.racingHorseSearch.hidden = !isAdmin;
   if (!isAdmin) {
     els.racingHorseRegistryList.innerHTML = '';
@@ -9419,6 +9725,7 @@ function renderRaceEntries() {
   if (els.raceEntriesModeBadge) els.raceEntriesModeBadge.textContent = cloudWriteMode ? t('calendar.cloudMode') : t('calendar.localMode');
   renderRaceProgramAdmin();
   renderRacingHorseRegistry();
+  renderResultsImportPreview();
   renderPublishedRacePrograms();
   renderRaceImportPreview();
   if (!state.raceEntryOpportunities.length) {
@@ -10751,6 +11058,42 @@ async function handleRaceImportFile(event) {
   }
 }
 
+async function handleResultsImportFile(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  resultsImportPreviewItems = [];
+  renderResultsImportPreview();
+  try {
+    if (!isSuperAdmin() || !cloudWriteMode) {
+      showMessage(t('auth.unauthorized'));
+      return;
+    }
+    if (els.resultsImportStatus) els.resultsImportStatus.textContent = t('racingRegistry.readingResultsPdf');
+    const text = await extractPdfText(file);
+    const rows = parseItalianResultsPdfText(text);
+    if (!rows.length) {
+      if (els.resultsImportStatus) els.resultsImportStatus.textContent = t('racingRegistry.noResultsFound');
+      showMessage(t('racingRegistry.noResultsFound'));
+      return;
+    }
+    resultsImportPreviewItems = rows;
+    renderResultsImportPreview();
+    if (els.resultsImportStatus) {
+      els.resultsImportStatus.textContent = `${t('racingRegistry.resultsFound', { count: rows.length })} ${t('racingRegistry.reviewResults')}`;
+    }
+    showMessage(t('racingRegistry.resultsFound', { count: rows.length }));
+  } catch (error) {
+    console.error('[EquiTrack racing registry] Results PDF import failed', error);
+    const message = /pdf\.js|pdfjs|load|initialize/i.test(String(error?.message || error))
+      ? t('raceEntries.pdfUnavailable')
+      : t('racingRegistry.resultsPdfReadFailed');
+    if (els.resultsImportStatus) els.resultsImportStatus.textContent = message;
+    showMessage(message);
+  } finally {
+    event.target.value = '';
+  }
+}
+
 function updateRaceImportPreviewField(target) {
   const card = target.closest('[data-import-id]');
   const field = target.dataset.importField;
@@ -10760,6 +11103,30 @@ function updateRaceImportPreviewField(target) {
   if (field === 'selected') item.selected = target.checked;
   else item[field] = target.value;
   if (els.raceImportSaveButton) els.raceImportSaveButton.disabled = !raceImportPreviewItems.some((race) => race.selected);
+}
+
+function updateResultsImportPreviewField(target) {
+  const card = target.closest('[data-result-id]');
+  const field = target.dataset.resultField;
+  if (!card || !field) return;
+  const row = resultsImportPreviewItems.find((entry) => entry.id === card.dataset.resultId);
+  if (!row) return;
+  if (field === 'selected') row.selected = target.checked;
+  else if (field === 'matchMode') {
+    row.matchMode = target.value;
+    if (target.value === 'match' && !row.racingHorseId) {
+      const firstMatch = findRacingHorseByName(row.horseName);
+      if (firstMatch) row.racingHorseId = firstMatch.id;
+    }
+  } else if (field === 'racingHorseId') {
+    row.racingHorseId = target.value;
+    row.matchMode = target.value ? 'match' : row.matchMode;
+  } else {
+    row[field] = target.value;
+  }
+  row.duplicate = hasDuplicateRacingStart(row, row.racingHorseId);
+  if (els.resultsImportSaveButton) els.resultsImportSaveButton.disabled = !resultsImportPreviewItems.some((entry) => entry.selected);
+  if (field === 'racingHorseId' || field === 'matchMode' || field === 'horseName') renderResultsImportPreview();
 }
 
 function removeImportedRace(id) {
@@ -10831,6 +11198,111 @@ async function saveImportedRaceOpportunities() {
     showMessage(t('raceEntries.importSaveFailed', { error: errorMessage }));
   } finally {
     if (els.raceImportSaveButton) els.raceImportSaveButton.disabled = !raceImportPreviewItems.some((race) => race.selected);
+  }
+}
+
+async function ensureRacingHorseForResult(row, updateEarnings) {
+  if (row.matchMode === 'match' && row.racingHorseId) {
+    return racingHorses.find((horse) => horse.id === row.racingHorseId) || null;
+  }
+  if (row.matchMode !== 'create') return null;
+  const grossPrize = toSafeNumber(row.grossPrize, 0);
+  const saved = await saveRacingHorseToCloud({
+    horseName: row.horseName,
+    ownerName: row.ownerName,
+    trainerName: row.trainerName,
+    totalEarnings: updateEarnings ? grossPrize : 0,
+    careerEarnings: updateEarnings ? grossPrize : '',
+    lastResultsUpdate: row.raceDate,
+    notes: row.notes
+  });
+  racingHorses.push(saved);
+  row.racingHorseId = saved.id;
+  row.matchMode = 'match';
+  return saved;
+}
+
+async function updateRacingHorseEarningsFromResult(horse, row) {
+  const grossPrize = toSafeNumber(row.grossPrize, 0);
+  if (!grossPrize) {
+    const saved = await saveRacingHorseToCloud({ ...horse, lastResultsUpdate: row.raceDate });
+    const existingIndex = racingHorses.findIndex((entry) => entry.id === saved.id);
+    if (existingIndex >= 0) racingHorses[existingIndex] = saved;
+    return;
+  }
+  const currentTotal = toSafeNumber(horse.totalEarnings, 0);
+  const currentCareer = horse.careerEarnings === '' || horse.careerEarnings == null
+    ? currentTotal
+    : toSafeNumber(horse.careerEarnings, 0);
+  const saved = await saveRacingHorseToCloud({
+    ...horse,
+    totalEarnings: currentTotal + grossPrize,
+    careerEarnings: currentCareer + grossPrize,
+    lastResultsUpdate: row.raceDate
+  });
+  const existingIndex = racingHorses.findIndex((entry) => entry.id === saved.id);
+  if (existingIndex >= 0) racingHorses[existingIndex] = saved;
+}
+
+async function saveImportedResults() {
+  if (!isSuperAdmin() || !cloudWriteMode) {
+    showMessage(t('auth.unauthorized'));
+    return;
+  }
+  const selected = resultsImportPreviewItems.filter((row) => row.selected);
+  if (!selected.length) return;
+  const updateEarnings = Boolean(els.resultsImportUpdateEarnings?.checked);
+  if (els.resultsImportSaveButton) els.resultsImportSaveButton.disabled = true;
+  let savedCount = 0;
+  let skippedCount = 0;
+  let duplicateCount = 0;
+  try {
+    for (const row of selected) {
+      const horse = await ensureRacingHorseForResult(row, updateEarnings);
+      if (!horse?.id) {
+        skippedCount += 1;
+        continue;
+      }
+      const duplicate = findDuplicateRacingStart(row, horse.id);
+      const start = {
+        id: duplicate?.id || '',
+        racingHorseId: horse.id,
+        raceDate: row.raceDate,
+        racetrackName: row.racetrackName,
+        raceCode: row.raceNumber || row.raceCode,
+        driverName: row.driverName,
+        placement: row.placement,
+        kilometerTime: row.kilometerTime,
+        distance: row.distance,
+        netPrize: row.netPrize,
+        grossPrize: row.grossPrize,
+        raceNotes: [
+          row.raceName && `${t('raceEntries.raceName')}: ${row.raceName}`,
+          row.startingNumber && `${t('calendar.startNumber')}: ${row.startingNumber}`,
+          row.totalTime && `Total time: ${row.totalTime}`,
+          row.ownerName && `${t('horses.ownerName')}: ${row.ownerName}`,
+          row.trainerName && `${t('horses.trainerName')}: ${row.trainerName}`,
+          row.notes
+        ].filter(Boolean).join('\n')
+      };
+      const savedStart = await saveRacingHorseStartToCloud(start);
+      const existingIndex = racingHorseStarts.findIndex((entry) => entry.id === savedStart.id);
+      if (existingIndex >= 0) racingHorseStarts[existingIndex] = savedStart;
+      else racingHorseStarts.push(savedStart);
+      if (duplicate) duplicateCount += 1;
+      else if (updateEarnings) await updateRacingHorseEarningsFromResult(horse, row);
+      savedCount += 1;
+    }
+    resultsImportPreviewItems = [];
+    render();
+    const message = t('racingRegistry.resultsImportSaved', { count: savedCount, skipped: skippedCount, duplicates: duplicateCount });
+    if (els.resultsImportStatus) els.resultsImportStatus.textContent = message;
+    showMessage(message);
+  } catch (error) {
+    console.error('[EquiTrack racing registry] Results import save failed', error);
+    showMessage(t('racingRegistry.resultsImportSaveFailed', { error: getCloudErrorMessage(error) }));
+  } finally {
+    if (els.resultsImportSaveButton) els.resultsImportSaveButton.disabled = !resultsImportPreviewItems.some((row) => row.selected);
   }
 }
 
@@ -11192,6 +11664,7 @@ els.racingHorseSearch?.addEventListener('input', (event) => {
   renderRacingHorseRegistry();
 });
 els.raceImportInput?.addEventListener('change', handleRaceImportFile);
+els.resultsImportInput?.addEventListener('change', handleResultsImportFile);
 els.raceProgramAdminList?.addEventListener('change', (event) => {
   const input = event.target.closest('input[data-program-import-id]');
   if (!input) return;
@@ -11221,6 +11694,9 @@ els.raceImportPreview?.addEventListener('click', (event) => {
   removeImportedRace(button.dataset.id);
 });
 els.raceImportSaveButton?.addEventListener('click', saveImportedRaceOpportunities);
+els.resultsImportPreview?.addEventListener('input', (event) => updateResultsImportPreviewField(event.target));
+els.resultsImportPreview?.addEventListener('change', (event) => updateResultsImportPreviewField(event.target));
+els.resultsImportSaveButton?.addEventListener('click', saveImportedResults);
 els.exportButton.addEventListener('click', exportBackup);
 els.importInput.addEventListener('change', (event) => importBackup(event.target.files[0]));
 els.restoreEmergencyButton?.addEventListener('click', restoreEmergencyBackup);
