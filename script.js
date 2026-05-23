@@ -286,7 +286,7 @@ const translations = {
     'migration.uploadReady': 'Ready to copy local data to the active cloud stable.',
     'migration.uploading': 'Uploading local data to cloud...',
     'migration.confirmUpload': 'Upload current local browser data to the active cloud stable? Local data will stay in this browser.',
-    'migration.schemaNeeded': 'Cloud upload needs the latest database migrations. Run supabase/migrations/add_local_ids.sql, supabase/migrations/horse_care_history.sql, supabase/migrations/race_entry_planner.sql, and supabase/migrations/global_race_programs.sql in Supabase, then try again.',
+    'migration.schemaNeeded': 'Cloud upload needs the latest database migrations. Run add_local_ids.sql, horse_care_history.sql, race_entry_planner.sql, global_race_programs.sql, horse_racing_profile_fields.sql, and central_racing_horses.sql in Supabase, then try again.',
     'migration.uploadSuccess': 'Cloud upload complete: {horses} horses, {tasks} tasks, {hours} work logs, {inventory} feed items, {events} calendar events, {care} care records, {raceOpportunities} race opportunities, {racePlans} race plans.',
     'migration.uploadFailed': 'Cloud upload failed: {error}',
     'saveStatus.idle': 'Saved',
@@ -961,7 +961,7 @@ const translations = {
     'migration.uploadReady': 'Valmis kopioimaan paikalliset tiedot aktiiviseen pilvitalliin.',
     'migration.uploading': 'Ladataan paikallisia tietoja pilveen...',
     'migration.confirmUpload': 'Ladataanko tämän selaimen paikalliset tiedot aktiiviseen pilvitalliin? Paikalliset tiedot säilyvät tässä selaimessa.',
-    'migration.schemaNeeded': 'Pilveen lataus tarvitsee uusimmat tietokantamigraatiot. Suorita supabase/migrations/add_local_ids.sql, supabase/migrations/horse_care_history.sql ja supabase/migrations/race_entry_planner.sql ja supabase/migrations/global_race_programs.sql Supabasessa ja yritä uudelleen.',
+    'migration.schemaNeeded': 'Pilveen lataus tarvitsee uusimmat tietokantamigraatiot. Suorita add_local_ids.sql, horse_care_history.sql, race_entry_planner.sql, global_race_programs.sql, horse_racing_profile_fields.sql ja central_racing_horses.sql Supabasessa ja yritä uudelleen.',
     'migration.uploadSuccess': 'Pilveen lataus valmis: {horses} hevosta, {tasks} tehtävää, {hours} työkirjausta, {inventory} ruokavaraston tuotetta, {events} kalenteritapahtumaa, {care} hoitomerkintää, {raceOpportunities} lähtöä, {racePlans} suunniteltua ilmoittautumista.',
     'migration.uploadFailed': 'Pilveen lataus epäonnistui: {error}',
     'saveStatus.idle': 'Tallennettu',
@@ -1645,7 +1645,7 @@ const translations = {
     'migration.uploadReady': 'Pronto a copiare i dati locali nella scuderia cloud attiva.',
     'migration.uploading': 'Caricamento dati locali nel cloud...',
     'migration.confirmUpload': 'Caricare i dati locali di questo browser nella scuderia cloud attiva? I dati locali resteranno in questo browser.',
-    'migration.schemaNeeded': 'Il caricamento cloud richiede le ultime migrazioni database. Esegui supabase/migrations/add_local_ids.sql, supabase/migrations/horse_care_history.sql, supabase/migrations/race_entry_planner.sql e supabase/migrations/global_race_programs.sql in Supabase, poi riprova.',
+    'migration.schemaNeeded': 'Il caricamento cloud richiede le ultime migrazioni database. Esegui add_local_ids.sql, horse_care_history.sql, race_entry_planner.sql, global_race_programs.sql, horse_racing_profile_fields.sql e central_racing_horses.sql in Supabase, poi riprova.',
     'migration.uploadSuccess': 'Caricamento cloud completato: {horses} cavalli, {tasks} attività, {hours} registri ore, {inventory} scorte di mangime, {events} eventi calendario, {care} record di cura, {raceOpportunities} opportunità gara, {racePlans} iscrizioni pianificate.',
     'migration.uploadFailed': 'Caricamento cloud non riuscito: {error}',
     'saveStatus.idle': 'Salvato',
@@ -2877,6 +2877,27 @@ Object.assign(translations.en, {
   'racePrograms.createPlan': 'Create entry plan',
   'racePrograms.globalSaveFailed': 'Race program save failed: {error}',
   'racePrograms.noProgramSelected': 'Select a race program before saving imported races.',
+  'racingRegistry.title': 'Racing Horse Registry',
+  'racingRegistry.help': 'Super Admin maintains shared racing data for eligibility checks.',
+  'racingRegistry.add': 'Add racing horse',
+  'racingRegistry.edit': 'Edit racing horse',
+  'racingRegistry.search': 'Search racing horses',
+  'racingRegistry.registration': 'Registration number',
+  'racingRegistry.horseName': 'Horse name',
+  'racingRegistry.birthYear': 'Birth year',
+  'racingRegistry.totalEarnings': 'Total earnings',
+  'racingRegistry.last5Earnings': 'Last 5 starts earnings',
+  'racingRegistry.lastResultsUpdate': 'Last results update',
+  'racingRegistry.linkedTitle': 'Linked racing horse',
+  'racingRegistry.linkHorse': 'Link racing horse',
+  'racingRegistry.unlinkHorse': 'Unlink racing horse',
+  'racingRegistry.save': 'Save racing horse',
+  'racingRegistry.saved': 'Racing horse saved.',
+  'racingRegistry.empty': 'No racing horses in the registry yet.',
+  'racingRegistry.resultsPlaceholder': 'Results PDF import will be added later.',
+  'racingRegistry.noLinked': 'No linked racing horse',
+  'racingRegistry.linkedData': 'Linked racing data',
+  'racingRegistry.saveFailed': 'Racing horse save failed: {error}',
   'delete.raceProgram': 'this race program',
   'delete.globalRace': 'this global race'
 });
@@ -3018,6 +3039,27 @@ Object.assign(translations.fi, {
   'racePrograms.createPlan': 'Luo ilmoittautumissuunnitelma',
   'racePrograms.globalSaveFailed': 'Lähtöohjelman tallennus epäonnistui: {error}',
   'racePrograms.noProgramSelected': 'Valitse lähtöohjelma ennen tuotujen lähtöjen tallennusta.',
+  'racingRegistry.title': 'Kilpahevosrekisteri',
+  'racingRegistry.help': 'Super Admin ylläpitää yhteisiä kilpailutietoja sopivuusarvioita varten.',
+  'racingRegistry.add': 'Lisää kilpahevonen',
+  'racingRegistry.edit': 'Muokkaa kilpahevosta',
+  'racingRegistry.search': 'Hae kilpahevosia',
+  'racingRegistry.registration': 'Rekisterinumero',
+  'racingRegistry.horseName': 'Hevosen nimi',
+  'racingRegistry.birthYear': 'Syntymävuosi',
+  'racingRegistry.totalEarnings': 'Kokonaisansiot',
+  'racingRegistry.last5Earnings': 'Ansiot viimeisissä 5 lähdössä',
+  'racingRegistry.lastResultsUpdate': 'Tulosten viimeisin päivitys',
+  'racingRegistry.linkedTitle': 'Linkitetty kilpahevonen',
+  'racingRegistry.linkHorse': 'Linkitä kilpahevonen',
+  'racingRegistry.unlinkHorse': 'Poista kilpahevoslinkki',
+  'racingRegistry.save': 'Tallenna kilpahevonen',
+  'racingRegistry.saved': 'Kilpahevonen tallennettu.',
+  'racingRegistry.empty': 'Rekisterissä ei ole vielä kilpahevosia.',
+  'racingRegistry.resultsPlaceholder': 'Tulosten PDF-tuonti lisätään myöhemmin.',
+  'racingRegistry.noLinked': 'Ei linkitettyä kilpahevosta',
+  'racingRegistry.linkedData': 'Linkitetyt kilpailutiedot',
+  'racingRegistry.saveFailed': 'Kilpahevosen tallennus epäonnistui: {error}',
   'delete.raceProgram': 'tämä lähtöohjelma',
   'delete.globalRace': 'tämä yhteinen lähtö'
 });
@@ -3159,6 +3201,27 @@ Object.assign(translations.it, {
   'racePrograms.createPlan': 'Crea piano iscrizione',
   'racePrograms.globalSaveFailed': 'Salvataggio programma gara non riuscito: {error}',
   'racePrograms.noProgramSelected': 'Seleziona un programma gara prima di salvare le gare importate.',
+  'racingRegistry.title': 'Registro cavalli da corsa',
+  'racingRegistry.help': 'Il Super Admin mantiene dati corsa condivisi per le verifiche di idoneità.',
+  'racingRegistry.add': 'Aggiungi cavallo da corsa',
+  'racingRegistry.edit': 'Modifica cavallo da corsa',
+  'racingRegistry.search': 'Cerca cavalli da corsa',
+  'racingRegistry.registration': 'Numero registrazione',
+  'racingRegistry.horseName': 'Nome cavallo',
+  'racingRegistry.birthYear': 'Anno di nascita',
+  'racingRegistry.totalEarnings': 'Vincite totali',
+  'racingRegistry.last5Earnings': 'Vincite ultime 5 corse',
+  'racingRegistry.lastResultsUpdate': 'Ultimo aggiornamento risultati',
+  'racingRegistry.linkedTitle': 'Cavallo da corsa collegato',
+  'racingRegistry.linkHorse': 'Collega cavallo da corsa',
+  'racingRegistry.unlinkHorse': 'Scollega cavallo da corsa',
+  'racingRegistry.save': 'Salva cavallo da corsa',
+  'racingRegistry.saved': 'Cavallo da corsa salvato.',
+  'racingRegistry.empty': 'Nessun cavallo nel registro.',
+  'racingRegistry.resultsPlaceholder': 'Importazione PDF risultati sarà aggiunta più avanti.',
+  'racingRegistry.noLinked': 'Nessun cavallo da corsa collegato',
+  'racingRegistry.linkedData': 'Dati corsa collegati',
+  'racingRegistry.saveFailed': 'Salvataggio cavallo da corsa non riuscito: {error}',
   'delete.raceProgram': 'questo programma gara',
   'delete.globalRace': 'questa gara globale'
 });
@@ -3236,6 +3299,8 @@ let cloudSaveStatusTimer = null;
 let raceImportPreviewItems = [];
 let racePrograms = [];
 let raceProgramRaces = [];
+let racingHorses = [];
+let racingHorseSearchTerm = '';
 let selectedPublishedRaceDay = { racetrack: '', date: '' };
 let publishedRaceFilter = { possibleOnly: false, search: '' };
 let publishedRaceFilterTimer = null;
@@ -3329,6 +3394,9 @@ const els = {
   raceProgramAdminPanel: document.querySelector('#raceProgramAdminPanel'),
   raceProgramForm: document.querySelector('#raceProgramForm'),
   raceProgramAdminList: document.querySelector('#raceProgramAdminList'),
+  racingHorseForm: document.querySelector('#racingHorseForm'),
+  racingHorseSearch: document.querySelector('#racingHorseSearch'),
+  racingHorseRegistryList: document.querySelector('#racingHorseRegistryList'),
   raceImportProgramLabel: document.querySelector('#raceImportProgramLabel'),
   raceImportProgramSelect: document.querySelector('#raceImportProgramSelect'),
   publishedRaceProgramList: document.querySelector('#publishedRaceProgramList'),
@@ -3517,6 +3585,7 @@ function normalizeHorse(item) {
   return {
     id: item.id || createId(),
     cloudId: item.cloudId || item.cloud_id || '',
+    racingHorseId: item.racingHorseId || item.racing_horse_id || '',
     name: item.name || 'Unnamed horse',
     nickname: item.nickname || item.stableName || '',
     owner: item.owner || '',
@@ -3540,6 +3609,29 @@ function normalizeHorse(item) {
     dewormingNotes: item.dewormingNotes || '',
     vetNotes: item.vetNotes || '',
     notes: item.notes || item.generalNotes || ''
+  };
+}
+
+function normalizeRacingHorse(item) {
+  return {
+    id: item.id || '',
+    registrationNumber: item.registrationNumber || item.registration_number || '',
+    horseName: item.horseName || item.horse_name || item.name || '',
+    birthDate: item.birthDate || item.birth_date || '',
+    birthYear: item.birthYear ?? item.birth_year ?? '',
+    gender: normalizeHorseGender(item.gender || ''),
+    countryOfOrigin: item.countryOfOrigin || item.country_of_origin || '',
+    totalEarnings: item.totalEarnings ?? item.total_earnings ?? 0,
+    last5Earnings: item.last5Earnings ?? item.last_5_earnings ?? '',
+    racingCategory: item.racingCategory || item.racing_category || '',
+    trainerName: item.trainerName || item.trainer_name || '',
+    ownerName: item.ownerName || item.owner_name || '',
+    defaultDriver: item.defaultDriver || item.default_driver || '',
+    notes: item.notes || '',
+    lastResultsUpdate: item.lastResultsUpdate || item.last_results_update || '',
+    createdBy: item.createdBy || item.created_by || '',
+    createdAt: item.createdAt || item.created_at || '',
+    updatedAt: item.updatedAt || item.updated_at || ''
   };
 }
 
@@ -4878,6 +4970,7 @@ function mapCloudHorse(row) {
   const horse = normalizeHorse({
     id: row.local_id || row.id,
     cloudId: row.id,
+    racingHorseId: row.racing_horse_id,
     name: row.name,
     nickname: row.nickname,
     owner: row.owner,
@@ -5046,8 +5139,12 @@ function mapCloudRaceProgramRace(row) {
   return normalizeRaceProgramRace(row);
 }
 
+function mapCloudRacingHorse(row) {
+  return normalizeRacingHorse(row);
+}
+
 async function loadCloudSnapshot(stableId) {
-  const [horseRows, taskRows, workRows, feedRows, eventRows, careRows, raceOpportunityRows, racePlanRows, programRows, programRaceRows] = await Promise.all([
+  const [horseRows, taskRows, workRows, feedRows, eventRows, careRows, raceOpportunityRows, racePlanRows, programRows, programRaceRows, racingHorseRows] = await Promise.all([
     fetchCloudRows('horses', stableId),
     fetchCloudRows('tasks', stableId),
     fetchCloudRows('work_logs', stableId),
@@ -5057,7 +5154,8 @@ async function loadCloudSnapshot(stableId) {
     fetchOptionalCloudRows('race_entry_opportunities', stableId, 'race_date'),
     fetchOptionalCloudRows('race_entry_plans', stableId, 'created_at'),
     fetchOptionalGlobalRows('race_programs', 'created_at'),
-    fetchOptionalGlobalRows('race_program_races', 'race_date')
+    fetchOptionalGlobalRows('race_program_races', 'race_date'),
+    fetchOptionalGlobalRows('racing_horses', 'horse_name')
   ]);
   const horses = horseRows.map(mapCloudHorse);
   const horseIdMap = new Map(horseRows.map((row, index) => [row.id, horses[index].id]));
@@ -5065,6 +5163,7 @@ async function loadCloudSnapshot(stableId) {
   const opportunityIdMap = new Map(raceOpportunityRows.map((row, index) => [row.id, raceEntryOpportunities[index].id]));
   racePrograms = programRows.map(mapCloudRaceProgram);
   raceProgramRaces = programRaceRows.map(mapCloudRaceProgramRace);
+  racingHorses = racingHorseRows.map(mapCloudRacingHorse);
   return {
     horses,
     tasks: taskRows.map((row) => mapCloudTask(row, horseIdMap)),
@@ -5241,6 +5340,7 @@ function horseToCloudRow(stableId, rawHorse) {
   return {
     stable_id: stableId,
     local_id: localId,
+    racing_horse_id: horse.racingHorseId || null,
     name: horse.name,
     nickname: cleanText(horse.nickname),
     owner: cleanText(horse.owner),
@@ -6104,6 +6204,39 @@ function raceProgramRaceToCloudRow(programId, rawRace) {
     notes: cleanText(race.notes),
     imported_local_id: race.id || createRaceImportLocalId(race)
   };
+}
+
+function racingHorseToCloudRow(rawHorse) {
+  const horse = normalizeRacingHorse(rawHorse);
+  return {
+    registration_number: cleanText(horse.registrationNumber) || null,
+    horse_name: cleanText(horse.horseName) || 'Unnamed horse',
+    birth_date: isValidDate(horse.birthDate),
+    birth_year: horse.birthYear === '' ? null : toSafeNumber(horse.birthYear, null),
+    gender: cleanText(horse.gender || 'unknown'),
+    country_of_origin: cleanText(horse.countryOfOrigin),
+    total_earnings: horse.totalEarnings === '' ? 0 : toSafeNumber(horse.totalEarnings, 0),
+    last_5_earnings: horse.last5Earnings === '' ? null : toSafeNumber(horse.last5Earnings, 0),
+    racing_category: cleanText(horse.racingCategory),
+    trainer_name: cleanText(horse.trainerName),
+    owner_name: cleanText(horse.ownerName),
+    default_driver: cleanText(horse.defaultDriver),
+    notes: cleanText(horse.notes),
+    last_results_update: isValidDate(horse.lastResultsUpdate),
+    created_by: getCurrentUser()?.id || null
+  };
+}
+
+async function saveRacingHorseToCloud(rawHorse) {
+  if (!isSuperAdmin()) throw new Error(t('auth.unauthorized'));
+  const row = racingHorseToCloudRow(rawHorse);
+  const data = await executeCloudMutation('racing_horses', 'racing horse save', () => {
+    const request = rawHorse.id
+      ? supabaseClient.from('racing_horses').update(row).eq('id', rawHorse.id)
+      : supabaseClient.from('racing_horses').insert(row);
+    return request.select('*').single();
+  });
+  return mapCloudRacingHorse(data);
 }
 
 async function saveRaceProgramToCloud(rawProgram) {
@@ -7267,6 +7400,13 @@ function renderHorseOptions() {
     els.calendarHorseFilter.value = calendarFilters.horse;
   }
   if (els.calendarScopeFilter) els.calendarScopeFilter.value = calendarFilters.scope;
+  if (els.horseForm?.elements.racingHorseId) {
+    els.horseForm.elements.racingHorseId.innerHTML = [`<option value="">${t('racingRegistry.noLinked')}</option>`]
+      .concat(racingHorses
+        .sort((a, b) => a.horseName.localeCompare(b.horseName))
+        .map((horse) => `<option value="${horse.id}">${escapeHtml([horse.horseName, horse.registrationNumber].filter(Boolean).join(' - '))}</option>`))
+      .join('');
+  }
   renderRaceEntryOptions();
 }
 
@@ -7860,6 +8000,7 @@ function renderHorses() {
   }
   els.horsesList.innerHTML = state.horses.map((rawHorse) => {
     const horse = normalizeHorse(rawHorse);
+    const linkedRacingHorse = getLinkedRacingHorse(horse);
     const headline = [horse.breed, horse.gender, horse.color].filter(Boolean).join(' · ');
     const importantMeta = [
       horse.owner && `${t('horses.owner')}: ${horse.owner}`,
@@ -7905,6 +8046,15 @@ function renderHorses() {
                 ['horses.ownerName', horse.ownerName],
                 ['horses.defaultDriver', horse.defaultDriver],
                 ['horses.racingNotes', horse.racingNotes]
+              ])}
+              ${linkedRacingHorse ? renderHorseDetailGroup('racingRegistry.linkedData', [
+                ['racingRegistry.registration', linkedRacingHorse.registrationNumber],
+                ['racingRegistry.totalEarnings', linkedRacingHorse.totalEarnings],
+                ['racingRegistry.last5Earnings', linkedRacingHorse.last5Earnings],
+                ['horses.racingCategory', linkedRacingHorse.racingCategory],
+                ['racingRegistry.lastResultsUpdate', linkedRacingHorse.lastResultsUpdate]
+              ]) : renderHorseDetailGroup('racingRegistry.linkedTitle', [
+                ['racingRegistry.noLinked', '']
               ])}
               ${renderHorseDetailGroup('horses.care', [
                 ['horses.careNotes', horse.careNotes],
@@ -8377,6 +8527,33 @@ function getHorseAgeAtRace(horse, raceDate) {
   return year - Number(match[0]);
 }
 
+function getLinkedRacingHorse(horse) {
+  if (!cloudWriteMode) return null;
+  const normalized = normalizeHorse(horse);
+  return normalized.racingHorseId ? racingHorses.find((entry) => entry.id === normalized.racingHorseId) || null : null;
+}
+
+function getHorseRacingData(horseInput) {
+  const horse = normalizeHorse(horseInput);
+  const linked = getLinkedRacingHorse(horse);
+  if (!linked) return horse;
+  return normalizeHorse({
+    ...horse,
+    name: horse.name,
+    registration: linked.registrationNumber || horse.registration,
+    birth: linked.birthDate || linked.birthYear || horse.birth,
+    gender: linked.gender || horse.gender,
+    countryOfOrigin: linked.countryOfOrigin || horse.countryOfOrigin,
+    totalEarnings: linked.totalEarnings ?? horse.totalEarnings,
+    last5Earnings: linked.last5Earnings ?? horse.last5Earnings,
+    racingCategory: linked.racingCategory || horse.racingCategory,
+    trainerName: linked.trainerName || horse.trainerName,
+    ownerName: linked.ownerName || horse.ownerName,
+    defaultDriver: linked.defaultDriver || horse.defaultDriver,
+    racingNotes: linked.notes || horse.racingNotes
+  });
+}
+
 function normalizeHorseGender(value) {
   const text = String(value || '').trim().toLowerCase();
   if (!text) return 'unknown';
@@ -8421,7 +8598,7 @@ function getRaceEligibilityRules(race) {
 }
 
 function evaluateHorseRaceEligibility(horseInput, race) {
-  const horse = normalizeHorse(horseInput);
+  const horse = getHorseRacingData(horseInput);
   const rules = getRaceEligibilityRules(race);
   const reasons = [];
   let hasFailure = false;
@@ -8619,6 +8796,41 @@ function renderRaceProgramAdmin() {
   `;
 }
 
+function renderRacingHorseRegistry() {
+  if (!els.racingHorseRegistryList || !els.racingHorseForm) return;
+  const isAdmin = isSuperAdmin() && cloudWriteMode;
+  els.racingHorseForm.hidden = !isAdmin;
+  if (els.racingHorseSearch) els.racingHorseSearch.hidden = !isAdmin;
+  if (!isAdmin) {
+    els.racingHorseRegistryList.innerHTML = '';
+    return;
+  }
+  const search = racingHorseSearchTerm.trim().toLowerCase();
+  const filtered = racingHorses
+    .filter((horse) => !search || [horse.horseName, horse.registrationNumber].filter(Boolean).join(' ').toLowerCase().includes(search))
+    .sort((a, b) => a.horseName.localeCompare(b.horseName));
+  if (!filtered.length) {
+    els.racingHorseRegistryList.innerHTML = `<p class="empty-state">${t('racingRegistry.empty')}</p>`;
+    return;
+  }
+  els.racingHorseRegistryList.innerHTML = filtered.map((horse) => `
+    <article class="item-card premium-stable-card racing-horse-card">
+      <div>
+        <h4>${escapeHtml(horse.horseName)}</h4>
+        <p>${escapeHtml([horse.registrationNumber, horse.countryOfOrigin, horse.racingCategory].filter(Boolean).join(' - '))}</p>
+        <div class="item-meta">
+          <span class="pill">${t('racingRegistry.totalEarnings')}: ${escapeHtml(horse.totalEarnings ?? 0)}</span>
+          <span class="pill">${t('racingRegistry.last5Earnings')}: ${escapeHtml(horse.last5Earnings || '-')}</span>
+          <span class="pill">${t('racingRegistry.lastResultsUpdate')}: ${escapeHtml(horse.lastResultsUpdate || '-')}</span>
+        </div>
+      </div>
+      <div class="item-actions">
+        <button class="button ghost" type="button" data-action="edit-racing-horse" data-id="${horse.id}">${t('common.edit')}</button>
+      </div>
+    </article>
+  `).join('');
+}
+
 function renderPublishedRacePrograms() {
   if (!els.publishedRaceProgramList) return;
   if (els.raceProgramCloudNotice) els.raceProgramCloudNotice.hidden = cloudWriteMode;
@@ -8729,7 +8941,7 @@ function renderGlobalRaceCard(race, program) {
     ...manualHorses.filter((horse) => !possibleHorses.some((entry) => entry.id === horse.id)),
     ...state.horses.filter((horse) => !possibleHorses.some((entry) => entry.id === horse.id) && !manualHorses.some((entry) => entry.id === horse.id))
   ];
-  const firstHorse = normalizeHorse(horseOrder[0] || {});
+  const firstHorse = getHorseRacingData(horseOrder[0] || {});
   const horseOptions = horseOrder.map((horse) => `<option value="${horse.id}">${escapeHtml(horse.name)}</option>`).join('');
   const details = [
     race.raceClass && `${t('raceEntries.raceClass')}: ${race.raceClass}`,
@@ -8818,6 +9030,7 @@ function renderRaceEntries() {
   if (els.raceEntriesStableBadge) els.raceEntriesStableBadge.textContent = activeStable.name || t('cloudRead.noStable');
   if (els.raceEntriesModeBadge) els.raceEntriesModeBadge.textContent = cloudWriteMode ? t('calendar.cloudMode') : t('calendar.localMode');
   renderRaceProgramAdmin();
+  renderRacingHorseRegistry();
   renderPublishedRacePrograms();
   renderRaceImportPreview();
   if (!state.raceEntryOpportunities.length) {
@@ -8954,6 +9167,7 @@ function handleHorseSubmit(event) {
   const form = event.currentTarget;
   const horse = {
     id: form.elements.id.value,
+    racingHorseId: form.elements.racingHorseId?.value || '',
     name: form.elements.name.value.trim(),
     nickname: form.elements.nickname.value.trim(),
     owner: form.elements.owner.value.trim(),
@@ -9256,11 +9470,46 @@ async function handleRaceProgramSubmit(event) {
   }
 }
 
+async function handleRacingHorseSubmit(event) {
+  event.preventDefault();
+  if (!isSuperAdmin()) return;
+  const form = event.currentTarget;
+  const racingHorse = {
+    id: form.elements.id.value,
+    registrationNumber: form.elements.registrationNumber.value.trim(),
+    horseName: form.elements.horseName.value.trim(),
+    birthDate: form.elements.birthDate.value,
+    birthYear: form.elements.birthYear.value,
+    gender: form.elements.gender.value,
+    countryOfOrigin: form.elements.countryOfOrigin.value.trim(),
+    totalEarnings: form.elements.totalEarnings.value,
+    last5Earnings: form.elements.last5Earnings.value,
+    racingCategory: form.elements.racingCategory.value.trim(),
+    trainerName: form.elements.trainerName.value.trim(),
+    ownerName: form.elements.ownerName.value.trim(),
+    defaultDriver: form.elements.defaultDriver.value.trim(),
+    notes: form.elements.notes.value.trim(),
+    lastResultsUpdate: form.elements.lastResultsUpdate.value
+  };
+  try {
+    const saved = await saveRacingHorseToCloud(racingHorse);
+    const existingIndex = racingHorses.findIndex((entry) => entry.id === saved.id);
+    if (existingIndex >= 0) racingHorses[existingIndex] = saved;
+    else racingHorses.push(saved);
+    resetForm(form);
+    render();
+    showMessage(t('racingRegistry.saved'));
+  } catch (error) {
+    console.error('[EquiTrack racing registry] Save failed', error);
+    showMessage(t('racingRegistry.saveFailed', { error: getCloudErrorMessage(error) }));
+  }
+}
+
 async function createGlobalRacePlan(raceId, card) {
   if (!canCreateRacePlans()) return;
   const horseId = card.querySelector('[data-plan-field="horseId"]')?.value || '';
   if (!horseId) return;
-  const selectedHorse = normalizeHorse(state.horses.find((horse) => horse.id === horseId) || {});
+  const selectedHorse = getHorseRacingData(state.horses.find((horse) => horse.id === horseId) || {});
   const plan = normalizeRacePlan({
     id: createId(),
     opportunityId: '',
@@ -9303,7 +9552,7 @@ function selectRaceProgramForImport(programId, openPicker = true) {
 function prefillGlobalRacePlanDefaults(container) {
   if (!container) return;
   const horseId = container.querySelector('[data-plan-field="horseId"]')?.value || '';
-  const horse = normalizeHorse(state.horses.find((entry) => entry.id === horseId) || {});
+  const horse = getHorseRacingData(state.horses.find((entry) => entry.id === horseId) || {});
   const driverInput = container.querySelector('[data-plan-field="driver"]');
   const trainerInput = container.querySelector('[data-plan-field="trainer"]');
   if (driverInput && !driverInput.value && horse.defaultDriver) driverInput.value = horse.defaultDriver;
@@ -9372,6 +9621,7 @@ function handleListClick(event) {
     };
     renderPublishedRacePrograms();
   }
+  if (action === 'edit-racing-horse') fillRacingHorseForm(id);
   if (action === 'edit-race-program') fillRaceProgramForm(id);
   if (action === 'select-race-program-import') selectRaceProgramForImport(id);
   if (action === 'publish-race-program') changeRaceProgramStatus(id, 'published');
@@ -9525,6 +9775,7 @@ function fillHorseForm(id) {
   if (!found) return;
   const horse = normalizeHorse(found);
   els.horseForm.elements.id.value = horse.id;
+  if (els.horseForm.elements.racingHorseId) els.horseForm.elements.racingHorseId.value = horse.racingHorseId;
   els.horseForm.elements.name.value = horse.name;
   els.horseForm.elements.nickname.value = horse.nickname;
   els.horseForm.elements.owner.value = horse.owner;
@@ -9697,6 +9948,29 @@ function fillRaceProgramForm(id) {
   els.raceProgramForm.elements.programMonth.value = program.programMonth;
   els.raceProgramForm.elements.status.value = program.status;
   els.raceProgramForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  showMessage(t('message.editing'));
+}
+
+function fillRacingHorseForm(id) {
+  const horse = racingHorses.find((entry) => entry.id === id);
+  if (!horse || !els.racingHorseForm) return;
+  const form = els.racingHorseForm;
+  form.elements.id.value = horse.id;
+  form.elements.registrationNumber.value = horse.registrationNumber;
+  form.elements.horseName.value = horse.horseName;
+  form.elements.birthDate.value = horse.birthDate;
+  form.elements.birthYear.value = horse.birthYear;
+  form.elements.gender.value = horse.gender;
+  form.elements.countryOfOrigin.value = horse.countryOfOrigin;
+  form.elements.totalEarnings.value = horse.totalEarnings;
+  form.elements.last5Earnings.value = horse.last5Earnings;
+  form.elements.racingCategory.value = horse.racingCategory;
+  form.elements.trainerName.value = horse.trainerName;
+  form.elements.ownerName.value = horse.ownerName;
+  form.elements.defaultDriver.value = horse.defaultDriver;
+  form.elements.notes.value = horse.notes;
+  form.elements.lastResultsUpdate.value = horse.lastResultsUpdate;
+  form.scrollIntoView({ behavior: 'smooth', block: 'center' });
   showMessage(t('message.editing'));
 }
 
@@ -10385,6 +10659,11 @@ els.eventForm.addEventListener('submit', handleEventSubmit);
 els.raceOpportunityForm?.addEventListener('submit', handleRaceOpportunitySubmit);
 els.racePlanForm?.addEventListener('submit', handleRacePlanSubmit);
 els.raceProgramForm?.addEventListener('submit', handleRaceProgramSubmit);
+els.racingHorseForm?.addEventListener('submit', handleRacingHorseSubmit);
+els.racingHorseSearch?.addEventListener('input', (event) => {
+  racingHorseSearchTerm = event.target.value || '';
+  renderRacingHorseRegistry();
+});
 els.raceImportInput?.addEventListener('change', handleRaceImportFile);
 els.raceProgramAdminList?.addEventListener('change', (event) => {
   const input = event.target.closest('input[data-program-import-id]');

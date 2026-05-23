@@ -413,6 +413,10 @@
                   <label><span data-i18n="horses.color">Color</span><input name="color" placeholder="Bay"></label>
                 </fieldset>
                 <fieldset class="form-group">
+                  <legend data-i18n="racingRegistry.linkedTitle">Linked racing horse</legend>
+                  <label class="full"><span data-i18n="racingRegistry.linkHorse">Link racing horse</span><select name="racingHorseId"></select></label>
+                </fieldset>
+                <fieldset class="form-group">
                   <legend data-i18n="horses.racingProfile">Racing profile</legend>
                   <label><span data-i18n="horses.registration">Registration number</span><input name="registration" placeholder="FI-12345"></label>
                   <label><span data-i18n="horses.birth">Birth date</span><input name="birth" placeholder="2018 or 2018-05-12"></label>
@@ -676,6 +680,38 @@
             <button class="button primary" type="submit" data-i18n="racePrograms.saveProgram">Save race program</button>
           </form>
           <div id="raceProgramAdminList" class="item-list race-program-list"></div>
+          <div class="module-header racing-registry-header">
+            <div>
+              <h3 data-i18n="racingRegistry.title">Racing Horse Registry</h3>
+              <p data-i18n="racingRegistry.help">Super Admin maintains shared racing data for eligibility checks.</p>
+            </div>
+          </div>
+          <form id="racingHorseForm" class="entry-form">
+            <input type="hidden" name="id">
+            <label><span data-i18n="racingRegistry.registration">Registration number</span><input name="registrationNumber"></label>
+            <label><span data-i18n="racingRegistry.horseName">Horse name</span><input name="horseName" required></label>
+            <label><span data-i18n="horses.birth">Birth date</span><input name="birthDate" type="date"></label>
+            <label><span data-i18n="racingRegistry.birthYear">Birth year</span><input name="birthYear" type="number" min="1900" max="2100"></label>
+            <label><span data-i18n="horses.gender">Gender</span><select name="gender">
+              <option value="unknown" data-i18n="horses.genderUnknown">Unknown</option>
+              <option value="male" data-i18n="horses.genderMale">Male</option>
+              <option value="female" data-i18n="horses.genderFemale">Female</option>
+              <option value="gelding" data-i18n="horses.genderGelding">Gelding</option>
+            </select></label>
+            <label><span data-i18n="horses.countryOfOrigin">Country of origin</span><input name="countryOfOrigin"></label>
+            <label><span data-i18n="racingRegistry.totalEarnings">Total earnings</span><input name="totalEarnings" type="number" min="0" step="0.01"></label>
+            <label><span data-i18n="racingRegistry.last5Earnings">Last 5 starts earnings</span><input name="last5Earnings" type="number" min="0" step="0.01"></label>
+            <label><span data-i18n="horses.racingCategory">Racing category</span><input name="racingCategory" placeholder="F"></label>
+            <label><span data-i18n="horses.trainerName">Trainer</span><input name="trainerName"></label>
+            <label><span data-i18n="horses.ownerName">Owner</span><input name="ownerName"></label>
+            <label><span data-i18n="horses.defaultDriver">Default driver</span><input name="defaultDriver"></label>
+            <label><span data-i18n="racingRegistry.lastResultsUpdate">Last results update</span><input name="lastResultsUpdate" type="date"></label>
+            <label class="full"><span data-i18n="common.notesSimple">Notes</span><textarea name="notes" rows="3"></textarea></label>
+            <button class="button primary" type="submit" data-i18n="racingRegistry.save">Save racing horse</button>
+          </form>
+          <p class="update-note" data-i18n="racingRegistry.resultsPlaceholder">Results PDF import will be added later.</p>
+          <label class="full racing-registry-search"><span data-i18n="racingRegistry.search">Search racing horses</span><input id="racingHorseSearch" placeholder="Name or registration"></label>
+          <div id="racingHorseRegistryList" class="item-list race-program-list"></div>
         </section>
 
         <section class="race-entry-list-section">

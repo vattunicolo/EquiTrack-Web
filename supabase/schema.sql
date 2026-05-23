@@ -34,9 +34,31 @@ create table if not exists public.stable_members (
 );
 
 -- Horses supports Horse Profile PRO fields.
+create table if not exists public.racing_horses (
+  id uuid primary key default gen_random_uuid(),
+  registration_number text unique,
+  horse_name text not null,
+  birth_date date,
+  birth_year integer,
+  gender text,
+  country_of_origin text,
+  total_earnings numeric default 0,
+  last_5_earnings numeric,
+  racing_category text,
+  trainer_name text,
+  owner_name text,
+  default_driver text,
+  notes text,
+  last_results_update date,
+  created_by uuid references auth.users(id),
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
 create table if not exists public.horses (
   id uuid primary key default gen_random_uuid(),
   stable_id uuid not null references public.stables(id) on delete cascade,
+  racing_horse_id uuid references public.racing_horses(id),
   name text not null,
   nickname text,
   owner text,
@@ -165,6 +187,11 @@ for each row execute function public.set_updated_at();
 drop trigger if exists set_horses_updated_at on public.horses;
 create trigger set_horses_updated_at
 before update on public.horses
+for each row execute function public.set_updated_at();
+
+drop trigger if exists set_racing_horses_updated_at on public.racing_horses;
+create trigger set_racing_horses_updated_at
+before update on public.racing_horses
 for each row execute function public.set_updated_at();
 
 drop trigger if exists set_tasks_updated_at on public.tasks;
