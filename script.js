@@ -2964,6 +2964,21 @@ Object.assign(translations.en, {
   'racingRegistry.startDeleted': 'Start deleted.',
   'racingRegistry.startSaveFailed': 'Start history save failed: {error}',
   'racingRegistry.noStarts': 'No starts recorded yet.',
+  'raceControl.title': 'Race Control',
+  'raceControl.tools': 'Super Admin race tools',
+  'raceControl.help': 'Manage central racing horses, results, and published race programs for every stable.',
+  'raceControl.addRacingHorse': 'Add racing horse',
+  'raceControl.importResults': 'Import results PDF',
+  'raceControl.addProgram': 'Add race program',
+  'raceControl.importProgram': 'Import race program PDF',
+  'raceControl.managePublished': 'Manage published races',
+  'raceControl.previewStable': 'Preview stable user view',
+  'raceControl.hideStablePreview': 'Hide stable user preview',
+  'raceControl.registryCount': 'Racing horses in registry',
+  'raceControl.draftPrograms': 'Draft race programs',
+  'raceControl.publishedPrograms': 'Published race programs',
+  'raceControl.importedStarts': 'Imported result rows / starts',
+  'raceControl.upcomingRaceDays': 'Upcoming race days',
   'delete.raceProgram': 'this race program',
   'delete.globalRace': 'this global race'
 });
@@ -3186,6 +3201,21 @@ Object.assign(translations.fi, {
   'racingRegistry.startDeleted': 'Lähtö poistettu.',
   'racingRegistry.startSaveFailed': 'Lähtöhistorian tallennus epäonnistui: {error}',
   'racingRegistry.noStarts': 'Lähtöjä ei ole vielä tallennettu.',
+  'raceControl.title': 'Ravien hallinta',
+  'raceControl.tools': 'Super Adminin ravityökalut',
+  'raceControl.help': 'Hallinnoi keskitettyjä kilpahevosia, tuloksia ja julkaistuja raviohjelmia kaikille talleille.',
+  'raceControl.addRacingHorse': 'Lisää kilpahevonen',
+  'raceControl.importResults': 'Lisää tulokset',
+  'raceControl.addProgram': 'Lisää raviohjelma',
+  'raceControl.importProgram': 'Tuo raviohjelman PDF',
+  'raceControl.managePublished': 'Hallinnoi julkaistuja lähtöjä',
+  'raceControl.previewStable': 'Esikatsele tallikäyttäjän näkymää',
+  'raceControl.hideStablePreview': 'Piilota tallikäyttäjän esikatselu',
+  'raceControl.registryCount': 'Kilpahevosia rekisterissä',
+  'raceControl.draftPrograms': 'Luonnosraviohjelmat',
+  'raceControl.publishedPrograms': 'Julkaistut raviohjelmat',
+  'raceControl.importedStarts': 'Tuodut tulosrivit / lähdöt',
+  'raceControl.upcomingRaceDays': 'Tulevat lähtöpäivät',
   'delete.raceProgram': 'tämä lähtöohjelma',
   'delete.globalRace': 'tämä yhteinen lähtö'
 });
@@ -3408,6 +3438,21 @@ Object.assign(translations.it, {
   'racingRegistry.startDeleted': 'Partenza eliminata.',
   'racingRegistry.startSaveFailed': 'Salvataggio storico partenze non riuscito: {error}',
   'racingRegistry.noStarts': 'Nessuna partenza registrata.',
+  'raceControl.title': 'Controllo corse',
+  'raceControl.tools': 'Strumenti corse Super Admin',
+  'raceControl.help': 'Gestisci cavalli da corsa centrali, risultati e programmi pubblicati per tutte le scuderie.',
+  'raceControl.addRacingHorse': 'Aggiungi cavallo da corsa',
+  'raceControl.importResults': 'Importa risultati',
+  'raceControl.addProgram': 'Aggiungi programma gare',
+  'raceControl.importProgram': 'Importa PDF programma gare',
+  'raceControl.managePublished': 'Gestisci corse pubblicate',
+  'raceControl.previewStable': 'Anteprima vista scuderia',
+  'raceControl.hideStablePreview': 'Nascondi anteprima scuderia',
+  'raceControl.registryCount': 'Cavalli nel registro',
+  'raceControl.draftPrograms': 'Programmi gare bozza',
+  'raceControl.publishedPrograms': 'Programmi gare pubblicati',
+  'raceControl.importedStarts': 'Righe risultati / partenze importate',
+  'raceControl.upcomingRaceDays': 'Giornate gara future',
   'delete.raceProgram': 'questo programma gara',
   'delete.globalRace': 'questa gara globale'
 });
@@ -3489,6 +3534,7 @@ let racingHorses = [];
 let racingHorseStarts = [];
 let racingHorseSearchTerm = '';
 let resultsImportPreviewItems = [];
+let raceStablePreviewForAdmin = false;
 let selectedPublishedRaceDay = { racetrack: '', date: '' };
 let publishedRaceFilter = { possibleOnly: false, search: '' };
 let publishedRaceFilterTimer = null;
@@ -3580,6 +3626,9 @@ const els = {
   raceImportSaveButton: document.querySelector('#raceImportSaveButton'),
   raceProgramCloudNotice: document.querySelector('#raceProgramCloudNotice'),
   raceProgramAdminPanel: document.querySelector('#raceProgramAdminPanel'),
+  raceControlDashboard: document.querySelector('#raceControlDashboard'),
+  raceControlSummary: document.querySelector('#raceControlSummary'),
+  raceStablePreviewToggle: document.querySelector('#raceStablePreviewToggle'),
   raceProgramForm: document.querySelector('#raceProgramForm'),
   raceProgramAdminList: document.querySelector('#raceProgramAdminList'),
   racingHorseForm: document.querySelector('#racingHorseForm'),
@@ -3594,6 +3643,10 @@ const els = {
   raceImportProgramLabel: document.querySelector('#raceImportProgramLabel'),
   raceImportProgramSelect: document.querySelector('#raceImportProgramSelect'),
   publishedRaceProgramList: document.querySelector('#publishedRaceProgramList'),
+  raceStablePublishedSection: document.querySelector('#raceStablePublishedSection'),
+  raceStableManualSection: document.querySelector('#raceStableManualSection'),
+  raceImportPanel: document.querySelector('#raceImportPanel'),
+  raceStableOpportunitySection: document.querySelector('#raceStableOpportunitySection'),
   horseForm: document.querySelector('#horseForm'),
   careForm: document.querySelector('#careForm'),
   careHistoryList: document.querySelector('#careHistoryList'),
@@ -9208,6 +9261,39 @@ function getEligibilityHorseBuckets(race) {
   return { possible, manual, notEligible };
 }
 
+function getUpcomingRaceDayCount() {
+  const todayString = today();
+  return new Set(raceProgramRaces
+    .filter((race) => race.raceDate >= todayString)
+    .map((race) => race.raceDate)
+    .filter(Boolean)).size;
+}
+
+function renderRaceControlDashboard() {
+  const isAdmin = isSuperAdmin();
+  if (els.raceControlDashboard) els.raceControlDashboard.hidden = !isAdmin;
+  if (!isAdmin) return;
+  if (els.raceStablePreviewToggle) {
+    els.raceStablePreviewToggle.textContent = raceStablePreviewForAdmin
+      ? t('raceControl.hideStablePreview')
+      : t('raceControl.previewStable');
+  }
+  if (!els.raceControlSummary) return;
+  const cards = [
+    ['raceControl.registryCount', racingHorses.length],
+    ['raceControl.draftPrograms', racePrograms.filter((program) => program.status === 'draft').length],
+    ['raceControl.publishedPrograms', racePrograms.filter((program) => program.status === 'published').length],
+    ['raceControl.importedStarts', racingHorseStarts.length],
+    ['raceControl.upcomingRaceDays', getUpcomingRaceDayCount()]
+  ];
+  els.raceControlSummary.innerHTML = cards.map(([labelKey, value]) => `
+    <article class="summary-card premium-icon-card">
+      <span>${escapeHtml(value)}</span>
+      <strong>${t(labelKey)}</strong>
+    </article>
+  `).join('');
+}
+
 function renderRaceProgramOptions() {
   if (!els.raceImportProgramSelect) return;
   const currentValue = els.raceImportProgramSelect.value;
@@ -9721,13 +9807,24 @@ function renderRaceImportPreview() {
 function renderRaceEntries() {
   if (!els.raceOpportunityList) return;
   const activeStable = getActiveStable();
+  const adminMode = isSuperAdmin();
+  const showStableView = !adminMode || raceStablePreviewForAdmin;
   if (els.raceEntriesStableBadge) els.raceEntriesStableBadge.textContent = activeStable.name || t('cloudRead.noStable');
   if (els.raceEntriesModeBadge) els.raceEntriesModeBadge.textContent = cloudWriteMode ? t('calendar.cloudMode') : t('calendar.localMode');
+  renderRaceControlDashboard();
   renderRaceProgramAdmin();
   renderRacingHorseRegistry();
   renderResultsImportPreview();
+  if (els.raceStablePublishedSection) els.raceStablePublishedSection.hidden = !showStableView;
+  if (els.raceStableManualSection) els.raceStableManualSection.hidden = adminMode;
+  if (els.raceStableOpportunitySection) els.raceStableOpportunitySection.hidden = adminMode;
+  if (els.raceImportPanel) els.raceImportPanel.hidden = adminMode && !raceStablePreviewForAdmin && !raceImportPreviewItems.length;
   renderPublishedRacePrograms();
   renderRaceImportPreview();
+  if (!showStableView) {
+    els.raceOpportunityList.innerHTML = '';
+    return;
+  }
   if (!state.raceEntryOpportunities.length) {
     els.raceOpportunityList.innerHTML = `<p class="empty-state">${t('raceEntries.empty')}</p>`;
     return;
@@ -10508,6 +10605,37 @@ function handleHomeShortcut(event) {
   const target = shortcutMap[button.dataset.homeShortcut];
   if (!target) return;
   navigateToView(target.view, target);
+}
+
+function scrollAdminRaceTarget(selector) {
+  const target = document.querySelector(selector);
+  if (!target) return;
+  target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+  target.focus({ preventScroll: true });
+}
+
+function handleRaceAdminAction(event) {
+  const button = event.target.closest('[data-race-admin-action]');
+  if (!button || !isSuperAdmin()) return;
+  const action = button.dataset.raceAdminAction;
+  if (action === 'add-racing-horse') scrollAdminRaceTarget('#racingHorseForm');
+  if (action === 'import-results') scrollAdminRaceTarget('.race-results-import-panel');
+  if (action === 'add-race-program') scrollAdminRaceTarget('#raceProgramForm');
+  if (action === 'import-program') {
+    if (els.raceImportPanel) els.raceImportPanel.hidden = false;
+    const draft = racePrograms.find((program) => program.status === 'draft') || racePrograms.find((program) => program.status !== 'archived');
+    if (draft && els.raceImportProgramSelect) selectRaceProgramForImport(draft.id, false);
+    scrollAdminRaceTarget('#raceImportPanel');
+  }
+  if (action === 'manage-races') scrollAdminRaceTarget('#raceProgramAdminList');
+}
+
+function toggleRaceStablePreview() {
+  if (!isSuperAdmin()) return;
+  raceStablePreviewForAdmin = !raceStablePreviewForAdmin;
+  renderRaceEntries();
+  if (raceStablePreviewForAdmin) scrollAdminRaceTarget('#raceStablePublishedSection');
 }
 
 function handleAlertAction(event) {
@@ -11646,6 +11774,8 @@ document.querySelectorAll('.item-list').forEach((list) => list.addEventListener(
 els.calendarSelectedDayAgenda?.addEventListener('click', handleListClick);
 document.querySelector('#stableView').addEventListener('click', handleQuickAction);
 els.homeOverviewSection?.addEventListener('click', handleHomeShortcut);
+els.raceControlDashboard?.addEventListener('click', handleRaceAdminAction);
+els.raceStablePreviewToggle?.addEventListener('click', toggleRaceStablePreview);
 els.alertsList?.addEventListener('click', handleAlertAction);
 els.footerSupportLink?.addEventListener('click', handleFooterSupportLink);
 els.horseForm.addEventListener('submit', handleHorseSubmit);

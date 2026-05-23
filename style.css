@@ -1277,6 +1277,28 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
   align-items: start;
   margin: 24px 0 18px;
 }
+.race-control-dashboard {
+  margin-bottom: 18px;
+  border: 1px solid rgba(78, 205, 196, 0.28);
+  background: linear-gradient(180deg, #ffffff 0%, #f7fcfc 100%);
+}
+.race-control-summary {
+  margin: 18px 0;
+}
+.race-control-actions {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+.race-control-actions button {
+  min-height: 104px;
+  cursor: pointer;
+  text-align: left;
+}
+.race-control-actions button:focus-visible {
+  outline: 3px solid rgba(78, 205, 196, 0.42);
+  outline-offset: 3px;
+}
 .race-entry-panel,
 .race-import-panel,
 .race-entry-list-section {
@@ -2243,7 +2265,7 @@ textarea { resize: vertical; }
   .home-overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .home-process-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .calendar-dashboard, .race-entry-layout { grid-template-columns: minmax(0, 1fr); }
+  .calendar-dashboard, .race-entry-layout, .race-control-actions { grid-template-columns: minmax(0, 1fr); }
   .race-day-browser,
   .race-day-filters { grid-template-columns: minmax(0, 1fr); }
   .race-program-admin-card { grid-template-columns: minmax(0, 1fr); }

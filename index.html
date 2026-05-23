@@ -658,6 +658,40 @@
           <p class="status-text" data-i18n="racePrograms.cloudRequired">Published race programs require cloud connection.</p>
         </section>
 
+        <section id="raceControlDashboard" class="panel race-control-dashboard" hidden>
+          <div class="module-header">
+            <div>
+              <p class="eyebrow" data-i18n="raceControl.tools">Super Admin race tools</p>
+              <h3 data-i18n="raceControl.title">Race Control</h3>
+              <p data-i18n="raceControl.help">Manage central racing horses, results, and published race programs for every stable.</p>
+            </div>
+            <button id="raceStablePreviewToggle" class="button ghost" type="button" data-i18n="raceControl.previewStable">Preview stable user view</button>
+          </div>
+          <div id="raceControlSummary" class="summary-grid race-control-summary"></div>
+          <div class="quick-actions race-control-actions">
+            <button class="premium-icon-card icon-horse" type="button" data-race-admin-action="add-racing-horse">
+              <span class="premium-icon" aria-hidden="true"></span>
+              <strong data-i18n="raceControl.addRacingHorse">Add racing horse</strong>
+            </button>
+            <button class="premium-icon-card icon-cloud" type="button" data-race-admin-action="import-results">
+              <span class="premium-icon" aria-hidden="true"></span>
+              <strong data-i18n="raceControl.importResults">Import results PDF</strong>
+            </button>
+            <button class="premium-icon-card icon-calendar" type="button" data-race-admin-action="add-race-program">
+              <span class="premium-icon" aria-hidden="true"></span>
+              <strong data-i18n="raceControl.addProgram">Add race program</strong>
+            </button>
+            <button class="premium-icon-card icon-upload" type="button" data-race-admin-action="import-program">
+              <span class="premium-icon" aria-hidden="true"></span>
+              <strong data-i18n="raceControl.importProgram">Import race program PDF</strong>
+            </button>
+            <button class="premium-icon-card icon-chart" type="button" data-race-admin-action="manage-races">
+              <span class="premium-icon" aria-hidden="true"></span>
+              <strong data-i18n="raceControl.managePublished">Manage published races</strong>
+            </button>
+          </div>
+        </section>
+
         <section id="raceProgramAdminPanel" class="panel race-import-panel" hidden>
           <div class="module-header">
             <div>
@@ -789,7 +823,7 @@
           <div id="racingHorseRegistryList" class="item-list race-program-list"></div>
         </section>
 
-        <section class="race-entry-list-section">
+        <section id="raceStablePublishedSection" class="race-entry-list-section">
           <div class="module-header">
             <div>
               <h3 data-i18n="racePrograms.publishedTitle">Published race programs</h3>
@@ -800,7 +834,7 @@
           <div id="publishedRaceProgramList" class="item-list race-entry-list"></div>
         </section>
 
-        <section class="race-entry-layout" aria-label="Race Entry Planner">
+        <section id="raceStableManualSection" class="race-entry-layout" aria-label="Race Entry Planner">
           <article class="panel race-entry-panel">
             <div class="module-header">
               <div>
@@ -851,7 +885,7 @@
           </article>
         </section>
 
-        <section class="panel race-import-panel">
+        <section id="raceImportPanel" class="panel race-import-panel">
           <div class="module-header">
             <div>
               <h3 data-i18n="raceEntries.importTitle">Import race file</h3>
@@ -865,7 +899,7 @@
           <button id="raceImportSaveButton" class="button primary" type="button" hidden data-i18n="raceEntries.saveImported">Save selected races</button>
         </section>
 
-        <section class="race-entry-list-section">
+        <section id="raceStableOpportunitySection" class="race-entry-list-section">
           <div class="module-header">
             <div>
               <h3 data-i18n="raceEntries.opportunitiesTitle">Race opportunities</h3>
