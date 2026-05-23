@@ -44,6 +44,36 @@ create table if not exists public.racing_horses (
   country_of_origin text,
   total_earnings numeric default 0,
   last_5_earnings numeric,
+  career_starts integer,
+  career_wins integer,
+  career_places integer,
+  career_show integer,
+  career_earnings numeric,
+  twelve_month_starts integer,
+  twelve_month_wins integer,
+  twelve_month_places integer,
+  twelve_month_show integer,
+  twelve_month_earnings numeric,
+  year_starts integer,
+  year_wins integer,
+  year_places integer,
+  year_show integer,
+  year_earnings numeric,
+  two_month_starts integer,
+  two_month_wins integer,
+  two_month_places integer,
+  two_month_show integer,
+  two_month_earnings numeric,
+  career_record text,
+  twelve_month_record text,
+  year_record text,
+  short_distance_record text,
+  long_distance_record text,
+  category_mc text,
+  category_ms text,
+  potential_mc text,
+  potential_ms text,
+  reclaim_allowed boolean,
   racing_category text,
   trainer_name text,
   owner_name text,
@@ -51,6 +81,28 @@ create table if not exists public.racing_horses (
   notes text,
   last_results_update date,
   created_by uuid references auth.users(id),
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- Racing horse starts store manually maintained race/result history for central racing horses.
+create table if not exists public.racing_horse_starts (
+  id uuid primary key default gen_random_uuid(),
+  racing_horse_id uuid not null references public.racing_horses(id) on delete cascade,
+  race_date date,
+  racetrack_code text,
+  racetrack_name text,
+  race_code text,
+  driver_name text,
+  placement text,
+  kilometer_time text,
+  distance integer,
+  starters_info text,
+  shoeing text,
+  net_prize numeric,
+  gross_prize numeric,
+  race_notes text,
+  video_url text,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
@@ -162,6 +214,9 @@ create index if not exists tasks_stable_id_idx on public.tasks(stable_id);
 create index if not exists work_logs_stable_id_idx on public.work_logs(stable_id);
 create index if not exists feed_items_stable_id_idx on public.feed_items(stable_id);
 create index if not exists calendar_events_stable_id_idx on public.calendar_events(stable_id);
+create index if not exists racing_horse_starts_horse_id_idx on public.racing_horse_starts(racing_horse_id);
+create index if not exists racing_horse_starts_race_date_idx on public.racing_horse_starts(race_date);
+create index if not exists racing_horse_starts_racetrack_code_idx on public.racing_horse_starts(racetrack_code);
 
 -- updated_at trigger helper.
 create or replace function public.set_updated_at()
@@ -192,6 +247,11 @@ for each row execute function public.set_updated_at();
 drop trigger if exists set_racing_horses_updated_at on public.racing_horses;
 create trigger set_racing_horses_updated_at
 before update on public.racing_horses
+for each row execute function public.set_updated_at();
+
+drop trigger if exists set_racing_horse_starts_updated_at on public.racing_horse_starts;
+create trigger set_racing_horse_starts_updated_at
+before update on public.racing_horse_starts
 for each row execute function public.set_updated_at();
 
 drop trigger if exists set_tasks_updated_at on public.tasks;
@@ -239,6 +299,8 @@ alter table public.tasks enable row level security;
 alter table public.work_logs enable row level security;
 alter table public.feed_items enable row level security;
 alter table public.calendar_events enable row level security;
+alter table public.racing_horses enable row level security;
+alter table public.racing_horse_starts enable row level security;
 
 -- Profiles: users can read and update only their own profile.
 drop policy if exists "profiles_select_own" on public.profiles;

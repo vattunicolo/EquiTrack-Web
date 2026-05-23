@@ -286,7 +286,7 @@ const translations = {
     'migration.uploadReady': 'Ready to copy local data to the active cloud stable.',
     'migration.uploading': 'Uploading local data to cloud...',
     'migration.confirmUpload': 'Upload current local browser data to the active cloud stable? Local data will stay in this browser.',
-    'migration.schemaNeeded': 'Cloud upload needs the latest database migrations. Run add_local_ids.sql, horse_care_history.sql, race_entry_planner.sql, global_race_programs.sql, horse_racing_profile_fields.sql, and central_racing_horses.sql in Supabase, then try again.',
+    'migration.schemaNeeded': 'Cloud upload needs the latest database migrations. Run add_local_ids.sql, horse_care_history.sql, race_entry_planner.sql, global_race_programs.sql, horse_racing_profile_fields.sql, central_racing_horses.sql, and racing_horse_performance_history.sql in Supabase, then try again.',
     'migration.uploadSuccess': 'Cloud upload complete: {horses} horses, {tasks} tasks, {hours} work logs, {inventory} feed items, {events} calendar events, {care} care records, {raceOpportunities} race opportunities, {racePlans} race plans.',
     'migration.uploadFailed': 'Cloud upload failed: {error}',
     'saveStatus.idle': 'Saved',
@@ -729,6 +729,8 @@ const translations = {
     'common.delete': 'Delete',
     'common.notSet': 'not set',
     'common.noNotes': 'No notes yet.',
+    'common.yes': 'Yes',
+    'common.no': 'No',
     'common.hours': 'hours',
     'tasks.noHorseAssigned': 'No horse assigned',
     'tasks.noHorse': 'No horse',
@@ -961,7 +963,7 @@ const translations = {
     'migration.uploadReady': 'Valmis kopioimaan paikalliset tiedot aktiiviseen pilvitalliin.',
     'migration.uploading': 'Ladataan paikallisia tietoja pilveen...',
     'migration.confirmUpload': 'Ladataanko tämän selaimen paikalliset tiedot aktiiviseen pilvitalliin? Paikalliset tiedot säilyvät tässä selaimessa.',
-    'migration.schemaNeeded': 'Pilveen lataus tarvitsee uusimmat tietokantamigraatiot. Suorita add_local_ids.sql, horse_care_history.sql, race_entry_planner.sql, global_race_programs.sql, horse_racing_profile_fields.sql ja central_racing_horses.sql Supabasessa ja yritä uudelleen.',
+    'migration.schemaNeeded': 'Pilveen lataus tarvitsee uusimmat tietokantamigraatiot. Suorita add_local_ids.sql, horse_care_history.sql, race_entry_planner.sql, global_race_programs.sql, horse_racing_profile_fields.sql, central_racing_horses.sql ja racing_horse_performance_history.sql Supabasessa ja yritä uudelleen.',
     'migration.uploadSuccess': 'Pilveen lataus valmis: {horses} hevosta, {tasks} tehtävää, {hours} työkirjausta, {inventory} ruokavaraston tuotetta, {events} kalenteritapahtumaa, {care} hoitomerkintää, {raceOpportunities} lähtöä, {racePlans} suunniteltua ilmoittautumista.',
     'migration.uploadFailed': 'Pilveen lataus epäonnistui: {error}',
     'saveStatus.idle': 'Tallennettu',
@@ -1413,6 +1415,8 @@ const translations = {
     'common.delete': 'Poista',
     'common.notSet': 'ei asetettu',
     'common.noNotes': 'Ei muistiinpanoja.',
+    'common.yes': 'Kyllä',
+    'common.no': 'Ei',
     'common.hours': 'tuntia',
     'tasks.noHorseAssigned': 'Ei hevosta',
     'tasks.noHorse': 'Ei hevosta',
@@ -1645,7 +1649,7 @@ const translations = {
     'migration.uploadReady': 'Pronto a copiare i dati locali nella scuderia cloud attiva.',
     'migration.uploading': 'Caricamento dati locali nel cloud...',
     'migration.confirmUpload': 'Caricare i dati locali di questo browser nella scuderia cloud attiva? I dati locali resteranno in questo browser.',
-    'migration.schemaNeeded': 'Il caricamento cloud richiede le ultime migrazioni database. Esegui add_local_ids.sql, horse_care_history.sql, race_entry_planner.sql, global_race_programs.sql, horse_racing_profile_fields.sql e central_racing_horses.sql in Supabase, poi riprova.',
+    'migration.schemaNeeded': 'Il caricamento cloud richiede le ultime migrazioni database. Esegui add_local_ids.sql, horse_care_history.sql, race_entry_planner.sql, global_race_programs.sql, horse_racing_profile_fields.sql, central_racing_horses.sql e racing_horse_performance_history.sql in Supabase, poi riprova.',
     'migration.uploadSuccess': 'Caricamento cloud completato: {horses} cavalli, {tasks} attività, {hours} registri ore, {inventory} scorte di mangime, {events} eventi calendario, {care} record di cura, {raceOpportunities} opportunità gara, {racePlans} iscrizioni pianificate.',
     'migration.uploadFailed': 'Caricamento cloud non riuscito: {error}',
     'saveStatus.idle': 'Salvato',
@@ -2097,6 +2101,8 @@ const translations = {
     'common.delete': 'Elimina',
     'common.notSet': 'non impostata',
     'common.noNotes': 'Nessuna nota.',
+    'common.yes': 'Sì',
+    'common.no': 'No',
     'common.hours': 'ore',
     'tasks.noHorseAssigned': 'Nessun cavallo assegnato',
     'tasks.noHorse': 'Nessun cavallo',
@@ -2898,6 +2904,49 @@ Object.assign(translations.en, {
   'racingRegistry.noLinked': 'No linked racing horse',
   'racingRegistry.linkedData': 'Linked racing data',
   'racingRegistry.saveFailed': 'Racing horse save failed: {error}',
+  'racingRegistry.performanceSummary': 'Performance summary',
+  'racingRegistry.startHistory': 'Start history',
+  'racingRegistry.career': 'Career',
+  'racingRegistry.last12Months': 'Last 12 months',
+  'racingRegistry.currentYear': 'Current year',
+  'racingRegistry.last2Months': 'Last 2 months',
+  'racingRegistry.starts': 'Starts',
+  'racingRegistry.wins': 'Wins',
+  'racingRegistry.places': 'Places',
+  'racingRegistry.show': 'Show',
+  'racingRegistry.earnings': 'Earnings',
+  'racingRegistry.records': 'Records',
+  'racingRegistry.careerRecord': 'Career record',
+  'racingRegistry.twelveMonthRecord': '12 month record',
+  'racingRegistry.yearRecord': 'Year record',
+  'racingRegistry.shortDistanceRecord': 'Short distance record',
+  'racingRegistry.longDistanceRecord': 'Long distance record',
+  'racingRegistry.categories': 'Categories',
+  'racingRegistry.categoryMc': 'Categoria MC',
+  'racingRegistry.categoryMs': 'Categoria MS',
+  'racingRegistry.potentialMc': 'Potenziale MC',
+  'racingRegistry.potentialMs': 'Potenziale MS',
+  'racingRegistry.reclaimAllowed': 'Reclaim allowed',
+  'racingRegistry.summaryManualNote': 'Summary values are maintained by Super Admin for now.',
+  'racingRegistry.resultsImportFuture': 'Results import will be added later to update earnings and start history from result files.',
+  'racingRegistry.racetrackCode': 'Racetrack code',
+  'racingRegistry.raceCode': 'Race code',
+  'racingRegistry.driver': 'Driver',
+  'racingRegistry.placement': 'Placement',
+  'racingRegistry.kmTime': 'Km time',
+  'racingRegistry.distance': 'Distance',
+  'racingRegistry.starters': 'Starters',
+  'racingRegistry.shoeing': 'Shoeing',
+  'racingRegistry.netPrize': 'Net prize',
+  'racingRegistry.grossPrize': 'Gross prize',
+  'racingRegistry.videoUrl': 'Video URL',
+  'racingRegistry.addStart': 'Add start',
+  'racingRegistry.editStart': 'Edit start',
+  'racingRegistry.deleteStart': 'Delete start',
+  'racingRegistry.startSaved': 'Start saved.',
+  'racingRegistry.startDeleted': 'Start deleted.',
+  'racingRegistry.startSaveFailed': 'Start history save failed: {error}',
+  'racingRegistry.noStarts': 'No starts recorded yet.',
   'delete.raceProgram': 'this race program',
   'delete.globalRace': 'this global race'
 });
@@ -3060,6 +3109,49 @@ Object.assign(translations.fi, {
   'racingRegistry.noLinked': 'Ei linkitettyä kilpahevosta',
   'racingRegistry.linkedData': 'Linkitetyt kilpailutiedot',
   'racingRegistry.saveFailed': 'Kilpahevosen tallennus epäonnistui: {error}',
+  'racingRegistry.performanceSummary': 'Suoritusyhteenveto',
+  'racingRegistry.startHistory': 'Lähtöhistoria',
+  'racingRegistry.career': 'Ura',
+  'racingRegistry.last12Months': 'Viimeiset 12 kk',
+  'racingRegistry.currentYear': 'Kuluva vuosi',
+  'racingRegistry.last2Months': 'Viimeiset 2 kk',
+  'racingRegistry.starts': 'Lähdöt',
+  'racingRegistry.wins': 'Voitot',
+  'racingRegistry.places': 'Sijat',
+  'racingRegistry.show': 'Kolmannet',
+  'racingRegistry.earnings': 'Ansiot',
+  'racingRegistry.records': 'Ennätykset',
+  'racingRegistry.careerRecord': 'Uraennätys',
+  'racingRegistry.twelveMonthRecord': '12 kk ennätys',
+  'racingRegistry.yearRecord': 'Vuoden ennätys',
+  'racingRegistry.shortDistanceRecord': 'Lyhyen matkan ennätys',
+  'racingRegistry.longDistanceRecord': 'Pitkän matkan ennätys',
+  'racingRegistry.categories': 'Kategoriat',
+  'racingRegistry.categoryMc': 'Categoria MC',
+  'racingRegistry.categoryMs': 'Categoria MS',
+  'racingRegistry.potentialMc': 'Potenziale MC',
+  'racingRegistry.potentialMs': 'Potenziale MS',
+  'racingRegistry.reclaimAllowed': 'Myyntilähtö sallittu',
+  'racingRegistry.summaryManualNote': 'Super Admin ylläpitää yhteenvetotietoja toistaiseksi käsin.',
+  'racingRegistry.resultsImportFuture': 'Tulostuonti lisätään myöhemmin ansioiden ja lähtöhistorian päivittämiseen.',
+  'racingRegistry.racetrackCode': 'Raviradan koodi',
+  'racingRegistry.raceCode': 'Lähdön koodi',
+  'racingRegistry.driver': 'Ohjastaja',
+  'racingRegistry.placement': 'Sijoitus',
+  'racingRegistry.kmTime': 'Km-aika',
+  'racingRegistry.distance': 'Matka',
+  'racingRegistry.starters': 'Lähtijät',
+  'racingRegistry.shoeing': 'Kengitys',
+  'racingRegistry.netPrize': 'Nettoansiot',
+  'racingRegistry.grossPrize': 'Bruttoansiot',
+  'racingRegistry.videoUrl': 'Videolinkki',
+  'racingRegistry.addStart': 'Lisää lähtö',
+  'racingRegistry.editStart': 'Muokkaa lähtöä',
+  'racingRegistry.deleteStart': 'Poista lähtö',
+  'racingRegistry.startSaved': 'Lähtö tallennettu.',
+  'racingRegistry.startDeleted': 'Lähtö poistettu.',
+  'racingRegistry.startSaveFailed': 'Lähtöhistorian tallennus epäonnistui: {error}',
+  'racingRegistry.noStarts': 'Lähtöjä ei ole vielä tallennettu.',
   'delete.raceProgram': 'tämä lähtöohjelma',
   'delete.globalRace': 'tämä yhteinen lähtö'
 });
@@ -3222,6 +3314,49 @@ Object.assign(translations.it, {
   'racingRegistry.noLinked': 'Nessun cavallo da corsa collegato',
   'racingRegistry.linkedData': 'Dati corsa collegati',
   'racingRegistry.saveFailed': 'Salvataggio cavallo da corsa non riuscito: {error}',
+  'racingRegistry.performanceSummary': 'Riepilogo prestazioni',
+  'racingRegistry.startHistory': 'Storico partenze',
+  'racingRegistry.career': 'Carriera',
+  'racingRegistry.last12Months': 'Ultimi 12 mesi',
+  'racingRegistry.currentYear': 'Anno corrente',
+  'racingRegistry.last2Months': 'Ultimi 2 mesi',
+  'racingRegistry.starts': 'Partenze',
+  'racingRegistry.wins': 'Vittorie',
+  'racingRegistry.places': 'Piazzamenti',
+  'racingRegistry.show': 'Terzi',
+  'racingRegistry.earnings': 'Vincite',
+  'racingRegistry.records': 'Record',
+  'racingRegistry.careerRecord': 'Record carriera',
+  'racingRegistry.twelveMonthRecord': 'Record 12 mesi',
+  'racingRegistry.yearRecord': 'Record anno',
+  'racingRegistry.shortDistanceRecord': 'Record breve distanza',
+  'racingRegistry.longDistanceRecord': 'Record lunga distanza',
+  'racingRegistry.categories': 'Categorie',
+  'racingRegistry.categoryMc': 'Categoria MC',
+  'racingRegistry.categoryMs': 'Categoria MS',
+  'racingRegistry.potentialMc': 'Potenziale MC',
+  'racingRegistry.potentialMs': 'Potenziale MS',
+  'racingRegistry.reclaimAllowed': 'Reclamare consentito',
+  'racingRegistry.summaryManualNote': 'I valori riepilogativi sono mantenuti dal Super Admin per ora.',
+  'racingRegistry.resultsImportFuture': 'Importazione risultati sarà aggiunta più avanti per aggiornare vincite e storico partenze.',
+  'racingRegistry.racetrackCode': 'Codice ippodromo',
+  'racingRegistry.raceCode': 'Codice corsa',
+  'racingRegistry.driver': 'Guidatore',
+  'racingRegistry.placement': 'Piazzamento',
+  'racingRegistry.kmTime': 'Tempo al km',
+  'racingRegistry.distance': 'Distanza',
+  'racingRegistry.starters': 'Partenti',
+  'racingRegistry.shoeing': 'Ferratura',
+  'racingRegistry.netPrize': 'Premio netto',
+  'racingRegistry.grossPrize': 'Premio lordo',
+  'racingRegistry.videoUrl': 'URL video',
+  'racingRegistry.addStart': 'Aggiungi partenza',
+  'racingRegistry.editStart': 'Modifica partenza',
+  'racingRegistry.deleteStart': 'Elimina partenza',
+  'racingRegistry.startSaved': 'Partenza salvata.',
+  'racingRegistry.startDeleted': 'Partenza eliminata.',
+  'racingRegistry.startSaveFailed': 'Salvataggio storico partenze non riuscito: {error}',
+  'racingRegistry.noStarts': 'Nessuna partenza registrata.',
   'delete.raceProgram': 'questo programma gara',
   'delete.globalRace': 'questa gara globale'
 });
@@ -3300,6 +3435,7 @@ let raceImportPreviewItems = [];
 let racePrograms = [];
 let raceProgramRaces = [];
 let racingHorses = [];
+let racingHorseStarts = [];
 let racingHorseSearchTerm = '';
 let selectedPublishedRaceDay = { racetrack: '', date: '' };
 let publishedRaceFilter = { possibleOnly: false, search: '' };
@@ -3395,6 +3531,7 @@ const els = {
   raceProgramForm: document.querySelector('#raceProgramForm'),
   raceProgramAdminList: document.querySelector('#raceProgramAdminList'),
   racingHorseForm: document.querySelector('#racingHorseForm'),
+  racingHorseStartForm: document.querySelector('#racingHorseStartForm'),
   racingHorseSearch: document.querySelector('#racingHorseSearch'),
   racingHorseRegistryList: document.querySelector('#racingHorseRegistryList'),
   raceImportProgramLabel: document.querySelector('#raceImportProgramLabel'),
@@ -3623,6 +3760,36 @@ function normalizeRacingHorse(item) {
     countryOfOrigin: item.countryOfOrigin || item.country_of_origin || '',
     totalEarnings: item.totalEarnings ?? item.total_earnings ?? 0,
     last5Earnings: item.last5Earnings ?? item.last_5_earnings ?? '',
+    careerStarts: item.careerStarts ?? item.career_starts ?? '',
+    careerWins: item.careerWins ?? item.career_wins ?? '',
+    careerPlaces: item.careerPlaces ?? item.career_places ?? '',
+    careerShow: item.careerShow ?? item.career_show ?? '',
+    careerEarnings: item.careerEarnings ?? item.career_earnings ?? '',
+    twelveMonthStarts: item.twelveMonthStarts ?? item.twelve_month_starts ?? '',
+    twelveMonthWins: item.twelveMonthWins ?? item.twelve_month_wins ?? '',
+    twelveMonthPlaces: item.twelveMonthPlaces ?? item.twelve_month_places ?? '',
+    twelveMonthShow: item.twelveMonthShow ?? item.twelve_month_show ?? '',
+    twelveMonthEarnings: item.twelveMonthEarnings ?? item.twelve_month_earnings ?? '',
+    yearStarts: item.yearStarts ?? item.year_starts ?? '',
+    yearWins: item.yearWins ?? item.year_wins ?? '',
+    yearPlaces: item.yearPlaces ?? item.year_places ?? '',
+    yearShow: item.yearShow ?? item.year_show ?? '',
+    yearEarnings: item.yearEarnings ?? item.year_earnings ?? '',
+    twoMonthStarts: item.twoMonthStarts ?? item.two_month_starts ?? '',
+    twoMonthWins: item.twoMonthWins ?? item.two_month_wins ?? '',
+    twoMonthPlaces: item.twoMonthPlaces ?? item.two_month_places ?? '',
+    twoMonthShow: item.twoMonthShow ?? item.two_month_show ?? '',
+    twoMonthEarnings: item.twoMonthEarnings ?? item.two_month_earnings ?? '',
+    careerRecord: item.careerRecord || item.career_record || '',
+    twelveMonthRecord: item.twelveMonthRecord || item.twelve_month_record || '',
+    yearRecord: item.yearRecord || item.year_record || '',
+    shortDistanceRecord: item.shortDistanceRecord || item.short_distance_record || '',
+    longDistanceRecord: item.longDistanceRecord || item.long_distance_record || '',
+    categoryMc: item.categoryMc || item.category_mc || '',
+    categoryMs: item.categoryMs || item.category_ms || '',
+    potentialMc: item.potentialMc || item.potential_mc || '',
+    potentialMs: item.potentialMs || item.potential_ms || '',
+    reclaimAllowed: Boolean(item.reclaimAllowed ?? item.reclaim_allowed ?? false),
     racingCategory: item.racingCategory || item.racing_category || '',
     trainerName: item.trainerName || item.trainer_name || '',
     ownerName: item.ownerName || item.owner_name || '',
@@ -3630,6 +3797,29 @@ function normalizeRacingHorse(item) {
     notes: item.notes || '',
     lastResultsUpdate: item.lastResultsUpdate || item.last_results_update || '',
     createdBy: item.createdBy || item.created_by || '',
+    createdAt: item.createdAt || item.created_at || '',
+    updatedAt: item.updatedAt || item.updated_at || ''
+  };
+}
+
+function normalizeRacingHorseStart(item) {
+  return {
+    id: item.id || '',
+    racingHorseId: item.racingHorseId || item.racing_horse_id || '',
+    raceDate: item.raceDate || item.race_date || '',
+    racetrackCode: item.racetrackCode || item.racetrack_code || '',
+    racetrackName: item.racetrackName || item.racetrack_name || '',
+    raceCode: item.raceCode || item.race_code || '',
+    driverName: item.driverName || item.driver_name || '',
+    placement: item.placement || '',
+    kilometerTime: item.kilometerTime || item.kilometer_time || '',
+    distance: item.distance ?? '',
+    startersInfo: item.startersInfo || item.starters_info || '',
+    shoeing: item.shoeing || '',
+    netPrize: item.netPrize ?? item.net_prize ?? '',
+    grossPrize: item.grossPrize ?? item.gross_prize ?? '',
+    raceNotes: item.raceNotes || item.race_notes || '',
+    videoUrl: item.videoUrl || item.video_url || '',
     createdAt: item.createdAt || item.created_at || '',
     updatedAt: item.updatedAt || item.updated_at || ''
   };
@@ -5143,8 +5333,12 @@ function mapCloudRacingHorse(row) {
   return normalizeRacingHorse(row);
 }
 
+function mapCloudRacingHorseStart(row) {
+  return normalizeRacingHorseStart(row);
+}
+
 async function loadCloudSnapshot(stableId) {
-  const [horseRows, taskRows, workRows, feedRows, eventRows, careRows, raceOpportunityRows, racePlanRows, programRows, programRaceRows, racingHorseRows] = await Promise.all([
+  const [horseRows, taskRows, workRows, feedRows, eventRows, careRows, raceOpportunityRows, racePlanRows, programRows, programRaceRows, racingHorseRows, racingHorseStartRows] = await Promise.all([
     fetchCloudRows('horses', stableId),
     fetchCloudRows('tasks', stableId),
     fetchCloudRows('work_logs', stableId),
@@ -5155,7 +5349,8 @@ async function loadCloudSnapshot(stableId) {
     fetchOptionalCloudRows('race_entry_plans', stableId, 'created_at'),
     fetchOptionalGlobalRows('race_programs', 'created_at'),
     fetchOptionalGlobalRows('race_program_races', 'race_date'),
-    fetchOptionalGlobalRows('racing_horses', 'horse_name')
+    fetchOptionalGlobalRows('racing_horses', 'horse_name'),
+    fetchOptionalGlobalRows('racing_horse_starts', 'race_date')
   ]);
   const horses = horseRows.map(mapCloudHorse);
   const horseIdMap = new Map(horseRows.map((row, index) => [row.id, horses[index].id]));
@@ -5164,6 +5359,7 @@ async function loadCloudSnapshot(stableId) {
   racePrograms = programRows.map(mapCloudRaceProgram);
   raceProgramRaces = programRaceRows.map(mapCloudRaceProgramRace);
   racingHorses = racingHorseRows.map(mapCloudRacingHorse);
+  racingHorseStarts = racingHorseStartRows.map(mapCloudRacingHorseStart);
   return {
     horses,
     tasks: taskRows.map((row) => mapCloudTask(row, horseIdMap)),
@@ -6208,6 +6404,8 @@ function raceProgramRaceToCloudRow(programId, rawRace) {
 
 function racingHorseToCloudRow(rawHorse) {
   const horse = normalizeRacingHorse(rawHorse);
+  const intOrNull = (value) => value === '' || value == null ? null : toSafeNumber(value, null);
+  const moneyOrNull = (value) => value === '' || value == null ? null : toSafeNumber(value, null);
   return {
     registration_number: cleanText(horse.registrationNumber) || null,
     horse_name: cleanText(horse.horseName) || 'Unnamed horse',
@@ -6217,6 +6415,36 @@ function racingHorseToCloudRow(rawHorse) {
     country_of_origin: cleanText(horse.countryOfOrigin),
     total_earnings: horse.totalEarnings === '' ? 0 : toSafeNumber(horse.totalEarnings, 0),
     last_5_earnings: horse.last5Earnings === '' ? null : toSafeNumber(horse.last5Earnings, 0),
+    career_starts: intOrNull(horse.careerStarts),
+    career_wins: intOrNull(horse.careerWins),
+    career_places: intOrNull(horse.careerPlaces),
+    career_show: intOrNull(horse.careerShow),
+    career_earnings: moneyOrNull(horse.careerEarnings),
+    twelve_month_starts: intOrNull(horse.twelveMonthStarts),
+    twelve_month_wins: intOrNull(horse.twelveMonthWins),
+    twelve_month_places: intOrNull(horse.twelveMonthPlaces),
+    twelve_month_show: intOrNull(horse.twelveMonthShow),
+    twelve_month_earnings: moneyOrNull(horse.twelveMonthEarnings),
+    year_starts: intOrNull(horse.yearStarts),
+    year_wins: intOrNull(horse.yearWins),
+    year_places: intOrNull(horse.yearPlaces),
+    year_show: intOrNull(horse.yearShow),
+    year_earnings: moneyOrNull(horse.yearEarnings),
+    two_month_starts: intOrNull(horse.twoMonthStarts),
+    two_month_wins: intOrNull(horse.twoMonthWins),
+    two_month_places: intOrNull(horse.twoMonthPlaces),
+    two_month_show: intOrNull(horse.twoMonthShow),
+    two_month_earnings: moneyOrNull(horse.twoMonthEarnings),
+    career_record: cleanText(horse.careerRecord),
+    twelve_month_record: cleanText(horse.twelveMonthRecord),
+    year_record: cleanText(horse.yearRecord),
+    short_distance_record: cleanText(horse.shortDistanceRecord),
+    long_distance_record: cleanText(horse.longDistanceRecord),
+    category_mc: cleanText(horse.categoryMc),
+    category_ms: cleanText(horse.categoryMs),
+    potential_mc: cleanText(horse.potentialMc),
+    potential_ms: cleanText(horse.potentialMs),
+    reclaim_allowed: Boolean(horse.reclaimAllowed),
     racing_category: cleanText(horse.racingCategory),
     trainer_name: cleanText(horse.trainerName),
     owner_name: cleanText(horse.ownerName),
@@ -6224,6 +6452,27 @@ function racingHorseToCloudRow(rawHorse) {
     notes: cleanText(horse.notes),
     last_results_update: isValidDate(horse.lastResultsUpdate),
     created_by: getCurrentUser()?.id || null
+  };
+}
+
+function racingHorseStartToCloudRow(rawStart) {
+  const start = normalizeRacingHorseStart(rawStart);
+  return {
+    racing_horse_id: start.racingHorseId,
+    race_date: isValidDate(start.raceDate),
+    racetrack_code: cleanText(start.racetrackCode),
+    racetrack_name: cleanText(start.racetrackName),
+    race_code: cleanText(start.raceCode),
+    driver_name: cleanText(start.driverName),
+    placement: cleanText(start.placement),
+    kilometer_time: cleanText(start.kilometerTime),
+    distance: start.distance === '' ? null : toSafeNumber(start.distance, null),
+    starters_info: cleanText(start.startersInfo),
+    shoeing: cleanText(start.shoeing),
+    net_prize: start.netPrize === '' ? null : toSafeNumber(start.netPrize, null),
+    gross_prize: start.grossPrize === '' ? null : toSafeNumber(start.grossPrize, null),
+    race_notes: cleanText(start.raceNotes),
+    video_url: cleanText(start.videoUrl)
   };
 }
 
@@ -6237,6 +6486,26 @@ async function saveRacingHorseToCloud(rawHorse) {
     return request.select('*').single();
   });
   return mapCloudRacingHorse(data);
+}
+
+async function saveRacingHorseStartToCloud(rawStart) {
+  if (!isSuperAdmin()) throw new Error(t('auth.unauthorized'));
+  const row = racingHorseStartToCloudRow(rawStart);
+  const data = await executeCloudMutation('racing_horse_starts', 'racing horse start save', () => {
+    const request = rawStart.id
+      ? supabaseClient.from('racing_horse_starts').update(row).eq('id', rawStart.id)
+      : supabaseClient.from('racing_horse_starts').insert(row);
+    return request.select('*').single();
+  });
+  return mapCloudRacingHorseStart(data);
+}
+
+async function deleteRacingHorseStartFromCloud(id) {
+  if (!isSuperAdmin()) throw new Error(t('auth.unauthorized'));
+  await executeCloudMutation('racing_horse_starts', 'racing horse start delete', () => supabaseClient
+    .from('racing_horse_starts')
+    .delete()
+    .eq('id', id));
 }
 
 async function saveRaceProgramToCloud(rawProgram) {
@@ -7407,6 +7676,13 @@ function renderHorseOptions() {
         .map((horse) => `<option value="${horse.id}">${escapeHtml([horse.horseName, horse.registrationNumber].filter(Boolean).join(' - '))}</option>`))
       .join('');
   }
+  if (els.racingHorseStartForm?.elements.racingHorseId) {
+    els.racingHorseStartForm.elements.racingHorseId.innerHTML = [`<option value="">${t('racingRegistry.horseName')}</option>`]
+      .concat(racingHorses
+        .sort((a, b) => a.horseName.localeCompare(b.horseName))
+        .map((horse) => `<option value="${horse.id}">${escapeHtml([horse.horseName, horse.registrationNumber].filter(Boolean).join(' - '))}</option>`))
+      .join('');
+  }
   renderRaceEntryOptions();
 }
 
@@ -8049,9 +8325,13 @@ function renderHorses() {
               ])}
               ${linkedRacingHorse ? renderHorseDetailGroup('racingRegistry.linkedData', [
                 ['racingRegistry.registration', linkedRacingHorse.registrationNumber],
-                ['racingRegistry.totalEarnings', linkedRacingHorse.totalEarnings],
+                ['racingRegistry.totalEarnings', linkedRacingHorse.careerEarnings || linkedRacingHorse.totalEarnings],
                 ['racingRegistry.last5Earnings', linkedRacingHorse.last5Earnings],
                 ['horses.racingCategory', linkedRacingHorse.racingCategory],
+                ['racingRegistry.categoryMc', linkedRacingHorse.categoryMc],
+                ['racingRegistry.categoryMs', linkedRacingHorse.categoryMs],
+                ['racingRegistry.career', formatRacingStatLine(linkedRacingHorse, 'career')],
+                ['racingRegistry.currentYear', formatRacingStatLine(linkedRacingHorse, 'year')],
                 ['racingRegistry.lastResultsUpdate', linkedRacingHorse.lastResultsUpdate]
               ]) : renderHorseDetailGroup('racingRegistry.linkedTitle', [
                 ['racingRegistry.noLinked', '']
@@ -8076,6 +8356,7 @@ function renderHorses() {
               <h5>${t('care.recent')}</h5>
               ${careRecords.length ? careRecords.map(renderCareLine).join('') : `<p>${t('care.empty')}</p>`}
             </section>
+            ${linkedRacingHorse ? renderRacingStartHistory(linkedRacingHorse, false, 5) : ''}
           </details>
         </div>
         <div class="item-actions">
@@ -8537,6 +8818,7 @@ function getHorseRacingData(horseInput) {
   const horse = normalizeHorse(horseInput);
   const linked = getLinkedRacingHorse(horse);
   if (!linked) return horse;
+  const linkedCareerEarnings = linked.careerEarnings === '' || linked.careerEarnings == null ? linked.totalEarnings : linked.careerEarnings;
   return normalizeHorse({
     ...horse,
     name: horse.name,
@@ -8544,9 +8826,9 @@ function getHorseRacingData(horseInput) {
     birth: linked.birthDate || linked.birthYear || horse.birth,
     gender: linked.gender || horse.gender,
     countryOfOrigin: linked.countryOfOrigin || horse.countryOfOrigin,
-    totalEarnings: linked.totalEarnings ?? horse.totalEarnings,
+    totalEarnings: linkedCareerEarnings ?? horse.totalEarnings,
     last5Earnings: linked.last5Earnings ?? horse.last5Earnings,
-    racingCategory: linked.racingCategory || horse.racingCategory,
+    racingCategory: linked.racingCategory || linked.categoryMc || linked.categoryMs || horse.racingCategory,
     trainerName: linked.trainerName || horse.trainerName,
     ownerName: linked.ownerName || horse.ownerName,
     defaultDriver: linked.defaultDriver || horse.defaultDriver,
@@ -8796,10 +9078,106 @@ function renderRaceProgramAdmin() {
   `;
 }
 
+function formatRacingStatLine(horse, prefix) {
+  return [
+    `${t('racingRegistry.starts')}: ${escapeHtml(horse[`${prefix}Starts`] || 0)}`,
+    `${t('racingRegistry.wins')}: ${escapeHtml(horse[`${prefix}Wins`] || 0)}`,
+    `${t('racingRegistry.places')}: ${escapeHtml(horse[`${prefix}Places`] || 0)}`,
+    `${t('racingRegistry.show')}: ${escapeHtml(horse[`${prefix}Show`] || 0)}`,
+    `${t('racingRegistry.earnings')}: ${escapeHtml(horse[`${prefix}Earnings`] || 0)}`
+  ].join(' | ');
+}
+
+function renderRacingPerformanceSummary(horse) {
+  const cards = [
+    ['racingRegistry.career', 'career'],
+    ['racingRegistry.last12Months', 'twelveMonth'],
+    ['racingRegistry.currentYear', 'year'],
+    ['racingRegistry.last2Months', 'twoMonth']
+  ];
+  return `
+    <section class="racing-performance-grid">
+      ${cards.map(([labelKey, prefix]) => `
+        <article class="racing-mini-card">
+          <strong>${t(labelKey)}</strong>
+          <span>${formatRacingStatLine(horse, prefix)}</span>
+        </article>
+      `).join('')}
+    </section>
+  `;
+}
+
+function renderRacingRecords(horse) {
+  return renderHorseDetailGroup('racingRegistry.records', [
+    ['racingRegistry.careerRecord', horse.careerRecord],
+    ['racingRegistry.twelveMonthRecord', horse.twelveMonthRecord],
+    ['racingRegistry.yearRecord', horse.yearRecord],
+    ['racingRegistry.shortDistanceRecord', horse.shortDistanceRecord],
+    ['racingRegistry.longDistanceRecord', horse.longDistanceRecord]
+  ]);
+}
+
+function renderRacingCategories(horse) {
+  return renderHorseDetailGroup('racingRegistry.categories', [
+    ['racingRegistry.categoryMc', horse.categoryMc],
+    ['racingRegistry.categoryMs', horse.categoryMs],
+    ['racingRegistry.potentialMc', horse.potentialMc],
+    ['racingRegistry.potentialMs', horse.potentialMs],
+    ['racingRegistry.reclaimAllowed', horse.reclaimAllowed ? t('common.yes') : t('common.no')]
+  ]);
+}
+
+function getRacingStartsForHorse(racingHorseId) {
+  return racingHorseStarts
+    .map(normalizeRacingHorseStart)
+    .filter((start) => start.racingHorseId === racingHorseId)
+    .sort((a, b) => String(b.raceDate || '').localeCompare(String(a.raceDate || '')));
+}
+
+function renderRacingStartHistory(horse, editable = false, limit = 0) {
+  const starts = getRacingStartsForHorse(horse.id);
+  const visibleStarts = limit ? starts.slice(0, limit) : starts;
+  if (!visibleStarts.length) {
+    return `<section class="racing-start-history"><h5>${t('racingRegistry.startHistory')}</h5><p class="empty-state">${t('racingRegistry.noStarts')}</p></section>`;
+  }
+  return `
+    <section class="racing-start-history">
+      <h5>${t('racingRegistry.startHistory')}</h5>
+      <div class="racing-start-list">
+        ${visibleStarts.map((start) => `
+          <article class="racing-start-row">
+            <div>
+              <strong>${escapeHtml(start.raceDate || t('common.notSet'))}</strong>
+              <span>${escapeHtml([start.racetrackCode, start.racetrackName, start.raceCode].filter(Boolean).join(' - ') || t('common.notSet'))}</span>
+            </div>
+            <div><strong>${t('racingRegistry.driver')}</strong><span>${escapeHtml(start.driverName || t('common.notSet'))}</span></div>
+            <div><strong>${t('racingRegistry.placement')}</strong><span>${escapeHtml(start.placement || t('common.notSet'))}</span></div>
+            <div><strong>${t('racingRegistry.kmTime')}</strong><span>${escapeHtml(start.kilometerTime || t('common.notSet'))}</span></div>
+            <div><strong>${t('racingRegistry.distance')}</strong><span>${escapeHtml(start.distance || t('common.notSet'))}</span></div>
+            <div><strong>${t('racingRegistry.starters')}</strong><span>${escapeHtml(start.startersInfo || t('common.notSet'))}</span></div>
+            <div><strong>${t('racingRegistry.shoeing')}</strong><span>${escapeHtml(start.shoeing || t('common.notSet'))}</span></div>
+            <div><strong>${t('racingRegistry.netPrize')}</strong><span>${escapeHtml(start.netPrize || t('common.notSet'))}</span></div>
+            <div><strong>${t('racingRegistry.grossPrize')}</strong><span>${escapeHtml(start.grossPrize || t('common.notSet'))}</span></div>
+            ${start.raceNotes ? `<p>${escapeHtml(start.raceNotes)}</p>` : ''}
+            ${start.videoUrl ? `<a href="${escapeHtml(start.videoUrl)}" target="_blank" rel="noopener noreferrer">${t('racingRegistry.videoUrl')}</a>` : ''}
+            ${editable ? `
+              <div class="item-actions">
+                <button class="button ghost" type="button" data-action="edit-racing-start" data-id="${start.id}">${t('common.edit')}</button>
+                <button class="button ghost danger" type="button" data-action="delete-racing-start" data-id="${start.id}">${t('common.delete')}</button>
+              </div>
+            ` : ''}
+          </article>
+        `).join('')}
+      </div>
+    </section>
+  `;
+}
+
 function renderRacingHorseRegistry() {
   if (!els.racingHorseRegistryList || !els.racingHorseForm) return;
   const isAdmin = isSuperAdmin() && cloudWriteMode;
   els.racingHorseForm.hidden = !isAdmin;
+  if (els.racingHorseStartForm) els.racingHorseStartForm.hidden = !isAdmin;
   if (els.racingHorseSearch) els.racingHorseSearch.hidden = !isAdmin;
   if (!isAdmin) {
     els.racingHorseRegistryList.innerHTML = '';
@@ -8819,10 +9197,20 @@ function renderRacingHorseRegistry() {
         <h4>${escapeHtml(horse.horseName)}</h4>
         <p>${escapeHtml([horse.registrationNumber, horse.countryOfOrigin, horse.racingCategory].filter(Boolean).join(' - '))}</p>
         <div class="item-meta">
-          <span class="pill">${t('racingRegistry.totalEarnings')}: ${escapeHtml(horse.totalEarnings ?? 0)}</span>
+          <span class="pill">${t('racingRegistry.totalEarnings')}: ${escapeHtml(horse.careerEarnings || horse.totalEarnings || 0)}</span>
           <span class="pill">${t('racingRegistry.last5Earnings')}: ${escapeHtml(horse.last5Earnings || '-')}</span>
+          <span class="pill">${t('racingRegistry.startHistory')}: ${escapeHtml(getRacingStartsForHorse(horse.id).length)}</span>
           <span class="pill">${t('racingRegistry.lastResultsUpdate')}: ${escapeHtml(horse.lastResultsUpdate || '-')}</span>
         </div>
+        <details class="horse-details">
+          <summary>${t('racingRegistry.performanceSummary')}</summary>
+          ${renderRacingPerformanceSummary(horse)}
+          <div class="horse-detail-grid">
+            ${renderRacingRecords(horse)}
+            ${renderRacingCategories(horse)}
+          </div>
+          ${renderRacingStartHistory(horse, true)}
+        </details>
       </div>
       <div class="item-actions">
         <button class="button ghost" type="button" data-action="edit-racing-horse" data-id="${horse.id}">${t('common.edit')}</button>
@@ -9179,6 +9567,36 @@ function handleHorseSubmit(event) {
     countryOfOrigin: form.elements.countryOfOrigin.value.trim(),
     totalEarnings: form.elements.totalEarnings.value,
     last5Earnings: form.elements.last5Earnings.value,
+    careerStarts: form.elements.careerStarts.value,
+    careerWins: form.elements.careerWins.value,
+    careerPlaces: form.elements.careerPlaces.value,
+    careerShow: form.elements.careerShow.value,
+    careerEarnings: form.elements.careerEarnings.value,
+    twelveMonthStarts: form.elements.twelveMonthStarts.value,
+    twelveMonthWins: form.elements.twelveMonthWins.value,
+    twelveMonthPlaces: form.elements.twelveMonthPlaces.value,
+    twelveMonthShow: form.elements.twelveMonthShow.value,
+    twelveMonthEarnings: form.elements.twelveMonthEarnings.value,
+    yearStarts: form.elements.yearStarts.value,
+    yearWins: form.elements.yearWins.value,
+    yearPlaces: form.elements.yearPlaces.value,
+    yearShow: form.elements.yearShow.value,
+    yearEarnings: form.elements.yearEarnings.value,
+    twoMonthStarts: form.elements.twoMonthStarts.value,
+    twoMonthWins: form.elements.twoMonthWins.value,
+    twoMonthPlaces: form.elements.twoMonthPlaces.value,
+    twoMonthShow: form.elements.twoMonthShow.value,
+    twoMonthEarnings: form.elements.twoMonthEarnings.value,
+    careerRecord: form.elements.careerRecord.value.trim(),
+    twelveMonthRecord: form.elements.twelveMonthRecord.value.trim(),
+    yearRecord: form.elements.yearRecord.value.trim(),
+    shortDistanceRecord: form.elements.shortDistanceRecord.value.trim(),
+    longDistanceRecord: form.elements.longDistanceRecord.value.trim(),
+    categoryMc: form.elements.categoryMc.value.trim(),
+    categoryMs: form.elements.categoryMs.value.trim(),
+    potentialMc: form.elements.potentialMc.value.trim(),
+    potentialMs: form.elements.potentialMs.value.trim(),
+    reclaimAllowed: form.elements.reclaimAllowed.checked,
     racingCategory: form.elements.racingCategory.value.trim(),
     trainerName: form.elements.trainerName.value.trim(),
     ownerName: form.elements.ownerName.value.trim(),
@@ -9505,6 +9923,42 @@ async function handleRacingHorseSubmit(event) {
   }
 }
 
+async function handleRacingHorseStartSubmit(event) {
+  event.preventDefault();
+  if (!isSuperAdmin()) return;
+  const form = event.currentTarget;
+  const start = {
+    id: form.elements.id.value,
+    racingHorseId: form.elements.racingHorseId.value,
+    raceDate: form.elements.raceDate.value,
+    racetrackCode: form.elements.racetrackCode.value.trim(),
+    racetrackName: form.elements.racetrackName.value.trim(),
+    raceCode: form.elements.raceCode.value.trim(),
+    driverName: form.elements.driverName.value.trim(),
+    placement: form.elements.placement.value.trim(),
+    kilometerTime: form.elements.kilometerTime.value.trim(),
+    distance: form.elements.distance.value,
+    startersInfo: form.elements.startersInfo.value.trim(),
+    shoeing: form.elements.shoeing.value.trim(),
+    netPrize: form.elements.netPrize.value,
+    grossPrize: form.elements.grossPrize.value,
+    raceNotes: form.elements.raceNotes.value.trim(),
+    videoUrl: form.elements.videoUrl.value.trim()
+  };
+  try {
+    const saved = await saveRacingHorseStartToCloud(start);
+    const existingIndex = racingHorseStarts.findIndex((entry) => entry.id === saved.id);
+    if (existingIndex >= 0) racingHorseStarts[existingIndex] = saved;
+    else racingHorseStarts.push(saved);
+    resetForm(form);
+    render();
+    showMessage(t('racingRegistry.startSaved'));
+  } catch (error) {
+    console.error('[EquiTrack racing registry] Start save failed', error);
+    showMessage(t('racingRegistry.startSaveFailed', { error: getCloudErrorMessage(error) }));
+  }
+}
+
 async function createGlobalRacePlan(raceId, card) {
   if (!canCreateRacePlans()) return;
   const horseId = card.querySelector('[data-plan-field="horseId"]')?.value || '';
@@ -9622,6 +10076,8 @@ function handleListClick(event) {
     renderPublishedRacePrograms();
   }
   if (action === 'edit-racing-horse') fillRacingHorseForm(id);
+  if (action === 'edit-racing-start') fillRacingHorseStartForm(id);
+  if (action === 'delete-racing-start') handleRacingHorseStartDelete(id);
   if (action === 'edit-race-program') fillRaceProgramForm(id);
   if (action === 'select-race-program-import') selectRaceProgramForImport(id);
   if (action === 'publish-race-program') changeRaceProgramStatus(id, 'published');
@@ -9964,6 +10420,36 @@ function fillRacingHorseForm(id) {
   form.elements.countryOfOrigin.value = horse.countryOfOrigin;
   form.elements.totalEarnings.value = horse.totalEarnings;
   form.elements.last5Earnings.value = horse.last5Earnings;
+  form.elements.careerStarts.value = horse.careerStarts;
+  form.elements.careerWins.value = horse.careerWins;
+  form.elements.careerPlaces.value = horse.careerPlaces;
+  form.elements.careerShow.value = horse.careerShow;
+  form.elements.careerEarnings.value = horse.careerEarnings;
+  form.elements.twelveMonthStarts.value = horse.twelveMonthStarts;
+  form.elements.twelveMonthWins.value = horse.twelveMonthWins;
+  form.elements.twelveMonthPlaces.value = horse.twelveMonthPlaces;
+  form.elements.twelveMonthShow.value = horse.twelveMonthShow;
+  form.elements.twelveMonthEarnings.value = horse.twelveMonthEarnings;
+  form.elements.yearStarts.value = horse.yearStarts;
+  form.elements.yearWins.value = horse.yearWins;
+  form.elements.yearPlaces.value = horse.yearPlaces;
+  form.elements.yearShow.value = horse.yearShow;
+  form.elements.yearEarnings.value = horse.yearEarnings;
+  form.elements.twoMonthStarts.value = horse.twoMonthStarts;
+  form.elements.twoMonthWins.value = horse.twoMonthWins;
+  form.elements.twoMonthPlaces.value = horse.twoMonthPlaces;
+  form.elements.twoMonthShow.value = horse.twoMonthShow;
+  form.elements.twoMonthEarnings.value = horse.twoMonthEarnings;
+  form.elements.careerRecord.value = horse.careerRecord;
+  form.elements.twelveMonthRecord.value = horse.twelveMonthRecord;
+  form.elements.yearRecord.value = horse.yearRecord;
+  form.elements.shortDistanceRecord.value = horse.shortDistanceRecord;
+  form.elements.longDistanceRecord.value = horse.longDistanceRecord;
+  form.elements.categoryMc.value = horse.categoryMc;
+  form.elements.categoryMs.value = horse.categoryMs;
+  form.elements.potentialMc.value = horse.potentialMc;
+  form.elements.potentialMs.value = horse.potentialMs;
+  form.elements.reclaimAllowed.checked = horse.reclaimAllowed;
   form.elements.racingCategory.value = horse.racingCategory;
   form.elements.trainerName.value = horse.trainerName;
   form.elements.ownerName.value = horse.ownerName;
@@ -9972,6 +10458,46 @@ function fillRacingHorseForm(id) {
   form.elements.lastResultsUpdate.value = horse.lastResultsUpdate;
   form.scrollIntoView({ behavior: 'smooth', block: 'center' });
   showMessage(t('message.editing'));
+}
+
+function fillRacingHorseStartForm(id) {
+  const start = racingHorseStarts.find((entry) => entry.id === id);
+  if (!start || !els.racingHorseStartForm) return;
+  const form = els.racingHorseStartForm;
+  form.elements.id.value = start.id;
+  form.elements.racingHorseId.value = start.racingHorseId;
+  form.elements.raceDate.value = start.raceDate;
+  form.elements.racetrackCode.value = start.racetrackCode;
+  form.elements.racetrackName.value = start.racetrackName;
+  form.elements.raceCode.value = start.raceCode;
+  form.elements.driverName.value = start.driverName;
+  form.elements.placement.value = start.placement;
+  form.elements.kilometerTime.value = start.kilometerTime;
+  form.elements.distance.value = start.distance;
+  form.elements.startersInfo.value = start.startersInfo;
+  form.elements.shoeing.value = start.shoeing;
+  form.elements.netPrize.value = start.netPrize;
+  form.elements.grossPrize.value = start.grossPrize;
+  form.elements.raceNotes.value = start.raceNotes;
+  form.elements.videoUrl.value = start.videoUrl;
+  form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  showMessage(t('message.editing'));
+}
+
+async function handleRacingHorseStartDelete(id) {
+  if (!confirmDelete(t('racingRegistry.deleteStart'))) {
+    showMessage(t('message.deleteCancelled'));
+    return;
+  }
+  try {
+    await deleteRacingHorseStartFromCloud(id);
+    racingHorseStarts = racingHorseStarts.filter((entry) => entry.id !== id);
+    render();
+    showMessage(t('racingRegistry.startDeleted'));
+  } catch (error) {
+    console.error('[EquiTrack racing registry] Start delete failed', error);
+    showMessage(t('racingRegistry.startSaveFailed', { error: getCloudErrorMessage(error) }));
+  }
 }
 
 async function changeRaceProgramStatus(id, status) {
@@ -10660,6 +11186,7 @@ els.raceOpportunityForm?.addEventListener('submit', handleRaceOpportunitySubmit)
 els.racePlanForm?.addEventListener('submit', handleRacePlanSubmit);
 els.raceProgramForm?.addEventListener('submit', handleRaceProgramSubmit);
 els.racingHorseForm?.addEventListener('submit', handleRacingHorseSubmit);
+els.racingHorseStartForm?.addEventListener('submit', handleRacingHorseStartSubmit);
 els.racingHorseSearch?.addEventListener('input', (event) => {
   racingHorseSearchTerm = event.target.value || '';
   renderRacingHorseRegistry();

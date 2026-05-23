@@ -701,6 +701,45 @@
             <label><span data-i18n="horses.countryOfOrigin">Country of origin</span><input name="countryOfOrigin"></label>
             <label><span data-i18n="racingRegistry.totalEarnings">Total earnings</span><input name="totalEarnings" type="number" min="0" step="0.01"></label>
             <label><span data-i18n="racingRegistry.last5Earnings">Last 5 starts earnings</span><input name="last5Earnings" type="number" min="0" step="0.01"></label>
+            <fieldset class="form-group full">
+              <legend data-i18n="racingRegistry.performanceSummary">Performance summary</legend>
+              <label><span data-i18n="racingRegistry.career">Career</span><input name="careerStarts" type="number" min="0" placeholder="Starts"></label>
+              <label><span data-i18n="racingRegistry.wins">Wins</span><input name="careerWins" type="number" min="0"></label>
+              <label><span data-i18n="racingRegistry.places">Places</span><input name="careerPlaces" type="number" min="0"></label>
+              <label><span data-i18n="racingRegistry.show">Show</span><input name="careerShow" type="number" min="0"></label>
+              <label><span data-i18n="racingRegistry.earnings">Earnings</span><input name="careerEarnings" type="number" min="0" step="0.01"></label>
+              <label><span data-i18n="racingRegistry.last12Months">Last 12 months</span><input name="twelveMonthStarts" type="number" min="0" placeholder="Starts"></label>
+              <label><span data-i18n="racingRegistry.wins">Wins</span><input name="twelveMonthWins" type="number" min="0"></label>
+              <label><span data-i18n="racingRegistry.places">Places</span><input name="twelveMonthPlaces" type="number" min="0"></label>
+              <label><span data-i18n="racingRegistry.show">Show</span><input name="twelveMonthShow" type="number" min="0"></label>
+              <label><span data-i18n="racingRegistry.earnings">Earnings</span><input name="twelveMonthEarnings" type="number" min="0" step="0.01"></label>
+              <label><span data-i18n="racingRegistry.currentYear">Current year</span><input name="yearStarts" type="number" min="0" placeholder="Starts"></label>
+              <label><span data-i18n="racingRegistry.wins">Wins</span><input name="yearWins" type="number" min="0"></label>
+              <label><span data-i18n="racingRegistry.places">Places</span><input name="yearPlaces" type="number" min="0"></label>
+              <label><span data-i18n="racingRegistry.show">Show</span><input name="yearShow" type="number" min="0"></label>
+              <label><span data-i18n="racingRegistry.earnings">Earnings</span><input name="yearEarnings" type="number" min="0" step="0.01"></label>
+              <label><span data-i18n="racingRegistry.last2Months">Last 2 months</span><input name="twoMonthStarts" type="number" min="0" placeholder="Starts"></label>
+              <label><span data-i18n="racingRegistry.wins">Wins</span><input name="twoMonthWins" type="number" min="0"></label>
+              <label><span data-i18n="racingRegistry.places">Places</span><input name="twoMonthPlaces" type="number" min="0"></label>
+              <label><span data-i18n="racingRegistry.show">Show</span><input name="twoMonthShow" type="number" min="0"></label>
+              <label><span data-i18n="racingRegistry.earnings">Earnings</span><input name="twoMonthEarnings" type="number" min="0" step="0.01"></label>
+            </fieldset>
+            <fieldset class="form-group full">
+              <legend data-i18n="racingRegistry.records">Records</legend>
+              <label><span data-i18n="racingRegistry.careerRecord">Career record</span><input name="careerRecord"></label>
+              <label><span data-i18n="racingRegistry.twelveMonthRecord">12 month record</span><input name="twelveMonthRecord"></label>
+              <label><span data-i18n="racingRegistry.yearRecord">Year record</span><input name="yearRecord"></label>
+              <label><span data-i18n="racingRegistry.shortDistanceRecord">Short distance record</span><input name="shortDistanceRecord"></label>
+              <label><span data-i18n="racingRegistry.longDistanceRecord">Long distance record</span><input name="longDistanceRecord"></label>
+            </fieldset>
+            <fieldset class="form-group full">
+              <legend data-i18n="racingRegistry.categories">Categories</legend>
+              <label><span data-i18n="racingRegistry.categoryMc">Categoria MC</span><input name="categoryMc"></label>
+              <label><span data-i18n="racingRegistry.categoryMs">Categoria MS</span><input name="categoryMs"></label>
+              <label><span data-i18n="racingRegistry.potentialMc">Potenziale MC</span><input name="potentialMc"></label>
+              <label><span data-i18n="racingRegistry.potentialMs">Potenziale MS</span><input name="potentialMs"></label>
+              <label class="checkbox-line"><input name="reclaimAllowed" type="checkbox"><span data-i18n="racingRegistry.reclaimAllowed">Reclaim allowed</span></label>
+            </fieldset>
             <label><span data-i18n="horses.racingCategory">Racing category</span><input name="racingCategory" placeholder="F"></label>
             <label><span data-i18n="horses.trainerName">Trainer</span><input name="trainerName"></label>
             <label><span data-i18n="horses.ownerName">Owner</span><input name="ownerName"></label>
@@ -709,7 +748,27 @@
             <label class="full"><span data-i18n="common.notesSimple">Notes</span><textarea name="notes" rows="3"></textarea></label>
             <button class="button primary" type="submit" data-i18n="racingRegistry.save">Save racing horse</button>
           </form>
-          <p class="update-note" data-i18n="racingRegistry.resultsPlaceholder">Results PDF import will be added later.</p>
+          <p class="update-note" data-i18n="racingRegistry.resultsImportFuture">Results import will be added later to update earnings and start history from result files.</p>
+          <p class="update-note" data-i18n="racingRegistry.summaryManualNote">Summary values are maintained by Super Admin for now.</p>
+          <form id="racingHorseStartForm" class="entry-form">
+            <input type="hidden" name="id">
+            <label><span data-i18n="racingRegistry.horseName">Horse name</span><select name="racingHorseId" required></select></label>
+            <label><span data-i18n="raceEntries.raceDate">Date</span><input name="raceDate" type="date" required></label>
+            <label><span data-i18n="raceEntries.racetrack">Racetrack name</span><input name="racetrackName"></label>
+            <label><span data-i18n="racingRegistry.racetrackCode">Racetrack code</span><input name="racetrackCode"></label>
+            <label><span data-i18n="racingRegistry.raceCode">Race code</span><input name="raceCode"></label>
+            <label><span data-i18n="racingRegistry.driver">Driver</span><input name="driverName"></label>
+            <label><span data-i18n="racingRegistry.placement">Placement</span><input name="placement"></label>
+            <label><span data-i18n="racingRegistry.kmTime">Km time</span><input name="kilometerTime"></label>
+            <label><span data-i18n="racingRegistry.distance">Distance</span><input name="distance" type="number" min="0"></label>
+            <label><span data-i18n="racingRegistry.starters">Starters</span><input name="startersInfo"></label>
+            <label><span data-i18n="racingRegistry.shoeing">Shoeing</span><input name="shoeing"></label>
+            <label><span data-i18n="racingRegistry.netPrize">Net prize</span><input name="netPrize" type="number" step="0.01"></label>
+            <label><span data-i18n="racingRegistry.grossPrize">Gross prize</span><input name="grossPrize" type="number" step="0.01"></label>
+            <label><span data-i18n="racingRegistry.videoUrl">Video URL</span><input name="videoUrl" type="url"></label>
+            <label class="full"><span data-i18n="common.notesSimple">Notes</span><textarea name="raceNotes" rows="3"></textarea></label>
+            <button class="button primary" type="submit" data-i18n="racingRegistry.addStart">Add start</button>
+          </form>
           <label class="full racing-registry-search"><span data-i18n="racingRegistry.search">Search racing horses</span><input id="racingHorseSearch" placeholder="Name or registration"></label>
           <div id="racingHorseRegistryList" class="item-list race-program-list"></div>
         </section>
