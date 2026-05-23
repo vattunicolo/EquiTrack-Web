@@ -2970,6 +2970,11 @@ Object.assign(translations.en, {
   'racingRegistry.startSaveFailed': 'Start history save failed: {error}',
   'racingRegistry.noStarts': 'No starts recorded yet.',
   'racingRegistry.noPerformanceSummary': 'No performance summary entered yet.',
+  'racingRegistry.recalculateSummary': 'Recalculate summary',
+  'racingRegistry.recalculateHelp': 'Calculates from saved start history.',
+  'racingRegistry.summaryRecalculated': 'Summary recalculated from {count} starts.',
+  'racingRegistry.noStartsToCalculate': 'No start history to calculate from.',
+  'racingRegistry.recalculateAfterImport': 'You can recalculate horse summaries from start history.',
   'raceControl.title': 'Race Control',
   'raceControl.tools': 'Super Admin race tools',
   'raceControl.help': 'Manage central racing horses, results, and published race programs for every stable.',
@@ -3210,6 +3215,11 @@ Object.assign(translations.fi, {
   'racingRegistry.startSaveFailed': 'Lähtöhistorian tallennus epäonnistui: {error}',
   'racingRegistry.noStarts': 'Lähtöjä ei ole vielä tallennettu.',
   'racingRegistry.noPerformanceSummary': 'Suoritusyhteenvetoa ei ole vielä täytetty.',
+  'racingRegistry.recalculateSummary': 'Laske yhteenveto uudelleen',
+  'racingRegistry.recalculateHelp': 'Lasketaan tallennetusta lähtöhistoriasta.',
+  'racingRegistry.summaryRecalculated': 'Yhteenveto laskettu uudelleen {count} lähdöstä.',
+  'racingRegistry.noStartsToCalculate': 'Ei lähtöhistoriaa laskentaa varten.',
+  'racingRegistry.recalculateAfterImport': 'Voit laskea hevosten yhteenvedot uudelleen lähtöhistoriasta.',
   'raceControl.title': 'Ravien hallinta',
   'raceControl.tools': 'Super Adminin ravityökalut',
   'raceControl.help': 'Hallinnoi keskitettyjä kilpahevosia, tuloksia ja julkaistuja raviohjelmia kaikille talleille.',
@@ -3450,6 +3460,11 @@ Object.assign(translations.it, {
   'racingRegistry.startSaveFailed': 'Salvataggio storico partenze non riuscito: {error}',
   'racingRegistry.noStarts': 'Nessuna partenza registrata.',
   'racingRegistry.noPerformanceSummary': 'Nessun riepilogo prestazioni inserito.',
+  'racingRegistry.recalculateSummary': 'Ricalcola riepilogo',
+  'racingRegistry.recalculateHelp': 'Calcola dallo storico partenze salvato.',
+  'racingRegistry.summaryRecalculated': 'Riepilogo ricalcolato da {count} partenze.',
+  'racingRegistry.noStartsToCalculate': 'Nessuno storico partenze da calcolare.',
+  'racingRegistry.recalculateAfterImport': 'Puoi ricalcolare i riepiloghi dei cavalli dallo storico partenze.',
   'raceControl.title': 'Controllo corse',
   'raceControl.tools': 'Strumenti corse Super Admin',
   'raceControl.help': 'Gestisci cavalli da corsa centrali, risultati e programmi pubblicati per tutte le scuderie.',
@@ -9469,6 +9484,100 @@ function getRacingStartsForHorse(racingHorseId) {
     .sort((a, b) => String(b.raceDate || '').localeCompare(String(a.raceDate || '')));
 }
 
+function parseRacingPlacement(value) {
+  const match = String(value || '').trim().match(/^0*(\d{1,2})/);
+  return match ? Number(match[1]) : null;
+}
+
+function parseKilometerTime(value) {
+  const match = String(value || '').trim().match(/\d+(?:[.,]\d+)?/);
+  if (!match) return null;
+  const number = Number(match[0].replace(',', '.'));
+  return Number.isFinite(number) ? number : null;
+}
+
+function getBestKilometerTime(starts, fallback = '') {
+  const best = starts
+    .map((start) => ({ value: start.kilometerTime, score: parseKilometerTime(start.kilometerTime) }))
+    .filter((entry) => Number.isFinite(entry.score))
+    .sort((a, b) => a.score - b.score)[0];
+  return best?.value || fallback || '';
+}
+
+function summarizeRacingStarts(starts) {
+  return starts.reduce((summary, start) => {
+    const placement = parseRacingPlacement(start.placement);
+    summary.starts += 1;
+    if (placement === 1) summary.wins += 1;
+    if (placement != null && placement <= 3) summary.places += 1;
+    if (placement != null && placement <= 5) summary.show += 1;
+    summary.earnings += toSafeNumber(start.grossPrize, 0);
+    return summary;
+  }, { starts: 0, wins: 0, places: 0, show: 0, earnings: 0 });
+}
+
+function dateMonthsAgo(months) {
+  const date = new Date();
+  date.setMonth(date.getMonth() - months);
+  return date.toISOString().slice(0, 10);
+}
+
+function assignRacingSummary(summary, prefix, values) {
+  summary[`${prefix}Starts`] = values.starts;
+  summary[`${prefix}Wins`] = values.wins;
+  summary[`${prefix}Places`] = values.places;
+  summary[`${prefix}Show`] = values.show;
+  summary[`${prefix}Earnings`] = Number(values.earnings.toFixed(2));
+}
+
+function calculateRacingHorseSummary(horse) {
+  const starts = getRacingStartsForHorse(horse.id);
+  if (!starts.length) return null;
+  const currentYear = String(new Date().getFullYear());
+  const twelveMonthStart = dateMonthsAgo(12);
+  const twoMonthStart = dateMonthsAgo(2);
+  const yearStarts = starts.filter((start) => String(start.raceDate || '').startsWith(currentYear));
+  const twelveMonthStarts = starts.filter((start) => start.raceDate && start.raceDate >= twelveMonthStart);
+  const twoMonthStarts = starts.filter((start) => start.raceDate && start.raceDate >= twoMonthStart);
+  const career = summarizeRacingStarts(starts);
+  const latestFive = starts.slice(0, 5);
+  const summary = {};
+  assignRacingSummary(summary, 'career', career);
+  assignRacingSummary(summary, 'twelveMonth', summarizeRacingStarts(twelveMonthStarts));
+  assignRacingSummary(summary, 'year', summarizeRacingStarts(yearStarts));
+  assignRacingSummary(summary, 'twoMonth', summarizeRacingStarts(twoMonthStarts));
+  summary.totalEarnings = summary.careerEarnings;
+  summary.last5Earnings = Number(latestFive.reduce((sum, start) => sum + toSafeNumber(start.grossPrize, 0), 0).toFixed(2));
+  summary.careerRecord = getBestKilometerTime(starts, horse.careerRecord);
+  summary.shortDistanceRecord = getBestKilometerTime(starts.filter((start) => toSafeNumber(start.distance, 0) < 2000), horse.shortDistanceRecord);
+  summary.longDistanceRecord = getBestKilometerTime(starts.filter((start) => toSafeNumber(start.distance, 0) >= 2000), horse.longDistanceRecord);
+  summary.yearRecord = getBestKilometerTime(yearStarts, horse.yearRecord);
+  summary.twelveMonthRecord = getBestKilometerTime(twelveMonthStarts, horse.twelveMonthRecord);
+  summary.lastResultsUpdate = starts[0]?.raceDate || horse.lastResultsUpdate || '';
+  return { starts, summary };
+}
+
+async function recalculateRacingHorseSummary(id) {
+  if (!isSuperAdmin()) return;
+  const horse = racingHorses.find((entry) => entry.id === id);
+  if (!horse) return;
+  const calculated = calculateRacingHorseSummary(horse);
+  if (!calculated) {
+    showMessage(t('racingRegistry.noStartsToCalculate'));
+    return;
+  }
+  try {
+    const saved = await saveRacingHorseToCloud({ ...horse, ...calculated.summary });
+    const existingIndex = racingHorses.findIndex((entry) => entry.id === saved.id);
+    if (existingIndex >= 0) racingHorses[existingIndex] = saved;
+    render();
+    showMessage(t('racingRegistry.summaryRecalculated', { count: calculated.starts.length }));
+  } catch (error) {
+    console.error('[EquiTrack racing registry] Summary recalculation failed', error);
+    showMessage(t('racingRegistry.saveFailed', { error: getCloudErrorMessage(error) }));
+  }
+}
+
 function renderRacingStartHistory(horse, editable = false, limit = 0) {
   const starts = getRacingStartsForHorse(horse.id);
   const visibleStarts = limit ? starts.slice(0, limit) : starts;
@@ -9549,8 +9658,12 @@ function renderRacingHorseProfile(horse, { editable = false, compact = false } =
           <h4>${escapeHtml(horse.horseName)}</h4>
           <div class="item-meta">${headerMeta.map((item) => `<span class="pill">${escapeHtml(item)}</span>`).join('')}</div>
         </div>
-        ${editable ? `<button class="button ghost" type="button" data-action="edit-racing-horse" data-id="${horse.id}">${t('common.edit')}</button>` : ''}
+        ${editable ? `<div class="item-actions">
+          <button class="button ghost" type="button" data-action="recalculate-racing-summary" data-id="${horse.id}">${t('racingRegistry.recalculateSummary')}</button>
+          <button class="button ghost" type="button" data-action="edit-racing-horse" data-id="${horse.id}">${t('common.edit')}</button>
+        </div>` : ''}
       </div>
+      ${editable ? `<p class="update-note">${t('racingRegistry.recalculateHelp')}</p>` : ''}
       ${renderRacingPerformanceSummary(horse)}
       <div class="horse-detail-grid racing-profile-panels">
         ${renderRacingRecords(horse)}
@@ -10547,6 +10660,7 @@ function handleListClick(event) {
     renderPublishedRacePrograms();
   }
   if (action === 'edit-racing-horse') fillRacingHorseForm(id);
+  if (action === 'recalculate-racing-summary') recalculateRacingHorseSummary(id);
   if (action === 'edit-racing-start') fillRacingHorseStartForm(id);
   if (action === 'delete-racing-start') handleRacingHorseStartDelete(id);
   if (action === 'edit-race-program') fillRaceProgramForm(id);
@@ -11490,7 +11604,7 @@ async function saveImportedResults() {
     }
     resultsImportPreviewItems = [];
     render();
-    const message = t('racingRegistry.resultsImportSaved', { count: savedCount, skipped: skippedCount, duplicates: duplicateCount });
+    const message = `${t('racingRegistry.resultsImportSaved', { count: savedCount, skipped: skippedCount, duplicates: duplicateCount })} ${t('racingRegistry.recalculateAfterImport')}`;
     if (els.resultsImportStatus) els.resultsImportStatus.textContent = message;
     showMessage(message);
   } catch (error) {
