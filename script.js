@@ -2816,6 +2816,8 @@ Object.assign(translations.en, {
   'raceEntries.importSaveFailed': 'Imported races could not be saved: {error}',
   'raceEntries.importTextLoaded': 'Text file loaded. Races found: {count}. Review before saving.',
   'raceEntries.importCsvLoaded': 'CSV file loaded. Races found: {count}. Review before saving.',
+  'raceEntries.advancedTools': 'Advanced race tools',
+  'raceEntries.manualTools': 'Manual race opportunity tools',
   'raceEntries.savedOpportunity': 'Race opportunity saved.',
   'raceEntries.deletedOpportunity': 'Race opportunity deleted.',
   'raceEntries.savedPlan': 'Planned race entry saved.',
@@ -3061,6 +3063,8 @@ Object.assign(translations.fi, {
   'raceEntries.importSaveFailed': 'Tuotuja lähtöjä ei voitu tallentaa: {error}',
   'raceEntries.importTextLoaded': 'Tekstitiedosto ladattu. Lähtöjä löytyi: {count}. Tarkista ennen tallennusta.',
   'raceEntries.importCsvLoaded': 'CSV-tiedosto ladattu. Lähtöjä löytyi: {count}. Tarkista ennen tallennusta.',
+  'raceEntries.advancedTools': 'Edistyneet ravityökalut',
+  'raceEntries.manualTools': 'Käsin lisättävät lähtötyökalut',
   'raceEntries.savedOpportunity': 'Lähtö tallennettu.',
   'raceEntries.deletedOpportunity': 'Lähtö poistettu.',
   'raceEntries.savedPlan': 'Suunniteltu ilmoittautuminen tallennettu.',
@@ -3306,6 +3310,8 @@ Object.assign(translations.it, {
   'raceEntries.importSaveFailed': 'Impossibile salvare le gare importate: {error}',
   'raceEntries.importTextLoaded': 'File di testo caricato. Gare trovate: {count}. Rivedi prima di salvare.',
   'raceEntries.importCsvLoaded': 'File CSV caricato. Gare trovate: {count}. Rivedi prima di salvare.',
+  'raceEntries.advancedTools': 'Strumenti gara avanzati',
+  'raceEntries.manualTools': 'Strumenti manuali per opportunità gara',
   'raceEntries.savedOpportunity': 'Opportunità gara salvata.',
   'raceEntries.deletedOpportunity': 'Opportunità gara eliminata.',
   'raceEntries.savedPlan': 'Iscrizione pianificata salvata.',
@@ -10097,6 +10103,7 @@ function renderRaceEntries() {
   const activeStable = getActiveStable();
   const adminMode = isSuperAdmin();
   const showStableView = !adminMode || raceStablePreviewForAdmin;
+  const showLegacyStableTools = adminMode;
   if (els.raceEntriesStableBadge) els.raceEntriesStableBadge.textContent = activeStable.name || t('cloudRead.noStable');
   if (els.raceEntriesModeBadge) els.raceEntriesModeBadge.textContent = cloudWriteMode ? t('calendar.cloudMode') : t('calendar.localMode');
   renderRaceControlDashboard();
@@ -10104,12 +10111,12 @@ function renderRaceEntries() {
   renderRacingHorseRegistry();
   renderResultsImportPreview();
   if (els.raceStablePublishedSection) els.raceStablePublishedSection.hidden = !showStableView;
-  if (els.raceStableManualSection) els.raceStableManualSection.hidden = adminMode;
-  if (els.raceStableOpportunitySection) els.raceStableOpportunitySection.hidden = adminMode;
-  if (els.raceImportPanel) els.raceImportPanel.hidden = adminMode && !raceStablePreviewForAdmin && !raceImportPreviewItems.length;
+  if (els.raceStableManualSection) els.raceStableManualSection.hidden = !showLegacyStableTools;
+  if (els.raceStableOpportunitySection) els.raceStableOpportunitySection.hidden = !showLegacyStableTools;
+  if (els.raceImportPanel) els.raceImportPanel.hidden = !showLegacyStableTools || (!raceStablePreviewForAdmin && !raceImportPreviewItems.length);
   renderPublishedRacePrograms();
   renderRaceImportPreview();
-  if (!showStableView) {
+  if (!showStableView && !showLegacyStableTools) {
     els.raceOpportunityList.innerHTML = '';
     return;
   }
