@@ -2822,6 +2822,7 @@ Object.assign(translations.en, {
   'raceImport.autoDetect': 'Auto detect',
   'raceImport.genericItalianProgram': 'Generic Italian program',
   'raceImport.napoliProgram': 'Napoli program',
+  'raceImport.bolognaProgram': 'Bologna program',
   'raceImport.genericItalianResults': 'Generic Italian results',
   'raceImport.napoliResults': 'Napoli results',
   'raceImport.parserConfidence': 'Parser confidence',
@@ -3081,6 +3082,7 @@ Object.assign(translations.fi, {
   'raceImport.autoDetect': 'Tunnista automaattisesti',
   'raceImport.genericItalianProgram': 'Yleinen italialainen raviohjelma',
   'raceImport.napoliProgram': 'Napoli-raviohjelma',
+  'raceImport.bolognaProgram': 'Bologna-ohjelma',
   'raceImport.genericItalianResults': 'Yleiset italialaiset tulokset',
   'raceImport.napoliResults': 'Napoli-tulokset',
   'raceImport.parserConfidence': 'Parserin varmuus',
@@ -3340,6 +3342,7 @@ Object.assign(translations.it, {
   'raceImport.autoDetect': 'Rilevamento automatico',
   'raceImport.genericItalianProgram': 'Programma italiano generico',
   'raceImport.napoliProgram': 'Programma Napoli',
+  'raceImport.bolognaProgram': 'Programma Bologna',
   'raceImport.genericItalianResults': 'Risultati italiani generici',
   'raceImport.napoliResults': 'Risultati Napoli',
   'raceImport.parserConfidence': 'Affidabilità parser',
@@ -3545,6 +3548,7 @@ const RACE_IMPORT_PRESETS = [
   { value: 'auto', labelKey: 'raceImport.autoDetect', kind: 'auto' },
   { value: 'generic_italian_program', labelKey: 'raceImport.genericItalianProgram', kind: 'program' },
   { value: 'napoli_program', labelKey: 'raceImport.napoliProgram', kind: 'program' },
+  { value: 'bologna_program', labelKey: 'raceImport.bolognaProgram', kind: 'program' },
   { value: 'generic_italian_results', labelKey: 'raceImport.genericItalianResults', kind: 'results' },
   { value: 'napoli_results', labelKey: 'raceImport.napoliResults', kind: 'results' }
 ];
@@ -4196,6 +4200,51 @@ function parseItalianProgramDate(line) {
   return `${match[3]}-${month}-${day}`;
 }
 
+function getItalianMonthNumber(monthName) {
+  const normalized = String(monthName || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+  const months = {
+    gennaio: '01',
+    febbraio: '02',
+    marzo: '03',
+    aprile: '04',
+    maggio: '05',
+    giugno: '06',
+    luglio: '07',
+    agosto: '08',
+    settembre: '09',
+    ottobre: '10',
+    novembre: '11',
+    dicembre: '12'
+  };
+  return months[normalized] || '';
+}
+
+function parseItalianPlainDate(value) {
+  const match = String(value || '').match(/\b(\d{1,2})\s+([A-Za-zÀ-ÿ]+)\s+(\d{4})\b/i);
+  if (!match) return '';
+  const month = getItalianMonthNumber(match[2]);
+  if (!month) return '';
+  return `${match[3]}-${month}-${match[1].padStart(2, '0')}`;
+}
+
+function parseBolognaProgramDate(line) {
+  const match = String(line || '').trim().match(/^(?:LUNEDI|LUNEDÌ|MARTEDI|MARTEDÌ|MERCOLEDI|MERCOLEDÌ|GIOVEDI|GIOVEDÌ|VENERDI|VENERDÌ|SABATO|DOMENICA)\s+(\d{1,2})\s+([A-Za-zÀ-ÿ]+)\s+(\d{4})\s*\((\d+)\)/i);
+  if (!match) return null;
+  const month = getItalianMonthNumber(match[2]);
+  if (!month) return null;
+  return {
+    raceDate: `${match[3]}-${month}-${match[1].padStart(2, '0')}`,
+    meetingNumber: match[4]
+  };
+}
+
+function looksLikeBolognaDayHeader(line) {
+  return Boolean(parseBolognaProgramDate(line));
+}
+
 function looksLikeItalianRaceLine(line) {
   const value = String(line || '').trim();
   if (!/^\d{1,2}\s+\S+/.test(value)) return false;
@@ -4258,6 +4307,10 @@ function getConfidenceLabel(confidence) {
 
 function detectItalianProgramPreset(text) {
   const normalized = String(text || '').toLowerCase();
+  const hasBolognaHeader = normalizeItalianProgramText(text).split('\n').some((line) => looksLikeBolognaDayHeader(line.trim()));
+  if (normalized.includes('bologna') || normalized.includes('arcoveggio') || hasBolognaHeader) {
+    return { preset: 'bologna_program', confidence: 'high' };
+  }
   if (normalized.includes('napoli') || normalized.includes('giornata')) {
     return {
       preset: normalized.includes('napoli') ? 'napoli_program' : 'generic_italian_program',
@@ -4370,6 +4423,146 @@ function parseItalianRaceProgramText(text, options = {}) {
   return races;
 }
 
+function isBolognaDeadlineLine(line) {
+  return /^(ISCRIZIONI|SORTEGGI|PARTENTI)\s*:/i.test(String(line || '').trim());
+}
+
+function parseBolognaDeadline(line) {
+  if (!/^ISCRIZIONI\s*:/i.test(String(line || '').trim())) return '';
+  return parseItalianPlainDate(line);
+}
+
+function parseBolognaRaceHeaderFromText(text) {
+  const normalized = String(text || '').replace(/\s+/g, ' ').trim();
+  const match = normalized.match(/^(\d{1,2})\)\s+(.+?)\s*-\s*Metri\s+([\d./-]+(?:\s*\([^)]+\))?)\s+E\.?\s*([\d.,]+)/i);
+  if (!match) return null;
+  return {
+    raceNumber: match[1],
+    raceName: match[2].trim(),
+    distance: `Metri ${match[3].trim()}`,
+    prizeInfo: `E. ${match[4].trim()}`
+  };
+}
+
+function buildBolognaRaceOpportunity(currentDate, meetingNumber, header, bodyLines, entryDeadline = '') {
+  const normalizedBody = bodyLines.map((line) => line.trim()).filter(Boolean);
+  const fullText = normalizedBody.join(' ');
+  const classMatch = fullText.match(/\(([^)]*)\)/);
+  const raceClass = classMatch ? classMatch[1].trim() : '';
+  const eligibilityNotes = fullText.replace(/\([^)]*\)/, '').trim();
+  const opportunity = normalizeRaceOpportunity({
+    id: createRaceImportLocalId({
+      racetrackName: 'Bologna',
+      raceDate: currentDate,
+      raceNumber: header.raceNumber,
+      raceName: header.raceName
+    }),
+    racetrackName: 'Bologna',
+    raceDate: currentDate,
+    raceNumber: header.raceNumber,
+    raceName: header.raceName,
+    raceClass,
+    distance: header.distance,
+    prizeInfo: header.prizeInfo,
+    eligibilityNotes,
+    entryDeadline,
+    notes: [meetingNumber && `Meeting ${meetingNumber}`, normalizedBody.join('\n')].filter(Boolean).join('\n')
+  });
+  opportunity.id = createRaceImportLocalId(opportunity);
+  return opportunity;
+}
+
+function parseBolognaRaceProgramText(text) {
+  const lines = normalizeItalianProgramText(text)
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const races = [];
+  let currentDate = '';
+  let currentMeeting = '';
+  let currentDayRaceIndexes = [];
+  let currentHeader = null;
+  let currentHeaderLines = [];
+  let currentBody = [];
+  let currentEntryDeadline = '';
+  let awaitingEntryDeadlineDate = false;
+
+  const applyDeadlineToDay = (deadline) => {
+    if (!deadline) return;
+    currentEntryDeadline = deadline;
+    currentDayRaceIndexes.forEach((index) => {
+      races[index].entryDeadline = deadline;
+    });
+  };
+
+  const flushRace = () => {
+    if (!currentHeader && currentHeaderLines.length) {
+      currentHeader = parseBolognaRaceHeaderFromText(currentHeaderLines.join(' '));
+    }
+    if (!currentHeader || !currentDate) {
+      currentHeader = null;
+      currentHeaderLines = [];
+      currentBody = [];
+      return;
+    }
+    const index = races.length;
+    races.push(buildBolognaRaceOpportunity(currentDate, currentMeeting, currentHeader, currentBody, currentEntryDeadline));
+    currentDayRaceIndexes.push(index);
+    currentHeader = null;
+    currentHeaderLines = [];
+    currentBody = [];
+  };
+
+  lines.forEach((line) => {
+    const day = parseBolognaProgramDate(line);
+    if (day) {
+      flushRace();
+      currentDate = day.raceDate;
+      currentMeeting = day.meetingNumber;
+      currentDayRaceIndexes = [];
+      currentEntryDeadline = '';
+      awaitingEntryDeadlineDate = false;
+      return;
+    }
+    if (!currentDate) return;
+    if (isBolognaDeadlineLine(line)) {
+      flushRace();
+      const parsedDeadline = parseBolognaDeadline(line);
+      if (parsedDeadline) {
+        applyDeadlineToDay(parsedDeadline);
+        awaitingEntryDeadlineDate = false;
+      } else {
+        awaitingEntryDeadlineDate = /^ISCRIZIONI\s*:/i.test(line);
+      }
+      return;
+    }
+    if (awaitingEntryDeadlineDate) {
+      const parsedDeadline = parseItalianPlainDate(line);
+      if (parsedDeadline) {
+        applyDeadlineToDay(parsedDeadline);
+        awaitingEntryDeadlineDate = false;
+        return;
+      }
+    }
+    if (/^\d{1,2}\)/.test(line)) {
+      flushRace();
+      currentHeaderLines = [line];
+      currentHeader = parseBolognaRaceHeaderFromText(line);
+      if (currentHeader) currentHeaderLines = [];
+      return;
+    }
+    if (currentHeaderLines.length) {
+      currentHeaderLines.push(line);
+      currentHeader = parseBolognaRaceHeaderFromText(currentHeaderLines.join(' '));
+      if (currentHeader) currentHeaderLines = [];
+      return;
+    }
+    if (currentHeader) currentBody.push(line);
+  });
+  flushRace();
+  return races;
+}
+
 function parseRaceCsvOrText(text, type = 'text') {
   const parsedProgram = parseItalianRaceProgramText(text);
   if (parsedProgram.length || type === 'pdf') return parsedProgram;
@@ -4404,9 +4597,11 @@ function parseRaceCsvOrText(text, type = 'text') {
 function parseRaceProgramWithPreset(text, type = 'text', selectedPreset = 'auto') {
   const detection = selectedPreset === 'auto'
     ? detectItalianProgramPreset(text)
-    : { preset: selectedPreset, confidence: selectedPreset === 'napoli_program' ? 'high' : 'medium' };
+    : { preset: selectedPreset, confidence: ['napoli_program', 'bologna_program'].includes(selectedPreset) ? 'high' : 'medium' };
   const options = detection.preset === 'napoli_program' ? { racetrackName: 'Napoli' } : {};
-  const races = type === 'pdf'
+  const races = detection.preset === 'bologna_program'
+    ? parseBolognaRaceProgramText(text)
+    : type === 'pdf'
     ? parseItalianRaceProgramText(text, options)
     : parseRaceCsvOrText(text, type);
   return {
