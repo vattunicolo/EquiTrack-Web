@@ -2818,6 +2818,18 @@ Object.assign(translations.en, {
   'raceEntries.importCsvLoaded': 'CSV file loaded. Races found: {count}. Review before saving.',
   'raceEntries.advancedTools': 'Advanced race tools',
   'raceEntries.manualTools': 'Manual race opportunity tools',
+  'raceImport.preset': 'Import preset',
+  'raceImport.autoDetect': 'Auto detect',
+  'raceImport.genericItalianProgram': 'Generic Italian program',
+  'raceImport.napoliProgram': 'Napoli program',
+  'raceImport.genericItalianResults': 'Generic Italian results',
+  'raceImport.napoliResults': 'Napoli results',
+  'raceImport.parserConfidence': 'Parser confidence',
+  'raceImport.confidenceHigh': 'High',
+  'raceImport.confidenceMedium': 'Medium',
+  'raceImport.confidenceLow': 'Low',
+  'raceImport.formatWarning': 'PDF formats vary by racetrack. Review imported data before saving.',
+  'raceImport.presetUsed': 'Preset used: {preset}. {confidenceLabel}: {confidence}.',
   'raceEntries.savedOpportunity': 'Race opportunity saved.',
   'raceEntries.deletedOpportunity': 'Race opportunity deleted.',
   'raceEntries.savedPlan': 'Planned race entry saved.',
@@ -3065,6 +3077,18 @@ Object.assign(translations.fi, {
   'raceEntries.importCsvLoaded': 'CSV-tiedosto ladattu. Lähtöjä löytyi: {count}. Tarkista ennen tallennusta.',
   'raceEntries.advancedTools': 'Edistyneet ravityökalut',
   'raceEntries.manualTools': 'Käsin lisättävät lähtötyökalut',
+  'raceImport.preset': 'Tuontiasetus',
+  'raceImport.autoDetect': 'Tunnista automaattisesti',
+  'raceImport.genericItalianProgram': 'Yleinen italialainen raviohjelma',
+  'raceImport.napoliProgram': 'Napoli-raviohjelma',
+  'raceImport.genericItalianResults': 'Yleiset italialaiset tulokset',
+  'raceImport.napoliResults': 'Napoli-tulokset',
+  'raceImport.parserConfidence': 'Parserin varmuus',
+  'raceImport.confidenceHigh': 'Korkea',
+  'raceImport.confidenceMedium': 'Keskitaso',
+  'raceImport.confidenceLow': 'Matala',
+  'raceImport.formatWarning': 'PDF-muodot vaihtelevat raviradoittain. Tarkista tuodut tiedot ennen tallennusta.',
+  'raceImport.presetUsed': 'Käytetty asetus: {preset}. {confidenceLabel}: {confidence}.',
   'raceEntries.savedOpportunity': 'Lähtö tallennettu.',
   'raceEntries.deletedOpportunity': 'Lähtö poistettu.',
   'raceEntries.savedPlan': 'Suunniteltu ilmoittautuminen tallennettu.',
@@ -3312,6 +3336,18 @@ Object.assign(translations.it, {
   'raceEntries.importCsvLoaded': 'File CSV caricato. Gare trovate: {count}. Rivedi prima di salvare.',
   'raceEntries.advancedTools': 'Strumenti gara avanzati',
   'raceEntries.manualTools': 'Strumenti manuali per opportunità gara',
+  'raceImport.preset': 'Preset importazione',
+  'raceImport.autoDetect': 'Rilevamento automatico',
+  'raceImport.genericItalianProgram': 'Programma italiano generico',
+  'raceImport.napoliProgram': 'Programma Napoli',
+  'raceImport.genericItalianResults': 'Risultati italiani generici',
+  'raceImport.napoliResults': 'Risultati Napoli',
+  'raceImport.parserConfidence': 'Affidabilità parser',
+  'raceImport.confidenceHigh': 'Alta',
+  'raceImport.confidenceMedium': 'Media',
+  'raceImport.confidenceLow': 'Bassa',
+  'raceImport.formatWarning': 'I formati PDF variano in base all’ippodromo. Controlla i dati importati prima di salvare.',
+  'raceImport.presetUsed': 'Preset usato: {preset}. {confidenceLabel}: {confidence}.',
   'raceEntries.savedOpportunity': 'Opportunità gara salvata.',
   'raceEntries.deletedOpportunity': 'Opportunità gara eliminata.',
   'raceEntries.savedPlan': 'Iscrizione pianificata salvata.',
@@ -3505,6 +3541,14 @@ Object.assign(translations.it, {
 let currentLanguage = localStorage.getItem(LANGUAGE_KEY) || DEFAULT_LANGUAGE;
 if (!translations[currentLanguage]) currentLanguage = DEFAULT_LANGUAGE;
 
+const RACE_IMPORT_PRESETS = [
+  { value: 'auto', labelKey: 'raceImport.autoDetect', kind: 'auto' },
+  { value: 'generic_italian_program', labelKey: 'raceImport.genericItalianProgram', kind: 'program' },
+  { value: 'napoli_program', labelKey: 'raceImport.napoliProgram', kind: 'program' },
+  { value: 'generic_italian_results', labelKey: 'raceImport.genericItalianResults', kind: 'results' },
+  { value: 'napoli_results', labelKey: 'raceImport.napoliResults', kind: 'results' }
+];
+
 const defaultData = {
   horses: [
     { id: createId(), name: 'Aurora', age: 7, notes: 'Light feed at night. Training notes reviewed weekly.' },
@@ -3684,12 +3728,14 @@ const els = {
   racingHorseSearch: document.querySelector('#racingHorseSearch'),
   racingHorseRegistryList: document.querySelector('#racingHorseRegistryList'),
   resultsImportInput: document.querySelector('#resultsImportInput'),
+  resultsImportPresetSelect: document.querySelector('#resultsImportPresetSelect'),
   resultsImportUpdateEarnings: document.querySelector('#resultsImportUpdateEarnings'),
   resultsImportStatus: document.querySelector('#resultsImportStatus'),
   resultsImportPreview: document.querySelector('#resultsImportPreview'),
   resultsImportSaveButton: document.querySelector('#resultsImportSaveButton'),
   raceImportProgramLabel: document.querySelector('#raceImportProgramLabel'),
   raceImportProgramSelect: document.querySelector('#raceImportProgramSelect'),
+  raceImportPresetSelect: document.querySelector('#raceImportPresetSelect'),
   publishedRaceProgramList: document.querySelector('#publishedRaceProgramList'),
   raceStablePublishedSection: document.querySelector('#raceStablePublishedSection'),
   raceStableManualSection: document.querySelector('#raceStableManualSection'),
@@ -4200,16 +4246,53 @@ function extractEligibilityFromLines(lines) {
   return eligibilityLines.join(' ').trim();
 }
 
-function buildRaceOpportunityFromBlock(currentDate, header, bodyLines) {
+function getImportPresetLabel(presetValue) {
+  const preset = RACE_IMPORT_PRESETS.find((entry) => entry.value === presetValue);
+  return preset ? t(preset.labelKey) : t('raceImport.autoDetect');
+}
+
+function getConfidenceLabel(confidence) {
+  const safeConfidence = ['high', 'medium', 'low'].includes(confidence) ? confidence : 'low';
+  return t(`raceImport.confidence${safeConfidence.charAt(0).toUpperCase()}${safeConfidence.slice(1)}`);
+}
+
+function detectItalianProgramPreset(text) {
+  const normalized = String(text || '').toLowerCase();
+  if (normalized.includes('napoli') || normalized.includes('giornata')) {
+    return {
+      preset: normalized.includes('napoli') ? 'napoli_program' : 'generic_italian_program',
+      confidence: normalized.includes('napoli') ? 'high' : 'medium'
+    };
+  }
+  return { preset: 'generic_italian_program', confidence: 'low' };
+}
+
+function detectItalianResultsPreset(text) {
+  const normalized = String(text || '').toLowerCase();
+  if (normalized.includes('napoli riunione')) return { preset: 'napoli_results', confidence: 'high' };
+  if (normalized.includes('riunione') && normalized.includes('metri')) return { preset: 'generic_italian_results', confidence: 'medium' };
+  return { preset: 'generic_italian_results', confidence: 'low' };
+}
+
+function getPresetStatusText(result) {
+  return `${t('raceImport.presetUsed', {
+    preset: getImportPresetLabel(result.preset),
+    confidenceLabel: t('raceImport.parserConfidence'),
+    confidence: getConfidenceLabel(result.confidence)
+  })} ${t('raceImport.formatWarning')}`;
+}
+
+function buildRaceOpportunityFromBlock(currentDate, header, bodyLines, options = {}) {
+  const racetrackName = options.racetrackName || 'Napoli';
   const normalizedBody = bodyLines.map((line) => line.trim()).filter(Boolean);
   const opportunity = normalizeRaceOpportunity({
     id: createRaceImportLocalId({
-      racetrackName: 'Napoli',
+      racetrackName,
       raceDate: currentDate,
       raceNumber: header.raceNumber,
       raceName: header.raceName
     }),
-    racetrackName: 'Napoli',
+    racetrackName,
     raceDate: currentDate,
     raceNumber: header.raceNumber,
     raceName: header.raceName,
@@ -4224,7 +4307,7 @@ function buildRaceOpportunityFromBlock(currentDate, header, bodyLines) {
   return opportunity;
 }
 
-function parseItalianRaceProgramText(text) {
+function parseItalianRaceProgramText(text, options = {}) {
   const lines = normalizeItalianProgramText(text)
     .split('\n')
     .map((line) => line.trim())
@@ -4245,7 +4328,7 @@ function parseItalianRaceProgramText(text) {
   const flushRace = () => {
     finalizeHeaderDraft();
     if (!currentHeader || !currentDate) return;
-    races.push(buildRaceOpportunityFromBlock(currentDate, currentHeader, currentBody));
+    races.push(buildRaceOpportunityFromBlock(currentDate, currentHeader, currentBody, options));
     currentHeader = null;
     currentHeaderLines = [];
     currentBody = [];
@@ -4316,6 +4399,20 @@ function parseRaceCsvOrText(text, type = 'text') {
       });
     })
     .filter(Boolean);
+}
+
+function parseRaceProgramWithPreset(text, type = 'text', selectedPreset = 'auto') {
+  const detection = selectedPreset === 'auto'
+    ? detectItalianProgramPreset(text)
+    : { preset: selectedPreset, confidence: selectedPreset === 'napoli_program' ? 'high' : 'medium' };
+  const options = detection.preset === 'napoli_program' ? { racetrackName: 'Napoli' } : {};
+  const races = type === 'pdf'
+    ? parseItalianRaceProgramText(text, options)
+    : parseRaceCsvOrText(text, type);
+  return {
+    ...detection,
+    races
+  };
 }
 
 function parseItalianNumber(value) {
@@ -4489,6 +4586,16 @@ function parseItalianResultsPdfText(text) {
     }
   });
   return enrichResultImportMatches(rows);
+}
+
+function parseResultsWithPreset(text, selectedPreset = 'auto') {
+  const detection = selectedPreset === 'auto'
+    ? detectItalianResultsPreset(text)
+    : { preset: selectedPreset, confidence: selectedPreset === 'napoli_results' ? 'high' : 'medium' };
+  return {
+    ...detection,
+    rows: parseItalianResultsPdfText(text)
+  };
 }
 
 function normalizeTask(item) {
@@ -9447,6 +9554,20 @@ function renderRaceProgramOptions() {
   if (programs.some((program) => program.id === currentValue)) els.raceImportProgramSelect.value = currentValue;
 }
 
+function renderImportPresetOptions() {
+  const renderOptions = (select, kind) => {
+    if (!select) return;
+    const currentValue = select.value || 'auto';
+    const presets = RACE_IMPORT_PRESETS.filter((preset) => preset.kind === 'auto' || preset.kind === kind);
+    select.innerHTML = presets
+      .map((preset) => `<option value="${preset.value}">${t(preset.labelKey)}</option>`)
+      .join('');
+    select.value = presets.some((preset) => preset.value === currentValue) ? currentValue : 'auto';
+  };
+  renderOptions(els.raceImportPresetSelect, 'program');
+  renderOptions(els.resultsImportPresetSelect, 'results');
+}
+
 function getRaceProgramStatusLabel(status) {
   const safeStatus = status || 'draft';
   return t(`racePrograms.status${safeStatus.charAt(0).toUpperCase()}${safeStatus.slice(1)}`);
@@ -10107,6 +10228,7 @@ function renderRaceEntries() {
   if (els.raceEntriesStableBadge) els.raceEntriesStableBadge.textContent = activeStable.name || t('cloudRead.noStable');
   if (els.raceEntriesModeBadge) els.raceEntriesModeBadge.textContent = cloudWriteMode ? t('calendar.cloudMode') : t('calendar.localMode');
   renderRaceControlDashboard();
+  renderImportPresetOptions();
   renderRaceProgramAdmin();
   renderRacingHorseRegistry();
   renderResultsImportPreview();
@@ -11437,7 +11559,7 @@ async function extractPdfText(file) {
   return pages.join('\n');
 }
 
-function setRaceImportPreview(races, statusKey = 'raceEntries.racesFound') {
+function setRaceImportPreview(races, statusKey = 'raceEntries.racesFound', parserResult = null) {
   const selectedProgram = racePrograms.find((program) => program.id === els.raceImportProgramSelect?.value);
   raceImportPreviewItems = races.map((race) => ({
     ...normalizeRaceOpportunity({
@@ -11452,7 +11574,7 @@ function setRaceImportPreview(races, statusKey = 'raceEntries.racesFound') {
   }));
   if (els.raceImportStatus) {
     els.raceImportStatus.textContent = raceImportPreviewItems.length
-      ? `${t(statusKey, { count: raceImportPreviewItems.length })} ${t('raceEntries.reviewImported')}`
+      ? `${t(statusKey, { count: raceImportPreviewItems.length })} ${t('raceEntries.reviewImported')} ${parserResult ? getPresetStatusText(parserResult) : ''}`
       : t('raceEntries.noRacesFound');
   }
   renderRaceImportPreview();
@@ -11474,13 +11596,14 @@ async function handleRaceImportFile(event) {
     } else {
       text = await file.text();
     }
-    const races = parseRaceCsvOrText(text, isPdf ? 'pdf' : isCsv ? 'csv' : 'text');
+    const parserResult = parseRaceProgramWithPreset(text, isPdf ? 'pdf' : isCsv ? 'csv' : 'text', els.raceImportPresetSelect?.value || 'auto');
+    const races = parserResult.races;
     if (!races.length) {
       if (els.raceImportStatus) els.raceImportStatus.textContent = t('raceEntries.noRacesFound');
       showMessage(t('raceEntries.noRacesFound'));
       return;
     }
-    setRaceImportPreview(races, isPdf ? 'raceEntries.racesFound' : isCsv ? 'raceEntries.importCsvLoaded' : 'raceEntries.importTextLoaded');
+    setRaceImportPreview(races, isPdf ? 'raceEntries.racesFound' : isCsv ? 'raceEntries.importCsvLoaded' : 'raceEntries.importTextLoaded', parserResult);
     showMessage(t('raceEntries.racesFound', { count: races.length }));
   } catch (error) {
     console.error('[EquiTrack race entries] Race file import failed', error);
@@ -11510,7 +11633,8 @@ async function handleResultsImportFile(event) {
     }
     if (els.resultsImportStatus) els.resultsImportStatus.textContent = t('racingRegistry.readingResultsPdf');
     const text = await extractPdfText(file);
-    const rows = parseItalianResultsPdfText(text);
+    const parserResult = parseResultsWithPreset(text, els.resultsImportPresetSelect?.value || 'auto');
+    const rows = parserResult.rows;
     if (!rows.length) {
       if (els.resultsImportStatus) els.resultsImportStatus.textContent = t('racingRegistry.noResultsFound');
       showMessage(t('racingRegistry.noResultsFound'));
@@ -11519,7 +11643,7 @@ async function handleResultsImportFile(event) {
     resultsImportPreviewItems = rows;
     renderResultsImportPreview();
     if (els.resultsImportStatus) {
-      els.resultsImportStatus.textContent = `${t('racingRegistry.resultsFound', { count: rows.length })} ${t('racingRegistry.reviewResults')}`;
+      els.resultsImportStatus.textContent = `${t('racingRegistry.resultsFound', { count: rows.length })} ${t('racingRegistry.reviewResults')} ${getPresetStatusText(parserResult)}`;
     }
     showMessage(t('racingRegistry.resultsFound', { count: rows.length }));
   } catch (error) {
