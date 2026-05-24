@@ -542,6 +542,10 @@ const translations = {
     'horses.color': 'Color',
     'horses.registration': 'Registration number',
     'horses.racingProfile': 'Racing profile',
+    'horses.officialRacingManaged': 'Official racing data is managed by Super Admin.',
+    'horses.linkRacingHelp': 'Link this stable horse to a Racing Horse Registry record to use official racing data.',
+    'horses.legacyRacingFields': 'Legacy racing fields',
+    'horses.advancedFallbackRacingFields': 'Advanced fallback racing fields',
     'horses.countryOfOrigin': 'Country of origin',
     'horses.totalEarnings': 'Total earnings',
     'horses.last5Earnings': 'Earnings in last 5 starts',
@@ -1229,6 +1233,10 @@ const translations = {
     'horses.color': 'Vari',
     'horses.registration': 'Rekisterinumero',
     'horses.racingProfile': 'Kilpailuprofiili',
+    'horses.officialRacingManaged': 'Virallisia kilpailutietoja hallinnoi Super Admin.',
+    'horses.linkRacingHelp': 'Linkitä tallihevonen kilpahevosrekisterin hevoseen, jotta virallisia kilpailutietoja voidaan käyttää.',
+    'horses.legacyRacingFields': 'Vanhat kilpailukentät',
+    'horses.advancedFallbackRacingFields': 'Edistyneet kilpailutietojen varakentät',
     'horses.countryOfOrigin': 'Alkuperämaa',
     'horses.totalEarnings': 'Kokonaisansiot',
     'horses.last5Earnings': 'Ansiot viimeisissä 5 lähdössä',
@@ -1916,6 +1924,10 @@ const translations = {
     'horses.color': 'Colore',
     'horses.registration': 'Numero registrazione',
     'horses.racingProfile': 'Profilo corse',
+    'horses.officialRacingManaged': 'I dati ufficiali delle corse sono gestiti dal Super Admin.',
+    'horses.linkRacingHelp': 'Collega questo cavallo della scuderia a un record del Registro cavalli da corsa per usare i dati ufficiali.',
+    'horses.legacyRacingFields': 'Campi corse legacy',
+    'horses.advancedFallbackRacingFields': 'Campi corse fallback avanzati',
     'horses.countryOfOrigin': 'Paese di origine',
     'horses.totalEarnings': 'Vincite totali',
     'horses.last5Earnings': 'Vincite nelle ultime 5 corse',
@@ -3678,6 +3690,7 @@ const els = {
   raceImportPanel: document.querySelector('#raceImportPanel'),
   raceStableOpportunitySection: document.querySelector('#raceStableOpportunitySection'),
   horseForm: document.querySelector('#horseForm'),
+  horseLinkedRacingSummary: document.querySelector('#horseLinkedRacingSummary'),
   careForm: document.querySelector('#careForm'),
   careHistoryList: document.querySelector('#careHistoryList'),
   taskForm: document.querySelector('#taskForm'),
@@ -8058,6 +8071,7 @@ function renderHorseOptions() {
         .sort((a, b) => a.horseName.localeCompare(b.horseName))
         .map((horse) => `<option value="${horse.id}">${escapeHtml([horse.horseName, horse.registrationNumber].filter(Boolean).join(' - '))}</option>`))
       .join('');
+    renderHorseLinkedRacingSummary();
   }
   if (els.racingHorseStartForm?.elements.racingHorseId) {
     els.racingHorseStartForm.elements.racingHorseId.innerHTML = [`<option value="">${t('racingRegistry.horseName')}</option>`]
@@ -8067,6 +8081,25 @@ function renderHorseOptions() {
       .join('');
   }
   renderRaceEntryOptions();
+}
+
+function renderHorseLinkedRacingSummary() {
+  if (!els.horseLinkedRacingSummary || !els.horseForm?.elements.racingHorseId) return;
+  const linked = racingHorses.find((horse) => horse.id === els.horseForm.elements.racingHorseId.value);
+  if (!linked) {
+    els.horseLinkedRacingSummary.textContent = t('horses.linkRacingHelp');
+    return;
+  }
+  const parts = [
+    linked.registrationNumber && `${t('racingRegistry.registration')}: ${linked.registrationNumber}`,
+    (linked.careerEarnings || linked.totalEarnings) && `${t('racingRegistry.totalEarnings')}: ${linked.careerEarnings || linked.totalEarnings}`,
+    linked.last5Earnings && `${t('racingRegistry.last5Earnings')}: ${linked.last5Earnings}`,
+    linked.racingCategory && `${t('horses.racingCategory')}: ${linked.racingCategory}`,
+    linked.lastResultsUpdate && `${t('racingRegistry.lastResultsUpdate')}: ${linked.lastResultsUpdate}`
+  ].filter(Boolean);
+  els.horseLinkedRacingSummary.textContent = parts.length
+    ? `${t('horses.officialRacingManaged')} ${parts.join(' | ')}`
+    : t('horses.officialRacingManaged');
 }
 
 function renderRaceEntryOptions() {
@@ -8661,6 +8694,20 @@ function renderHorses() {
     const horse = normalizeHorse(rawHorse);
     const linkedRacingHorse = getLinkedRacingHorse(horse);
     const headline = [horse.breed, horse.gender, horse.color].filter(Boolean).join(' · ');
+    const legacyRacingRows = [
+      ['horses.registration', horse.registration],
+      ['horses.birth', horse.birth],
+      ['horses.gender', horse.gender],
+      ['horses.countryOfOrigin', horse.countryOfOrigin],
+      ['horses.totalEarnings', horse.totalEarnings],
+      ['horses.last5Earnings', horse.last5Earnings],
+      ['horses.racingCategory', horse.racingCategory],
+      ['horses.trainerName', horse.trainerName],
+      ['horses.ownerName', horse.ownerName],
+      ['horses.defaultDriver', horse.defaultDriver],
+      ['horses.racingNotes', horse.racingNotes]
+    ];
+    const hasLegacyRacingData = legacyRacingRows.some(([, value]) => Boolean(value));
     const importantMeta = [
       horse.owner && `${t('horses.owner')}: ${horse.owner}`,
       horse.birth && `${t('horses.birth')}: ${horse.birth}`,
@@ -8693,19 +8740,6 @@ function renderHorses() {
                 ['horses.breed', horse.breed],
                 ['horses.color', horse.color]
               ])}
-              ${renderHorseDetailGroup('horses.racingProfile', [
-                ['horses.registration', horse.registration],
-                ['horses.birth', horse.birth],
-                ['horses.gender', horse.gender],
-                ['horses.countryOfOrigin', horse.countryOfOrigin],
-                ['horses.totalEarnings', horse.totalEarnings],
-                ['horses.last5Earnings', horse.last5Earnings],
-                ['horses.racingCategory', horse.racingCategory],
-                ['horses.trainerName', horse.trainerName],
-                ['horses.ownerName', horse.ownerName],
-                ['horses.defaultDriver', horse.defaultDriver],
-                ['horses.racingNotes', horse.racingNotes]
-              ])}
               ${linkedRacingHorse ? renderHorseDetailGroup('racingRegistry.linkedData', [
                 ['racingRegistry.registration', linkedRacingHorse.registrationNumber],
                 ['racingRegistry.totalEarnings', linkedRacingHorse.careerEarnings || linkedRacingHorse.totalEarnings],
@@ -8717,8 +8751,9 @@ function renderHorses() {
                 ['racingRegistry.currentYear', formatRacingStatLine(linkedRacingHorse, 'year')],
                 ['racingRegistry.lastResultsUpdate', linkedRacingHorse.lastResultsUpdate]
               ]) : renderHorseDetailGroup('racingRegistry.linkedTitle', [
-                ['racingRegistry.noLinked', '']
+                ['horses.linkRacingHelp', t('racingRegistry.noLinked')]
               ])}
+              ${!linkedRacingHorse && hasLegacyRacingData ? renderHorseDetailGroup('horses.advancedFallbackRacingFields', legacyRacingRows) : ''}
               ${renderHorseDetailGroup('horses.care', [
                 ['horses.careNotes', horse.careNotes],
                 ['horses.shoeingNotes', horse.shoeingNotes]
@@ -10194,6 +10229,7 @@ function upsert(collection, item) {
 function resetForm(form) {
   form.reset();
   form.elements.id.value = '';
+  if (form === els.horseForm) renderHorseLinkedRacingSummary();
 }
 
 function getSelectedOptions(select) {
@@ -10206,66 +10242,80 @@ function setSelectedOptions(select, values) {
   });
 }
 
+function getFormValue(form, name, fallback = '', options = {}) {
+  const element = form.elements[name];
+  if (!element) return fallback ?? '';
+  const value = element.value ?? '';
+  return options.trim === false ? value : String(value).trim();
+}
+
+function getFormChecked(form, name, fallback = false) {
+  const element = form.elements[name];
+  return element ? Boolean(element.checked) : Boolean(fallback);
+}
+
 function handleHorseSubmit(event) {
   event.preventDefault();
   if (blockCloudPreviewEdit()) return;
   const form = event.currentTarget;
+  const existingHorseForForm = state.horses.find((entry) => entry.id === form.elements.id.value);
+  const existing = existingHorseForForm ? normalizeHorse(existingHorseForForm) : {};
   const horse = {
     id: form.elements.id.value,
-    racingHorseId: form.elements.racingHorseId?.value || '',
-    name: form.elements.name.value.trim(),
-    nickname: form.elements.nickname.value.trim(),
-    owner: form.elements.owner.value.trim(),
-    breed: form.elements.breed.value.trim(),
-    birth: form.elements.birth.value.trim(),
-    gender: form.elements.gender.value.trim(),
-    color: form.elements.color.value.trim(),
-    registration: form.elements.registration.value.trim(),
-    countryOfOrigin: form.elements.countryOfOrigin.value.trim(),
-    totalEarnings: form.elements.totalEarnings.value,
-    last5Earnings: form.elements.last5Earnings.value,
-    careerStarts: form.elements.careerStarts.value,
-    careerWins: form.elements.careerWins.value,
-    careerPlaces: form.elements.careerPlaces.value,
-    careerShow: form.elements.careerShow.value,
-    careerEarnings: form.elements.careerEarnings.value,
-    twelveMonthStarts: form.elements.twelveMonthStarts.value,
-    twelveMonthWins: form.elements.twelveMonthWins.value,
-    twelveMonthPlaces: form.elements.twelveMonthPlaces.value,
-    twelveMonthShow: form.elements.twelveMonthShow.value,
-    twelveMonthEarnings: form.elements.twelveMonthEarnings.value,
-    yearStarts: form.elements.yearStarts.value,
-    yearWins: form.elements.yearWins.value,
-    yearPlaces: form.elements.yearPlaces.value,
-    yearShow: form.elements.yearShow.value,
-    yearEarnings: form.elements.yearEarnings.value,
-    twoMonthStarts: form.elements.twoMonthStarts.value,
-    twoMonthWins: form.elements.twoMonthWins.value,
-    twoMonthPlaces: form.elements.twoMonthPlaces.value,
-    twoMonthShow: form.elements.twoMonthShow.value,
-    twoMonthEarnings: form.elements.twoMonthEarnings.value,
-    careerRecord: form.elements.careerRecord.value.trim(),
-    twelveMonthRecord: form.elements.twelveMonthRecord.value.trim(),
-    yearRecord: form.elements.yearRecord.value.trim(),
-    shortDistanceRecord: form.elements.shortDistanceRecord.value.trim(),
-    longDistanceRecord: form.elements.longDistanceRecord.value.trim(),
-    categoryMc: form.elements.categoryMc.value.trim(),
-    categoryMs: form.elements.categoryMs.value.trim(),
-    potentialMc: form.elements.potentialMc.value.trim(),
-    potentialMs: form.elements.potentialMs.value.trim(),
-    reclaimAllowed: form.elements.reclaimAllowed.checked,
-    racingCategory: form.elements.racingCategory.value.trim(),
-    trainerName: form.elements.trainerName.value.trim(),
-    ownerName: form.elements.ownerName.value.trim(),
-    defaultDriver: form.elements.defaultDriver.value.trim(),
-    racingNotes: form.elements.racingNotes.value.trim(),
-    feedingNotes: form.elements.feedingNotes.value.trim(),
-    careNotes: form.elements.careNotes.value.trim(),
-    shoeingNotes: form.elements.shoeingNotes.value.trim(),
-    vaccinationNotes: form.elements.vaccinationNotes.value.trim(),
-    dewormingNotes: form.elements.dewormingNotes.value.trim(),
-    vetNotes: form.elements.vetNotes.value.trim(),
-    notes: form.elements.notes.value.trim()
+    racingHorseId: getFormValue(form, 'racingHorseId', existing.racingHorseId || ''),
+    name: getFormValue(form, 'name', existing.name || ''),
+    nickname: getFormValue(form, 'nickname', existing.nickname || ''),
+    owner: getFormValue(form, 'owner', existing.owner || ''),
+    breed: getFormValue(form, 'breed', existing.breed || ''),
+    birth: getFormValue(form, 'birth', existing.birth || ''),
+    gender: getFormValue(form, 'gender', existing.gender || 'unknown'),
+    color: getFormValue(form, 'color', existing.color || ''),
+    registration: getFormValue(form, 'registration', existing.registration || ''),
+    countryOfOrigin: getFormValue(form, 'countryOfOrigin', existing.countryOfOrigin || ''),
+    totalEarnings: getFormValue(form, 'totalEarnings', existing.totalEarnings ?? ''),
+    last5Earnings: getFormValue(form, 'last5Earnings', existing.last5Earnings ?? ''),
+    careerStarts: getFormValue(form, 'careerStarts', existing.careerStarts ?? ''),
+    careerWins: getFormValue(form, 'careerWins', existing.careerWins ?? ''),
+    careerPlaces: getFormValue(form, 'careerPlaces', existing.careerPlaces ?? ''),
+    careerShow: getFormValue(form, 'careerShow', existing.careerShow ?? ''),
+    careerEarnings: getFormValue(form, 'careerEarnings', existing.careerEarnings ?? ''),
+    twelveMonthStarts: getFormValue(form, 'twelveMonthStarts', existing.twelveMonthStarts ?? ''),
+    twelveMonthWins: getFormValue(form, 'twelveMonthWins', existing.twelveMonthWins ?? ''),
+    twelveMonthPlaces: getFormValue(form, 'twelveMonthPlaces', existing.twelveMonthPlaces ?? ''),
+    twelveMonthShow: getFormValue(form, 'twelveMonthShow', existing.twelveMonthShow ?? ''),
+    twelveMonthEarnings: getFormValue(form, 'twelveMonthEarnings', existing.twelveMonthEarnings ?? ''),
+    yearStarts: getFormValue(form, 'yearStarts', existing.yearStarts ?? ''),
+    yearWins: getFormValue(form, 'yearWins', existing.yearWins ?? ''),
+    yearPlaces: getFormValue(form, 'yearPlaces', existing.yearPlaces ?? ''),
+    yearShow: getFormValue(form, 'yearShow', existing.yearShow ?? ''),
+    yearEarnings: getFormValue(form, 'yearEarnings', existing.yearEarnings ?? ''),
+    twoMonthStarts: getFormValue(form, 'twoMonthStarts', existing.twoMonthStarts ?? ''),
+    twoMonthWins: getFormValue(form, 'twoMonthWins', existing.twoMonthWins ?? ''),
+    twoMonthPlaces: getFormValue(form, 'twoMonthPlaces', existing.twoMonthPlaces ?? ''),
+    twoMonthShow: getFormValue(form, 'twoMonthShow', existing.twoMonthShow ?? ''),
+    twoMonthEarnings: getFormValue(form, 'twoMonthEarnings', existing.twoMonthEarnings ?? ''),
+    careerRecord: getFormValue(form, 'careerRecord', existing.careerRecord || ''),
+    twelveMonthRecord: getFormValue(form, 'twelveMonthRecord', existing.twelveMonthRecord || ''),
+    yearRecord: getFormValue(form, 'yearRecord', existing.yearRecord || ''),
+    shortDistanceRecord: getFormValue(form, 'shortDistanceRecord', existing.shortDistanceRecord || ''),
+    longDistanceRecord: getFormValue(form, 'longDistanceRecord', existing.longDistanceRecord || ''),
+    categoryMc: getFormValue(form, 'categoryMc', existing.categoryMc || ''),
+    categoryMs: getFormValue(form, 'categoryMs', existing.categoryMs || ''),
+    potentialMc: getFormValue(form, 'potentialMc', existing.potentialMc || ''),
+    potentialMs: getFormValue(form, 'potentialMs', existing.potentialMs || ''),
+    reclaimAllowed: getFormChecked(form, 'reclaimAllowed', existing.reclaimAllowed),
+    racingCategory: getFormValue(form, 'racingCategory', existing.racingCategory || ''),
+    trainerName: getFormValue(form, 'trainerName', existing.trainerName || ''),
+    ownerName: getFormValue(form, 'ownerName', existing.ownerName || ''),
+    defaultDriver: getFormValue(form, 'defaultDriver', existing.defaultDriver || ''),
+    racingNotes: getFormValue(form, 'racingNotes', existing.racingNotes || ''),
+    feedingNotes: getFormValue(form, 'feedingNotes', existing.feedingNotes || ''),
+    careNotes: getFormValue(form, 'careNotes', existing.careNotes || ''),
+    shoeingNotes: getFormValue(form, 'shoeingNotes', existing.shoeingNotes || ''),
+    vaccinationNotes: getFormValue(form, 'vaccinationNotes', existing.vaccinationNotes || ''),
+    dewormingNotes: getFormValue(form, 'dewormingNotes', existing.dewormingNotes || ''),
+    vetNotes: getFormValue(form, 'vetNotes', existing.vetNotes || ''),
+    notes: getFormValue(form, 'notes', existing.notes || '')
   };
   if (cloudWriteMode) {
     if (!horse.id) horse.id = createId();
@@ -10944,6 +10994,7 @@ function fillHorseForm(id) {
   els.horseForm.elements.dewormingNotes.value = horse.dewormingNotes;
   els.horseForm.elements.vetNotes.value = horse.vetNotes;
   els.horseForm.elements.notes.value = horse.notes;
+  renderHorseLinkedRacingSummary();
   showView('stable');
   els.horseForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
@@ -12033,6 +12084,7 @@ els.raceStablePreviewToggle?.addEventListener('click', toggleRaceStablePreview);
 els.alertsList?.addEventListener('click', handleAlertAction);
 els.footerSupportLink?.addEventListener('click', handleFooterSupportLink);
 els.horseForm.addEventListener('submit', handleHorseSubmit);
+els.horseForm.elements.racingHorseId?.addEventListener('change', renderHorseLinkedRacingSummary);
 els.careForm?.addEventListener('submit', handleCareSubmit);
 els.taskForm.addEventListener('submit', handleTaskSubmit);
 els.hoursForm.addEventListener('submit', handleHoursSubmit);

@@ -415,9 +415,11 @@
                 <fieldset class="form-group">
                   <legend data-i18n="racingRegistry.linkedTitle">Linked racing horse</legend>
                   <label class="full"><span data-i18n="racingRegistry.linkHorse">Link racing horse</span><select name="racingHorseId"></select></label>
+                  <p id="horseLinkedRacingSummary" class="form-help full" data-i18n="horses.linkRacingHelp">Link this stable horse to a Racing Horse Registry record to use official racing data.</p>
                 </fieldset>
-                <fieldset class="form-group">
-                  <legend data-i18n="horses.racingProfile">Racing profile</legend>
+                <fieldset class="form-group legacy-racing-fields" hidden>
+                  <legend data-i18n="horses.legacyRacingFields">Legacy racing fields</legend>
+                  <p class="form-help full" data-i18n="horses.officialRacingManaged">Official racing data is managed by Super Admin.</p>
                   <label><span data-i18n="horses.registration">Registration number</span><input name="registration" placeholder="FI-12345"></label>
                   <label><span data-i18n="horses.birth">Birth date</span><input name="birth" placeholder="2018 or 2018-05-12"></label>
                   <label><span data-i18n="horses.gender">Gender</span><select name="gender">
