@@ -3529,6 +3529,9 @@ let authUser = null;
 let authRestoring = false;
 let stableLoading = false;
 let cloudDataLoading = false;
+let cloudConnectionRefreshPromise = null;
+let cloudModeEnablePromise = null;
+let cloudModeEnableStableId = '';
 let isCloudUploading = false;
 let migrationUploadStatusText = '';
 let cloudReadStatusText = '';
@@ -5717,6 +5720,29 @@ async function enableCloudModePreview() {
 }
 
 async function enableCloudMode(options = {}) {
+  const { automatic = false } = options;
+  const activeStable = getActiveStable();
+  if (automatic && cloudWriteMode && !cloudUnavailable && cloudState.status === 'connected' && cloudState.stableId === activeStable.id) {
+    console.info('[EquiTrack cloud] Skipping automatic cloud load; cloud data is already active for this stable.', { stableId: activeStable.id });
+    return;
+  }
+  if (cloudModeEnablePromise) {
+    console.info('[EquiTrack cloud] Skipping duplicate cloud data load; a load is already running.', {
+      requestedStableId: activeStable.id,
+      loadingStableId: cloudModeEnableStableId
+    });
+    return cloudModeEnablePromise;
+  }
+  cloudModeEnableStableId = activeStable.id || '';
+  cloudModeEnablePromise = enableCloudModeInner(options)
+    .finally(() => {
+      cloudModeEnablePromise = null;
+      cloudModeEnableStableId = '';
+    });
+  return cloudModeEnablePromise;
+}
+
+async function enableCloudModeInner(options = {}) {
   const { automatic = false, navigateToStable = false } = options;
   const activeStable = getActiveStable();
   if (!getCurrentUser() || !activeStable.id) {
@@ -5728,6 +5754,7 @@ async function enableCloudMode(options = {}) {
   cloudDataLoading = true;
   cloudUnavailable = false;
   cloudModeStatusText = t(automatic ? 'cloudMode.autoLoading' : 'cloudMode.loading');
+  const loadingUserId = getCurrentUser()?.id || '';
   setCloudStatus({
     status: 'loadingCloud',
     messageKey: 'cloud.loadingData'
@@ -5735,6 +5762,11 @@ async function enableCloudMode(options = {}) {
   renderCloudMode();
   try {
     state = await retryOnce(() => loadCloudSnapshot(activeStable.id), 'Cloud data load');
+    if (getCurrentUser()?.id !== loadingUserId || getActiveStable().id !== activeStable.id) {
+      console.info('[EquiTrack cloud] Ignoring cloud data load result because the active session or stable changed.');
+      cloudDataLoading = false;
+      return;
+    }
     cloudWriteMode = true;
     cloudPreviewMode = false;
     cloudDataLoading = false;
@@ -7592,7 +7624,19 @@ async function getUserProfileRole(user = getCurrentUser()) {
   return profile?.role || 'user';
 }
 
-async function refreshCloudConnection() {
+async function refreshCloudConnection(options = {}) {
+  if (cloudConnectionRefreshPromise) {
+    console.info('[EquiTrack cloud] Skipping duplicate active stable load; a load is already running.');
+    return cloudConnectionRefreshPromise;
+  }
+  cloudConnectionRefreshPromise = refreshCloudConnectionInner(options)
+    .finally(() => {
+      cloudConnectionRefreshPromise = null;
+    });
+  return cloudConnectionRefreshPromise;
+}
+
+async function refreshCloudConnectionInner(options = {}) {
   const user = getCurrentUser();
   if (!user) {
     stableLoading = false;
@@ -7677,6 +7721,11 @@ async function refreshCloudConnection() {
       profileRole: await getUserProfileRole(user),
       stable: await getUserStable(user)
     }), 'Active stable load');
+    if (getCurrentUser()?.id !== user.id) {
+      console.info('[EquiTrack cloud] Ignoring active stable load result because the auth user changed.');
+      stableLoading = false;
+      return cloudState.status;
+    }
     stableLoading = false;
     if (!stable) {
       if (cloudWriteMode || cloudPreviewMode) {
@@ -7827,7 +7876,14 @@ async function setupAuth() {
     });
     console.info('[EquiTrack auth] Supabase client initialized', getAuthDiagnostics());
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
-      console.info('[EquiTrack auth] Auth state changed', { event, hasSession: Boolean(session) });
+      const previousUserId = authUser?.id || '';
+      const nextUser = session?.user || null;
+      const nextUserId = nextUser?.id || '';
+      console.info('[EquiTrack auth] Auth state changed', {
+        event,
+        hasSession: Boolean(session),
+        sameUser: Boolean(previousUserId && previousUserId === nextUserId)
+      });
       authUser = session?.user || null;
       if (event === 'INITIAL_SESSION' && authRestoring) {
         updateAuthUi();
@@ -7835,8 +7891,25 @@ async function setupAuth() {
       }
       if (event === 'SIGNED_OUT') {
         disableCloudMode('cloudMode.returnedLocal');
-      } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-        await refreshCloudConnection();
+      } else if (event === 'TOKEN_REFRESHED') {
+        console.info('[EquiTrack auth] Token refreshed; keeping current stable and cloud data without full reload.');
+      } else if (event === 'USER_UPDATED') {
+        console.info('[EquiTrack auth] User updated; preserving current cloud state.');
+        updateAuthUi();
+      } else if (event === 'SIGNED_IN') {
+        const cloudAlreadyActiveForSameUser = previousUserId === nextUserId
+          && cloudWriteMode
+          && !cloudUnavailable
+          && cloudState.status === 'connected'
+          && Boolean(cloudState.stableId);
+        if (cloudAlreadyActiveForSameUser) {
+          console.info('[EquiTrack auth] Skipping duplicate signed-in startup; same user and cloud data already active.', {
+            userId: nextUserId,
+            stableId: cloudState.stableId
+          });
+        } else {
+          await refreshCloudConnection();
+        }
       }
       authRestoring = false;
       updateAuthUi();
