@@ -1333,6 +1333,57 @@ h1 + .hero-text, h2 + p, h3 + p { margin-top: 0; }
   gap: 14px;
   margin-top: 16px;
 }
+.manual-import-box {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid rgba(20, 51, 90, 0.1);
+  border-radius: 14px;
+  background: #f8fbfc;
+}
+.manual-import-box textarea {
+  min-height: 120px;
+}
+.import-diagnostics {
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid rgba(78, 205, 196, 0.26);
+  border-radius: 14px;
+  background: #f7fcfc;
+  color: #14335a;
+}
+.import-diagnostics h4 {
+  margin: 0 0 10px;
+  color: #08213d;
+}
+.import-diagnostics dl {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.32fr) minmax(0, 1fr);
+  gap: 8px 12px;
+  margin: 0;
+  font-size: 13px;
+}
+.import-diagnostics dt {
+  font-weight: 800;
+  color: #14335a;
+}
+.import-diagnostics dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--muted);
+}
+.import-diagnostics pre {
+  max-height: 180px;
+  overflow: auto;
+  margin: 8px 0 0;
+  padding: 10px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid rgba(20, 51, 90, 0.1);
+  white-space: pre-wrap;
+}
 .race-import-list {
   display: grid;
   gap: 14px;
@@ -2442,6 +2493,7 @@ textarea { resize: vertical; }
   }
   .button { min-height: 50px; padding: 0 14px; }
   .summary-grid, .feature-grid, .side-tabs, .entry-form, .item-card, .feed-stats, .quick-actions, .form-group, .horse-detail-grid, .calendar-tools, .permission-grid, .racing-performance-grid, .racing-start-row, .racing-stat-row { grid-template-columns: minmax(0, 1fr); }
+  .import-diagnostics dl { grid-template-columns: minmax(0, 1fr); }
   .racing-profile-header { display: grid; }
   .calendar-hero { padding: 18px; }
   .stable-hero { padding: 18px; }

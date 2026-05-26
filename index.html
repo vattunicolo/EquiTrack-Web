@@ -800,6 +800,7 @@
               <span data-i18n="racingRegistry.updateEarnings">Update horse earnings from gross prize</span>
             </label>
             <p id="resultsImportStatus" class="status-text" data-i18n="racingRegistry.resultsImportReady">Upload a results PDF to review imported starts.</p>
+            <div id="resultsImportDiagnostics" class="import-diagnostics" hidden></div>
             <div id="resultsImportPreview" class="race-import-preview"></div>
             <button id="resultsImportSaveButton" class="button primary" type="button" hidden data-i18n="racingRegistry.saveResults">Save selected results</button>
           </section>
@@ -901,6 +902,11 @@
           <label><span data-i18n="raceImport.preset">Import preset</span><select id="raceImportPresetSelect"></select></label>
           <label class="file-button button secondary"><span data-i18n="raceEntries.importButton">Import race file</span><input id="raceImportInput" type="file" accept=".pdf,.csv,.txt,application/pdf,text/csv,text/plain"></label>
           <p id="raceImportStatus" class="status-text" data-i18n="raceEntries.importPlaceholder">Manual entry works now. PDF/Excel import will be added later.</p>
+          <div class="manual-import-box">
+            <label class="full"><span data-i18n="raceImport.pasteProgramText">Paste race program text</span><textarea id="raceImportManualText" rows="5"></textarea></label>
+            <button id="raceImportManualParseButton" class="button secondary" type="button" data-i18n="raceImport.buildPreview">Build preview</button>
+          </div>
+          <div id="raceImportDiagnostics" class="import-diagnostics" hidden></div>
           <div id="raceImportPreview" class="race-import-preview"></div>
           <button id="raceImportSaveButton" class="button primary" type="button" hidden data-i18n="raceEntries.saveImported">Save selected races</button>
         </section>

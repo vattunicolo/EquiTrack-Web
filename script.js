@@ -18,6 +18,8 @@ const CARE_TYPES = ['shoeing', 'vaccination', 'deworming', 'vet', 'medication', 
 const RACE_ENTRY_STATUSES = ['draft', 'ready', 'sent'];
 const PDFJS_CDN_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
 const PDFJS_WORKER_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+const PDFJS_FALLBACK_CDN_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js';
+const PDFJS_FALLBACK_WORKER_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
 const PROTECTED_VIEWS = ['stable', 'calendar', 'raceEntries', 'settings'];
 const CLOUD_WRITE_TIMEOUT_MS = 15000;
 const ADMIN_PERMISSION_FIELDS = [
@@ -2832,6 +2834,30 @@ Object.assign(translations.en, {
   'raceImport.confidenceLow': 'Low',
   'raceImport.formatWarning': 'PDF formats vary by racetrack. Review imported data before saving.',
   'raceImport.presetUsed': 'Preset used: {preset}. {confidenceLabel}: {confidence}.',
+  'raceImport.statusFileSelected': 'File selected',
+  'raceImport.statusLoadingReader': 'Loading PDF reader',
+  'raceImport.statusReadingPages': 'Reading PDF pages',
+  'raceImport.statusExtractingText': 'Extracting text',
+  'raceImport.statusDetectingPreset': 'Detecting parser preset',
+  'raceImport.statusBuildingPreview': 'Building preview',
+  'raceImport.statusNoRaces': 'No races found',
+  'raceImport.statusCouldNotReadPdf': 'Could not read PDF',
+  'raceImport.readerLoadFailed': 'PDF reader could not be loaded. Check internet connection or try again.',
+  'raceImport.noReadableText': 'No readable text found in this PDF. It may be scanned or image-based.',
+  'raceImport.invalidFile': 'This file type is not supported. Use PDF, CSV, or TXT.',
+  'raceImport.pasteProgramText': 'Paste race program text',
+  'raceImport.buildPreview': 'Build preview',
+  'raceImport.diagnosticsTitle': 'Import diagnostics',
+  'raceImport.debugFileName': 'File name',
+  'raceImport.debugFileType': 'File type',
+  'raceImport.debugFileSize': 'File size',
+  'raceImport.debugPagesRead': 'Pages read',
+  'raceImport.debugTextLength': 'Extracted text length',
+  'raceImport.debugTextSample': 'First 500 characters',
+  'raceImport.debugPreset': 'Preset selected',
+  'raceImport.debugConfidence': 'Parser confidence',
+  'raceImport.debugRaceCount': 'Races detected',
+  'raceImport.debugError': 'Error',
   'raceEntries.savedOpportunity': 'Race opportunity saved.',
   'raceEntries.deletedOpportunity': 'Race opportunity deleted.',
   'raceEntries.savedPlan': 'Planned race entry saved.',
@@ -3093,6 +3119,30 @@ Object.assign(translations.fi, {
   'raceImport.confidenceLow': 'Matala',
   'raceImport.formatWarning': 'PDF-muodot vaihtelevat raviradoittain. Tarkista tuodut tiedot ennen tallennusta.',
   'raceImport.presetUsed': 'Käytetty asetus: {preset}. {confidenceLabel}: {confidence}.',
+  'raceImport.statusFileSelected': 'Tiedosto valittu',
+  'raceImport.statusLoadingReader': 'Ladataan PDF-lukijaa',
+  'raceImport.statusReadingPages': 'Luetaan PDF-sivuja',
+  'raceImport.statusExtractingText': 'Poimitaan tekstiä',
+  'raceImport.statusDetectingPreset': 'Tunnistetaan tuontiasetus',
+  'raceImport.statusBuildingPreview': 'Luodaan esikatselu',
+  'raceImport.statusNoRaces': 'Lähtöjä ei löytynyt',
+  'raceImport.statusCouldNotReadPdf': 'PDF-tiedostoa ei voitu lukea',
+  'raceImport.readerLoadFailed': 'PDF-lukijaa ei voitu ladata. Tarkista internet-yhteys tai yritä uudelleen.',
+  'raceImport.noReadableText': 'PDF:stä ei löytynyt luettavaa tekstiä. Se voi olla skannattu tai kuvapohjainen.',
+  'raceImport.invalidFile': 'Tätä tiedostotyyppiä ei tueta. Käytä PDF-, CSV- tai TXT-tiedostoa.',
+  'raceImport.pasteProgramText': 'Liitä raviohjelman teksti',
+  'raceImport.buildPreview': 'Luo esikatselu',
+  'raceImport.diagnosticsTitle': 'Tuonnin diagnostiikka',
+  'raceImport.debugFileName': 'Tiedoston nimi',
+  'raceImport.debugFileType': 'Tiedoston tyyppi',
+  'raceImport.debugFileSize': 'Tiedoston koko',
+  'raceImport.debugPagesRead': 'Luetut sivut',
+  'raceImport.debugTextLength': 'Poimitun tekstin pituus',
+  'raceImport.debugTextSample': 'Ensimmäiset 500 merkkiä',
+  'raceImport.debugPreset': 'Valittu asetus',
+  'raceImport.debugConfidence': 'Parserin varmuus',
+  'raceImport.debugRaceCount': 'Löydetyt lähdöt',
+  'raceImport.debugError': 'Virhe',
   'raceEntries.savedOpportunity': 'Lähtö tallennettu.',
   'raceEntries.deletedOpportunity': 'Lähtö poistettu.',
   'raceEntries.savedPlan': 'Suunniteltu ilmoittautuminen tallennettu.',
@@ -3354,6 +3404,30 @@ Object.assign(translations.it, {
   'raceImport.confidenceLow': 'Bassa',
   'raceImport.formatWarning': 'I formati PDF variano in base all’ippodromo. Controlla i dati importati prima di salvare.',
   'raceImport.presetUsed': 'Preset usato: {preset}. {confidenceLabel}: {confidence}.',
+  'raceImport.statusFileSelected': 'File selezionato',
+  'raceImport.statusLoadingReader': 'Caricamento lettore PDF',
+  'raceImport.statusReadingPages': 'Lettura pagine PDF',
+  'raceImport.statusExtractingText': 'Estrazione testo',
+  'raceImport.statusDetectingPreset': 'Rilevamento preset importazione',
+  'raceImport.statusBuildingPreview': 'Creazione anteprima',
+  'raceImport.statusNoRaces': 'Nessuna corsa trovata',
+  'raceImport.statusCouldNotReadPdf': 'Impossibile leggere il PDF',
+  'raceImport.readerLoadFailed': 'Impossibile caricare il lettore PDF. Controlla la connessione internet o riprova.',
+  'raceImport.noReadableText': 'Nessun testo leggibile trovato nel PDF. Potrebbe essere una scansione o basato su immagini.',
+  'raceImport.invalidFile': 'Questo tipo di file non è supportato. Usa PDF, CSV o TXT.',
+  'raceImport.pasteProgramText': 'Incolla testo programma gare',
+  'raceImport.buildPreview': 'Crea anteprima',
+  'raceImport.diagnosticsTitle': 'Diagnostica importazione',
+  'raceImport.debugFileName': 'Nome file',
+  'raceImport.debugFileType': 'Tipo file',
+  'raceImport.debugFileSize': 'Dimensione file',
+  'raceImport.debugPagesRead': 'Pagine lette',
+  'raceImport.debugTextLength': 'Lunghezza testo estratto',
+  'raceImport.debugTextSample': 'Primi 500 caratteri',
+  'raceImport.debugPreset': 'Preset selezionato',
+  'raceImport.debugConfidence': 'Affidabilità parser',
+  'raceImport.debugRaceCount': 'Corse rilevate',
+  'raceImport.debugError': 'Errore',
   'raceEntries.savedOpportunity': 'Opportunità gara salvata.',
   'raceEntries.deletedOpportunity': 'Opportunità gara eliminata.',
   'raceEntries.savedPlan': 'Iscrizione pianificata salvata.',
@@ -3638,6 +3712,11 @@ let raceStablePreviewForAdmin = false;
 let selectedPublishedRaceDay = { racetrack: '', date: '' };
 let publishedRaceFilter = { possibleOnly: false, search: '' };
 let publishedRaceFilterTimer = null;
+let pdfJsLoadPromise = null;
+let raceImportInProgress = false;
+let resultsImportInProgress = false;
+let raceImportDiagnostics = null;
+let resultsImportDiagnostics = null;
 const cloudMutationLocks = new Set();
 let cloudState = {
   status: 'notConnected',
@@ -3722,6 +3801,9 @@ const els = {
   raceOpportunityList: document.querySelector('#raceOpportunityList'),
   raceImportInput: document.querySelector('#raceImportInput'),
   raceImportStatus: document.querySelector('#raceImportStatus'),
+  raceImportManualText: document.querySelector('#raceImportManualText'),
+  raceImportManualParseButton: document.querySelector('#raceImportManualParseButton'),
+  raceImportDiagnostics: document.querySelector('#raceImportDiagnostics'),
   raceImportPreview: document.querySelector('#raceImportPreview'),
   raceImportSaveButton: document.querySelector('#raceImportSaveButton'),
   raceProgramCloudNotice: document.querySelector('#raceProgramCloudNotice'),
@@ -3739,6 +3821,7 @@ const els = {
   resultsImportPresetSelect: document.querySelector('#resultsImportPresetSelect'),
   resultsImportUpdateEarnings: document.querySelector('#resultsImportUpdateEarnings'),
   resultsImportStatus: document.querySelector('#resultsImportStatus'),
+  resultsImportDiagnostics: document.querySelector('#resultsImportDiagnostics'),
   resultsImportPreview: document.querySelector('#resultsImportPreview'),
   resultsImportSaveButton: document.querySelector('#resultsImportSaveButton'),
   raceImportProgramLabel: document.querySelector('#raceImportProgramLabel'),
@@ -10610,10 +10693,15 @@ function renderRaceEntries() {
   renderRaceProgramAdmin();
   renderRacingHorseRegistry();
   renderResultsImportPreview();
+  renderResultsImportDiagnostics();
+  renderRaceImportDiagnostics();
   if (els.raceStablePublishedSection) els.raceStablePublishedSection.hidden = !showStableView;
   if (els.raceStableManualSection) els.raceStableManualSection.hidden = !showLegacyStableTools;
   if (els.raceStableOpportunitySection) els.raceStableOpportunitySection.hidden = !showLegacyStableTools;
-  if (els.raceImportPanel) els.raceImportPanel.hidden = !showLegacyStableTools || (!raceStablePreviewForAdmin && !raceImportPreviewItems.length);
+  if (els.raceImportPanel) {
+    const hasRaceImportWork = raceImportPreviewItems.length || raceImportDiagnostics || raceImportInProgress;
+    els.raceImportPanel.hidden = !showLegacyStableTools || (!raceStablePreviewForAdmin && !hasRaceImportWork);
+  }
   renderPublishedRacePrograms();
   renderRaceImportPreview();
   if (!showStableView && !showLegacyStableTools) {
@@ -11883,24 +11971,133 @@ function createRaceEmailDraft(planId) {
   window.location.href = href;
 }
 
-function loadPdfJs() {
-  if (window.pdfjsLib?.getDocument) return Promise.resolve(window.pdfjsLib);
+function setImportStatus(element, key, params = {}) {
+  if (element) element.textContent = t(key, params);
+}
+
+function formatImportFileSize(bytes) {
+  const size = Number(bytes || 0);
+  if (size >= 1024 * 1024) return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+  if (size >= 1024) return `${Math.round(size / 1024)} KB`;
+  return `${size} B`;
+}
+
+function buildImportDiagnostics({ file, pagesRead = 0, text = '', parserResult = null, raceCount = 0, error = '' } = {}) {
+  return {
+    fileName: file?.name || '',
+    fileType: file?.type || '',
+    fileSize: file?.size || 0,
+    pagesRead,
+    textLength: String(text || '').length,
+    textSample: String(text || '').slice(0, 500),
+    preset: parserResult?.preset || '',
+    confidence: parserResult?.confidence || '',
+    raceCount,
+    error: error ? String(error) : ''
+  };
+}
+
+function renderImportDiagnostics(target, diagnostics) {
+  if (!target) return;
+  if (!isSuperAdmin() || !diagnostics) {
+    target.hidden = true;
+    target.innerHTML = '';
+    return;
+  }
+  const rows = [
+    [t('raceImport.debugFileName'), diagnostics.fileName || '-'],
+    [t('raceImport.debugFileType'), diagnostics.fileType || '-'],
+    [t('raceImport.debugFileSize'), formatImportFileSize(diagnostics.fileSize)],
+    [t('raceImport.debugPagesRead'), String(diagnostics.pagesRead || 0)],
+    [t('raceImport.debugTextLength'), String(diagnostics.textLength || 0)],
+    [t('raceImport.debugPreset'), diagnostics.preset ? getImportPresetLabel(diagnostics.preset) : '-'],
+    [t('raceImport.debugConfidence'), diagnostics.confidence ? getConfidenceLabel(diagnostics.confidence) : '-'],
+    [t('raceImport.debugRaceCount'), String(diagnostics.raceCount || 0)]
+  ];
+  if (diagnostics.error) rows.push([t('raceImport.debugError'), diagnostics.error]);
+  target.hidden = false;
+  target.innerHTML = `
+    <h4>${t('raceImport.diagnosticsTitle')}</h4>
+    <dl>${rows.map(([label, value]) => `<dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd>`).join('')}</dl>
+    <div class="diagnostic-sample">
+      <strong>${t('raceImport.debugTextSample')}</strong>
+      <pre>${escapeHtml(diagnostics.textSample || '')}</pre>
+    </div>
+  `;
+}
+
+function renderRaceImportDiagnostics() {
+  renderImportDiagnostics(els.raceImportDiagnostics, raceImportDiagnostics);
+}
+
+function renderResultsImportDiagnostics() {
+  renderImportDiagnostics(els.resultsImportDiagnostics, resultsImportDiagnostics);
+}
+
+function loadScriptOnce(src) {
   return new Promise((resolve, reject) => {
-    const existing = document.querySelector(`script[src="${PDFJS_CDN_URL}"]`);
+    const existing = document.querySelector(`script[src="${src}"]`);
+    if (existing?.dataset.loaded === 'true') {
+      resolve();
+      return;
+    }
     const script = existing || document.createElement('script');
-    script.src = PDFJS_CDN_URL;
-    script.async = true;
-    script.onload = () => {
-      if (!window.pdfjsLib?.getDocument) {
-        reject(new Error('PDF.js did not initialize'));
-        return;
-      }
-      window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_URL;
-      resolve(window.pdfjsLib);
+    const cleanup = () => {
+      script.removeEventListener('load', handleLoad);
+      script.removeEventListener('error', handleError);
     };
-    script.onerror = () => reject(new Error('PDF.js failed to load'));
-    if (!existing) document.head.appendChild(script);
+    const handleLoad = () => {
+      cleanup();
+      script.dataset.loaded = 'true';
+      resolve();
+    };
+    const handleError = () => {
+      cleanup();
+      script.remove();
+      reject(new Error(`PDF.js failed to load from ${src}`));
+    };
+    script.addEventListener('load', handleLoad, { once: true });
+    script.addEventListener('error', handleError, { once: true });
+    if (!existing) {
+      script.src = src;
+      script.async = true;
+      script.crossOrigin = 'anonymous';
+      document.head.appendChild(script);
+    }
   });
+}
+
+function loadPdfJs(onStatus) {
+  if (window.pdfjsLib?.getDocument) {
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc ||= PDFJS_WORKER_URL;
+    console.info('[EquiTrack PDF import] PDF.js already loaded');
+    return Promise.resolve(window.pdfjsLib);
+  }
+  if (pdfJsLoadPromise) return pdfJsLoadPromise;
+  onStatus?.('raceImport.statusLoadingReader');
+  pdfJsLoadPromise = (async () => {
+    const sources = [
+      { script: PDFJS_CDN_URL, worker: PDFJS_WORKER_URL },
+      { script: PDFJS_FALLBACK_CDN_URL, worker: PDFJS_FALLBACK_WORKER_URL }
+    ];
+    let lastError = null;
+    for (const source of sources) {
+      try {
+        console.info('[EquiTrack PDF import] Loading PDF.js', source.script);
+        await loadScriptOnce(source.script);
+        if (!window.pdfjsLib?.getDocument) throw new Error('PDF.js did not initialize');
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = source.worker;
+        console.info('[EquiTrack PDF import] PDF.js loaded');
+        return window.pdfjsLib;
+      } catch (error) {
+        lastError = error;
+        console.warn('[EquiTrack PDF import] PDF.js load failed', error);
+      }
+    }
+    pdfJsLoadPromise = null;
+    throw lastError || new Error('PDF.js failed to load');
+  })();
+  return pdfJsLoadPromise;
 }
 
 function linesFromPdfTextContent(textContent) {
@@ -11924,17 +12121,28 @@ function linesFromPdfTextContent(textContent) {
     .filter(Boolean);
 }
 
-async function extractPdfText(file) {
-  const pdfjsLib = await loadPdfJs();
+async function extractPdfText(file, { onStatus } = {}) {
+  const pdfjsLib = await loadPdfJs(onStatus);
   const bytes = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+  let pdf;
+  try {
+    pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+  } catch (error) {
+    console.warn('[EquiTrack PDF import] PDF worker read failed, retrying without worker', error);
+    pdf = await pdfjsLib.getDocument({ data: bytes, disableWorker: true }).promise;
+  }
+  console.info('[EquiTrack PDF import] PDF page count', pdf.numPages);
   const pages = [];
+  onStatus?.('raceImport.statusReadingPages');
   for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
     const page = await pdf.getPage(pageNumber);
     const textContent = await page.getTextContent();
     pages.push(linesFromPdfTextContent(textContent).join('\n'));
   }
-  return pages.join('\n');
+  onStatus?.('raceImport.statusExtractingText');
+  const text = pages.join('\n');
+  console.info('[EquiTrack PDF import] Extracted text length', text.length);
+  return { text, pagesRead: pages.length, pageCount: pdf.numPages };
 }
 
 function setRaceImportPreview(races, statusKey = 'raceEntries.racesFound', parserResult = null) {
@@ -11958,66 +12166,173 @@ function setRaceImportPreview(races, statusKey = 'raceEntries.racesFound', parse
   renderRaceImportPreview();
 }
 
+function parseRaceImportTextToPreview(text, { type = 'text', file = null, sourceLabel = '' } = {}) {
+  setImportStatus(els.raceImportStatus, 'raceImport.statusDetectingPreset');
+  const parserResult = parseRaceProgramWithPreset(text, type, els.raceImportPresetSelect?.value || 'auto');
+  const races = parserResult.races || [];
+  console.info('[EquiTrack race import] Parser result', {
+    source: sourceLabel || type,
+    preset: parserResult.preset,
+    confidence: parserResult.confidence,
+    raceCount: races.length
+  });
+  raceImportDiagnostics = buildImportDiagnostics({
+    file,
+    pagesRead: raceImportDiagnostics?.pagesRead || 0,
+    text,
+    parserResult,
+    raceCount: races.length
+  });
+  renderRaceImportDiagnostics();
+  if (!races.length) {
+    setImportStatus(els.raceImportStatus, 'raceImport.statusNoRaces');
+    showMessage(t('raceImport.statusNoRaces'));
+    return false;
+  }
+  setImportStatus(els.raceImportStatus, 'raceImport.statusBuildingPreview');
+  setRaceImportPreview(races, type === 'pdf' ? 'raceEntries.racesFound' : type === 'csv' ? 'raceEntries.importCsvLoaded' : 'raceEntries.importTextLoaded', parserResult);
+  showMessage(t('raceEntries.racesFound', { count: races.length }));
+  return true;
+}
+
 async function handleRaceImportFile(event) {
   const file = event.target.files?.[0];
   if (!file) return;
+  if (raceImportInProgress) {
+    showMessage(t('raceImport.statusReadingPages'));
+    event.target.value = '';
+    return;
+  }
+  raceImportInProgress = true;
+  if (els.raceImportInput) els.raceImportInput.disabled = true;
+  if (els.raceImportManualParseButton) els.raceImportManualParseButton.disabled = true;
   raceImportPreviewItems = [];
+  raceImportDiagnostics = buildImportDiagnostics({ file });
+  renderRaceImportDiagnostics();
   renderRaceImportPreview();
   try {
+    setImportStatus(els.raceImportStatus, 'raceImport.statusFileSelected');
     const fileName = file.name.toLowerCase();
     const isPdf = file.type === 'application/pdf' || fileName.endsWith('.pdf');
     const isCsv = file.type === 'text/csv' || fileName.endsWith('.csv');
+    const isText = file.type === 'text/plain' || fileName.endsWith('.txt');
+    if (!isPdf && !isCsv && !isText) {
+      raceImportDiagnostics = buildImportDiagnostics({ file });
+      renderRaceImportDiagnostics();
+      setImportStatus(els.raceImportStatus, 'raceImport.invalidFile');
+      showMessage(t('raceImport.invalidFile'));
+      return;
+    }
     let text = '';
+    let pagesRead = 0;
     if (isPdf) {
-      if (els.raceImportStatus) els.raceImportStatus.textContent = t('raceEntries.readingPdf');
-      text = await extractPdfText(file);
+      const result = await extractPdfText(file, { onStatus: (key) => setImportStatus(els.raceImportStatus, key) });
+      text = result.text;
+      pagesRead = result.pagesRead;
+      raceImportDiagnostics = buildImportDiagnostics({ file, pagesRead, text });
+      renderRaceImportDiagnostics();
+      if (!text.trim()) {
+        console.warn('[EquiTrack race import] PDF had zero readable text', { fileName: file.name, pagesRead });
+        setImportStatus(els.raceImportStatus, 'raceImport.noReadableText');
+        showMessage(t('raceImport.noReadableText'));
+        return;
+      }
     } else {
       text = await file.text();
     }
-    const parserResult = parseRaceProgramWithPreset(text, isPdf ? 'pdf' : isCsv ? 'csv' : 'text', els.raceImportPresetSelect?.value || 'auto');
-    const races = parserResult.races;
-    if (!races.length) {
-      if (els.raceImportStatus) els.raceImportStatus.textContent = t('raceEntries.noRacesFound');
-      showMessage(t('raceEntries.noRacesFound'));
-      return;
-    }
-    setRaceImportPreview(races, isPdf ? 'raceEntries.racesFound' : isCsv ? 'raceEntries.importCsvLoaded' : 'raceEntries.importTextLoaded', parserResult);
-    showMessage(t('raceEntries.racesFound', { count: races.length }));
+    raceImportDiagnostics = buildImportDiagnostics({ file, pagesRead, text });
+    renderRaceImportDiagnostics();
+    parseRaceImportTextToPreview(text, { type: isPdf ? 'pdf' : isCsv ? 'csv' : 'text', file, sourceLabel: file.name });
   } catch (error) {
     console.error('[EquiTrack race entries] Race file import failed', error);
     const fileName = file.name.toLowerCase();
     const isPdf = file.type === 'application/pdf' || fileName.endsWith('.pdf');
     const message = isPdf && /pdf\.js|pdfjs|load|initialize/i.test(String(error?.message || error))
-      ? t('raceEntries.pdfUnavailable')
+      ? t('raceImport.readerLoadFailed')
       : isPdf
-        ? t('raceEntries.pdfReadFailed')
+        ? t('raceImport.statusCouldNotReadPdf')
         : t('raceEntries.importPlaceholder');
+    raceImportDiagnostics = {
+      ...buildImportDiagnostics({ file }),
+      error: String(error?.message || error)
+    };
+    renderRaceImportDiagnostics();
     if (els.raceImportStatus) els.raceImportStatus.textContent = message;
     showMessage(message);
   } finally {
+    raceImportInProgress = false;
+    if (els.raceImportInput) els.raceImportInput.disabled = false;
+    if (els.raceImportManualParseButton) els.raceImportManualParseButton.disabled = false;
     event.target.value = '';
   }
+}
+
+function handleRaceImportManualText() {
+  if (raceImportInProgress) return;
+  const text = els.raceImportManualText?.value || '';
+  if (!text.trim()) {
+    setImportStatus(els.raceImportStatus, 'raceImport.statusNoRaces');
+    return;
+  }
+  raceImportPreviewItems = [];
+  renderRaceImportPreview();
+  raceImportDiagnostics = buildImportDiagnostics({ text });
+  renderRaceImportDiagnostics();
+  parseRaceImportTextToPreview(text, { type: 'pdf', sourceLabel: 'manual-text' });
 }
 
 async function handleResultsImportFile(event) {
   const file = event.target.files?.[0];
   if (!file) return;
+  if (resultsImportInProgress) {
+    showMessage(t('raceImport.statusReadingPages'));
+    event.target.value = '';
+    return;
+  }
+  resultsImportInProgress = true;
+  if (els.resultsImportInput) els.resultsImportInput.disabled = true;
   resultsImportPreviewItems = [];
+  resultsImportDiagnostics = buildImportDiagnostics({ file });
+  renderResultsImportDiagnostics();
   renderResultsImportPreview();
   try {
     if (!isSuperAdmin() || !cloudWriteMode) {
       showMessage(t('auth.unauthorized'));
       return;
     }
-    if (els.resultsImportStatus) els.resultsImportStatus.textContent = t('racingRegistry.readingResultsPdf');
-    const text = await extractPdfText(file);
+    const fileName = file.name.toLowerCase();
+    const isPdf = file.type === 'application/pdf' || fileName.endsWith('.pdf');
+    if (!isPdf) {
+      setImportStatus(els.resultsImportStatus, 'raceImport.invalidFile');
+      showMessage(t('raceImport.invalidFile'));
+      return;
+    }
+    setImportStatus(els.resultsImportStatus, 'raceImport.statusFileSelected');
+    const extracted = await extractPdfText(file, { onStatus: (key) => setImportStatus(els.resultsImportStatus, key) });
+    const text = extracted.text;
+    resultsImportDiagnostics = buildImportDiagnostics({ file, pagesRead: extracted.pagesRead, text });
+    renderResultsImportDiagnostics();
+    if (!text.trim()) {
+      setImportStatus(els.resultsImportStatus, 'raceImport.noReadableText');
+      showMessage(t('raceImport.noReadableText'));
+      return;
+    }
+    setImportStatus(els.resultsImportStatus, 'raceImport.statusDetectingPreset');
     const parserResult = parseResultsWithPreset(text, els.resultsImportPresetSelect?.value || 'auto');
     const rows = parserResult.rows;
+    resultsImportDiagnostics = buildImportDiagnostics({ file, pagesRead: extracted.pagesRead, text, parserResult, raceCount: rows.length });
+    renderResultsImportDiagnostics();
+    console.info('[EquiTrack results import] Parser result', {
+      preset: parserResult.preset,
+      confidence: parserResult.confidence,
+      raceCount: rows.length
+    });
     if (!rows.length) {
       if (els.resultsImportStatus) els.resultsImportStatus.textContent = t('racingRegistry.noResultsFound');
       showMessage(t('racingRegistry.noResultsFound'));
       return;
     }
+    setImportStatus(els.resultsImportStatus, 'raceImport.statusBuildingPreview');
     resultsImportPreviewItems = rows;
     renderResultsImportPreview();
     if (els.resultsImportStatus) {
@@ -12027,11 +12342,18 @@ async function handleResultsImportFile(event) {
   } catch (error) {
     console.error('[EquiTrack racing registry] Results PDF import failed', error);
     const message = /pdf\.js|pdfjs|load|initialize/i.test(String(error?.message || error))
-      ? t('raceEntries.pdfUnavailable')
-      : t('racingRegistry.resultsPdfReadFailed');
+      ? t('raceImport.readerLoadFailed')
+      : t('raceImport.statusCouldNotReadPdf');
+    resultsImportDiagnostics = {
+      ...buildImportDiagnostics({ file }),
+      error: String(error?.message || error)
+    };
+    renderResultsImportDiagnostics();
     if (els.resultsImportStatus) els.resultsImportStatus.textContent = message;
     showMessage(message);
   } finally {
+    resultsImportInProgress = false;
+    if (els.resultsImportInput) els.resultsImportInput.disabled = false;
     event.target.value = '';
   }
 }
@@ -12609,6 +12931,7 @@ els.racingHorseSearch?.addEventListener('input', (event) => {
   renderRacingHorseRegistry();
 });
 els.raceImportInput?.addEventListener('change', handleRaceImportFile);
+els.raceImportManualParseButton?.addEventListener('click', handleRaceImportManualText);
 els.resultsImportInput?.addEventListener('change', handleResultsImportFile);
 els.raceProgramAdminList?.addEventListener('change', (event) => {
   const input = event.target.closest('input[data-program-import-id]');
