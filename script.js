@@ -3717,6 +3717,7 @@ let raceImportInProgress = false;
 let resultsImportInProgress = false;
 let raceImportDiagnostics = null;
 let resultsImportDiagnostics = null;
+let activeRaceProgramImportId = '';
 const cloudMutationLocks = new Set();
 let cloudState = {
   status: 'notConnected',
@@ -10064,7 +10065,7 @@ function renderRaceProgramAdminCard(program) {
       </div>
       <div class="item-actions">
         <button class="button ghost" type="button" data-action="edit-race-program" data-id="${program.id}">${t('common.edit')}</button>
-        <label class="file-button button secondary">
+        <label class="file-button button secondary" data-program-import-label="${program.id}">
           <span>${t('racePrograms.importToProgram')}</span>
           <input type="file" accept=".pdf,.csv,.txt,application/pdf,text/csv,text/plain" data-program-import-id="${program.id}">
         </label>
@@ -10678,6 +10679,8 @@ function renderRaceImportPreview() {
       ? t('racePrograms.saveImportedToProgram')
       : t('raceEntries.saveImported');
   }
+  const importPanel = els.raceImportInput?.closest('.race-import-panel');
+  if (importPanel && raceImportPreviewItems.length) importPanel.hidden = false;
 }
 
 function renderRaceEntries() {
@@ -11292,15 +11295,23 @@ async function createGlobalRacePlan(raceId, card) {
 function selectRaceProgramForImport(programId, openPicker = true) {
   const program = racePrograms.find((entry) => entry.id === programId);
   if (!program || !els.raceImportProgramSelect) return;
+  activeRaceProgramImportId = programId;
   els.raceImportProgramSelect.value = programId;
   raceImportPreviewItems = [];
   renderRaceImportPreview();
+  console.info('[EquiTrack race import] Program import target selected', {
+    programId,
+    title: program.title || '',
+    racetrackName: program.racetrackName || '',
+    status: program.status || ''
+  });
   if (els.raceImportStatus) {
     els.raceImportStatus.textContent = t('racePrograms.selectedImportProgram', {
       program: program.title || program.racetrackName || program.id
     });
   }
   const importPanel = els.raceImportInput?.closest('.race-import-panel') || els.raceImportProgramLabel;
+  if (importPanel) importPanel.hidden = false;
   importPanel?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   if (openPicker) window.setTimeout(() => els.raceImportInput?.click(), 150);
 }
@@ -12167,6 +12178,9 @@ function setRaceImportPreview(races, statusKey = 'raceEntries.racesFound', parse
 }
 
 function parseRaceImportTextToPreview(text, { type = 'text', file = null, sourceLabel = '' } = {}) {
+  if (activeRaceProgramImportId && els.raceImportProgramSelect) {
+    els.raceImportProgramSelect.value = activeRaceProgramImportId;
+  }
   setImportStatus(els.raceImportStatus, 'raceImport.statusDetectingPreset');
   const parserResult = parseRaceProgramWithPreset(text, type, els.raceImportPresetSelect?.value || 'auto');
   const races = parserResult.races || [];
@@ -12174,7 +12188,8 @@ function parseRaceImportTextToPreview(text, { type = 'text', file = null, source
     source: sourceLabel || type,
     preset: parserResult.preset,
     confidence: parserResult.confidence,
-    raceCount: races.length
+    raceCount: races.length,
+    targetProgramId: els.raceImportProgramSelect?.value || ''
   });
   raceImportDiagnostics = buildImportDiagnostics({
     file,
@@ -12191,6 +12206,7 @@ function parseRaceImportTextToPreview(text, { type = 'text', file = null, source
   }
   setImportStatus(els.raceImportStatus, 'raceImport.statusBuildingPreview');
   setRaceImportPreview(races, type === 'pdf' ? 'raceEntries.racesFound' : type === 'csv' ? 'raceEntries.importCsvLoaded' : 'raceEntries.importTextLoaded', parserResult);
+  els.raceImportPreview?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   showMessage(t('raceEntries.racesFound', { count: races.length }));
   return true;
 }
@@ -12206,6 +12222,28 @@ async function handleRaceImportFile(event) {
   raceImportInProgress = true;
   if (els.raceImportInput) els.raceImportInput.disabled = true;
   if (els.raceImportManualParseButton) els.raceImportManualParseButton.disabled = true;
+  document.querySelectorAll('input[data-program-import-id]').forEach((input) => {
+    input.disabled = true;
+  });
+  const programInput = event.target.closest('input[data-program-import-id]');
+  if (programInput?.dataset.programImportId) {
+    activeRaceProgramImportId = programInput.dataset.programImportId;
+    if (els.raceImportProgramSelect) els.raceImportProgramSelect.value = activeRaceProgramImportId;
+  } else {
+    activeRaceProgramImportId = els.raceImportProgramSelect?.value || '';
+  }
+  const targetProgram = racePrograms.find((program) => program.id === (activeRaceProgramImportId || els.raceImportProgramSelect?.value));
+  const importPanel = els.raceImportInput?.closest('.race-import-panel');
+  if (importPanel) importPanel.hidden = false;
+  importPanel?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  console.info('[EquiTrack race import] Program-card/shared import file selected', {
+    targetProgramId: targetProgram?.id || '',
+    targetProgramTitle: targetProgram?.title || '',
+    targetProgramRacetrack: targetProgram?.racetrackName || '',
+    fileName: file.name,
+    fileType: file.type,
+    fileSize: file.size
+  });
   raceImportPreviewItems = [];
   raceImportDiagnostics = buildImportDiagnostics({ file });
   renderRaceImportDiagnostics();
@@ -12226,6 +12264,11 @@ async function handleRaceImportFile(event) {
     let text = '';
     let pagesRead = 0;
     if (isPdf) {
+      console.info('[EquiTrack race import] Import started', {
+        targetProgramId: targetProgram?.id || '',
+        fileName: file.name,
+        kind: 'pdf'
+      });
       const result = await extractPdfText(file, { onStatus: (key) => setImportStatus(els.raceImportStatus, key) });
       text = result.text;
       pagesRead = result.pagesRead;
@@ -12238,6 +12281,11 @@ async function handleRaceImportFile(event) {
         return;
       }
     } else {
+      console.info('[EquiTrack race import] Import started', {
+        targetProgramId: targetProgram?.id || '',
+        fileName: file.name,
+        kind: isCsv ? 'csv' : 'text'
+      });
       text = await file.text();
     }
     raceImportDiagnostics = buildImportDiagnostics({ file, pagesRead, text });
@@ -12263,6 +12311,9 @@ async function handleRaceImportFile(event) {
     raceImportInProgress = false;
     if (els.raceImportInput) els.raceImportInput.disabled = false;
     if (els.raceImportManualParseButton) els.raceImportManualParseButton.disabled = false;
+    document.querySelectorAll('input[data-program-import-id]').forEach((input) => {
+      input.disabled = false;
+    });
     event.target.value = '';
   }
 }
@@ -12405,7 +12456,10 @@ function removeImportedRace(id) {
 
 async function saveImportedRaceOpportunities() {
   if (blockCloudPreviewEdit()) return;
-  const selectedProgramId = els.raceImportProgramSelect?.value || '';
+  const selectedProgramId = els.raceImportProgramSelect?.value || activeRaceProgramImportId || '';
+  if (activeRaceProgramImportId && els.raceImportProgramSelect && els.raceImportProgramSelect.value !== activeRaceProgramImportId) {
+    els.raceImportProgramSelect.value = activeRaceProgramImportId;
+  }
   const saveToGlobalProgram = cloudWriteMode && isSuperAdmin() && selectedProgramId;
   if (cloudWriteMode && isSuperAdmin() && !selectedProgramId) {
     showMessage(t('racePrograms.noProgramSelected'));
@@ -12421,6 +12475,11 @@ async function saveImportedRaceOpportunities() {
     return normalized;
   });
   if (!selected.length) return;
+  console.info('[EquiTrack race import] Saving imported race preview', {
+    targetProgramId: selectedProgramId,
+    selectedCount: selected.length,
+    saveToGlobalProgram: Boolean(saveToGlobalProgram)
+  });
   if (els.raceImportSaveButton) els.raceImportSaveButton.disabled = true;
   try {
     if (saveToGlobalProgram) {
@@ -12933,9 +12992,32 @@ els.racingHorseSearch?.addEventListener('input', (event) => {
 els.raceImportInput?.addEventListener('change', handleRaceImportFile);
 els.raceImportManualParseButton?.addEventListener('click', handleRaceImportManualText);
 els.resultsImportInput?.addEventListener('change', handleResultsImportFile);
+els.raceProgramAdminList?.addEventListener('click', (event) => {
+  const label = event.target.closest('[data-program-import-label]');
+  if (!label) return;
+  const program = racePrograms.find((entry) => entry.id === label.dataset.programImportLabel);
+  console.info('[EquiTrack race import] Program import button clicked', {
+    programId: label.dataset.programImportLabel,
+    title: program?.title || '',
+    racetrackName: program?.racetrackName || '',
+    status: program?.status || ''
+  });
+  if (raceImportInProgress) {
+    event.preventDefault();
+    showMessage(t('raceImport.statusReadingPages'));
+  }
+});
 els.raceProgramAdminList?.addEventListener('change', (event) => {
   const input = event.target.closest('input[data-program-import-id]');
   if (!input) return;
+  const program = racePrograms.find((entry) => entry.id === input.dataset.programImportId);
+  console.info('[EquiTrack race import] Program card import input changed', {
+    programId: input.dataset.programImportId,
+    title: program?.title || '',
+    fileName: input.files?.[0]?.name || '',
+    fileType: input.files?.[0]?.type || '',
+    fileSize: input.files?.[0]?.size || 0
+  });
   selectRaceProgramForImport(input.dataset.programImportId, false);
   handleRaceImportFile(event);
 });
