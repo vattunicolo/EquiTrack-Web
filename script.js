@@ -2960,6 +2960,8 @@ Object.assign(translations.en, {
   'racingRegistry.resultsPlaceholder': 'Results PDF import will be added later.',
   'racingRegistry.noLinked': 'No linked racing horse',
   'racingRegistry.linkedData': 'Linked racing data',
+  'racingRegistry.officialData': 'Official racing data',
+  'racingRegistry.managedByAdmin': 'Managed by EquiTrack admin.',
   'racingRegistry.saveFailed': 'Racing horse save failed: {error}',
   'racingRegistry.performanceSummary': 'Performance summary',
   'racingRegistry.age': 'Age',
@@ -3023,6 +3025,7 @@ Object.assign(translations.en, {
   'racingRegistry.startDeleted': 'Start deleted.',
   'racingRegistry.startSaveFailed': 'Start history save failed: {error}',
   'racingRegistry.noStarts': 'No starts recorded yet.',
+  'racingRegistry.latestStarts': 'Latest starts',
   'racingRegistry.noPerformanceSummary': 'No performance summary entered yet.',
   'racingRegistry.recalculateSummary': 'Recalculate summary',
   'racingRegistry.recalculateHelp': 'Calculates from saved start history.',
@@ -3245,6 +3248,8 @@ Object.assign(translations.fi, {
   'racingRegistry.resultsPlaceholder': 'Tulosten PDF-tuonti lisätään myöhemmin.',
   'racingRegistry.noLinked': 'Ei linkitettyä kilpahevosta',
   'racingRegistry.linkedData': 'Linkitetyt kilpailutiedot',
+  'racingRegistry.officialData': 'Viralliset kilpailutiedot',
+  'racingRegistry.managedByAdmin': 'EquiTrack-ylläpitäjä hallinnoi näitä tietoja.',
   'racingRegistry.saveFailed': 'Kilpahevosen tallennus epäonnistui: {error}',
   'racingRegistry.performanceSummary': 'Suoritusyhteenveto',
   'racingRegistry.age': 'Ikä',
@@ -3309,6 +3314,7 @@ Object.assign(translations.fi, {
   'racingRegistry.startSaveFailed': 'Lähtöhistorian tallennus epäonnistui: {error}',
   'racingRegistry.noStarts': 'Lähtöjä ei ole vielä tallennettu.',
   'racingRegistry.noPerformanceSummary': 'Suoritusyhteenvetoa ei ole vielä täytetty.',
+  'racingRegistry.latestStarts': 'Viimeisimmät lähdöt',
   'racingRegistry.recalculateSummary': 'Laske yhteenveto uudelleen',
   'racingRegistry.recalculateHelp': 'Lasketaan tallennetusta lähtöhistoriasta.',
   'racingRegistry.summaryRecalculated': 'Yhteenveto laskettu uudelleen {count} lähdöstä.',
@@ -3530,6 +3536,8 @@ Object.assign(translations.it, {
   'racingRegistry.resultsPlaceholder': 'Importazione PDF risultati sarà aggiunta più avanti.',
   'racingRegistry.noLinked': 'Nessun cavallo da corsa collegato',
   'racingRegistry.linkedData': 'Dati corsa collegati',
+  'racingRegistry.officialData': 'Dati ufficiali corsa',
+  'racingRegistry.managedByAdmin': 'Gestito dall’amministratore EquiTrack.',
   'racingRegistry.saveFailed': 'Salvataggio cavallo da corsa non riuscito: {error}',
   'racingRegistry.performanceSummary': 'Riepilogo prestazioni',
   'racingRegistry.age': 'Età',
@@ -3593,6 +3601,7 @@ Object.assign(translations.it, {
   'racingRegistry.startDeleted': 'Partenza eliminata.',
   'racingRegistry.startSaveFailed': 'Salvataggio storico partenze non riuscito: {error}',
   'racingRegistry.noStarts': 'Nessuna partenza registrata.',
+  'racingRegistry.latestStarts': 'Ultime partenze',
   'racingRegistry.noPerformanceSummary': 'Nessun riepilogo prestazioni inserito.',
   'racingRegistry.recalculateSummary': 'Ricalcola riepilogo',
   'racingRegistry.recalculateHelp': 'Calcola dallo storico partenze salvato.',
@@ -8665,16 +8674,17 @@ function renderHorseLinkedRacingSummary() {
     els.horseLinkedRacingSummary.textContent = t('horses.linkRacingHelp');
     return;
   }
+  const earnings = getBestRacingEarnings(linked);
   const parts = [
     linked.registrationNumber && `${t('racingRegistry.registration')}: ${linked.registrationNumber}`,
-    (linked.careerEarnings || linked.totalEarnings) && `${t('racingRegistry.totalEarnings')}: ${linked.careerEarnings || linked.totalEarnings}`,
-    linked.last5Earnings && `${t('racingRegistry.last5Earnings')}: ${linked.last5Earnings}`,
+    hasPositiveNumber(earnings) && `${t('racingRegistry.totalEarnings')}: ${formatMoney(earnings)}`,
+    hasPositiveNumber(linked.last5Earnings) && `${t('racingRegistry.last5Earnings')}: ${formatMoney(linked.last5Earnings)}`,
     linked.racingCategory && `${t('horses.racingCategory')}: ${linked.racingCategory}`,
-    linked.lastResultsUpdate && `${t('racingRegistry.lastResultsUpdate')}: ${linked.lastResultsUpdate}`
+    linked.lastResultsUpdate && `${t('racingRegistry.lastResultsUpdate')}: ${formatDisplayDate(linked.lastResultsUpdate)}`
   ].filter(Boolean);
   els.horseLinkedRacingSummary.textContent = parts.length
-    ? `${t('horses.officialRacingManaged')} ${parts.join(' | ')}`
-    : t('horses.officialRacingManaged');
+    ? `${t('racingRegistry.managedByAdmin')} ${parts.join(' | ')}`
+    : t('racingRegistry.managedByAdmin');
 }
 
 function renderRaceEntryOptions() {
@@ -9315,17 +9325,7 @@ function renderHorses() {
                 ['horses.breed', horse.breed],
                 ['horses.color', horse.color]
               ])}
-              ${linkedRacingHorse ? renderHorseDetailGroup('racingRegistry.linkedData', [
-                ['racingRegistry.registration', linkedRacingHorse.registrationNumber],
-                ['racingRegistry.totalEarnings', linkedRacingHorse.careerEarnings || linkedRacingHorse.totalEarnings],
-                ['racingRegistry.last5Earnings', linkedRacingHorse.last5Earnings],
-                ['horses.racingCategory', linkedRacingHorse.racingCategory],
-                ['racingRegistry.categoryMc', linkedRacingHorse.categoryMc],
-                ['racingRegistry.categoryMs', linkedRacingHorse.categoryMs],
-                ['racingRegistry.career', formatRacingStatLine(linkedRacingHorse, 'career')],
-                ['racingRegistry.currentYear', formatRacingStatLine(linkedRacingHorse, 'year')],
-                ['racingRegistry.lastResultsUpdate', linkedRacingHorse.lastResultsUpdate]
-              ]) : renderHorseDetailGroup('racingRegistry.linkedTitle', [
+              ${linkedRacingHorse ? renderOfficialRacingDataGroup(linkedRacingHorse) : renderHorseDetailGroup('racingRegistry.linkedTitle', [
                 ['horses.linkRacingHelp', t('racingRegistry.noLinked')]
               ])}
               ${!linkedRacingHorse && hasLegacyRacingData ? renderHorseDetailGroup('horses.advancedFallbackRacingFields', legacyRacingRows) : ''}
@@ -9371,6 +9371,24 @@ function renderHorseDetailGroup(titleKey, rows) {
       ${content}
     </section>
   `;
+}
+
+function renderHorseDetailGroupFiltered(titleKey, rows, helperText = '') {
+  const visibleRows = rows.filter(([, value]) => value !== '' && value != null);
+  if (!visibleRows.length && !helperText) return '';
+  return `
+    <section class="horse-detail-group">
+      <h5>${t(titleKey)}</h5>
+      ${helperText ? `<p class="muted">${escapeHtml(helperText)}</p>` : ''}
+      ${visibleRows.map(([labelKey, value]) => `
+        <p><strong>${t(labelKey)}</strong><span>${escapeHtml(value)}</span></p>
+      `).join('')}
+    </section>
+  `;
+}
+
+function renderOfficialRacingDataGroup(horse) {
+  return renderHorseDetailGroupFiltered('racingRegistry.officialData', getOfficialRacingDataRows(horse), t('racingRegistry.managedByAdmin'));
 }
 
 function renderTasks() {
@@ -10118,8 +10136,32 @@ function renderRaceProgramAdmin() {
   `;
 }
 
+function getBestRacingEarnings(horse) {
+  if (hasPositiveNumber(horse.careerEarnings)) return toSafeNumber(horse.careerEarnings, 0);
+  if (hasPositiveNumber(horse.totalEarnings)) return toSafeNumber(horse.totalEarnings, 0);
+  return '';
+}
+
+function getOfficialRacingDataRows(horse) {
+  const earnings = getBestRacingEarnings(horse);
+  return [
+    ['racingRegistry.horseName', horse.horseName],
+    ['racingRegistry.registration', horse.registrationNumber],
+    ['racingRegistry.totalEarnings', hasPositiveNumber(earnings) ? formatMoney(earnings) : ''],
+    ['racingRegistry.last5Earnings', hasPositiveNumber(horse.last5Earnings) ? formatMoney(horse.last5Earnings) : ''],
+    ['horses.racingCategory', horse.racingCategory],
+    ['racingRegistry.categoryMc', horse.categoryMc],
+    ['racingRegistry.categoryMs', horse.categoryMs],
+    ['racingRegistry.lastResultsUpdate', formatDisplayDate(horse.lastResultsUpdate)]
+  ];
+}
+
+function isMeaningfulRacingSummary(horse, prefix) {
+  return ['Starts', 'Wins', 'Places', 'Show', 'Earnings'].some((field) => hasPositiveNumber(horse[`${prefix}${field}`]));
+}
+
 function formatRacingStatLine(horse, prefix) {
-  return `${t('racingRegistry.starts')}: ${horse[`${prefix}Starts`] || 0} | ${t('racingRegistry.wins')}: ${horse[`${prefix}Wins`] || 0} | ${t('racingRegistry.places')}: ${horse[`${prefix}Places`] || 0} | ${t('racingRegistry.show')}: ${horse[`${prefix}Show`] || 0} | ${t('racingRegistry.earnings')}: ${horse[`${prefix}Earnings`] || 0}`;
+  return `${t('racingRegistry.starts')}: ${horse[`${prefix}Starts`] || 0} | ${t('racingRegistry.wins')}: ${horse[`${prefix}Wins`] || 0} | ${t('racingRegistry.places')}: ${horse[`${prefix}Places`] || 0} | ${t('racingRegistry.show')}: ${horse[`${prefix}Show`] || 0} | ${t('racingRegistry.earnings')}: ${formatMoney(horse[`${prefix}Earnings`] || 0)}`;
 }
 
 function hasRacingPerformanceSummary(horse) {
@@ -10145,7 +10187,7 @@ function renderRacingPerformanceSummary(horse) {
             <span><b>${escapeHtml(horse[`${prefix}Wins`] || 0)}</b>${t('racingRegistry.wins')}</span>
             <span><b>${escapeHtml(horse[`${prefix}Places`] || 0)}</b>${t('racingRegistry.places')}</span>
             <span><b>${escapeHtml(horse[`${prefix}Show`] || 0)}</b>${t('racingRegistry.show')}</span>
-            <span><b>${escapeHtml(horse[`${prefix}Earnings`] || 0)}</b>${t('racingRegistry.earnings')}</span>
+            <span><b>${escapeHtml(formatMoney(horse[`${prefix}Earnings`] || 0))}</b>${t('racingRegistry.earnings')}</span>
           </div>
         </article>
       `).join('')}
@@ -10305,7 +10347,7 @@ function renderRacingStartHistory(horse, editable = false, limit = 0) {
           <tbody>
             ${visibleStarts.map((start) => `
               <tr>
-                <td>${escapeHtml(start.raceDate || t('common.notSet'))}</td>
+                <td>${escapeHtml(formatDisplayDate(start.raceDate) || t('common.notSet'))}</td>
                 <td>${escapeHtml([start.racetrackCode, start.racetrackName, start.raceCode].filter(Boolean).join(' - ') || t('common.notSet'))}</td>
                 <td>${escapeHtml(start.driverName || t('common.notSet'))}</td>
                 <td>${escapeHtml(start.placement || t('common.notSet'))}</td>
@@ -10313,8 +10355,8 @@ function renderRacingStartHistory(horse, editable = false, limit = 0) {
                 <td>${escapeHtml(start.distance || t('common.notSet'))}</td>
                 <td>${escapeHtml(start.startersInfo || t('common.notSet'))}</td>
                 <td>${escapeHtml(start.shoeing || t('common.notSet'))}</td>
-                <td>${escapeHtml(start.netPrize || t('common.notSet'))}</td>
-                <td>${escapeHtml(start.grossPrize || t('common.notSet'))}</td>
+                <td>${escapeHtml(formatMoney(start.netPrize) || t('common.notSet'))}</td>
+                <td>${escapeHtml(formatMoney(start.grossPrize) || t('common.notSet'))}</td>
                 <td>${escapeHtml(start.raceNotes || t('common.noNotes'))}${start.videoUrl ? `<br><a href="${escapeHtml(start.videoUrl)}" target="_blank" rel="noopener noreferrer">${t('racingRegistry.videoUrl')}</a>` : ''}</td>
                 ${editable ? `
                   <td class="racing-start-actions">
@@ -10337,15 +10379,110 @@ function getRacingHorseAgeText(horse) {
   return `${new Date().getFullYear() - birthYear}`;
 }
 
-function renderRacingHorseProfile(horse, { editable = false, compact = false } = {}) {
+function renderCompactRacingPerformanceSummary(horse) {
+  const cards = [
+    ['racingRegistry.career', 'career'],
+    ['racingRegistry.last12Months', 'twelveMonth'],
+    ['racingRegistry.currentYear', 'year'],
+    ['racingRegistry.last2Months', 'twoMonth']
+  ].filter(([, prefix]) => isMeaningfulRacingSummary(horse, prefix));
+  if (!cards.length) return '';
+  return `
+    <section class="racing-performance-grid">
+      ${cards.map(([labelKey, prefix]) => `
+        <article class="racing-mini-card">
+          <strong>${t(labelKey)}</strong>
+          <div class="racing-stat-row">
+            <span><b>${escapeHtml(horse[`${prefix}Starts`] || 0)}</b>${t('racingRegistry.starts')}</span>
+            <span><b>${escapeHtml(horse[`${prefix}Wins`] || 0)}</b>${t('racingRegistry.wins')}</span>
+            <span><b>${escapeHtml(horse[`${prefix}Places`] || 0)}</b>${t('racingRegistry.places')}</span>
+            <span><b>${escapeHtml(horse[`${prefix}Show`] || 0)}</b>${t('racingRegistry.show')}</span>
+            <span><b>${escapeHtml(formatMoney(horse[`${prefix}Earnings`] || 0))}</b>${t('racingRegistry.earnings')}</span>
+          </div>
+        </article>
+      `).join('')}
+    </section>
+  `;
+}
+
+function renderCompactRacingLatestStarts(horse) {
+  const starts = getRacingStartsForHorse(horse.id).slice(0, 3);
+  if (!starts.length) return '';
+  return `
+    <section class="racing-start-history">
+      <h5>${t('racingRegistry.latestStarts')}</h5>
+      <div class="racing-start-table-wrap">
+        <table class="racing-start-table">
+          <thead>
+            <tr>
+              <th>${t('raceEntries.raceDate')}</th>
+              <th>${t('racingRegistry.raceAndTrack')}</th>
+              <th>${t('racingRegistry.placement')}</th>
+              <th>${t('racingRegistry.kmTime')}</th>
+              <th>${t('racingRegistry.grossPrize')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${starts.map((start) => `
+              <tr>
+                <td>${escapeHtml(formatDisplayDate(start.raceDate) || t('common.notSet'))}</td>
+                <td>${escapeHtml([start.racetrackCode, start.racetrackName, start.raceCode].filter(Boolean).join(' - ') || t('common.notSet'))}</td>
+                <td>${escapeHtml(start.placement || t('common.notSet'))}</td>
+                <td>${escapeHtml(start.kilometerTime || t('common.notSet'))}</td>
+                <td>${escapeHtml(formatMoney(start.grossPrize) || t('common.notSet'))}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  `;
+}
+
+function renderLinkedRacingHorseProfile(horse) {
   const headerMeta = [
     horse.registrationNumber && `${t('racingRegistry.registration')}: ${horse.registrationNumber}`,
     getRacingHorseAgeText(horse) && `${t('racingRegistry.age')}: ${getRacingHorseAgeText(horse)}`,
     horse.gender && `${t('horses.gender')}: ${t(`horses.gender${horse.gender.charAt(0).toUpperCase()}${horse.gender.slice(1)}`) || horse.gender}`,
     horse.countryOfOrigin,
     horse.racingCategory && `${t('horses.racingCategory')}: ${horse.racingCategory}`,
-    `${t('racingRegistry.totalEarnings')}: ${horse.careerEarnings || horse.totalEarnings || 0}`,
-    horse.lastResultsUpdate && `${t('racingRegistry.lastResultsUpdate')}: ${horse.lastResultsUpdate}`
+    hasPositiveNumber(getBestRacingEarnings(horse)) && `${t('racingRegistry.totalEarnings')}: ${formatMoney(getBestRacingEarnings(horse))}`,
+    horse.lastResultsUpdate && `${t('racingRegistry.lastResultsUpdate')}: ${formatDisplayDate(horse.lastResultsUpdate)}`
+  ].filter(Boolean);
+  return `
+    <section class="racing-profile-shell compact">
+      <div class="racing-profile-header">
+        <div>
+          <p class="eyebrow">${t('racingRegistry.officialData')}</p>
+          <h4>${escapeHtml(horse.horseName)}</h4>
+          <p>${t('racingRegistry.managedByAdmin')}</p>
+          ${headerMeta.length ? `<div class="item-meta">${headerMeta.map((item) => `<span class="pill">${escapeHtml(item)}</span>`).join('')}</div>` : ''}
+        </div>
+      </div>
+      ${renderCompactRacingPerformanceSummary(horse)}
+      <div class="horse-detail-grid racing-profile-panels">
+        ${renderHorseDetailGroupFiltered('racingRegistry.categories', [
+          ['racingRegistry.categoryMc', horse.categoryMc],
+          ['racingRegistry.categoryMs', horse.categoryMs],
+          ['racingRegistry.potentialMc', horse.potentialMc],
+          ['racingRegistry.potentialMs', horse.potentialMs]
+        ])}
+      </div>
+      ${renderCompactRacingLatestStarts(horse)}
+    </section>
+  `;
+}
+
+function renderRacingHorseProfile(horse, { editable = false, compact = false } = {}) {
+  if (compact && !editable) return renderLinkedRacingHorseProfile(horse);
+  const headerMeta = [
+    horse.registrationNumber && `${t('racingRegistry.registration')}: ${horse.registrationNumber}`,
+    getRacingHorseAgeText(horse) && `${t('racingRegistry.age')}: ${getRacingHorseAgeText(horse)}`,
+    horse.gender && `${t('horses.gender')}: ${t(`horses.gender${horse.gender.charAt(0).toUpperCase()}${horse.gender.slice(1)}`) || horse.gender}`,
+    horse.countryOfOrigin,
+    horse.racingCategory && `${t('horses.racingCategory')}: ${horse.racingCategory}`,
+    `${t('racingRegistry.totalEarnings')}: ${formatMoney(getBestRacingEarnings(horse) || 0)}`,
+    horse.lastResultsUpdate && `${t('racingRegistry.lastResultsUpdate')}: ${formatDisplayDate(horse.lastResultsUpdate)}`
   ].filter(Boolean);
   return `
     <section class="racing-profile-shell ${compact ? 'compact' : ''}">
@@ -10813,6 +10950,31 @@ function getFeedStatus(item) {
 
 function formatNumber(value) {
   return Number(value || 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
+}
+
+function hasPositiveNumber(value) {
+  return toSafeNumber(value, 0) > 0;
+}
+
+function formatMoney(value) {
+  if (value === '' || value == null) return '';
+  const number = toSafeNumber(value, null);
+  if (number == null) return '';
+  return `${number.toLocaleString(currentLanguage, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })} €`;
+}
+
+function formatDisplayDate(dateValue) {
+  if (!dateValue) return '';
+  const date = new Date(`${dateValue}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return dateValue;
+  return new Intl.DateTimeFormat(currentLanguage, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  }).format(date);
 }
 
 function upsert(collection, item) {
