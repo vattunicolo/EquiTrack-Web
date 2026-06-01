@@ -2800,6 +2800,8 @@ Object.assign(translations.en, {
   'raceEntries.noPlans': 'No horses planned for this race yet.',
   'raceEntries.createDraft': 'Create email draft',
   'raceEntries.mailtoNotice': 'This creates an email draft. Check all details before sending.',
+  'raceEntries.racetrackEmailMissing': 'Racetrack email is missing.',
+  'raceEntries.draftFailed': 'Could not create email draft.',
   'raceEntries.importTitle': 'Import race file',
   'raceEntries.importHelp': 'Import Italian race-program PDFs, CSV, or plain text as a reviewable draft. PDF/Excel import is best-effort.',
   'raceEntries.importButton': 'Import race file',
@@ -3093,6 +3095,8 @@ Object.assign(translations.fi, {
   'raceEntries.noPlans': 'Tähän lähtöön ei ole vielä suunniteltu hevosia.',
   'raceEntries.createDraft': 'Luo sähköpostiluonnos',
   'raceEntries.mailtoNotice': 'Tämä luo sähköpostiluonnoksen. Tarkista tiedot ennen lähettämistä.',
+  'raceEntries.racetrackEmailMissing': 'Raviradan sähköposti puuttuu.',
+  'raceEntries.draftFailed': 'Sähköpostiluonnosta ei voitu luoda.',
   'raceEntries.importTitle': 'Tuo lähtötiedosto',
   'raceEntries.importHelp': 'Tuo italialaisia lähtöohjelmien PDF-, CSV- tai tekstitiedostoja tarkistettavaksi luonnokseksi. PDF/Excel-tuonti on paras yritys.',
   'raceEntries.importButton': 'Tuo lähtötiedosto',
@@ -3386,6 +3390,8 @@ Object.assign(translations.it, {
   'raceEntries.noPlans': 'Nessun cavallo pianificato per questa gara.',
   'raceEntries.createDraft': 'Crea bozza email',
   'raceEntries.mailtoNotice': 'Questo crea una bozza email. Controlla i dati prima di inviarla.',
+  'raceEntries.racetrackEmailMissing': 'Email dell’ippodromo mancante.',
+  'raceEntries.draftFailed': 'Impossibile creare la bozza email.',
   'raceEntries.importTitle': 'Importa file gare',
   'raceEntries.importHelp': 'Importa PDF, CSV o testi di programmi gara italiani come bozza da rivedere. L’importazione PDF/Excel è indicativa.',
   'raceEntries.importButton': 'Importa file gare',
@@ -12201,15 +12207,19 @@ function deleteRaceOpportunityLocal(id) {
 }
 
 function buildRaceEmailDraft(planId) {
-  const plan = normalizeRacePlan(state.raceEntryPlans.find((entry) => entry.id === planId) || {});
+  const rawPlan = state.raceEntryPlans.find((entry) => entry.id === planId || entry.cloudId === planId);
+  if (!rawPlan) return null;
+  const plan = normalizeRacePlan(rawPlan);
   const globalRace = plan.programRaceId ? raceProgramRaces.find((entry) => entry.id === plan.programRaceId) : null;
   const globalProgram = globalRace ? racePrograms.find((entry) => entry.id === globalRace.programId) : null;
   const opportunity = globalRace
     ? normalizeRaceOpportunity({
-      racetrackName: globalProgram?.racetrackName || '',
+      racetrackName: globalProgram?.racetrackName || globalRace.racetrackName || '',
       raceDate: globalRace.raceDate,
       raceNumber: globalRace.raceNumber,
       raceName: globalRace.raceName,
+      raceClass: globalRace.raceClass,
+      distance: globalRace.distance,
       prizeInfo: globalRace.prizeInfo,
       contactEmail: globalRace.contactEmail,
       notes: globalRace.notes
@@ -12241,16 +12251,41 @@ function buildRaceEmailDraft(planId) {
     '',
     t('raceEntries.emailClosing')
   ].join('\n');
-  return { to: opportunity.contactEmail, subject, body };
+  return { to: cleanText(opportunity.contactEmail), subject, body, plan, globalRace, opportunity };
 }
 
 function createRaceEmailDraft(planId) {
   const draft = buildRaceEmailDraft(planId);
-  if (!draft.to) {
-    showMessage(t('raceEntries.noContactEmail'));
+  console.info('[EquiTrack race entries] Create email draft clicked', {
+    planId,
+    raceId: draft?.globalRace?.id || draft?.plan?.opportunityId || '',
+    recipientFound: Boolean(draft?.to)
+  });
+  if (!draft) {
+    showMessage(t('raceEntries.draftFailed'));
     return;
   }
-  const href = `mailto:${encodeURIComponent(draft.to)}?subject=${encodeURIComponent(draft.subject)}&body=${encodeURIComponent(draft.body)}`;
+  if (!draft.to) {
+    console.warn('[EquiTrack race entries] Email draft missing racetrack recipient', {
+      planId,
+      raceId: draft.globalRace?.id || draft.plan.opportunityId || ''
+    });
+    showMessage(t('raceEntries.racetrackEmailMissing'));
+    return;
+  }
+  const recipients = draft.to
+    .split(/[;,]/)
+    .map((email) => email.trim())
+    .filter(Boolean)
+    .map(encodeURI)
+    .join(',');
+  const href = `mailto:${recipients}?subject=${encodeURIComponent(draft.subject)}&body=${encodeURIComponent(draft.body)}`;
+  console.info('[EquiTrack race entries] Opening race entry email draft', {
+    planId,
+    raceId: draft.globalRace?.id || draft.plan.opportunityId || '',
+    recipientFound: true,
+    mailtoLength: href.length
+  });
   window.location.href = href;
 }
 
