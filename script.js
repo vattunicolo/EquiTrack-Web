@@ -2860,7 +2860,8 @@ Object.assign(translations.en, {
   'raceImport.debugError': 'Error',
   'raceEntries.savedOpportunity': 'Race opportunity saved.',
   'raceEntries.deletedOpportunity': 'Race opportunity deleted.',
-  'raceEntries.savedPlan': 'Planned race entry saved.',
+  'raceEntries.savedPlan': 'Entry plan saved.',
+  'raceEntries.planSaveFailed': 'Could not save entry plan.',
   'raceEntries.deletedPlan': 'Planned race entry deleted.',
   'raceEntries.noContactEmail': 'Add a contact email before creating an email draft.',
   'raceEntries.deadlineSoon': 'Race entry deadline soon',
@@ -2878,6 +2879,9 @@ Object.assign(translations.en, {
   'raceEntries.showOnlyPossible': 'Show only races with possible matching horses',
   'raceEntries.searchRaces': 'Search races',
   'raceEntries.noRacesForDay': 'No races for this day.',
+  'raceEntries.showClosedRaces': 'Show closed races',
+  'raceEntries.entryClosed': 'Entry closed',
+  'raceEntries.entryDeadlinePassed': 'Entry deadline passed',
   'raceEntries.eligibilityDisclaimer': 'Eligibility is a suggestion. Always verify official race conditions.',
   'eligibility.eligible': 'Eligible',
   'eligibility.notEligible': 'Not eligible',
@@ -2925,6 +2929,7 @@ Object.assign(translations.en, {
   'racePrograms.importToProgram': 'Import race file to this program',
   'racePrograms.saveImportedToProgram': 'Save selected races to this program',
   'racePrograms.racesInProgram': 'Races in program',
+  'racePrograms.openRaces': 'Open races',
   'racePrograms.createFirst': 'Create a race program first, then import a race file.',
   'racePrograms.selectedImportProgram': 'Import target: {program}',
   'racePrograms.publish': 'Publish',
@@ -3148,7 +3153,8 @@ Object.assign(translations.fi, {
   'raceImport.debugError': 'Virhe',
   'raceEntries.savedOpportunity': 'Lähtö tallennettu.',
   'raceEntries.deletedOpportunity': 'Lähtö poistettu.',
-  'raceEntries.savedPlan': 'Suunniteltu ilmoittautuminen tallennettu.',
+  'raceEntries.savedPlan': 'Ilmoittautumissuunnitelma tallennettu.',
+  'raceEntries.planSaveFailed': 'Ilmoittautumissuunnitelmaa ei voitu tallentaa.',
   'raceEntries.deletedPlan': 'Suunniteltu ilmoittautuminen poistettu.',
   'raceEntries.noContactEmail': 'Lisää yhteyssähköposti ennen sähköpostiluonnoksen luomista.',
   'raceEntries.deadlineSoon': 'Ilmoittautumisen määräaika lähestyy',
@@ -3166,6 +3172,9 @@ Object.assign(translations.fi, {
   'raceEntries.showOnlyPossible': 'Näytä vain lähdöt, joihin on mahdollisesti sopivia hevosia',
   'raceEntries.searchRaces': 'Hae lähtöjä',
   'raceEntries.noRacesForDay': 'Tälle päivälle ei ole lähtöjä.',
+  'raceEntries.showClosedRaces': 'Näytä sulkeutuneet lähdöt',
+  'raceEntries.entryClosed': 'Ilmoittautuminen suljettu',
+  'raceEntries.entryDeadlinePassed': 'Ilmoittautumisen määräaika on ohitettu',
   'raceEntries.eligibilityDisclaimer': 'Sopivuus on ehdotus. Tarkista aina viralliset lähtöehdot.',
   'eligibility.eligible': 'Sopiva',
   'eligibility.notEligible': 'Ei sopiva',
@@ -3213,6 +3222,7 @@ Object.assign(translations.fi, {
   'racePrograms.importToProgram': 'Tuo lähtötiedosto tähän ohjelmaan',
   'racePrograms.saveImportedToProgram': 'Tallenna valitut lähdöt tähän ohjelmaan',
   'racePrograms.racesInProgram': 'Lähtöjä ohjelmassa',
+  'racePrograms.openRaces': 'Avoimet lähdöt',
   'racePrograms.createFirst': 'Luo ensin raviohjelma ja tuo sitten lähtötiedosto.',
   'racePrograms.selectedImportProgram': 'Tuonnin kohde: {program}',
   'racePrograms.publish': 'Julkaise',
@@ -3436,7 +3446,8 @@ Object.assign(translations.it, {
   'raceImport.debugError': 'Errore',
   'raceEntries.savedOpportunity': 'Opportunità gara salvata.',
   'raceEntries.deletedOpportunity': 'Opportunità gara eliminata.',
-  'raceEntries.savedPlan': 'Iscrizione pianificata salvata.',
+  'raceEntries.savedPlan': 'Piano di iscrizione salvato.',
+  'raceEntries.planSaveFailed': 'Impossibile salvare il piano di iscrizione.',
   'raceEntries.deletedPlan': 'Iscrizione pianificata eliminata.',
   'raceEntries.noContactEmail': 'Aggiungi un’email di contatto prima di creare una bozza.',
   'raceEntries.deadlineSoon': 'Scadenza iscrizione vicina',
@@ -3454,6 +3465,9 @@ Object.assign(translations.it, {
   'raceEntries.showOnlyPossible': 'Mostra solo gare con cavalli potenzialmente compatibili',
   'raceEntries.searchRaces': 'Cerca gare',
   'raceEntries.noRacesForDay': 'Nessuna gara per questo giorno.',
+  'raceEntries.showClosedRaces': 'Mostra corse chiuse',
+  'raceEntries.entryClosed': 'Iscrizione chiusa',
+  'raceEntries.entryDeadlinePassed': 'Scadenza iscrizione superata',
   'raceEntries.eligibilityDisclaimer': 'L’idoneità è un suggerimento. Verifica sempre le condizioni ufficiali.',
   'eligibility.eligible': 'Idoneo',
   'eligibility.notEligible': 'Non idoneo',
@@ -3501,6 +3515,7 @@ Object.assign(translations.it, {
   'racePrograms.importToProgram': 'Importa file gare in questo programma',
   'racePrograms.saveImportedToProgram': 'Salva gare selezionate in questo programma',
   'racePrograms.racesInProgram': 'Gare nel programma',
+  'racePrograms.openRaces': 'Corse aperte',
   'racePrograms.createFirst': 'Crea prima un programma gare, poi importa un file.',
   'racePrograms.selectedImportProgram': 'Destinazione importazione: {program}',
   'racePrograms.publish': 'Pubblica',
@@ -3719,7 +3734,7 @@ let racingHorseSearchTerm = '';
 let resultsImportPreviewItems = [];
 let raceStablePreviewForAdmin = false;
 let selectedPublishedRaceDay = { racetrack: '', date: '' };
-let publishedRaceFilter = { possibleOnly: false, search: '' };
+let publishedRaceFilter = { possibleOnly: false, search: '', showClosed: false };
 let publishedRaceFilterTimer = null;
 let pdfJsLoadPromise = null;
 let raceImportInProgress = false;
@@ -8841,6 +8856,13 @@ function isDateBetween(dateValue, startValue, endValue) {
   return dateValue >= startValue && dateValue <= endValue;
 }
 
+function isRaceEntryOpen(race, todayValue = today()) {
+  const normalized = normalizeRaceOpportunity(race || {});
+  const closeDate = normalized.entryDeadline || normalized.raceDate || '';
+  if (!closeDate) return true;
+  return closeDate >= todayValue;
+}
+
 function getLastBackupAgeDays() {
   const lastBackup = localStorage.getItem(LAST_BACKUP_KEY);
   if (!lastBackup) return null;
@@ -9009,8 +9031,8 @@ function getActiveAlerts() {
 
   const raceDeadlinesSoon = state.raceEntryOpportunities
     .map(normalizeRaceOpportunity)
-    .filter((opportunity) => opportunity.entryDeadline && isDateBetween(opportunity.entryDeadline, todayValue, weekEndValue))
-    .concat(raceProgramRaces.filter((race) => race.entryDeadline && isDateBetween(race.entryDeadline, todayValue, weekEndValue)));
+    .filter((opportunity) => isRaceEntryOpen(opportunity, todayValue) && opportunity.entryDeadline && isDateBetween(opportunity.entryDeadline, todayValue, weekEndValue))
+    .concat(raceProgramRaces.filter((race) => isRaceEntryOpen(race, todayValue) && race.entryDeadline && isDateBetween(race.entryDeadline, todayValue, weekEndValue)));
   if (raceDeadlinesSoon.length) {
     alerts.push({
       id: 'race-entry-deadline',
@@ -10055,6 +10077,7 @@ function getRaceProgramStatusLabel(status) {
 
 function renderRaceProgramAdminCard(program) {
   const races = raceProgramRaces.filter((race) => race.programId === program.id);
+  const openRaces = races.filter((race) => isRaceEntryOpen(race)).length;
   const location = [program.racetrackName, program.locationCity, program.locationCountry].filter(Boolean).join(' - ');
   return `
     <article class="item-card premium-stable-card race-program-admin-card">
@@ -10065,6 +10088,7 @@ function renderRaceProgramAdminCard(program) {
           <span class="pill">${getRaceProgramStatusLabel(program.status)}</span>
           <span class="pill">${t('raceEntries.racetrack')}: ${escapeHtml(program.racetrackName || '-')}</span>
           <span class="pill">${t('racePrograms.racesInProgram')}: ${races.length}</span>
+          <span class="pill">${t('racePrograms.openRaces')}: ${openRaces}</span>
         </div>
         <div class="race-plan-list">
           ${races.slice(0, 8).map((race) => `
@@ -10637,11 +10661,23 @@ function renderPublishedRacePrograms() {
     els.publishedRaceProgramList.innerHTML = `<p class="empty-state">${t('racePrograms.noPrograms')}</p>`;
     return;
   }
-  const publishedRaceContexts = publishedPrograms.flatMap((program) => raceProgramRaces
+  const todayValue = today();
+  const allPublishedRaceContexts = publishedPrograms.flatMap((program) => raceProgramRaces
     .filter((race) => race.programId === program.id)
-    .map((race) => ({ race, program })));
+    .map((race) => ({ race, program, open: isRaceEntryOpen(race, todayValue) })));
+  const publishedRaceContexts = publishedRaceFilter.showClosed
+    ? allPublishedRaceContexts
+    : allPublishedRaceContexts.filter((context) => context.open);
   if (!publishedRaceContexts.length) {
-    els.publishedRaceProgramList.innerHTML = `<p class="empty-state">${t('raceEntries.noRacesForDay')}</p>`;
+    els.publishedRaceProgramList.innerHTML = `
+      <div class="race-day-filters">
+        <label class="checkbox-line inline-checkbox">
+          <input type="checkbox" data-race-filter="showClosed" ${publishedRaceFilter.showClosed ? 'checked' : ''}>
+          <span>${t('raceEntries.showClosedRaces')}</span>
+        </label>
+      </div>
+      <p class="empty-state">${t('raceEntries.noRacesForDay')}</p>
+    `;
     return;
   }
   const grouped = new Map();
@@ -10713,6 +10749,10 @@ function renderPublishedRacePrograms() {
             <input type="checkbox" data-race-filter="possibleOnly" ${publishedRaceFilter.possibleOnly ? 'checked' : ''}>
             <span>${t('raceEntries.showOnlyPossible')}</span>
           </label>
+          <label class="checkbox-line inline-checkbox">
+            <input type="checkbox" data-race-filter="showClosed" ${publishedRaceFilter.showClosed ? 'checked' : ''}>
+            <span>${t('raceEntries.showClosedRaces')}</span>
+          </label>
         </div>
         <p class="update-note">${t('raceEntries.eligibilityDisclaimer')}</p>
         <div class="race-import-list">
@@ -10726,6 +10766,7 @@ function renderPublishedRacePrograms() {
 }
 
 function renderGlobalRaceCard(race, program) {
+  const isOpen = isRaceEntryOpen(race);
   const plans = getRacePlansForProgramRace(race.id);
   const { possible, manual, notEligible } = getEligibilityHorseBuckets(race);
   const possibleHorses = possible.map((entry) => entry.horse);
@@ -10745,11 +10786,15 @@ function renderGlobalRaceCard(race, program) {
     race.contactEmail && `${t('raceEntries.contactEmail')}: ${race.contactEmail}`
   ].filter(Boolean);
   return `
-    <article class="item-card race-entry-card premium-stable-card" data-program-race-id="${race.id}">
+    <article class="item-card race-entry-card premium-stable-card ${isOpen ? '' : 'race-entry-card-closed'}" data-program-race-id="${race.id}">
       <div>
         <h4>${escapeHtml([race.raceNumber, race.raceName].filter(Boolean).join(' ') || t('raceEntries.raceName'))}</h4>
         <p>${escapeHtml([race.raceDate, program.racetrackName].filter(Boolean).join(' - '))}</p>
-        <div class="item-meta">${details.map((detail) => `<span class="pill">${escapeHtml(detail)}</span>`).join('')}</div>
+        <div class="item-meta">
+          ${!isOpen ? `<span class="pill warn">${t('raceEntries.entryClosed')}</span>` : ''}
+          ${details.map((detail) => `<span class="pill">${escapeHtml(detail)}</span>`).join('')}
+        </div>
+        ${!isOpen ? `<p class="update-note">${t('raceEntries.entryDeadlinePassed')}</p>` : ''}
         ${race.eligibilityNotes ? `<div class="detail-box"><strong>${t('raceEntries.eligibilityNotes')}</strong><p>${escapeHtml(race.eligibilityNotes)}</p></div>` : ''}
         <div class="detail-box">
           <strong>${t('racePrograms.possibleMatches')}</strong>
@@ -10760,7 +10805,7 @@ function renderGlobalRaceCard(race, program) {
           ${notEligible.length ? `<details class="eligibility-reasons"><summary>${t('eligibility.notEligible')}</summary>${notEligible.map((entry) => `<p><strong>${escapeHtml(entry.horse.name)}</strong>: ${escapeHtml(entry.reasons.map((reason) => t(reason)).join(', '))}</p>`).join('')}</details>` : ''}
         </div>
         ${plans.length ? `<div class="race-plan-list">${plans.map((plan) => renderRacePlanLine(plan, null)).join('')}</div>` : ''}
-        ${canCreateRacePlans() ? `<div class="entry-form compact-form">
+        ${canCreateRacePlans() && isOpen ? `<div class="entry-form compact-form">
           <label><span>${t('raceEntries.horse')}</span><select data-plan-field="horseId">${horseOptions}</select></label>
           <label><span>${t('raceEntries.driver')}</span><input data-plan-field="driver" value="${escapeHtml(firstHorse.defaultDriver)}"></label>
           <label><span>${t('raceEntries.trainer')}</span><input data-plan-field="trainer" value="${escapeHtml(firstHorse.trainerName)}"></label>
@@ -11426,31 +11471,96 @@ async function handleRacingHorseStartSubmit(event) {
   }
 }
 
-async function createGlobalRacePlan(raceId, card) {
+async function createGlobalRacePlan(raceId, card, button = null) {
   if (!canCreateRacePlans()) return;
+  const activeStable = getActiveStable();
+  const race = raceProgramRaces.find((entry) => entry.id === raceId);
+  console.info('[EquiTrack race entries] Create entry plan clicked', {
+    raceId,
+    stableId: activeStable.id || '',
+    raceDate: race?.raceDate || '',
+    raceName: race?.raceName || ''
+  });
+  if (!card || !race) {
+    showMessage(t('raceEntries.planSaveFailed'));
+    return;
+  }
+  if (!isRaceEntryOpen(race)) {
+    showMessage(t('raceEntries.entryClosed'));
+    return;
+  }
   const horseId = card.querySelector('[data-plan-field="horseId"]')?.value || '';
-  if (!horseId) return;
-  const selectedHorse = getHorseRacingData(state.horses.find((horse) => horse.id === horseId) || {});
+  if (!horseId) {
+    showMessage(t('raceEntries.planSaveFailed'));
+    return;
+  }
+  const stableHorse = state.horses.find((horse) => horse.id === horseId);
+  const selectedHorse = getHorseRacingData(stableHorse || {});
+  const existingPlan = state.raceEntryPlans
+    .map(normalizeRacePlan)
+    .find((entry) => entry.programRaceId === raceId && entry.horseId === horseId);
+  const now = new Date().toISOString();
   const plan = normalizeRacePlan({
-    id: createId(),
+    ...(existingPlan || {}),
+    id: existingPlan?.id || `global-race-plan-${raceId}-${horseId}`,
     opportunityId: '',
     programRaceId: raceId,
     horseId,
     driver: card.querySelector('[data-plan-field="driver"]')?.value || selectedHorse.defaultDriver || '',
     trainer: card.querySelector('[data-plan-field="trainer"]')?.value || selectedHorse.trainerName || '',
     notes: card.querySelector('[data-plan-field="notes"]')?.value || '',
-    status: 'draft',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
+    status: existingPlan?.status || 'draft',
+    createdAt: existingPlan?.createdAt || now,
+    updatedAt: now
   });
+  console.info('[EquiTrack race entries] Saving entry plan payload', {
+    raceId,
+    stableId: activeStable.id || '',
+    horseId,
+    horseCloudId: stableHorse?.cloudId || '',
+    planId: plan.id,
+    existingPlanId: existingPlan?.id || '',
+    existingCloudId: existingPlan?.cloudId || '',
+    driver: plan.driver,
+    trainer: plan.trainer,
+    status: plan.status
+  });
+  if (button) button.disabled = true;
   if (cloudWriteMode) {
     await runCloudAction('race-global-plan-save', raceId, async () => {
-      const saved = await handleCloudRacePlanSave(plan);
-      if (saved) showMessage(t('raceEntryCloud.savedPlan'));
+      try {
+        const savedPlan = await saveRacePlanToCloud(plan);
+        console.info('[EquiTrack race entries] Entry plan cloud save result', {
+          raceId,
+          stableId: activeStable.id || '',
+          horseId,
+          planId: savedPlan.id,
+          cloudId: savedPlan.cloudId || ''
+        });
+        const existingIndex = state.raceEntryPlans.findIndex((entry) => entry.id === savedPlan.id || (normalizeRacePlan(entry).programRaceId === raceId && normalizeRacePlan(entry).horseId === horseId));
+        if (existingIndex >= 0) state.raceEntryPlans[existingIndex] = savedPlan;
+        else state.raceEntryPlans.push(savedPlan);
+        render();
+        showMessage(t('raceEntries.savedPlan'));
+      } catch (error) {
+        console.error('[EquiTrack race entries] Entry plan cloud save failed', {
+          raceId,
+          stableId: activeStable.id || '',
+          horseId,
+          error
+        });
+        showMessage(t('raceEntries.planSaveFailed'));
+      } finally {
+        if (button) button.disabled = false;
+      }
     });
     return;
   }
-  upsert('raceEntryPlans', plan);
+  const existingIndex = state.raceEntryPlans.findIndex((entry) => entry.id === plan.id || (normalizeRacePlan(entry).programRaceId === raceId && normalizeRacePlan(entry).horseId === horseId));
+  if (existingIndex >= 0) state.raceEntryPlans[existingIndex] = plan;
+  else state.raceEntryPlans.push(plan);
+  saveData();
+  render();
   showMessage(t('raceEntries.savedPlan'));
 }
 
@@ -11542,7 +11652,7 @@ function handleListClick(event) {
     else deleteItem('raceEntryPlans', id, t('delete.racePlan'), t('raceEntries.deletedPlan'));
   }
   if (action === 'draft-race-email') createRaceEmailDraft(id);
-  if (action === 'create-global-race-plan') createGlobalRacePlan(id, button.closest('[data-program-race-id]'));
+  if (action === 'create-global-race-plan') createGlobalRacePlan(id, button.closest('[data-program-race-id]'), button);
   if (action === 'select-published-race-day') {
     selectedPublishedRaceDay = {
       racetrack: button.dataset.racetrack || '',
@@ -13129,6 +13239,7 @@ function refreshForUpdate() {
 
 document.querySelectorAll('.item-list').forEach((list) => list.addEventListener('click', handleListClick));
 els.calendarSelectedDayAgenda?.addEventListener('click', handleListClick);
+els.publishedRaceProgramList?.addEventListener('click', handleListClick);
 document.querySelector('#stableView').addEventListener('click', handleQuickAction);
 els.homeOverviewSection?.addEventListener('click', handleHomeShortcut);
 els.raceControlDashboard?.addEventListener('click', handleRaceAdminAction);
@@ -13196,6 +13307,7 @@ els.publishedRaceProgramList?.addEventListener('change', (event) => {
   const filter = event.target.closest('[data-race-filter]');
   if (!filter) return;
   if (filter.dataset.raceFilter === 'possibleOnly') publishedRaceFilter.possibleOnly = filter.checked;
+  if (filter.dataset.raceFilter === 'showClosed') publishedRaceFilter.showClosed = filter.checked;
   renderPublishedRacePrograms();
 });
 els.raceImportPreview?.addEventListener('input', (event) => updateRaceImportPreviewField(event.target));
