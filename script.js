@@ -597,6 +597,7 @@ const translations = {
     'inventory.expiryDate': 'Expiry date',
     'inventory.storageLocation': 'Storage location',
     'inventory.cost': 'Cost / price',
+    'inventory.reorderLeadDays': 'Reorder lead days',
     'inventory.notesPlaceholder': 'Delivery notes, batch, supplier contact',
     'inventory.horseUsage': 'Per-horse consumption, optional',
     'inventory.assignedHorses': 'Assigned horses',
@@ -753,6 +754,12 @@ const translations = {
     'feed.dailyUsage': 'Daily usage',
     'feed.daysLeft': 'Days left',
     'feed.lowThreshold': 'Low threshold',
+    'feed.runsOut': 'Runs out',
+    'feed.reorderBy': 'Reorder by',
+    'feed.projected': 'Projected from last update',
+    'feed.addReminder': 'Add reorder reminder',
+    'feed.reminderAdded': 'Reorder reminder added to calendar.',
+    'feed.reminderExists': 'A reorder reminder already exists.',
     'feed.supplier': 'Supplier',
     'feed.storage': 'Storage',
     'feed.cost': 'Cost',
@@ -1288,6 +1295,7 @@ const translations = {
     'inventory.expiryDate': 'Viimeinen käyttöpäivä',
     'inventory.storageLocation': 'Sailytyspaikka',
     'inventory.cost': 'Hinta',
+    'inventory.reorderLeadDays': 'Uudelleentilauksen varoaika',
     'inventory.notesPlaceholder': 'Toimitus, era, toimittajan yhteystiedot',
     'inventory.horseUsage': 'Hevoskohtainen kulutus, valinnainen',
     'inventory.assignedHorses': 'Hevoset',
@@ -1444,6 +1452,12 @@ const translations = {
     'feed.dailyUsage': 'Päivittäinen käyttö',
     'feed.daysLeft': 'Päiviä jäljellä',
     'feed.lowThreshold': 'Vähimmäisraja',
+    'feed.runsOut': 'Loppuu',
+    'feed.reorderBy': 'Tilaa viimeistään',
+    'feed.projected': 'Arvioitu viimeisimmästä päivityksestä',
+    'feed.addReminder': 'Lisää tilausmuistutus',
+    'feed.reminderAdded': 'Tilausmuistutus lisätty kalenteriin.',
+    'feed.reminderExists': 'Tilausmuistutus on jo olemassa.',
     'feed.supplier': 'Toimittaja',
     'feed.storage': 'Säilytys',
     'feed.cost': 'Hinta',
@@ -1979,6 +1993,7 @@ const translations = {
     'inventory.expiryDate': 'Data scadenza',
     'inventory.storageLocation': 'Posizione deposito',
     'inventory.cost': 'Costo / prezzo',
+    'inventory.reorderLeadDays': 'Giorni anticipo riordino',
     'inventory.notesPlaceholder': 'Consegna, lotto, contatto fornitore',
     'inventory.horseUsage': 'Consumo per cavallo, opzionale',
     'inventory.assignedHorses': 'Cavalli assegnati',
@@ -2135,6 +2150,12 @@ const translations = {
     'feed.dailyUsage': 'Uso giornaliero',
     'feed.daysLeft': 'Giorni rimasti',
     'feed.lowThreshold': 'Soglia bassa',
+    'feed.runsOut': 'Finisce il',
+    'feed.reorderBy': 'Riordina entro',
+    'feed.projected': 'Stimato dall’ultimo aggiornamento',
+    'feed.addReminder': 'Aggiungi promemoria riordino',
+    'feed.reminderAdded': 'Promemoria riordino aggiunto al calendario.',
+    'feed.reminderExists': 'Esiste già un promemoria riordino.',
     'feed.supplier': 'Fornitore',
     'feed.storage': 'Deposito',
     'feed.cost': 'Costo',
@@ -4019,30 +4040,109 @@ function toSafeNumber(value, fallback = 0) {
   return Number.isFinite(number) ? number : fallback;
 }
 
-function normalizeFeedItem(item) {
-  const quantity = toSafeNumber(item.quantity ?? item.currentAmount ?? item.amount);
-  const history = Array.isArray(item.history) ? item.history : [];
-  return {
+function parseFeedCloudNotes(value) {
+  const raw = String(value || '');
+  const marker = '[EquiTrack feed data] ';
+  const markerIndex = raw.lastIndexOf(marker);
+  if (markerIndex === -1) return { notes: raw, meta: {} };
+  const notes = raw.slice(0, markerIndex).trim();
+  const encoded = raw.slice(markerIndex + marker.length).trim();
+  try {
+    return { notes, meta: JSON.parse(encoded) || {} };
+  } catch (error) {
+    console.warn('[EquiTrack feed] Feed metadata parse failed', error);
+    return { notes: raw, meta: {} };
+  }
+}
+
+function buildFeedCloudNotes(item) {
+  const notes = parseFeedCloudNotes(item.notes).notes;
+  const meta = {
+    horseIds: item.horseIds,
+    shoppingNeeded: item.shoppingNeeded,
+    stockHistory: item.stockHistory,
+    reorderLeadDays: item.reorderLeadDays,
+    lastUpdated: item.lastUpdated
+  };
+  return `${notes ? `${notes}\n\n` : ''}[EquiTrack feed data] ${JSON.stringify(meta)}`;
+}
+
+function getFeedHorseIdsFromLegacy(item = {}, horses = state?.horses || []) {
+  if (!Array.isArray(horses)) horses = state?.horses || [];
+  const rawIds = []
+    .concat(Array.isArray(item.horseIds) ? item.horseIds : [])
+    .concat(Array.isArray(item.horse_ids) ? item.horse_ids : [])
+    .concat(Array.isArray(item.selectedHorseIds) ? item.selectedHorseIds : [])
+    .concat(Array.isArray(item.assignedHorseIds) ? item.assignedHorseIds : [])
+    .concat(Array.isArray(item.selectedHorses) ? item.selectedHorses : [])
+    .concat(Array.isArray(item.horses) ? item.horses : [])
+    .concat(item.horseId || item.horse_id || []);
+  const rawNames = []
+    .concat(Array.isArray(item.horseNames) ? item.horseNames : [])
+    .concat(Array.isArray(item.selectedHorseNames) ? item.selectedHorseNames : [])
+    .concat(Array.isArray(item.assignedHorseNames) ? item.assignedHorseNames : [])
+    .concat(Array.isArray(item.horses) ? item.horses.map((value) => (typeof value === 'object' ? value.name : value)) : [])
+    .concat(Array.isArray(item.selectedHorses) ? item.selectedHorses.map((value) => (typeof value === 'object' ? value.name : value)) : [])
+    .concat(typeof item.horseNames === 'string' ? item.horseNames.split(',') : [])
+    .concat(typeof item.selectedHorseNames === 'string' ? item.selectedHorseNames.split(',') : []);
+  const ids = new Set();
+  rawIds.filter(Boolean).forEach((value) => {
+    const raw = typeof value === 'object' ? (value.id || value.horseId || value.name) : value;
+    const directMatch = horses.find((horse) => horse.id === raw || horse.cloudId === raw);
+    if (directMatch) ids.add(directMatch.id);
+    else if (typeof raw === 'string' && horses.some((horse) => horse.id === raw)) ids.add(raw);
+  });
+  rawNames.map((name) => String(name || '').trim().toLowerCase()).filter(Boolean).forEach((name) => {
+    const match = horses.find((horse) => String(horse.name || '').trim().toLowerCase() === name);
+    if (match) ids.add(match.id);
+  });
+  return Array.from(ids);
+}
+
+function normalizeFeedItem(item = {}, horses = state?.horses || []) {
+  if (!Array.isArray(horses)) horses = state?.horses || [];
+  const parsedNotes = parseFeedCloudNotes(item.notes);
+  const meta = parsedNotes.meta || {};
+  const quantity = toSafeNumber(item.amount ?? item.quantity ?? item.currentAmount ?? item.current_amount, 0);
+  const stockHistory = Array.isArray(item.stockHistory) ? item.stockHistory
+    : Array.isArray(item.stock_history) ? item.stock_history
+      : Array.isArray(item.history) ? item.history
+        : Array.isArray(meta.stockHistory) ? meta.stockHistory
+          : [];
+  const shoppingNeeded = Boolean(
+    item.shoppingNeeded || item.isShoppingNeeded || item.shoppingListed || item.shopping_needed || item.is_shopping_needed || meta.shoppingNeeded
+  );
+  const normalized = {
+    ...item,
     id: item.id || createId(),
     cloudId: item.cloudId || item.cloud_id || '',
     name: item.name || 'Unnamed feed',
+    type: item.type || item.category || 'General',
     category: item.category || item.type || 'General',
+    amount: quantity,
     quantity,
     unit: item.unit || 'units',
-    dailyUsage: toSafeNumber(item.dailyUsage ?? item.daily_use),
-    minimum: toSafeNumber(item.minimum ?? item.threshold),
+    dailyUsage: toSafeNumber(item.dailyUsage ?? item.daily_usage ?? item.daily_use ?? item.perHorseUsage, 0),
+    minimumThreshold: toSafeNumber(item.minimumThreshold ?? item.minimum_threshold ?? item.minimum ?? item.threshold ?? item.lowStockThreshold, 0),
+    minimum: toSafeNumber(item.minimumThreshold ?? item.minimum_threshold ?? item.minimum ?? item.threshold ?? item.lowStockThreshold, 0),
     supplier: item.supplier || item.shop || '',
-    purchaseDate: item.purchaseDate || '',
-    expiryDate: item.expiryDate || '',
-    storageLocation: item.storageLocation || item.location || '',
+    purchaseDate: item.purchaseDate || item.purchase_date || '',
+    expiryDate: item.expiryDate || item.expiry_date || '',
+    storage: item.storage || item.storageLocation || item.storage_location || item.location || '',
+    storageLocation: item.storageLocation || item.storage || item.storage_location || item.location || '',
     cost: item.cost || item.price || '',
-    notes: item.notes || '',
-    horseIds: Array.isArray(item.horseIds) ? item.horseIds : [],
-    perHorseUsage: toSafeNumber(item.perHorseUsage),
-    shoppingListed: Boolean(item.shoppingListed),
-    lastUpdated: item.lastUpdated || item.updatedAt || '',
-    history
+    notes: parsedNotes.notes || item.userNotes || '',
+    horseIds: getFeedHorseIdsFromLegacy({ ...item, horseIds: item.horseIds ?? meta.horseIds }, horses),
+    perHorseUsage: toSafeNumber(item.perHorseUsage ?? item.dailyUsage ?? item.daily_usage ?? 0, 0),
+    shoppingNeeded,
+    isShoppingNeeded: shoppingNeeded,
+    shoppingListed: shoppingNeeded,
+    lastUpdated: item.lastUpdated || item.last_updated || meta.lastUpdated || item.updatedAt || item.updated_at || today(),
+    stockHistory,
+    history: stockHistory,
+    reorderLeadDays: Math.max(0, Math.round(toSafeNumber(item.reorderLeadDays ?? item.reorder_lead_days ?? meta.reorderLeadDays, 7)))
   };
+  return normalized;
 }
 
 function normalizeHorse(item) {
@@ -5119,11 +5219,12 @@ function loadData() {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (!stored) return JSON.parse(JSON.stringify(defaultData));
     const parsed = JSON.parse(stored);
+    const horses = Array.isArray(parsed.horses) ? parsed.horses.map(normalizeHorse) : [];
     return {
-      horses: Array.isArray(parsed.horses) ? parsed.horses.map(normalizeHorse) : [],
+      horses,
       tasks: Array.isArray(parsed.tasks) ? parsed.tasks.map(normalizeTask) : [],
       hours: Array.isArray(parsed.hours) ? parsed.hours.map(normalizeWorkLog) : [],
-      inventory: Array.isArray(parsed.inventory) ? parsed.inventory.map(normalizeFeedItem) : [],
+      inventory: Array.isArray(parsed.inventory) ? parsed.inventory.map((item) => normalizeFeedItem(item, horses)) : [],
       calendarEvents: Array.isArray(parsed.calendarEvents) ? parsed.calendarEvents.map(normalizeCalendarEvent) : [],
       careHistory: Array.isArray(parsed.careHistory) ? parsed.careHistory.map(normalizeCareRecord) : [],
       raceEntryOpportunities: Array.isArray(parsed.raceEntryOpportunities) ? parsed.raceEntryOpportunities.map(normalizeRaceOpportunity) : [],
@@ -6156,7 +6257,7 @@ function mapCloudWorkLog(row, horseIdMap) {
   };
 }
 
-function mapCloudFeedItem(row) {
+function mapCloudFeedItem(row, horses = state.horses) {
   return normalizeFeedItem({
     id: row.local_id || row.id,
     cloudId: row.id,
@@ -6171,8 +6272,10 @@ function mapCloudFeedItem(row) {
     expiryDate: row.expiry_date,
     storageLocation: row.storage_location,
     cost: row.cost,
-    notes: row.notes
-  });
+    notes: row.notes,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at
+  }, horses);
 }
 
 function mapCloudCalendarEvent(row, horseIdMap) {
@@ -6295,7 +6398,7 @@ async function loadCloudSnapshot(stableId) {
     horses,
     tasks: taskRows.map((row) => mapCloudTask(row, horseIdMap)),
     hours: workRows.map((row) => mapCloudWorkLog(row, horseIdMap)),
-    inventory: feedRows.map(mapCloudFeedItem),
+    inventory: feedRows.map((row) => mapCloudFeedItem(row, horses)),
     calendarEvents: eventRows.map((row) => mapCloudCalendarEvent(row, horseIdMap)),
     careHistory: careRows.map((row) => mapCloudCareRecord(row, horseIdMap)),
     raceEntryOpportunities,
@@ -7063,13 +7166,13 @@ function feedItemToCloudRow(stableId, rawItem) {
     expiry_date: isValidDate(item.expiryDate),
     storage_location: cleanText(item.storageLocation),
     cost: nullableNumber(item.cost),
-    notes: cleanText(item.notes)
+    notes: buildFeedCloudNotes(item)
   };
 }
 
 async function loadCloudFeedItems(stableId) {
   const rows = await fetchCloudRows('feed_items', stableId);
-  return rows.map(mapCloudFeedItem);
+  return rows.map((row) => mapCloudFeedItem(row, state.horses));
 }
 
 async function enableFeedCloudWrites() {
@@ -7151,9 +7254,14 @@ async function handleCloudFeedItemSave(rawItem, successMessage = t('feedCloud.sa
       ...savedItem,
       horseIds: normalizedInput.horseIds,
       perHorseUsage: normalizedInput.perHorseUsage,
+      dailyUsage: normalizedInput.dailyUsage,
       shoppingListed: normalizedInput.shoppingListed,
+      shoppingNeeded: normalizedInput.shoppingNeeded,
+      isShoppingNeeded: normalizedInput.isShoppingNeeded,
       lastUpdated: normalizedInput.lastUpdated,
-      history: normalizedInput.history
+      stockHistory: normalizedInput.stockHistory,
+      history: normalizedInput.history,
+      reorderLeadDays: normalizedInput.reorderLeadDays
     };
     const existingIndex = state.inventory.findIndex((item) => item.id === mergedItem.id);
     if (existingIndex >= 0) state.inventory[existingIndex] = mergedItem;
@@ -9480,15 +9588,36 @@ function renderInventory() {
     const normalized = normalizeFeedItem(item);
     const status = getFeedStatus(normalized);
     const daysRemaining = getDaysRemaining(normalized);
+    const projectedAmount = getFeedProjectedAmount(normalized);
+    const totalDailyUsage = getFeedTotalDailyUsage(normalized);
+    const daysLeft = getFeedDaysLeft(normalized);
+    const runOutDate = getFeedRunOutDate(normalized);
+    const reorderDate = getFeedReorderDate(normalized);
     const horseNames = normalized.horseIds
       .map((id) => state.horses.find((horse) => horse.id === id)?.name)
       .filter(Boolean);
+    console.debug('[EquiTrack feed] render item', {
+      name: normalized.name,
+      rawHorseFields: {
+        horseIds: item.horseIds,
+        horseId: item.horseId,
+        horseNames: item.horseNames,
+        selectedHorseNames: item.selectedHorseNames
+      },
+      normalizedHorseIdsCount: normalized.horseIds.length,
+      dailyUsageRaw: item.dailyUsage ?? item.daily_usage ?? item.perHorseUsage,
+      totalDailyUsage,
+      projectedAmount,
+      daysLeft
+    });
     const advancedDetails = [
       normalized.supplier && `${t('feed.supplier')}: ${normalized.supplier}`,
       normalized.storageLocation && `${t('feed.storage')}: ${normalized.storageLocation}`,
       normalized.cost && `${t('feed.cost')}: ${normalized.cost}`,
       normalized.expiryDate && `${t('feed.expiry')}: ${normalized.expiryDate}`,
-      normalized.lastUpdated && `${t('feed.lastUpdated')}: ${normalized.lastUpdated}`
+      normalized.lastUpdated && `${t('feed.lastUpdated')}: ${normalized.lastUpdated}`,
+      runOutDate && `${t('feed.runsOut')}: ${runOutDate}`,
+      reorderDate && `${t('feed.reorderBy')}: ${reorderDate}`
     ].filter(Boolean);
     return `
       <article class="item-card feed-card premium-stable-card">
@@ -9500,21 +9629,23 @@ function renderInventory() {
           <span class="pill ${status.className}">${t(`feed.${status.key}`)}</span>
         </div>
         <div class="feed-stats">
-          <div><span class="meta-label">${t('feed.current')}</span><strong>${formatNumber(normalized.quantity)} ${escapeHtml(normalized.unit)}</strong></div>
-          <div><span class="meta-label">${t('feed.dailyUsage')}</span><strong>${formatNumber(getEffectiveDailyUsage(normalized))} ${escapeHtml(normalized.unit)}</strong></div>
+          <div><span class="meta-label">${t('feed.current')}</span><strong>${formatNumber(projectedAmount)} ${escapeHtml(normalized.unit)}</strong></div>
+          <div><span class="meta-label">${t('feed.dailyUsage')}</span><strong>${formatNumber(totalDailyUsage)} ${escapeHtml(normalized.unit)}</strong></div>
           <div><span class="meta-label">${t('feed.daysLeft')}</span><strong>${daysRemaining}</strong></div>
           <div><span class="meta-label">${t('feed.lowThreshold')}</span><strong>${formatNumber(normalized.minimum)} ${escapeHtml(normalized.unit)}</strong></div>
         </div>
         <div class="item-meta feed-extra">
           ${horseNames.length ? `<span class="pill">${t('feed.horses')}: ${escapeHtml(horseNames.join(', '))}</span>` : ''}
-          ${normalized.perHorseUsage ? `<span class="pill">${t('feed.perHorse')}: ${formatNumber(normalized.perHorseUsage)} ${escapeHtml(normalized.unit)}</span>` : ''}
+          ${normalized.dailyUsage ? `<span class="pill">${t('feed.perHorse')}: ${formatNumber(normalized.dailyUsage)} ${escapeHtml(normalized.unit)}</span>` : ''}
+          ${normalized.lastUpdated ? `<span class="pill">${t('feed.projected')}</span>` : ''}
           ${advancedDetails.map((detail) => `<span class="pill">${escapeHtml(detail)}</span>`).join('')}
           ${normalized.shoppingListed ? `<span class="pill warn">${t('shopping.added')}</span>` : ''}
         </div>
-        ${normalized.history.length ? `<div class="detail-box"><strong>${t('feed.history')}</strong><p>${escapeHtml(normalized.history.slice(-3).map((entry) => `${entry.date}: ${formatNumber(entry.quantity)} ${normalized.unit}`).join(' | '))}</p></div>` : ''}
+        ${normalized.stockHistory.length ? `<div class="detail-box"><strong>${t('feed.history')}</strong><p>${escapeHtml(normalized.stockHistory.slice(-3).map((entry) => `${entry.date}: ${formatNumber(entry.quantity ?? entry.amount)} ${normalized.unit}`).join(' | '))}</p></div>` : ''}
         <div class="item-actions">
           <button class="button ghost" type="button" data-action="edit-inventory" data-id="${normalized.id}">${t('common.edit')}</button>
-          <button class="button ghost" type="button" data-action="toggle-shopping" data-id="${normalized.id}">${normalized.shoppingListed ? t('shopping.markNeeded') : t('shopping.markAdded')}</button>
+          ${reorderDate ? `<button class="button ghost" type="button" data-action="add-feed-reminder" data-id="${normalized.id}">${t('feed.addReminder')}</button>` : ''}
+          <button class="button ghost" type="button" data-action="toggle-shopping" data-id="${normalized.id}">${normalized.shoppingListed ? t('shopping.markAdded') : t('shopping.markNeeded')}</button>
           <button class="button ghost danger" type="button" data-action="delete-inventory" data-id="${normalized.id}">${t('common.delete')}</button>
         </div>
       </article>
@@ -9526,7 +9657,7 @@ function renderShoppingList() {
   if (!els.shoppingList) return;
   const shoppingItems = state.inventory
     .map(normalizeFeedItem)
-    .filter((item) => ['low', 'critical', 'empty'].includes(getFeedStatus(item).key));
+    .filter((item) => item.shoppingListed || ['low', 'critical', 'empty'].includes(getFeedStatus(item).key));
 
   if (!shoppingItems.length) {
     els.shoppingList.innerHTML = `<p class="empty-state">${t('shopping.empty')}</p>`;
@@ -9539,11 +9670,11 @@ function renderShoppingList() {
       <article class="shopping-item">
         <div>
           <strong>${escapeHtml(item.name)}</strong>
-          <p>${formatNumber(item.quantity)} ${escapeHtml(item.unit)} - ${t('feed.daysLeft')}: ${getDaysRemaining(item)}</p>
+          <p>${formatNumber(getFeedProjectedAmount(item))} ${escapeHtml(item.unit)} - ${t('feed.daysLeft')}: ${getDaysRemaining(item)}</p>
         </div>
         <span class="pill ${status.className}">${t(`feed.${status.key}`)}</span>
         ${item.shoppingListed ? `<span class="pill warn">${t('shopping.added')}</span>` : ''}
-        <button class="button ghost" type="button" data-action="toggle-shopping" data-id="${item.id}">${item.shoppingListed ? t('shopping.markNeeded') : t('shopping.markAdded')}</button>
+        <button class="button ghost" type="button" data-action="toggle-shopping" data-id="${item.id}">${item.shoppingListed ? t('shopping.markAdded') : t('shopping.markNeeded')}</button>
       </article>
     `;
   }).join('');
@@ -10971,28 +11102,71 @@ function formatEventLine(event) {
   return `${event.date}${event.time ? ` ${event.time}` : ''} - ${event.name} (${t(`eventType.${event.type}`)})`;
 }
 
-function getDaysRemaining(item) {
-  if (Number(item.quantity) <= 0) return '0';
-  const dailyUsage = getEffectiveDailyUsage(item);
-  if (dailyUsage <= 0) return t('feed.notSet');
-  return Math.floor(Number(item.quantity) / dailyUsage).toString();
+function getFeedTotalDailyUsage(item) {
+  const normalized = normalizeFeedItem(item);
+  const perHorseUsage = toSafeNumber(normalized.dailyUsage || normalized.perHorseUsage, 0);
+  const horseCount = normalized.horseIds.length || 1;
+  return perHorseUsage > 0 ? perHorseUsage * horseCount : 0;
 }
 
 function getEffectiveDailyUsage(item) {
+  return getFeedTotalDailyUsage(item);
+}
+
+function daysBetweenLocalDates(startDate, endDate = today()) {
+  if (!startDate) return 0;
+  const start = new Date(`${startDate}T00:00:00`);
+  const end = new Date(`${endDate}T00:00:00`);
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return 0;
+  return Math.max(0, Math.floor((end - start) / 86400000));
+}
+
+function addDaysToDate(dateValue, days) {
+  if (!dateValue || !Number.isFinite(days)) return '';
+  const date = new Date(`${dateValue}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return '';
+  date.setDate(date.getDate() + Math.floor(days));
+  return date.toISOString().slice(0, 10);
+}
+
+function getFeedProjectedAmount(item) {
   const normalized = normalizeFeedItem(item);
-  if (Number(normalized.dailyUsage) > 0) return Number(normalized.dailyUsage);
-  if (Number(normalized.perHorseUsage) > 0 && normalized.horseIds.length) {
-    return Number(normalized.perHorseUsage) * normalized.horseIds.length;
-  }
-  return 0;
+  const elapsedDays = daysBetweenLocalDates(normalized.lastUpdated);
+  const projected = normalized.amount - (getFeedTotalDailyUsage(normalized) * elapsedDays);
+  return Math.max(0, Number(projected.toFixed(2)));
+}
+
+function getFeedDaysLeft(item) {
+  const totalDailyUsage = getFeedTotalDailyUsage(item);
+  if (totalDailyUsage <= 0) return Infinity;
+  return getFeedProjectedAmount(item) / totalDailyUsage;
+}
+
+function getDaysRemaining(item) {
+  const days = getFeedDaysLeft(item);
+  if (!Number.isFinite(days)) return t('feed.notSet');
+  return Math.floor(days).toString();
+}
+
+function getFeedRunOutDate(item) {
+  const normalized = normalizeFeedItem(item);
+  const days = getFeedDaysLeft(normalized);
+  if (!Number.isFinite(days)) return '';
+  return addDaysToDate(today(), Math.floor(days));
+}
+
+function getFeedReorderDate(item) {
+  const normalized = normalizeFeedItem(item);
+  const runOutDate = getFeedRunOutDate(normalized);
+  if (!runOutDate) return '';
+  return addDaysToDate(runOutDate, -normalized.reorderLeadDays);
 }
 
 function getFeedStatus(item) {
   const normalized = normalizeFeedItem(item);
-  const quantity = Number(normalized.quantity);
+  const quantity = getFeedProjectedAmount(normalized);
   const minimum = Number(normalized.minimum);
-  const dailyUsage = getEffectiveDailyUsage(normalized);
-  const days = dailyUsage > 0 ? quantity / dailyUsage : Infinity;
+  const days = getFeedDaysLeft(normalized);
   if (quantity <= 0) return { key: 'empty', className: 'empty' };
   if (quantity <= minimum || days <= 3) return { key: 'critical', className: 'critical' };
   if (quantity <= minimum * 1.5 || days <= 7) return { key: 'low', className: 'warn' };
@@ -11235,40 +11409,50 @@ function handleInventorySubmit(event) {
   const form = event.currentTarget;
   const existing = state.inventory.find((entry) => entry.id === form.elements.id.value);
   const existingNormalized = existing ? normalizeFeedItem(existing) : null;
-  const quantity = Number(form.elements.quantity.value);
+  const quantity = toSafeNumber(form.elements.quantity.value, 0);
   const todayValue = today();
-  const history = existingNormalized?.history ? [...existingNormalized.history] : [];
+  const stockHistory = existingNormalized?.stockHistory ? [...existingNormalized.stockHistory] : [];
   if (!existingNormalized || Number(existingNormalized.quantity) !== quantity) {
-    history.push({ date: todayValue, quantity });
+    stockHistory.push({ date: todayValue, quantity, amount: quantity });
   }
+  const quantityIncreased = existingNormalized && quantity > Number(existingNormalized.quantity);
   const feedItem = {
     id: form.elements.id.value,
     name: form.elements.name.value.trim(),
+    type: form.elements.category.value.trim(),
     category: form.elements.category.value.trim(),
+    amount: quantity,
     quantity,
     unit: form.elements.unit.value.trim(),
-    dailyUsage: Number(form.elements.dailyUsage.value),
-    minimum: Number(form.elements.minimum.value),
+    dailyUsage: toSafeNumber(form.elements.dailyUsage.value || form.elements.perHorseUsage.value, 0),
+    minimumThreshold: toSafeNumber(form.elements.minimum.value, 0),
+    minimum: toSafeNumber(form.elements.minimum.value, 0),
     supplier: form.elements.supplier.value.trim(),
     purchaseDate: form.elements.purchaseDate.value,
     expiryDate: form.elements.expiryDate.value,
+    reorderLeadDays: toSafeNumber(form.elements.reorderLeadDays?.value, 7),
+    storage: form.elements.storageLocation.value.trim(),
     storageLocation: form.elements.storageLocation.value.trim(),
     cost: form.elements.cost.value,
     notes: form.elements.notes.value.trim(),
     horseIds: getSelectedOptions(form.elements.horseIds),
-    perHorseUsage: Number(form.elements.perHorseUsage.value || 0),
-    shoppingListed: existingNormalized?.shoppingListed || false,
+    perHorseUsage: toSafeNumber(form.elements.dailyUsage.value || form.elements.perHorseUsage.value, 0),
+    shoppingNeeded: quantityIncreased ? false : Boolean(existingNormalized?.shoppingNeeded),
+    isShoppingNeeded: quantityIncreased ? false : Boolean(existingNormalized?.shoppingNeeded),
+    shoppingListed: quantityIncreased ? false : Boolean(existingNormalized?.shoppingListed),
     lastUpdated: todayValue,
-    history
+    stockHistory,
+    history: stockHistory
   };
+  const normalizedFeedItem = normalizeFeedItem(feedItem);
   if (cloudWriteMode) {
-    if (!feedItem.id) feedItem.id = createId();
-    const existingItem = state.inventory.find((item) => item.id === feedItem.id);
-    if (existingItem?.cloudId) feedItem.cloudId = existingItem.cloudId;
-    runCloudFormSubmit(form, 'feed-save', feedItem.id, () => handleCloudFeedItemSave(feedItem), () => resetForm(form));
+    if (!normalizedFeedItem.id) normalizedFeedItem.id = createId();
+    const existingItem = state.inventory.find((item) => item.id === normalizedFeedItem.id);
+    if (existingItem?.cloudId) normalizedFeedItem.cloudId = existingItem.cloudId;
+    runCloudFormSubmit(form, 'feed-save', normalizedFeedItem.id, () => handleCloudFeedItemSave(normalizedFeedItem), () => resetForm(form));
     return;
   }
-  upsert('inventory', feedItem);
+  upsert('inventory', normalizedFeedItem);
   resetForm(form);
   showMessage(t('message.inventorySaved'));
 }
@@ -11641,6 +11825,7 @@ function handleListClick(event) {
     else deleteItem('inventory', id, t('delete.inventory'), t('message.inventoryDeleted'));
   }
   if (action === 'toggle-shopping') toggleShoppingStatus(id);
+  if (action === 'add-feed-reminder') addFeedReorderReminder(id);
   if (action === 'edit-event') fillEventForm(id);
   if (action === 'delete-event') {
     if (cloudWriteMode) handleCloudCalendarEventDelete(id);
@@ -11737,7 +11922,14 @@ function toggleShoppingStatus(id) {
   if (blockCloudPreviewEdit()) return;
   const found = state.inventory.find((item) => item.id === id);
   if (!found) return;
-  const nextItem = { ...normalizeFeedItem(found), shoppingListed: !normalizeFeedItem(found).shoppingListed };
+  const normalized = normalizeFeedItem(found);
+  const nextShoppingState = !normalized.shoppingListed;
+  const nextItem = {
+    ...normalized,
+    shoppingListed: nextShoppingState,
+    shoppingNeeded: nextShoppingState,
+    isShoppingNeeded: nextShoppingState
+  };
   if (cloudWriteMode) {
     runCloudAction('feed-shopping', id, () => handleCloudFeedItemSave(nextItem, t('feedCloud.shoppingUpdated')));
     return;
@@ -11746,6 +11938,43 @@ function toggleShoppingStatus(id) {
   saveData();
   render();
   showMessage(t('message.shoppingUpdated'));
+}
+
+async function addFeedReorderReminder(id) {
+  if (blockCloudPreviewEdit()) return;
+  const item = normalizeFeedItem(state.inventory.find((entry) => entry.id === id) || {});
+  if (!item.id) return;
+  const reorderDate = getFeedReorderDate(item);
+  if (!reorderDate) return;
+  const marker = `[feed-reorder:${item.id}:${reorderDate}]`;
+  const existing = state.calendarEvents.map(normalizeCalendarEvent).find((event) => event.notes.includes(marker));
+  if (existing) {
+    showMessage(t('feed.reminderExists'));
+    return;
+  }
+  const event = normalizeCalendarEvent({
+    id: createId(),
+    date: reorderDate,
+    time: '',
+    name: `${t('feed.reorderBy')}: ${item.name}`,
+    type: 'feeding',
+    location: item.storageLocation,
+    horseIds: item.horseIds,
+    notes: `${marker}\n${t('feed.runsOut')}: ${getFeedRunOutDate(item)}\n${t('feed.dailyUsage')}: ${formatNumber(getFeedTotalDailyUsage(item))} ${item.unit}`
+  });
+  if (cloudWriteMode || calendarCloudWriteMode) {
+    await runCloudAction('feed-reorder-reminder', id, async () => {
+      const saved = await saveCalendarEventToCloud(event);
+      state.calendarEvents.push(saved);
+      render();
+      showMessage(t('feed.reminderAdded'));
+    });
+    return;
+  }
+  state.calendarEvents.push(event);
+  saveData();
+  render();
+  showMessage(t('feed.reminderAdded'));
 }
 
 function handleQuickAction(event) {
@@ -11938,10 +12167,11 @@ function fillInventoryForm(id) {
   els.inventoryForm.elements.supplier.value = item.supplier;
   els.inventoryForm.elements.purchaseDate.value = item.purchaseDate;
   els.inventoryForm.elements.expiryDate.value = item.expiryDate;
+  if (els.inventoryForm.elements.reorderLeadDays) els.inventoryForm.elements.reorderLeadDays.value = item.reorderLeadDays;
   els.inventoryForm.elements.storageLocation.value = item.storageLocation;
   els.inventoryForm.elements.cost.value = item.cost;
   els.inventoryForm.elements.notes.value = item.notes;
-  els.inventoryForm.elements.perHorseUsage.value = item.perHorseUsage || '';
+  els.inventoryForm.elements.perHorseUsage.value = item.dailyUsage || item.perHorseUsage || '';
   setSelectedOptions(els.inventoryForm.elements.horseIds, item.horseIds);
   els.inventoryForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
@@ -12970,11 +13200,12 @@ function normalizeImportedData(imported) {
   const data = imported.data && typeof imported.data === 'object' ? imported.data : imported;
   const hasExpectedArrays = ['horses', 'tasks', 'hours', 'inventory'].some((key) => Array.isArray(data[key]));
   if (!hasExpectedArrays) throw new Error(t('backup.errorInvalidShape'));
+  const horses = Array.isArray(data.horses) ? data.horses.map(normalizeHorse) : [];
   return {
-    horses: Array.isArray(data.horses) ? data.horses.map(normalizeHorse) : [],
+    horses,
     tasks: Array.isArray(data.tasks) ? data.tasks.map(normalizeTask) : [],
     hours: Array.isArray(data.hours) ? data.hours.map(normalizeWorkLog) : [],
-    inventory: Array.isArray(data.inventory) ? data.inventory.map(normalizeFeedItem) : [],
+    inventory: Array.isArray(data.inventory) ? data.inventory.map((item) => normalizeFeedItem(item, horses)) : [],
     calendarEvents: Array.isArray(data.calendarEvents) ? data.calendarEvents.map(normalizeCalendarEvent) : [],
     careHistory: Array.isArray(data.careHistory) ? data.careHistory.map(normalizeCareRecord) : [],
     raceEntryOpportunities: Array.isArray(data.raceEntryOpportunities) ? data.raceEntryOpportunities.map(normalizeRaceOpportunity) : [],
